@@ -1,0 +1,41 @@
+{
+  "id": "video-podcast-wave",
+  "name": {
+    "zh": "播客声波 · 9:16 午夜金句口播竖屏短视频",
+    "en": "Podcast Wave · 9:16 Equalizer Quote Short Video",
+    "ja": "ポッドキャスト波形 · 9:16 縦型オーディオ名言動画",
+    "ko": "팟캐스트 웨이브 · 9:16 이퀄라이저 숏폼 비디오"
+  },
+  "description": {
+    "zh": "深邃午夜靛蓝渐变底配风格化声波均衡器视觉、发光 ON AIR 徽章、高对比居中金句与安全区底部字幕条。",
+    "en": "Rich midnight obsidian-indigo stage with stylized acoustic equalizer waveform motif, ON AIR badge, crisp speaker cards, and safe caption zone.",
+    "ja": "ミッドナイトインディゴ背景にイコライザー波形と高コントラスト字幕を備えた縦型ポッドキャスト動画。",
+    "ko": "미드나잇 인디고 그라데이션 위에 사운드 웨이브 이퀄라이저와 안전 영역 자막을 담은 9:16 팟캐스트 영상."
+  },
+  "category": "short-video",
+  "defaultLocale": "zh-CN",
+  "aspect": "9:16",
+  "width": 1080,
+  "height": 1920,
+  "supportedFormats": [
+    "mp4",
+    "png",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "podcast",
+    "audio",
+    "waveform",
+    "video",
+    "mp4",
+    "9x16",
+    "shorts",
+    "reels"
+  ]
+}

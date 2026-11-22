@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.openai.com/schemas/plugin/2026/plugin.json",
+  "name": "aimake",
+  "version": "1.0.0",
+  "display_name": "Aimake — Multimodal Creator & LLM Wiki OS",
+  "description": "Zero-backend local LLM Wiki, 4-locale Style DNA, and parametric HTML-to-Cards/WeChat/PDF/PPTX/MP4 compiler.",
+  "author": "Chico Gong",
+  "homepage": "https://aimake.cc",
+  "license": "UNLICENSED",
+  "extensions": {
+    "com.openai": {
+      "presentation": {
+        "color": "#2B6BE6"
+      },
+      "capabilities": {
+        "skills_directory": "./skills",
+        "mcp_config": "./integrations/workbuddy/mcp.json"
+      }
+    }
+  }
+}

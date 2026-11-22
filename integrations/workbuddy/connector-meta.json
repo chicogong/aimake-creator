@@ -1,0 +1,18 @@
+{
+  "id": "aimake",
+  "version": "1.0.0",
+  "type": "mcp-stdio",
+  "name": {
+    "zh-CN": "爱创 Aimake 多模态创作台",
+    "en-US": "Aimake Multimodal Creator OS"
+  },
+  "description": {
+    "zh-CN": "连接本地知识库与实时热点，一键编译小红书套图、公众号内联排版、LinkedIn PDF、可编辑 PPTX 与 60fps 短视频。",
+    "en-US": "Zero-backend local LLM Wiki & parametric HTML-to-Cards/WeChat/PDF/PPTX/MP4 engine."
+  },
+  "examples": [
+    "把这篇飞书周报脱敏转成 16:9 可编辑汇报 PPT",
+    "抓取今日 AI 热点，按我的个人风格生成小红书 6 图和公众号推文",
+    "把这篇笔记同时编译成英文 LinkedIn PDF 与日文 X 図解卡"
+  ]
+}

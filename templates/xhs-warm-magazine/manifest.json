@@ -1,0 +1,42 @@
+{
+  "id": "xhs-warm-magazine",
+  "name": {
+    "zh": "小红书 · 暖阳杂志画报封面",
+    "en": "Xiaohongshu · Sunlit Editorial Magazine",
+    "ja": "RED · ウォーム・マガジンカバー",
+    "ko": "샤오홍슈 · 웜 에디토리얼 매거진"
+  },
+  "description": {
+    "zh": "陶土红与奶油棉纸搭配复古刊头、粗细双线与精致引言框，适合生活方式、品牌故事与审美向深度内容。",
+    "en": "Terracotta & sunlit cream magazine cover with masthead stripe, editorial serif display, and framed pull-quotes.",
+    "ja": "テラコッタとクリーム紙が調和する雑誌カバー風エディトリアル。",
+    "ko": "테라코타와 크림 톤의 매거진 커버 감성 에디토리얼 카드."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "magazine",
+    "terracotta",
+    "editorial",
+    "warm",
+    "lifestyle"
+  ]
+}

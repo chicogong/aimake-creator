@@ -1,0 +1,40 @@
+{
+  "id": "ppt-executive-16x9",
+  "name": {
+    "zh": "职场汇报 · 16:9 战略简报 PPT（真可编辑）",
+    "en": "Executive Deck · 16:9 Strategy Slide (.PPTX)",
+    "ja": "ビジネス報告 · 16:9 エグゼクティブスライド",
+    "ko": "비즈니스 리포트 · 16:9 임원 보고 슬라이드"
+  },
+  "description": {
+    "zh": "专为飞书周报转述职汇报打造，既可网页全屏交互演示，也可一键导出文字原生可编辑的 .pptx。",
+    "en": "Clean boardroom 16:9 presentation layout that exports cleanly to native editable PowerPoint (.pptx).",
+    "ja": "週報や企画書からそのまま編集可能なPowerPoint (.pptx) を出力できる16:9スライド。",
+    "ko": "주간 보고서와 기획안을 편집 가능한 네이티브 .pptx로 변환하는 16:9 슬라이드."
+  },
+  "category": "presentation",
+  "defaultLocale": "zh-CN",
+  "aspect": "16:9",
+  "width": 1920,
+  "height": 1080,
+  "supportedFormats": [
+    "pptx",
+    "pdf",
+    "png",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "ppt",
+    "pptx",
+    "workplace",
+    "feishu",
+    "executive",
+    "16x9"
+  ]
+}

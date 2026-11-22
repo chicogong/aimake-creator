@@ -1,0 +1,38 @@
+{
+  "id": "wechat-greenbook",
+  "name": {
+    "zh": "微信小绿书 · 清朗高密度观点卡",
+    "en": "WeChat Greenbook · Crisp Insight Deck",
+    "ja": "WeChat · 高密度インサイトカード",
+    "ko": "위챗 그린북 · 인사이트 카드"
+  },
+  "description": {
+    "zh": "针对微信图文消息（小绿书）阅读习惯优化，高对比度卡片分层与微信翠绿视觉锚点。",
+    "en": "Tailored for WeChat swipeable image posts with high-legibility hierarchy and emerald accents.",
+    "ja": "モバイルスワイプ閲覧に最適化された高視認性カード。",
+    "ko": "모바일 스와이프 가독성을 극대화한 인사이트 카드."
+  },
+  "category": "wechat",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "wechat",
+    "pdf",
+    "html"
+  ],
+  "supportsMotion": false,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "wechat",
+    "greenbook",
+    "news",
+    "botanical"
+  ]
+}

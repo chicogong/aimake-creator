@@ -1,0 +1,41 @@
+{
+  "id": "xhs-paper-editorial",
+  "name": {
+    "zh": "小红书 · 纸质人文书卷卡",
+    "en": "Xiaohongshu · Archival Paper Essay",
+    "ja": "RED · 書斎ペーパーエッセイ",
+    "ko": "샤오홍슈 · 페이퍼 에디토리얼"
+  },
+  "description": {
+    "zh": "温暖棉纸质感搭配人文衬线标题与松石绿点缀，适合读书笔记、深度思考与个人复盘。",
+    "en": "Warm cotton-rag paper surface with literary serif display headlines for essays and book notes.",
+    "ja": "温かみのある紙質感と明朝体見出しによるエッセイ・読書カード。",
+    "ko": "따뜻한 종이 질감과 세리프 제목이 돋보이는 독서·에세이 카드."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "serif",
+    "book-notes",
+    "essay",
+    "paper"
+  ]
+}

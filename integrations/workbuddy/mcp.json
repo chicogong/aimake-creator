@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "aimake": {
+      "command": "npx",
+      "args": ["-y", "aimake", "mcp"]
+    }
+  }
+}

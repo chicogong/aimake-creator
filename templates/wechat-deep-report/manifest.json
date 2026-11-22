@@ -1,0 +1,41 @@
+{
+  "id": "wechat-deep-report",
+  "name": {
+    "zh": "微信生态 · 深度科技行业研报（金融时报风）",
+    "en": "WeChat · Deep Tech Industry Report (Navy & Brass)",
+    "ja": "WeChat · 金融・テクノロジー業界深掘りレポート",
+    "ko": "위챗 · 딥테크 산업 리서치 리포트 (네이비·브라스)"
+  },
+  "description": {
+    "zh": "对标彭博与经济学人研报视觉：深海藏蓝通栏刊头、暖黄铜分割线、象牙白研报正文与结构化数据观察框。",
+    "en": "Bloomberg/Economist-caliber intelligence brief pairing deep navy masthead, warm brass accent rule, crisp ivory body, and analyst callouts.",
+    "ja": "濃紺マストヘッドと真鍮ゴールド罫線、アイボリー本文で構成された本格業界レポート。",
+    "ko": "딥 네이비 마스트헤드와 브라스 골드 라인, 아이보리 본문이 돋보이는 산업 리서치 카드."
+  },
+  "category": "wechat",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "wechat",
+    "pdf",
+    "html"
+  ],
+  "supportsMotion": false,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "wechat",
+    "report",
+    "research",
+    "navy",
+    "brass",
+    "bloomberg",
+    "industry"
+  ]
+}

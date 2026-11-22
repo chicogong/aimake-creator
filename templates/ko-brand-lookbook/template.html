@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Korea · Seoul Studio Brand Lookbook (4:5)</title>
+  <style>
+    :root {
+      --bg: #F1F0EC;
+      --surface: #FFFFFF;
+      --ink: #151618;
+      --muted: #5D6168;
+      --accent: #2A6F68;
+      --accent-soft: #E3F0EE;
+      --border: #24262A;
+      --bw: 1px;
+      --radius: 4px;
+      --font: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      --code-bg: #0b0f19;
+      --code-border: #263147;
+      --code-ink: #e2e8f0;
+      --grid-line: rgba(127, 127, 127, 0.08);
+      --content-scale: 1;
+    }
+
+    /* Explicit Dark Theme Support */
+    :root[data-theme="dark"],
+    body[data-theme="dark"],
+    .aimake-slide[data-theme="dark"],
+    [data-theme="dark"] .aimake-slide {
+      --bg: #0F1117;
+      --surface: #1A1E29;
+      --ink: #F1F5F9;
+      --muted: #94A3B8;
+      --accent: #2A6F68;
+      --accent-soft: #E3F0EE;
+      --border: #2A3347;
+      --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      --code-bg: #090C12;
+      --code-border: #1F293D;
+      --code-ink: #F1F5F9;
+      --grid-line: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Explicit Light Theme Support */
+    :root[data-theme="light"],
+    body[data-theme="light"],
+    .aimake-slide[data-theme="light"],
+    [data-theme="light"] .aimake-slide {
+      --bg: #F1F0EC;
+      --surface: #FFFFFF;
+      --ink: #151618;
+      --muted: #5D6168;
+      --accent: #2A6F68;
+      --accent-soft: #E3F0EE;
+      --border: #24262A;
+      --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+      --code-bg: #F8FAFC;
+      --code-border: #E2E8F0;
+      --code-ink: #1E293B;
+      --grid-line: rgba(0, 0, 0, 0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px;
+      background: #0d0f13;
+      font-family: var(--font);
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #aimake-deck-root {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      align-items: center;
+    }
+    .aimake-slide {
+      width: 1080px;
+      height: 1350px;
+      background: var(--bg);
+      color: var(--ink);
+      padding: 74px 72px 68px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border: var(--bw) solid var(--border);
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: var(--bw) solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .page-index {
+      font-family: var(--mono);
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+    .content-zone {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: calc(24px * var(--content-scale));
+      min-height: 0;
+      overflow: hidden;
+    }
+    h1.slide-title {
+      margin: 0;
+      font-weight: 800;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+    }
+    p.slide-subtitle {
+      margin: 0;
+      font-size: calc(26px * var(--content-scale));
+      line-height: 1.48;
+      color: var(--muted);
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: var(--bw) solid var(--border);
+      border-radius: var(--radius);
+      padding: calc(22px * var(--content-scale)) calc(24px * var(--content-scale));
+    }
+    .metric-label {
+      font-size: calc(19px * var(--content-scale));
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .metric-val {
+      font-family: var(--mono);
+      font-size: calc(44px * var(--content-scale));
+      font-weight: 800;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .metric-delta {
+      font-family: var(--mono);
+      font-size: calc(18px * var(--content-scale));
+      color: var(--ink);
+      opacity: 0.85;
+    }
+    ul.bullet-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: calc(15px * var(--content-scale));
+    }
+    ul.bullet-list li {
+      background: var(--surface);
+      border: var(--bw) solid var(--border);
+      border-radius: var(--radius);
+      padding: calc(18px * var(--content-scale)) calc(24px * var(--content-scale));
+      font-size: calc(25px * var(--content-scale));
+      line-height: 1.48;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .bullet-dot {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .compare-col {
+      background: var(--surface);
+      border: var(--bw) solid var(--border);
+      border-radius: var(--radius);
+      padding: calc(22px * var(--content-scale));
+    }
+    .compare-col.highlight {
+      border-color: var(--accent);
+    }
+    .compare-col h3 {
+      margin: 0 0 12px 0;
+      font-size: calc(24px * var(--content-scale));
+      color: var(--accent);
+    }
+    .compare-col p {
+      margin: 0 0 9px 0;
+      font-size: calc(22px * var(--content-scale));
+      line-height: 1.45;
+    }
+    .code-box {
+      background: #0b0f19;
+      color: #e2e8f0;
+      border: 1px solid #263147;
+      border-radius: 12px;
+      padding: calc(20px * var(--content-scale)) calc(24px * var(--content-scale));
+      font-family: var(--mono);
+      font-size: calc(20px * var(--content-scale));
+      line-height: 1.52;
+      white-space: pre-wrap;
+      overflow: hidden;
+    }
+    .quote-box {
+      background: var(--surface);
+      border-left: 6px solid var(--accent);
+      padding: calc(22px * var(--content-scale)) calc(26px * var(--content-scale));
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: calc(25px * var(--content-scale));
+      line-height: 1.52;
+    }
+    .speech-caption {
+      background: rgba(20, 22, 28, 0.88);
+      color: #ffffff;
+      border: 1px solid var(--accent);
+      padding: 18px 24px;
+      border-radius: 14px;
+      font-size: calc(25px * var(--content-scale));
+      line-height: 1.45;
+      text-align: center;
+    }
+    .footer-bar {
+      border-top: var(--bw) solid var(--border);
+      padding-top: 16px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 16px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .progress-track {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 7px;
+      background: var(--accent);
+      width: 100%;
+      transform-origin: left center;
+      z-index: 3;
+    }
+    
+        .aimake-slide {
+          background: #F1F0EC;
+          border: 1px solid #D8D6D0;
+          word-break: keep-all;
+          overflow-wrap: break-word;
+        }
+        .aimake-slide::before {
+          content: '';
+          position: absolute;
+          inset: 28px;
+          border: 1.5px solid #222325;
+          pointer-events: none;
+        }
+        .top-bar {
+          border-bottom: 1px solid #222325;
+          padding-bottom: 16px;
+        }
+        .eyebrow {
+          background: #2A6F68;
+          color: #FFFFFF;
+          padding: 6px 16px;
+          border-radius: 999px;
+          font-size: 17px;
+          letter-spacing: 0.12em;
+        }
+        h1.slide-title {
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          line-height: 1.26;
+        }
+        .metric-card, ul.bullet-list li, .compare-col {
+          background: #FFFFFF;
+          border: 1px solid #D5D3CD;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+        .bullet-dot {
+          color: #2A6F68;
+          border-right: 1px solid #D5D3CD;
+          padding-right: 14px;
+        }
+      
+  </style>
+</head>
+<body data-template-id="ko-brand-lookbook" data-style-variant="ko-lookbook">
+  <div id="aimake-deck-root"></div>
+  <script>
+    const EMBEDDED_MANIFEST = {"id":"ko-brand-lookbook","name":{"zh":"韩国品牌 · 首尔极简画册 Lookbook (4:5)","en":"Korea · Seoul Studio Brand Lookbook (4:5)","ja":"韓国 · ソウルスタジオ・ブランドルックブック","ko":"서울 스튜디오 · 브랜드 룩북 에디토리얼 (4:5)"},"description":{"zh":"首尔设计师品牌画册美学：冷石膏灰底、单色细框画廊构图与鼠尾草青标签，严格支持韩语 keep-all 断行。","en":"Seoul studio fashion/tech brand lookbook on cool alabaster stone with crisp monochrome frame, sage-teal pill, and word-break: keep-all.","ja":"クールな石膏トーンとセージティールの洗練されたソウル・ルックブック風カード。","ko":"차가운 알라바스터 스톤과 모노크롬 프레임, 세이지 틸 포인트의 브랜드 룩북 템플릿."},"category":"cardnews","defaultLocale":"ko","aspect":"4:5","width":1080,"height":1350,"supportedFormats":["png","pdf","html"],"supportsMotion":true,"contributor":{"name":"Aimake Core","handle":"@chicogong","url":"https://aimake.cc"},"tags":["korea","lookbook","brand","seoul","minimal","pretendard","keep-all"]};
+
+    function autoTitleFontSize(text, isCover, isWide) {
+      const len = (text || '').length;
+      if (isCover) {
+        if (len > 70) return isWide ? 44 : 40;
+        if (len > 42) return isWide ? 54 : 48;
+        return isWide ? 62 : 58;
+      }
+      if (len > 70) return 36;
+      if (len > 42) return 42;
+      return isWide ? 48 : 46;
+    }
+
+    function escHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function formatInline(str) {
+      return escHtml(str)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong style="color:var(--accent);">$1</strong>')
+        .replace(/`([^`]+)`/g, '<code style="font-family:var(--mono);background:rgba(127,127,127,0.16);padding:2px 8px;border-radius:5px;">$1</code>');
+    }
+
+    function fitStage(manifestOverride) {
+      const m = manifestOverride || (window.__AIMAKE_PAYLOAD__ && window.__AIMAKE_PAYLOAD__.manifest) || EMBEDDED_MANIFEST;
+      const targetW = m.width + 64;
+      const availW = document.documentElement.clientWidth || window.innerWidth;
+      const root = document.getElementById('aimake-deck-root');
+      if (!root) return;
+      if (availW > 100 && availW < targetW && (window.self !== window.top || (window.__AIMAKE_PAYLOAD__ && window.__AIMAKE_PAYLOAD__.options && window.__AIMAKE_PAYLOAD__.options.editable))) {
+        const scale = Math.max(0.28, (availW - 48) / m.width);
+        root.style.zoom = String(scale.toFixed(3));
+      } else {
+        root.style.zoom = '1';
+      }
+    }
+    window.fitStage = fitStage;
+
+    function autoFitSlideOverflow(slideEl) {
+      const zone = slideEl.querySelector('.content-zone');
+      if (!zone) return;
+      let scale = 1.0;
+      const titleEl = slideEl.querySelector('h1.slide-title');
+      const baseTitlePx = titleEl ? parseFloat(titleEl.dataset.basePx || '48') : 48;
+      while (zone.scrollHeight > zone.clientHeight + 2 && scale > 0.64) {
+        scale = Number((scale - 0.05).toFixed(2));
+        slideEl.style.setProperty('--content-scale', String(scale));
+        if (titleEl) {
+          titleEl.style.fontSize = Math.round(baseTitlePx * scale) + 'px';
+        }
+      }
+    }
+
+    // Supports BOTH window.renderDeck(deck, opts) and window.renderDeck(deck, manifest, opts)
+    window.renderDeck = function(deck, manifestOrOpts, maybeOpts) {
+      let manifest = (window.__AIMAKE_PAYLOAD__ && window.__AIMAKE_PAYLOAD__.manifest) || EMBEDDED_MANIFEST;
+      let opts = {};
+      if (maybeOpts !== undefined) {
+        manifest = manifestOrOpts || manifest;
+        opts = maybeOpts || {};
+      } else if (manifestOrOpts && typeof manifestOrOpts === 'object') {
+        if ('id' in manifestOrOpts && 'width' in manifestOrOpts) {
+          manifest = manifestOrOpts;
+        } else {
+          opts = manifestOrOpts;
+        }
+      }
+
+      const root = document.getElementById('aimake-deck-root');
+      root.innerHTML = '';
+      if (deck.frontmatter && deck.frontmatter.accentColor) {
+        document.documentElement.style.setProperty('--accent', deck.frontmatter.accentColor);
+      }
+      if (deck.frontmatter && deck.frontmatter.theme) {
+        document.documentElement.setAttribute('data-theme', deck.frontmatter.theme);
+        document.body.setAttribute('data-theme', deck.frontmatter.theme);
+      } else if (opts && opts.theme) {
+        document.documentElement.setAttribute('data-theme', opts.theme);
+        document.body.setAttribute('data-theme', opts.theme);
+      }
+
+      const total = deck.slides.length;
+      const isWide = manifest.aspect === '16:9';
+      const showSpeechCaption = manifest.aspect === '9:16';
+
+      deck.slides.forEach((slide, idx) => {
+        if (opts && opts.singleSlideIndex !== null && opts.singleSlideIndex !== undefined && opts.singleSlideIndex !== idx) {
+          return;
+        }
+        const el = document.createElement('section');
+        el.className = 'aimake-slide layout-' + (slide.layout || 'bullets');
+        el.dataset.slideIdx = String(idx);
+        if (slide.theme || (deck.frontmatter && deck.frontmatter.theme)) {
+          el.setAttribute('data-theme', slide.theme || deck.frontmatter.theme);
+        }
+
+        const isCover = idx === 0 || slide.layout === 'cover';
+        const titlePx = autoTitleFontSize(slide.title, isCover, isWide);
+
+        let bodyHtml = '';
+
+        if (slide.bodyParagraphs && slide.bodyParagraphs.length > 0) {
+          bodyHtml += slide.bodyParagraphs.map((p, pIdx) =>
+            '<p class="slide-subtitle anim-item" data-editable="true" data-slide-index="' + idx + '" data-field="body.' + pIdx + '">' + formatInline(p) + '</p>'
+          ).join('');
+        }
+
+        if (slide.metrics && slide.metrics.length > 0) {
+          bodyHtml += '<div class="metrics-grid">' + slide.metrics.map((m, mIdx) =>
+            '<div class="metric-card anim-item">' +
+              '<div class="metric-label" data-editable="true" data-slide-index="' + idx + '" data-field="metric.' + mIdx + '.label">' + escHtml(m.label) + '</div>' +
+              '<div class="metric-val"><span data-editable="true" data-slide-index="' + idx + '" data-field="metric.' + mIdx + '.value">' + escHtml(m.value) + '</span>' +
+              (m.delta ? '<span class="metric-delta">' + escHtml(m.delta) + '</span>' : '') +
+              '</div>' +
+            '</div>'
+          ).join('') + '</div>';
+        }
+
+        if (slide.comparison) {
+          bodyHtml += '<div class="compare-grid">' +
+            '<div class="compare-col anim-item"><h3>' + escHtml(slide.comparison.leftTitle) + '</h3>' +
+              slide.comparison.leftItems.map((it) => '<p>• ' + formatInline(it) + '</p>').join('') +
+            '</div>' +
+            '<div class="compare-col highlight anim-item"><h3>' + escHtml(slide.comparison.rightTitle) + '</h3>' +
+              slide.comparison.rightItems.map((it) => '<p>✓ ' + formatInline(it) + '</p>').join('') +
+            '</div>' +
+          '</div>';
+        }
+
+        if (slide.bullets && slide.bullets.length > 0) {
+          const useGrid = (isWide && slide.bullets.length >= 4) || slide.layout === 'quad';
+          bodyHtml += '<ul class="bullet-list' + (useGrid ? ' grid-2col' : '') + '">' + slide.bullets.map((b, bIdx) =>
+            '<li class="anim-item"><span class="bullet-dot">' + String(bIdx + 1).padStart(2, '0') + '</span>' +
+            '<span data-editable="true" data-slide-index="' + idx + '" data-field="bullet.' + bIdx + '">' + formatInline(b) + '</span></li>'
+          ).join('') + '</ul>';
+        }
+
+        if (slide.code) {
+          bodyHtml += '<div class="code-box anim-item">' + escHtml(slide.code.code) + '</div>';
+        }
+
+        if (slide.quote) {
+          bodyHtml += '<div class="quote-box anim-item"><div data-editable="true" data-slide-index="' + idx + '" data-field="quote.text">“' + formatInline(slide.quote.text) + '”</div>' +
+            (slide.quote.author ? '<div style="margin-top:10px;font-size:19px;color:var(--muted);">— ' + escHtml(slide.quote.author) + '</div>' : '') +
+          '</div>';
+        }
+
+        if (showSpeechCaption && slide.speech) {
+          bodyHtml += '<div class="speech-caption anim-item" data-editable="true" data-slide-index="' + idx + '" data-field="speech">' + escHtml(slide.speech) + '</div>';
+        }
+
+        const citeLabel = slide.cite ? '📎 ' + escHtml(slide.cite) : escHtml(deck.frontmatter.author || 'Aimake Creator');
+        const wmLabel = deck.frontmatter.watermark !== false
+          ? 'Made with Aimake.cc · #' + escHtml(manifest.id)
+          : escHtml(deck.frontmatter.handle || '');
+
+        el.innerHTML =
+          '<div class="progress-track" style="transform:scaleX(' + ((idx + 1) / total).toFixed(3) + ');"></div>' +
+          '<div class="top-bar">' +
+            '<span class="eyebrow" data-editable="true" data-slide-index="' + idx + '" data-field="eyebrow">' + escHtml(slide.eyebrow || manifest.category.toUpperCase()) + '</span>' +
+            '<span class="page-index">' + String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0') + '</span>' +
+          '</div>' +
+          '<div class="content-zone">' +
+            '<h1 class="slide-title anim-item" data-base-px="' + titlePx + '" style="font-size:' + titlePx + 'px;" data-editable="true" data-slide-index="' + idx + '" data-field="title">' + formatInline(slide.title) + '</h1>' +
+            (slide.subtitle ? '<p class="slide-subtitle anim-item" data-editable="true" data-slide-index="' + idx + '" data-field="subtitle">' + formatInline(slide.subtitle) + '</p>' : '') +
+            bodyHtml +
+          '</div>' +
+          '<div class="footer-bar">' +
+            '<span>' + citeLabel + '</span>' +
+            '<span>' + wmLabel + '</span>' +
+          '</div>';
+
+        root.appendChild(el);
+        autoFitSlideOverflow(el);
+      });
+
+      fitStage(manifest);
+    };
+
+    // Deterministic frame-stepper for zero-drop 60fps/30fps video synthesis!
+    window.aimakeSeek = function(frame, fps) {
+      const payload = window.__AIMAKE_PAYLOAD__;
+      if (!payload || !payload.deck) return;
+      const slides = document.querySelectorAll('.aimake-slide');
+      if (slides.length === 0) return;
+      const secPerSlide = (payload.deck.frontmatter && payload.deck.frontmatter.secondsPerSlide) || 2;
+      const framesPerSlide = Math.max(1, Math.round(secPerSlide * fps));
+      const activeIdx = Math.min(slides.length - 1, Math.floor(frame / framesPerSlide));
+      const localFrame = frame % framesPerSlide;
+
+      slides.forEach((slideEl, idx) => {
+        if (idx !== activeIdx) {
+          slideEl.style.display = 'none';
+          return;
+        }
+        slideEl.style.display = 'flex';
+        const items = slideEl.querySelectorAll('.anim-item');
+        items.forEach((item, itemIdx) => {
+          const delayFrames = itemIdx * Math.max(2, Math.round(fps * 0.12));
+          const durFrames = Math.max(4, Math.round(fps * 0.35));
+          const rawP = (localFrame - delayFrames) / durFrames;
+          const p = Math.max(0, Math.min(1, rawP));
+          const eased = 1 - Math.pow(1 - p, 3);
+          item.style.opacity = String(eased.toFixed(3));
+          item.style.transform = 'translateY(' + ((1 - eased) * 24).toFixed(1) + 'px)';
+        });
+      });
+    };
+  </script>
+</body>
+</html>

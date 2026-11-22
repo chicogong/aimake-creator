@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="aimakeFacetL" x1="4" y1="6" x2="20" y2="27" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#DCE8FF"/>
+    </linearGradient>
+    <linearGradient id="aimakeFacetR" x1="15" y1="4" x2="28" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7CC4FF"/>
+      <stop offset="55%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+  <path d="M13 6 4 24 20 27Z" fill="url(#aimakeFacetL)"/>
+  <path d="M14.5 5.65 21 4 28 25 21.4 26.65Z" fill="url(#aimakeFacetR)"/>
+</svg>

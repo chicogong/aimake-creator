@@ -1,0 +1,41 @@
+{
+  "id": "wechat-frontpage-news",
+  "name": {
+    "zh": "微信生态 · 复古头版快讯报纸",
+    "en": "WeChat · Archival Frontpage Broadsheet",
+    "ja": "WeChat · レトロ新聞一面速報フォーマット",
+    "ko": "위챗 · 빈티지 신문 1면 브로드시트 속보"
+  },
+  "description": {
+    "zh": "复古新闻纸质底色配经典双线报头（THE DAILY BRIEF）、高反差宋体大标题与多栏细线分割，紧跟热点快讯极具传播力。",
+    "en": "Archival newsprint broadsheet with double-rule THE DAILY BRIEF masthead, high-contrast serif headline, and hairline editorial columns.",
+    "ja": "新聞紙テクスチャと二重罫線マストヘッド、明朝特大見出しが映えるクラシック速報デザイン。",
+    "ko": "아카이벌 뉴스프린트 질감과 클래식 이중선 제호, 강렬한 세리프 헤드라인의 1면 속보 카드."
+  },
+  "category": "wechat",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "wechat",
+    "pdf",
+    "html"
+  ],
+  "supportsMotion": false,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "wechat",
+    "newspaper",
+    "broadsheet",
+    "frontpage",
+    "news",
+    "vintage",
+    "press"
+  ]
+}

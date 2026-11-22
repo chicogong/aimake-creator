@@ -1,0 +1,104 @@
+{
+  "name": "aimake-studio",
+  "version": "1.0.0",
+  "description": "Aimake — Local-first multimodal content creation, 36-template visual studio & Karpathy LLM Wiki CLI for AI Agents and Solopreneurs.",
+  "keywords": [
+    "aimake",
+    "markdown-to-slides",
+    "markdown-to-pptx",
+    "mermaid",
+    "llm-wiki",
+    "agent-skills",
+    "mcp",
+    "multimodal",
+    "xiaohongshu",
+    "wechat",
+    "linkedin-carousel",
+    "zukai",
+    "card-news",
+    "pptx",
+    "local-first"
+  ],
+  "homepage": "https://aimake.cc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chicogong/aimake-creator.git"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Chico Gong",
+  "type": "module",
+  "bin": {
+    "aimake": "dist/cli.js",
+    "aimake-studio": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "skills",
+    "integrations",
+    "plugin.json",
+    ".claude-plugin",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "README.md",
+    "README.zh-CN.md",
+    "README.ja.md",
+    "README.ko.md"
+  ],
+  "scripts": {
+    "aimake": "tsx src/cli.ts",
+    "build": "tsc --noEmit && tsup src/cli.ts src/index.ts --format esm --dts --clean",
+    "desktop:build": "pnpm build && node scripts/build-macos-app.mjs",
+    "desktop:open": "open dist-desktop/Aimake.app",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test --reporter=list",
+    "test:opencode": "node scripts/verify-opencode-e2e.mjs",
+    "site:build": "tsx src/cli.ts site build --out dist-site",
+    "validate:skill": "node scripts/validate-skill.mjs",
+    "audit:skills": "tsx scripts/audit-skills.ts",
+    "audit:secrets": "node scripts/audit-secrets.mjs",
+    "pack:check": "node scripts/prepare-npm.mjs",
+    "verify": "pnpm typecheck && pnpm test && pnpm build && pnpm validate:skill && pnpm audit:skills && pnpm audit:secrets && pnpm pack:check && pnpm site:build && pnpm desktop:build && pnpm test:e2e"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.9.0",
+    "commander": "^14.0.0",
+    "fast-glob": "^3.3.3",
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.12.0",
+    "marked": "^15.0.7",
+    "picocolors": "^1.1.1",
+    "pptxgenjs": "^3.12.0",
+    "yaml": "^2.7.0"
+  },
+  "peerDependencies": {
+    "@ffmpeg-installer/ffmpeg": ">=1.1.0",
+    "playwright": ">=1.40.0"
+  },
+  "peerDependenciesMeta": {
+    "@ffmpeg-installer/ffmpeg": {
+      "optional": true
+    },
+    "playwright": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.13.0",
+    "playwright": "^1.52.0",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

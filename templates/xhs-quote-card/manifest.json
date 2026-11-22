@@ -1,0 +1,43 @@
+{
+  "id": "xhs-quote-card",
+  "name": {
+    "zh": "小红书 · 高级播客金句引语卡",
+    "en": "Xiaohongshu · Forest & Champagne Quote Card",
+    "ja": "RED · 深緑シャンパン・ポッドキャスト名言カード",
+    "ko": "샤오홍슈 · 포레스트 샴페인 팟캐스트 명언 카드"
+  },
+  "description": {
+    "zh": "深邃哑光墨绿炭底配暖香槟金衬线大字、巨型半透明引号水印与极简署名底线，自带高级播客与访谈录质感。",
+    "en": "Matte forest-charcoal finish with warm champagne serif display, giant decorative quotation watermark, and minimal editorial attribution.",
+    "ja": "マットな深緑チャコールにシャンパンゴールド明朝体と特大引用符透かしを配した名言カード。",
+    "ko": "매트한 포레스트 차콜 배경에 샴페인 골드 세리프와 대형 따옴표 워터마크를 담은 명언 카드."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "quote",
+    "podcast",
+    "champagne",
+    "serif",
+    "dark-green",
+    "editorial"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "ppt-bauhaus-bold",
+  "name": {
+    "zh": "瑞士包豪斯 · 三原色几何海报 PPT (16:9)",
+    "en": "Bauhaus Bold · Primary Geometric Presentation (16:9)",
+    "ja": "バウハウス · 三原色ジオメトリック発表スライド",
+    "ko": "바우하우스 볼드 · 삼원색 기하학 프레젠테이션 (16:9)"
+  },
+  "description": {
+    "zh": "纯美术馆白底配克制的包豪斯三原色几何色块（深红、群青、芥末黄）、极粗无衬线字体与严格模数网格对齐。",
+    "en": "Pure gallery-white canvas anchored by Bauhaus crimson, ultramarine, and mustard geometric blocks with heavy grotesque typography.",
+    "ja": "ギャラリーホワイト地に赤・青・黄の幾何学アンカーと極太サンセリフを配したバウハウス構成。",
+    "ko": "갤러리 화이트 위에 크림슨·울트라마린·머스타드 기하학 블록과 볼드 그로테스크 타이포를 결합한 16:9 슬라이드."
+  },
+  "category": "presentation",
+  "defaultLocale": "en",
+  "aspect": "16:9",
+  "width": 1920,
+  "height": 1080,
+  "supportedFormats": [
+    "pptx",
+    "pdf",
+    "png",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "bauhaus",
+    "swiss",
+    "geometric",
+    "primary-colors",
+    "poster",
+    "ppt",
+    "pptx",
+    "16x9"
+  ]
+}

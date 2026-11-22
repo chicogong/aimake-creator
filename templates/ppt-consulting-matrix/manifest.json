@@ -1,0 +1,40 @@
+{
+  "id": "ppt-consulting-matrix",
+  "name": {
+    "zh": "战略咨询 · 16:9 麦肯锡/BCG 行动结论看板",
+    "en": "Consulting · 16:9 Strategy Matrix Briefing (.PPTX)",
+    "ja": "戦略コンサル · 16:9 マトリクス経営報告",
+    "ko": "전략 컨설팅 · 16:9 매트릭스 경영 브리핑"
+  },
+  "description": {
+    "zh": "对标顶级管理咨询公司（McKinsey/BCG）汇报标准：深藏蓝顶栏、高对比度行动标题带、结构化 KPI 矩阵与底部信源栏。",
+    "en": "McKinsey/BCG-inspired consulting deck with deep navy header bar, high-contrast action-title strip, KPI matrix grid, and source footer.",
+    "ja": "戦略コンサル流のアクションタイトル帯とKPIマトリクスを備えた16:9経営報告スライド。",
+    "ko": "딥 네이비 헤더와 액션 타이틀 바, 구조화된 KPI 그리드를 갖춘 컨설팅 브리핑 슬라이드."
+  },
+  "category": "presentation",
+  "defaultLocale": "zh-CN",
+  "aspect": "16:9",
+  "width": 1920,
+  "height": 1080,
+  "supportedFormats": [
+    "pptx",
+    "pdf",
+    "png",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "consulting",
+    "mckinsey",
+    "strategy",
+    "kpi",
+    "pptx",
+    "16x9"
+  ]
+}

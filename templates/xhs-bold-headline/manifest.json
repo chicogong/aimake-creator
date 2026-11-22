@@ -1,0 +1,43 @@
+{
+  "id": "xhs-bold-headline",
+  "name": {
+    "zh": "小红书 · 爆款黄黑大字报吸睛海报",
+    "en": "Xiaohongshu · Acid Yellow & Black Bold Poster",
+    "ja": "RED · 爆伸びイエロー×ブラック大見出しポスター",
+    "ko": "샤오홍슈 · 고클릭 옐로우·블랙 볼드 헤드라인"
+  },
+  "description": {
+    "zh": "超高点击率爆款大字报视觉：酸性荧光黄撞纯黑粗框印章、紧字距超粗主标与斜贴胶带角标，信息流一眼停驻。",
+    "en": "Ultra-high CTR brutalist poster pairing acid highlighter yellow slabs, pitch-black stamp borders, tight massive headlines, and rotated tape tags.",
+    "ja": "蛍光イエローと極太ブラック枠、斜めステッカータグで視線を奪う高CTRポスターカード。",
+    "ko": "애시드 옐로우와 딥 블랙 스탬프 테두리, 회전 테이프 스티커로 시선을 사로잡는 고클릭 카드."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "bold",
+    "headline",
+    "yellow",
+    "viral",
+    "poster",
+    "brutalist"
+  ]
+}

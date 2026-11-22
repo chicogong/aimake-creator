@@ -1,0 +1,41 @@
+{
+  "id": "video-cinema-talk",
+  "name": {
+    "zh": "短视频口播 · 9:16 电影感黑金影院评述舞台",
+    "en": "Shorts / Reels · 9:16 Cinema Obsidian & Gold Stage",
+    "ja": "ショート動画 · 9:16 シネマ黒金コメンタリー",
+    "ko": "쇼츠 / 릴스 · 9:16 시네마 블랙&골드 스테이지"
+  },
+  "description": {
+    "zh": "电影感宽银幕遮幅黑金视觉，内置摄影机取景框角标、香槟金主标题与底部安全区影院字幕条。",
+    "en": "Cinematic obsidian & champagne-gold letterbox commentary stage with viewfinder corners, bold gold headline, and safe-zone caption bar.",
+    "ja": "レターボックスとシャンパンゴールド見出しが際立つ映画風コメンタリー縦型動画。",
+    "ko": "레터박스 프레임과 샴페인 골드 타이틀, 안전 영역 자막을 갖춘 시네마틱 숏폼 템플릿."
+  },
+  "category": "short-video",
+  "defaultLocale": "zh-CN",
+  "aspect": "9:16",
+  "width": 1080,
+  "height": 1920,
+  "supportedFormats": [
+    "mp4",
+    "png",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "douyin",
+    "shorts",
+    "reels",
+    "9x16",
+    "video",
+    "cinema",
+    "gold",
+    "talk"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "xhs-swiss-grid",
+  "name": {
+    "zh": "小红书 · 瑞士国际网格卡",
+    "en": "Xiaohongshu · Swiss Editorial Grid",
+    "ja": "RED · スイス・グリッドカード",
+    "ko": "샤오홍슈 · 스위스 그리드 카드"
+  },
+  "description": {
+    "zh": "受瑞士国际主义排版启发，细线网格与朱砂红编号，适合硬核干货与方法论拆解。",
+    "en": "Precision hairline grid with vermilion index markers for crisp technical & strategy breakdowns.",
+    "ja": "スイス・タイポグラフィに着想を得た精密グリッドレイアウト。",
+    "ko": "스위스 타이포그래피 기반의 정교한 그리드 카드 레이아웃."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "swiss",
+    "grid",
+    "editorial",
+    "zh-CN"
+  ]
+}

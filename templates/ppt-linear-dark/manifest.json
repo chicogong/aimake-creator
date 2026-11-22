@@ -1,0 +1,42 @@
+{
+  "id": "ppt-linear-dark",
+  "name": {
+    "zh": "Linear 极简暗黑产品发布 PPT (16:9)",
+    "en": "Linear Dark · Precision Product Launch Deck (16:9)",
+    "ja": "Linear風 · 極細ダーク製品リリーススライド",
+    "ko": "리니어 다크 · 미니멀 프로덕트 런칭 PPT (16:9)"
+  },
+  "description": {
+    "zh": "深受硅谷开发者追捧的 Linear 暗黑美学：深碳黑画布、1px 极细高光边框、靛紫顶部柔光晕与等宽技术元数据。",
+    "en": "Deep carbon #08090C canvas with razor-sharp 1px specular borders, soft indigo-violet halo glow, Inter display, and JetBrains Mono metadata.",
+    "ja": "ディープカーボン背景に1px極細ボーダーとインディゴ光暈、等幅メタデータを備えたモダン製品発表PPT。",
+    "ko": "딥 카본 배경과 1px 스페큘러 보더, 인디고-바이올렛 헤일로가 어우러진 미니멀 제품 발표 슬라이드."
+  },
+  "category": "presentation",
+  "defaultLocale": "en",
+  "aspect": "16:9",
+  "width": 1920,
+  "height": 1080,
+  "supportedFormats": [
+    "pptx",
+    "pdf",
+    "png",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "linear",
+    "dark",
+    "saas",
+    "product",
+    "launch",
+    "ppt",
+    "pptx",
+    "16x9"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "binary": "aimake",
+  "versionArgs": ["--version"],
+  "doctorArgs": ["doctor", "--json"]
+}

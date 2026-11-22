@@ -1,0 +1,39 @@
+{
+  "id": "wechat-editorial-article",
+  "name": {
+    "zh": "微信公众号 · 深度专栏内联主题",
+    "en": "WeChat Article · Deep Column Theme",
+    "ja": "WeChat記事 · コラム組版テーマ",
+    "ko": "위챗 공식계정 · 칼럼 테마"
+  },
+  "description": {
+    "zh": "专为微信公众号深度长文与技术复盘打造，支持一键复制 100% 兼容微信后台的内联富文本。",
+    "en": "Crafted for long-form WeChat columns with one-click inline CSS rich-text export.",
+    "ja": "長文コラム・技術解説向けのクリーンな組版テーマ。",
+    "ko": "장문 기술 칼럼 및 뉴스레터용 깔끔한 타이포그래피 테마."
+  },
+  "category": "wechat",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "wechat",
+    "png",
+    "pdf",
+    "html"
+  ],
+  "supportsMotion": false,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "wechat",
+    "wechat-mp",
+    "article",
+    "inline-css",
+    "column"
+  ]
+}

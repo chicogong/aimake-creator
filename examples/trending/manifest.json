@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-22",
+  "works": [
+    {
+      "id": "2026-ai-agents-shift",
+      "title": "2026 AI 拐点：从聊天问答到 24 小时自主执行 Agent",
+      "subtitle": "OSWorld 2.0 桌面基准、从 Token 单价转向 Cost-per-Task 与人机协同新工作区",
+      "tag": "AI Agent 趋势",
+      "template": "apple-bento-launch",
+      "aspect": "16:9",
+      "locale": "zh-CN",
+      "deckFile": "examples/trending/2026-ai-agents-shift.deck.md",
+      "previewImage": "examples/trending/2026-ai-agents-shift.preview.png",
+      "summary": "用苹果发布会 Bento 便当盒 16:9 视觉系统，拆解 2026 年 AI 从聊天对话迈向自主执行 Agent 的成本结构（5x~30x Token 与模型分层路由）和本地人机协同工作区最佳实践。"
+    },
+    {
+      "id": "2026-deepseek-openweights-benchmark",
+      "title": "2026 DeepSeek-R1 与开源权重评测：推理成本归零与私有化部署实测",
+      "subtitle": "每百万 Token 降至 $0.14，MATH-500 超越 o1-preview，本地消费级显卡部署指南",
+      "tag": "开源模型实测",
+      "template": "xhs-neon-tech",
+      "aspect": "3:4",
+      "locale": "zh-CN",
+      "deckFile": "examples/trending/2026-deepseek-openweights-benchmark.deck.md",
+      "previewImage": "examples/trending/2026-deepseek-openweights-benchmark.preview.png",
+      "summary": "暗黑极客科技卡 3:4 视觉系统，硬核拆解 DeepSeek-R1 与 V3 开源权重的评测跑分，对比顶尖闭源 API 推理成本并给出 vLLM 一键本地部署命令。"
+    },
+    {
+      "id": "2026-models-showdown",
+      "title": "2026 大模型新战局：微软 MAI Code 2、OpenAI 与 Kimi K2.5 / Qwen3 正面交锋",
+      "subtitle": "性价比攻坚战全面打响，普通创作者与独立开发者该如何组合选型？",
+      "tag": "大模型横评",
+      "template": "xhs-bold-headline",
+      "aspect": "3:4",
+      "locale": "zh-CN",
+      "deckFile": "examples/trending/2026-models-showdown.deck.md",
+      "previewImage": "examples/trending/2026-models-showdown.preview.png",
+      "summary": "小红书爆款黄黑大字报 3:4 风格，直击微软 Ignite 发布的 MAI Code 2、Kimi K2.5 与 Qwen3 开源权重正面对决，给出不踩坑的四条创作者模型组合铁律。"
+    },
+    {
+      "id": "2026-physical-ai-robotics",
+      "title": "具身智能元年：NVIDIA Cosmos、Atlas + Gemini Robotics 与 Optimus 谁能率先落地？",
+      "subtitle": "世界模型与 VLA 架构走进真实汽车厂与晶圆厂，三大阵营商业化路线拆解",
+      "tag": "具身智能 · 硬科技",
+      "template": "poster-risograph",
+      "aspect": "4:5",
+      "locale": "zh-CN",
+      "deckFile": "examples/trending/2026-physical-ai-robotics.deck.md",
+      "previewImage": "examples/trending/2026-physical-ai-robotics.preview.png",
+      "summary": "Risograph 复古孔版珊瑚红×钴蓝双色叠印 4:5 艺术海报，深度梳理 NVIDIA Cosmos 3、波士顿动力电动 Atlas × DeepMind Gemini Robotics 与 Tesla Optimus 的产线落地进度。"
+    },
+    {
+      "id": "2026-swiss-typography-grid",
+      "title": "2026 极简瑞士国际排版法则：用严谨网格打造高信息密度干货卡",
+      "subtitle": "0 冗余装饰、极细分界线与朱砂红索引标，构建无法被忽视的信息权威感",
+      "tag": "设计系统 · 瑞士排版",
+      "template": "xhs-swiss-grid",
+      "aspect": "3:4",
+      "locale": "zh-CN",
+      "deckFile": "examples/trending/2026-swiss-typography-grid.deck.md",
+      "previewImage": "examples/trending/2026-swiss-typography-grid.preview.png",
+      "summary": "受瑞士国际主义排版启发，以高密度 hairline 网格、不对称视觉流动与朱砂红索引标记为核心，打造适合技术干货与方法论拆解的经典设计标杆。"
+    },
+    {
+      "id": "2026-cli-agent-creator",
+      "title": "真诚复盘：为什么我放弃 AI 聊天套壳，改用 OpenCode + 本地工作区做内容？",
+      "subtitle": "零全局污染工作区、Plan/Build 双模式与一套原稿五种成品的真实创作者闭环",
+      "tag": "创作者工作流",
+      "template": "xhs-apple-notes",
+      "aspect": "3:4",
+      "locale": "zh-CN",
+      "deckFile": "examples/trending/2026-cli-agent-creator.deck.md",
+      "previewImage": "examples/trending/2026-cli-agent-creator.preview.png",
+      "summary": "高自然流小红书苹果备忘录手记风，真诚分享从云端网页套壳转向 OpenCode + AGENTS.md + Aimake 本地工作区的四步日常闭环。"
+    }
+  ]
+}

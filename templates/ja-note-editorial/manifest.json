@@ -1,0 +1,39 @@
+{
+  "id": "ja-note-editorial",
+  "name": {
+    "zh": "日本 Note · 和纸留白「余白美学」专栏卡",
+    "en": "Japan Note · Minimalist Washi Editorial (4:5)",
+    "ja": "Note.com · 和紙ミニマル「余白美学」カード",
+    "ko": "일본 Note · 와시 미니멀 에디토리얼 (4:5)"
+  },
+  "description": {
+    "zh": "融合日本 Note.com 极简留白（間）与手工和纸肌理，搭配绀青墨色、朱红印章徽记与严格日文禁则排版。",
+    "en": "Japanese Note.com minimalist Washi aesthetic with indigo ink, vermilion hanko stamp accent, generous ma whitespace, and strict kinsoku.",
+    "ja": "温かみのある和紙の質感に藍墨と朱印アクセントを配したNote向けミニマル組版。厳格な禁則処理に対応。",
+    "ko": "와시 종이 질감과 쪽빛 타이포, 주홍 인장 포인트의 일본 Note 에디토리얼 카드."
+  },
+  "category": "zukai",
+  "defaultLocale": "ja",
+  "aspect": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "html"
+  ],
+  "supportsMotion": false,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "japan",
+    "note-com",
+    "washi",
+    "minimal",
+    "editorial",
+    "kinsoku"
+  ]
+}

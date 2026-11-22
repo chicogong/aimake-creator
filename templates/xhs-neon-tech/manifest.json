@@ -1,0 +1,41 @@
+{
+  "id": "xhs-neon-tech",
+  "name": {
+    "zh": "小红书 · 暗黑极客代码与跑分卡",
+    "en": "Xiaohongshu · Dark Silicon & Code Stage",
+    "ja": "RED · ダークギーク＆コード解説",
+    "ko": "샤오홍슈 · 다크 테크 & 코드 카드"
+  },
+  "description": {
+    "zh": "深邃石墨暗色底配光学钴蓝与终端代码窗，专为产品发布、AI 评测与架构拆解打造。",
+    "en": "Obsidian darkroom palette with terminal chrome and tabular benchmark metrics for dev releases.",
+    "ja": "プロダクトリリースやAIベンチマーク比較に最適なダークテーマ。",
+    "ko": "프로덕트 릴리스와 벤치마크 비교에 최적화된 다크 테크 카드."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "tech",
+    "dark",
+    "code",
+    "benchmark"
+  ]
+}

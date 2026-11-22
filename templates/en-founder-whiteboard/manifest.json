@@ -1,0 +1,40 @@
+{
+  "id": "en-founder-whiteboard",
+  "name": {
+    "zh": "欧美出海 · 极客白板工程蓝图卡 (4:5)",
+    "en": "Global · Founder Whiteboard Blueprint (4:5)",
+    "ja": "グローバル · エンジニア白板ブループリント",
+    "ko": "글로벌 · 파운더 화이트보드 블루프린트"
+  },
+  "description": {
+    "zh": "面向欧美科技创始人与工程师的浅蓝白板方格蓝图风，配马克笔重点下划线与虚线结构框。",
+    "en": "Engineering & startup whiteboard blueprint with architectural grid, marker accent underline, and crisp dashed callouts.",
+    "ja": "エンジニアリング解説に最適な方眼ホワイトボード風ブループリント。",
+    "ko": "스타트업·엔지니어링 인사이트를 위한 블루프린트 화이트보드 카드."
+  },
+  "category": "linkedin",
+  "defaultLocale": "en",
+  "aspect": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "supportedFormats": [
+    "pdf",
+    "png",
+    "pptx",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "english",
+    "whiteboard",
+    "blueprint",
+    "engineering",
+    "startup",
+    "linkedin"
+  ]
+}

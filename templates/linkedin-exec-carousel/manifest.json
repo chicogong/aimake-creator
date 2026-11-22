@@ -1,0 +1,40 @@
+{
+  "id": "linkedin-exec-carousel",
+  "name": {
+    "zh": "LinkedIn · 欧美创始人滑动 PDF 卡",
+    "en": "LinkedIn · Founder Authority Carousel (4:5)",
+    "ja": "LinkedIn · エグゼクティブ・カルーセル PDF",
+    "ko": "링크드인 · 파운더 캐러셀 PDF (4:5)"
+  },
+  "description": {
+    "zh": "欧美职场与独立开发者涨粉第一利器：4:5 黄金比例多页矢量 PDF，内置英文长词自适应防爆框。",
+    "en": "High-converting 4:5 PDF document carousel engineered for founders, B2B creators, and indie hackers.",
+    "ja": "欧米LinkedInで最も伸びる4:5スワイプPDFカルーセル。",
+    "ko": "글로벌 링크드인 B2B 크리에이터를 위한 4:5 문서 캐러셀."
+  },
+  "category": "linkedin",
+  "defaultLocale": "en",
+  "aspect": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "supportedFormats": [
+    "pdf",
+    "png",
+    "pptx",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "linkedin",
+    "carousel",
+    "pdf",
+    "b2b",
+    "english",
+    "founder"
+  ]
+}

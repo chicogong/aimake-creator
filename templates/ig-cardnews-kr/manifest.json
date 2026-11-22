@@ -1,0 +1,39 @@
+{
+  "id": "ig-cardnews-kr",
+  "name": {
+    "zh": "韩国 IG ·「카드뉴스」现代几何卡片新闻",
+    "en": "Korea IG · Modern Geometric Card News (4:5)",
+    "ja": "韓国 IG · モダン「カードニュース」",
+    "ko": "인스타그램 · 모던 지오메트릭 카드뉴스 (4:5)"
+  },
+  "description": {
+    "zh": "正宗韩国 Instagram / Threads 卡片新闻视觉体系，强制启用语节断行（keep-all）与 Pretendard 字族。",
+    "en": "Authentic Korean swipeable Card News aesthetic with Pretendard typography and word-break: keep-all.",
+    "ja": "韓国Instagram定番のカードニュース形式（語節改行維持に対応）。",
+    "ko": "한국 인스타그램·스레드에 최적화된 카드뉴스 템플릿 (단어 단위 줄바꿈 keep-all 완벽 지원)."
+  },
+  "category": "cardnews",
+  "defaultLocale": "ko",
+  "aspect": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "korea",
+    "card-news",
+    "instagram",
+    "threads",
+    "pretendard",
+    "keep-all"
+  ]
+}

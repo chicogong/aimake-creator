@@ -1,0 +1,42 @@
+{
+  "id": "poster-risograph",
+  "name": {
+    "zh": "Risograph · 复古孔版双色叠印艺术海报 (4:5)",
+    "en": "Risograph · Fluorescent Coral & Cobalt Print Poster (4:5)",
+    "ja": "リソグラフ · 蛍光コーラル×コバルト二色刷りポスター",
+    "ko": "리소그래프 · 형광 코랄·코발트 투톤 아트 포스터 (4:5)"
+  },
+  "description": {
+    "zh": "暖米印刷纸基配荧光珊瑚红与钴蓝双色孔版叠印、微妙半调网点纹理与极具张力的独立艺术海报排版。",
+    "en": "Warm cream print stock layered with fluorescent coral & cobalt duotone ink, subtle CSS halftone dot grain, and bold poster typography.",
+    "ja": "クリーム印刷紙に蛍光コーラルとコバルトインクを重ねた網点リソグラフ風エディトリアルポスター。",
+    "ko": "크림 인쇄지 위에 형광 코랄과 코발트 잉크, 하프톤 도트 질감을 더한 리소그래프 포스터."
+  },
+  "category": "linkedin",
+  "defaultLocale": "en",
+  "aspect": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "supportedFormats": [
+    "pdf",
+    "png",
+    "pptx",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "risograph",
+    "poster",
+    "duotone",
+    "halftone",
+    "coral",
+    "cobalt",
+    "print",
+    "art"
+  ]
+}

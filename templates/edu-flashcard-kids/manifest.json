@@ -1,0 +1,41 @@
+{
+  "id": "edu-flashcard-kids",
+  "name": {
+    "zh": "教育教学 · 双语概念与识字闪卡",
+    "en": "Education · Bilingual Concept & Study Flashcards",
+    "ja": "教育・学習 · バイリンガル暗記＆授業カード",
+    "ko": "교육·수업 · 양방향 개념 학습 플래시카드"
+  },
+  "description": {
+    "zh": "面向老师备课、课堂图解与家庭教育的高清可打印知识闪卡，重点词高亮醒目、护眼暖白底色。",
+    "en": "Print-ready high-legibility study flashcards for teachers, classrooms, and bilingual learning.",
+    "ja": "先生の教材作成や印刷配布に最適な高視認性フラッシュカード。",
+    "ko": "교사 수업 자료 및 인쇄용으로 최적화된 고가독성 학습 플래시카드."
+  },
+  "category": "education",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "education",
+    "teacher",
+    "flashcard",
+    "kids",
+    "printable",
+    "bilingual"
+  ]
+}

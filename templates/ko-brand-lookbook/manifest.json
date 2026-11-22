@@ -1,0 +1,40 @@
+{
+  "id": "ko-brand-lookbook",
+  "name": {
+    "zh": "韩国品牌 · 首尔极简画册 Lookbook (4:5)",
+    "en": "Korea · Seoul Studio Brand Lookbook (4:5)",
+    "ja": "韓国 · ソウルスタジオ・ブランドルックブック",
+    "ko": "서울 스튜디오 · 브랜드 룩북 에디토리얼 (4:5)"
+  },
+  "description": {
+    "zh": "首尔设计师品牌画册美学：冷石膏灰底、单色细框画廊构图与鼠尾草青标签，严格支持韩语 keep-all 断行。",
+    "en": "Seoul studio fashion/tech brand lookbook on cool alabaster stone with crisp monochrome frame, sage-teal pill, and word-break: keep-all.",
+    "ja": "クールな石膏トーンとセージティールの洗練されたソウル・ルックブック風カード。",
+    "ko": "차가운 알라바스터 스톤과 모노크롬 프레임, 세이지 틸 포인트의 브랜드 룩북 템플릿."
+  },
+  "category": "cardnews",
+  "defaultLocale": "ko",
+  "aspect": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "korea",
+    "lookbook",
+    "brand",
+    "seoul",
+    "minimal",
+    "pretendard",
+    "keep-all"
+  ]
+}

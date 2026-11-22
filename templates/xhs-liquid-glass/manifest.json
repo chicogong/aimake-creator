@@ -1,0 +1,43 @@
+{
+  "id": "xhs-liquid-glass",
+  "name": {
+    "zh": "小红书 · 液态毛玻璃极光海报",
+    "en": "Xiaohongshu · Liquid Glass Aurora Poster",
+    "ja": "RED · リキッドグラス・オーロラポスター",
+    "ko": "샤오홍슈 · 리퀴드 글래스 오로라 포스터"
+  },
+  "description": {
+    "zh": "柔光弥散极光网格背景配悬浮磨砂液态玻璃卡片与虹彩高光描边，兼具未来感与通透呼吸感，适合 AI 工具与新品分享。",
+    "en": "Luminous pastel aurora mesh gradient with elevated frosted glass panels, backdrop blur, and soft iridescent specular borders.",
+    "ja": "淡いオーロラメッシュ背景にすりガラスパネルと虹色エッジが浮かぶ次世代ポスター。",
+    "ko": "부드러운 오로라 메쉬 그라데이션 위에 투명한 프로스트 글래스 패널이 떠오르는 모던 포스터."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "liquid-glass",
+    "glassmorphism",
+    "aurora",
+    "mesh",
+    "ai",
+    "modern"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "id": "en-substack-digest",
+  "name": {
+    "zh": "欧美出海 · Substack 纽约客长文专栏卡 (4:5)",
+    "en": "Global · Substack & New Yorker Essay Digest (4:5)",
+    "ja": "グローバル · Substack ニュースレター・ダイジェスト",
+    "ko": "글로벌 · 서브스택 에세이 다이제스트 (4:5)"
+  },
+  "description": {
+    "zh": "经典欧美纸媒与 Substack 专栏美学：米白新闻纸底、粗细双顶线、衬线标题与克制的边栏序号。",
+    "en": "Classic New Yorker / Substack newsletter card on archival newsprint with double top rule and Georgia serif display.",
+    "ja": "ニュースペーパー質感と二重罫線、セリフ見出しによる英語ニュースレターカード。",
+    "ko": "클래식 뉴스프린트 질감과 이중 상단선, 세리프 타이포의 에세이 카드."
+  },
+  "category": "linkedin",
+  "defaultLocale": "en",
+  "aspect": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "supportedFormats": [
+    "pdf",
+    "png",
+    "html"
+  ],
+  "supportsMotion": false,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "english",
+    "substack",
+    "newsletter",
+    "essay",
+    "serif",
+    "editorial"
+  ]
+}

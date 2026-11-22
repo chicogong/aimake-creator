@@ -1,0 +1,43 @@
+{
+  "id": "xhs-morandi-cream",
+  "name": {
+    "zh": "小红书 · 莫兰迪奶油温柔手账卡",
+    "en": "Xiaohongshu · Morandi Oat Cream Botanical",
+    "ja": "RED · モランディ・クリームボタニカル手帖",
+    "ko": "샤오홍슈 · 모란디 크림 보태니컬 다이어리"
+  },
+  "description": {
+    "zh": "低饱和莫兰迪燕麦奶油底、鼠尾草绿与柔陶土点缀、精致衬线排版与植物角饰，适合生活方式、审美笔记与成长感悟。",
+    "en": "Warm oat-cream palette with muted sage green, soft terracotta accents, delicate serif display, generous whitespace, and botanical ornaments.",
+    "ja": "オートクリーム地にセージグリーンとテラコッタ、繊細な明朝体と植物装飾を添えた優しい手帖カード。",
+    "ko": "따뜻한 오트 크림과 세이지 그린, 테라코타 포인트, 보태니컬 장식이 어우러진 감성 에디토리얼."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "morandi",
+    "cream",
+    "sage",
+    "terracotta",
+    "botanical",
+    "aesthetic"
+  ]
+}

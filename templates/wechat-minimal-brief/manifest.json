@@ -1,0 +1,40 @@
+{
+  "id": "wechat-minimal-brief",
+  "name": {
+    "zh": "微信生态 · 极简白皮书研报速览卡",
+    "en": "WeChat · Minimal Executive Whitepaper Brief",
+    "ja": "WeChat · ミニマル白書ブリーフ",
+    "ko": "위챗 · 미니멀 화이트페이퍼 브리프"
+  },
+  "description": {
+    "zh": "象牙白极简底色配精密细线分隔、钴蓝数据胶囊与摘要横幅，适合行业研报、商业周报与产品白皮书。",
+    "en": "Ultra-clean ivory executive digest card with fine hairline dividers, cobalt stat pills, and structured summary band.",
+    "ja": "アイボリー基調に繊細な罫線とコバルト指標ピルを備えたエグゼクティブ要約カード。",
+    "ko": "아이보리 톤과 정교한 헤어라인, 코발트 지표 필로 구성한 리포트 요약 카드."
+  },
+  "category": "wechat",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "wechat",
+    "pdf",
+    "html"
+  ],
+  "supportsMotion": false,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "wechat",
+    "minimal",
+    "whitepaper",
+    "brief",
+    "executive",
+    "digest"
+  ]
+}

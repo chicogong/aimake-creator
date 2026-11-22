@@ -1,0 +1,42 @@
+{
+  "id": "xhs-pop-sticker",
+  "name": {
+    "zh": "小红书 · 潮流手账贴纸波普卡",
+    "en": "Xiaohongshu · Neo-Brutalist Pop Notebook",
+    "ja": "RED · ポップ・ステッカーノート",
+    "ko": "샤오홍슈 · 팝 스티커 노트북 카드"
+  },
+  "description": {
+    "zh": "奶油点阵纸底配粗墨描边、硬投影色块与柠檬黄高光胶带，自带高收藏率手账质感。",
+    "en": "Playful neo-brutalist studio notebook with dot-grid canvas, crisp ink borders, offset hard-shadows, and highlight tape.",
+    "ja": "ドット方眼と硬質なシャドウが映えるポップなネオブルータリズムカード。",
+    "ko": "도트 그리드와 볼드한 잉크 테두리가 돋보이는 팝 스티커 카드."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "pop",
+    "sticker",
+    "neobrutalist",
+    "notebook",
+    "dot-grid"
+  ]
+}

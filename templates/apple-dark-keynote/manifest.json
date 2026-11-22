@@ -1,0 +1,43 @@
+{
+  "id": "apple-dark-keynote",
+  "name": {
+    "zh": "苹果发布会 · 暗黑剧场光感主视觉 (16:9)",
+    "en": "Apple Dark Keynote · Obsidian Spotlight Deck (16:9)",
+    "ja": "Apple風 · ダークキーノート舞台スライド",
+    "ko": "애플 다크 키노트 · 옵시디언 스포트라이트 데크 (16:9)"
+  },
+  "description": {
+    "zh": "深邃曜石黑舞台配顶部柔和影棚光晕、半透明高光玻璃指标卡与银蓝金属渐变大标题，尽显旗舰发布会张力。",
+    "en": "Pitch obsidian keynote stage with soft studio spotlight, translucent glass stat tiles with 1px specular top edge, and metallic silver-blue hero display.",
+    "ja": "漆黒ステージにトップスポットライトと高光沢ガラス指標カードを備えたフラッグシップ発表テーマ。",
+    "ko": "옵시디언 블랙 무대에 상단 스포트라이트와 스페큘러 글래스 지표를 결합한 다크 키노트 테마."
+  },
+  "category": "presentation",
+  "defaultLocale": "zh-CN",
+  "aspect": "16:9",
+  "width": 1920,
+  "height": 1080,
+  "supportedFormats": [
+    "pptx",
+    "pdf",
+    "png",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "apple",
+    "dark",
+    "keynote",
+    "spotlight",
+    "glass",
+    "ppt",
+    "pptx",
+    "16x9"
+  ]
+}

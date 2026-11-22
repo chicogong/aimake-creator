@@ -1,0 +1,43 @@
+{
+  "id": "xhs-apple-notes",
+  "name": {
+    "zh": "小红书 · 苹果备忘录真诚手记卡",
+    "en": "Xiaohongshu · Apple Notes Authentic Journal",
+    "ja": "RED · Appleメモ風・リアル手記カード",
+    "ko": "샤오홍슈 · 애플 메모 감성 진정성 노트"
+  },
+  "description": {
+    "zh": "小红书自然流高赞密码：还原暖白备忘录纸面、微妙横线纹理、琥珀金顶部导航与时间戳，真诚克制极易引发共鸣。",
+    "en": "Authentic warm-paper iOS Notes aesthetic with ruled grain, amber-gold header chrome, and effortless organic readability.",
+    "ja": "温かみのある紙面とアンバーゴールド見出し、自然な可読性で共感を生むAppleメモ風カード。",
+    "ko": "따뜻한 종이 질감과 앰버 골드 상단 라인으로 자연스러운 공감을 이끄는 애플 메모 스타일 카드."
+  },
+  "category": "xiaohongshu",
+  "defaultLocale": "zh-CN",
+  "aspect": "3:4",
+  "width": 1080,
+  "height": 1440,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "wechat",
+    "pptx",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "xiaohongshu",
+    "apple-notes",
+    "notes",
+    "authentic",
+    "organic",
+    "journal",
+    "paper"
+  ]
+}

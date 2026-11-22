@@ -1,0 +1,40 @@
+{
+  "id": "video-kinetic-reel",
+  "name": {
+    "zh": "抖音 / 视频号 / Shorts · 9:16 帧步进动态短视频",
+    "en": "Shorts / Reels · 9:16 Kinetic Motion Video",
+    "ja": "ショート動画 · 9:16 キネティック・リール",
+    "ko": "쇼츠 / 릴스 · 9:16 키네틱 모션 비디오"
+  },
+  "description": {
+    "zh": "原生实现 window.aimakeSeek(frame, fps) 确定性帧步进动画，预留底部安全区并自带动态口播字幕条。",
+    "en": "Implements deterministic window.aimakeSeek(frame, fps) frame-stepping with safe-zone layout and live captions.",
+    "ja": "フレーム単位の決定論的アニメーションと字幕バーを備えた9:16縦型動画テンプレート。",
+    "ko": "프레임 단위 정밀 애니메이션과 안전 영역 자막 바를 갖춘 9:16 숏폼 영상 템플릿."
+  },
+  "category": "short-video",
+  "defaultLocale": "zh-CN",
+  "aspect": "9:16",
+  "width": 1080,
+  "height": 1920,
+  "supportedFormats": [
+    "mp4",
+    "png",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "douyin",
+    "shorts",
+    "reels",
+    "9x16",
+    "video",
+    "motion",
+    "kinetic"
+  ]
+}

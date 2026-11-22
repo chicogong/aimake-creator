@@ -1,0 +1,40 @@
+{
+  "id": "x-zukai-quad",
+  "name": {
+    "zh": "日本 X ·「図解 Zukai」高密度结构图",
+    "en": "Japan X · Zukai Structured Blueprint",
+    "ja": "X (Twitter) · 構造化「図解」ブループリント",
+    "ko": "일본 X · 도해(Zukai) 구조화 인포그래픽"
+  },
+  "description": {
+    "zh": "对标日本 X 与 Note.com 万转「図解」信息图，高密度模块化框图，严格启用日文行首行尾禁则。",
+    "en": "Information-dense Japanese Zukai blueprint layout with strict kinsoku line-breaking rules.",
+    "ja": "XやNote.comで保存・拡散される高密度「図解」フォーマット。厳格な禁則処理に対応。",
+    "ko": "일본 X 및 Note.com에서 검증된 고밀도 도해(図解) 레이아웃."
+  },
+  "category": "zukai",
+  "defaultLocale": "ja",
+  "aspect": "16:9",
+  "width": 1600,
+  "height": 900,
+  "supportedFormats": [
+    "png",
+    "pdf",
+    "pptx",
+    "html"
+  ],
+  "supportsMotion": false,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "japan",
+    "zukai",
+    "x-twitter",
+    "note-com",
+    "infographic",
+    "kinsoku"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "ppt-tech-architecture",
+  "name": {
+    "zh": "技术答辩 · 16:9 暗色系统架构幻灯片",
+    "en": "Tech Review · 16:9 System Architecture Deck",
+    "ja": "技術発表 · 16:9 アーキテクチャ登壇スライド",
+    "ko": "기술 발표 · 16:9 시스템 아키텍처 데크"
+  },
+  "description": {
+    "zh": "面向晋升答辩、技术大会与架构复盘的 16:9 暗色宽屏幻灯片，原生支持代码对比、指标卡与可编辑 .pptx。",
+    "en": "Dark widescreen engineering deck built for architecture reviews, tech talks, and editable .pptx export.",
+    "ja": "技術カンファレンスや設計レビュー向けの16:9ダークスライド。",
+    "ko": "기술 컨퍼런스 및 아키텍처 리뷰를 위한 16:9 다크 와이드 슬라이드."
+  },
+  "category": "presentation",
+  "defaultLocale": "en",
+  "aspect": "16:9",
+  "width": 1920,
+  "height": 1080,
+  "supportedFormats": [
+    "pptx",
+    "pdf",
+    "png",
+    "mp4",
+    "html"
+  ],
+  "supportsMotion": true,
+  "contributor": {
+    "name": "Aimake Core",
+    "handle": "@chicogong",
+    "url": "https://aimake.cc"
+  },
+  "tags": [
+    "tech-talk",
+    "architecture",
+    "pptx",
+    "16x9",
+    "dark",
+    "engineering"
+  ]
+}
