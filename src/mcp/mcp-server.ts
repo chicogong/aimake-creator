@@ -21,6 +21,7 @@ import {
   searchMarketplace,
 } from '../marketplace/index.js';
 import { sanitizeContentForPR } from '../sanitizer/pr-sanitizer.js';
+import { publishContent } from '../publisher/index.js';
 import type { ExportFormat, SupportedLocale } from '../schema/types.js';
 
 export interface JsonRpcRequest {
@@ -217,6 +218,28 @@ const MCP_TOOLS = [
         deckRel: { type: 'string', description: 'Optional relative path to deck inside workspace (e.g. decks/launch.deck.md)' },
         slideIndex: { type: 'number', description: 'Optional 0-based slide index to focus' },
         message: { type: 'string', description: 'Optional toast message shown in Aimake Studio (defaults to "AI 已更新第 X 页")' },
+      },
+    },
+  },
+  {
+    name: 'aimake_publish_content',
+    description: 'Package and cross-post Markdown articles or .deck.md storyboards to WeChat, Zhihu, Juejin, Xiaohongshu, or Wechatsync distribution packs.',
+    inputSchema: {
+      type: 'object',
+      required: ['sourceFile'],
+      properties: {
+        sourceFile: { type: 'string', description: 'Path to Markdown file (.md) or .deck.md storyboard' },
+        targets: {
+          type: 'array',
+          items: { type: 'string', enum: ['wechat', 'zhihu', 'juejin', 'xiaohongshu', 'pack', 'all'] },
+          description: 'Target publishing channels',
+        },
+        draft: { type: 'boolean', default: true, description: 'Keep as draft in platform draft box' },
+        browser: { type: 'boolean', default: false, description: 'Attempt automated browser injection via local Chrome port 9222' },
+        tags: { type: 'array', items: { type: 'string' }, description: 'Tags for Juejin/Xiaohongshu' },
+        topics: { type: 'array', items: { type: 'string' }, description: 'Topics for Zhihu' },
+        category: { type: 'string', description: 'Category for Juejin' },
+        outDir: { type: 'string', description: 'Custom output directory' },
       },
     },
   },
@@ -1044,6 +1067,22 @@ export async function handleMcpRequest(req: JsonRpcRequest): Promise<Record<stri
           message: typeof args.message === 'string' ? args.message : undefined,
         });
         return okTool(req.id, focusRes);
+      }
+
+      if (toolName === 'aimake_publish_content') {
+        if (!args.sourceFile || typeof args.sourceFile !== 'string') {
+          throw new Error('sourceFile is required');
+        }
+        const res = await publishContent(path.resolve(String(args.sourceFile)), {
+          targets: Array.isArray(args.targets) ? (args.targets as any) : undefined,
+          draft: args.draft !== false,
+          browser: Boolean(args.browser),
+          tags: Array.isArray(args.tags) ? args.tags.map(String) : undefined,
+          topics: Array.isArray(args.topics) ? args.topics.map(String) : undefined,
+          category: args.category ? String(args.category) : undefined,
+          outDir: args.outDir ? path.resolve(String(args.outDir)) : undefined,
+        });
+        return okTool(req.id, res);
       }
 
       return {

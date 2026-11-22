@@ -1,0 +1,33 @@
+name: 💡 Feature Request / Proposal
+description: Propose a new capability, export format, CLI workflow, or AI Co-Pilot integration
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We love community ideas! Aimake is built around the "Research → Grounded Wiki → Compose → Omni-Channel Deliver" creative flywheel.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear description of the friction or workflow limitation.
+      placeholder: "I'm always frustrated when I need to convert my research tables into..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the Solution You'd Like
+      description: How should this work in the CLI, Studio, or MCP server?
+      placeholder: "Add support for CSV/Excel table auto-intake into Bento metrics tiles..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Any other approaches or existing tools you've evaluated?

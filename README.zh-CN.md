@@ -58,6 +58,67 @@ aimake wizard
 
 ---
 
+## 🔄 核心飞轮：不只是 Markdown，而是端到端创作流
+
+Aimake **绝不仅是**又一个 Markdown 转 PPT 的转换器，而是一个**端到端的多模态知识蒸馏与全渠道分发引擎**。
+
+真正有穿透力的高杠杆创作，绝非从一张空白幻灯片开始。它始于灵感的闪现、自动化的技术雷达调研、业务指标与报表表格、或是团队历史沉淀的草稿。Aimake 将这些碎片化的输入，淬炼为严谨可信的视觉资产，并一键分发到五大多模态交付渠道：
+
+```mermaid
+flowchart TD
+    subgraph Phase1["1. 多源摄入与自动化调研"]
+        A1["aimake radar<br/>(HackerNews, 科技前沿, RSS, arXiv 自动雷达)"]
+        A2["网页链接、长文与研报导入"]
+        A3["业务数据、指标卡与 CSV 表格数据"]
+        A4["会议纪要、访谈录音逐字稿与碎片灵感"]
+        A5["aimake import<br/>(Marp, Slidev 与历史幻灯片资产平滑迁移)"]
+    end
+
+    subgraph Phase2["2. 可信本地知识库 (Karpathy Wiki)"]
+        B1["aimake wiki<br/>(递归知识蒸馏与结构化梳理)"]
+        B2["严格约束上下文预算<br/>(<= 3000 Token 知识索引)"]
+        B3["精准信源标定<br/>(cite: 源码行级坐标锚点，杜绝虚假幻觉)"]
+        B4["aimake persona<br/>(去 AI 味 Humanizer 润色与风格 DNA)"]
+    end
+
+    subgraph Phase3["3. 参数化设计工作台 & AI 协同"]
+        C1["36 套参数化商业设计模板<br/>(Bento 便当盒、瑞士网格、孔版印刷、暗黑极客)"]
+        C2["Calm Studio 本地沉浸画板<br/>(双向键盘漫游、触感胶囊 Dock、即时反馈)"]
+        C3["对话式 AI 副驾驶<br/>(Diff 视图对比、一键无损应用与快照回滚)"]
+    end
+
+    subgraph Phase4["4. 全渠道多模态原生分发"]
+        D1["小红书 / 朋友圈 / Instagram<br/>(3x 视网膜超清卡片图组)"]
+        D2["微信公众号后台<br/>(内联样式富文本 HTML，双 MIME 格式直粘)"]
+        D3["领英 / 知识星球 / 官方白皮书<br/>(高密度矢量 PDF 轮播册)"]
+        D4["Keynote / 商业路演与汇报<br/>(原生可编辑 PPTX 矢量图形与文本框)"]
+        D5["短视频 / 视频号 / Reels<br/>(60fps 动效字幕口播短视频)"]
+    end
+
+    Phase1 --> Phase2
+    Phase2 --> Phase3
+    Phase3 --> Phase4
+    Phase4 -.->|"持续沉淀为本地知识资产"| Phase2
+```
+
+### 飞轮四大演进阶段：
+1. **多源摄入与自动化调研 (`aimake radar` & `aimake import`)**：
+   - 自动扫描技术前沿、RSS 订阅源与社区热门话题，提取灵感线索。
+   - 导入结构化表格（CSV 财务数据、评测跑分表）与非结构化素材（语音转录、Obsidian 笔记）。
+   - 通过 `aimake import` 一键迁移 Marp、Slidev 等历史演示文稿。
+2. **可信本地知识库 (`aimake wiki` & `aimake persona`)**：
+   - 遵循 Andrej Karpathy LLM Wiki 思想，单篇知识卡片严格控制在 $\le 3000$ Token 上下文预算内，保障模型注意力聚焦。
+   - 引入 `cite: [source#L12-L34]` 行级信源锚点，从根本上杜绝 AI 事实幻觉。
+   - 搭载 4 语言（中/英/日/韩）去 AI 味润色引擎，剔除公文套话，保留作者最真实独特的语气。
+3. **参数化设计工坊与 AI 协同 (`aimake studio` & `aimake deck`)**：
+   - 告别在 Figma/Canva 中反复对齐像素的繁琐手工，36 套大师级参数化模板自动适配字距与版式。
+   - Studio 内置对话改稿，支持一键并排 Diff 审查，改坏随时一键回滚。
+4. **全渠道多模态分发 (`aimake render`)**：
+   - 一份源文件直接编译为 5 种原生交付产物（超清图组、公众号直粘代码、矢量 PDF、可编辑 PPTX、60fps MP4）。
+   - 交付的内容自动归档回本地知识库，形成越写越厚的个人知识壁垒与复利资产。
+
+---
+
 ## 📸 核心产品功能与视觉实测
 
 ### 1. 2026 趋势美学与前沿评测范例
@@ -100,19 +161,25 @@ aimake doctor                                    # 检测系统环境、Node.js 
 aimake templates                                 # 查看 36 套内置设计风格及其适用画幅
 aimake market list                               # 查看在线扩展风格包与预设套件
 
-# 2. 闭环工作区搭建与对话创作
+# 2. 自动化科技雷达与多模态摄入
+aimake radar --topic "embodied-ai"               # 自动扫描 HackerNews、arXiv 与行业前沿动态
+aimake wiki init ./vault                         # 初始化 Karpathy 风格本地 LLM 知识库
+aimake wiki distill ./vault/sources -o ./vault   # 递归蒸馏长文/表格为定界上下文知识卡
+aimake persona extract ./my-writings             # 提取个人行文 DNA 并校准去 AI 味润色引擎
+
+# 3. 闭环工作区搭建与对话创作
 aimake workspace init ./my-space                 # 初始化自包含工作区（实体预设 7 大 Skill，零软链接）
 aimake deck create "2026 AI Agent 大变革"        # 基于本地提示词快速起草全套幻灯片
 aimake deck edit ./my-space/decks/story.deck.md  # 终端命令行多轮交互修改指定幻灯片
 
-# 3. 启动本地沉浸式工作室 (Calm Studio)
+# 4. 启动本地沉浸式工作室 (Calm Studio)
 aimake studio --demo                             # 快速打开预设示例工作区
 aimake studio ./my-space/decks/story.deck.md     # 针对指定作品启动本地可视化创作舞台
 
-# 4. 迁移现有演示文档
+# 5. 迁移现有演示文档
 aimake import ./legacy-slides.md -o ./deck.md    # 将 Marp / Slidev / 通用 Markdown 转为规范 .deck.md
 
-# 5. 一键多模态原生交付
+# 6. 一键多模态原生交付
 aimake render ./deck.md -f png -o ./out/cards    # 导出 3x 超高清图组（小红书 3:4 / 方形 1:1）
 aimake render ./deck.md -f wechat -o ./out.html  # 导出微信公众号富文本（内联 CSS，一键直粘）
 aimake render ./deck.md -f pdf -o ./out/deck.pdf # 导出高清晰度矢量 PDF（LinkedIn 4:5 轮播）
@@ -219,11 +286,29 @@ pnpm verify
 
 ---
 
-## 📄 文档索引
+## 🏛️ 开源生态致敬与前序艺术
+
+Aimake 的诞生与演进，深受以下开源项目、设计哲学与前沿开发工具的启发：
+
+- **[Marp](https://marp.app/) & [Slidev](https://sli.dev/)**：开创了以 Markdown 编写幻灯片的现代工作流。Aimake 在此基础上突破了单一演示场景，拓展出全渠道多模态原生交付（超清图组、公众号、PDF、可编辑 PPTX、口播短视频）与参数化设计系统。
+- **[Reveal.js](https://revealjs.com/)**：现代 Web 演示技术的基石。
+- **[Andrej Karpathy's LLM Wiki 理念](https://gist.github.com/karpathy)**：启发了 Aimake 本地可信知识库（`aimake wiki`）的严谨设计——强制 $\le 3000$ Token 定界预算与行级信源溯源标定，彻底规避 AI 幻觉。
+- **[Obsidian](https://obsidian.md/)**：展现了纯本地 Markdown 双链知识库的长青复利价值。
+- **Apple Keynote & Bento Grid**：提供了顶级视觉克制感、模块化网格编排与产品叙事教科书级的典范。
+- **[Linear](https://linear.app/) & [Vercel Geist](https://vercel.com/font)**：启发了 Aimake Calm Studio 的暗黑极客质感、微交互细节与严谨的排版美学。
+- **主流 CLI Agent 生态**：开箱无缝兼容 [Claude Code](https://github.com/anthropics/claude-code)、[OpenAI Codex](https://github.com/openai/codex)、[Google Antigravity (AGY)](https://github.com/google) 与 [Tencent CodeBuddy](https://github.com/tencent)。
+- **核心底层渲染引擎**：[Mermaid.js](https://mermaid.js.org/) 提供离线矢量图表，[Highlight.js](https://highlightjs.org/) 提供代码高亮，[PptxGenJS](https://gitbrent.github.io/PptxGenJS/) 提供原生可编辑 PPTX 渲染。
+
+---
+
+## 📄 文档与规范索引
 
 - [1.0 架构与验收测试报告](./docs/ACCEPTANCE-1.0.md)
 - [Aimake 2.0 沉浸式工作区设计白皮书](./docs/AIMAKE_2_0_CALM_WORKSPACE_DESIGN.md)
 - [演进路线图](./docs/ROADMAP-2.0.md)
+- [开发者贡献指南](./CONTRIBUTING.md)
+- [社区行为准则](./CODE_OF_CONDUCT.md)
+- [安全策略与本地隐私保护声明](./SECURITY.md)
 - [第三方开源协议声明](./THIRD_PARTY_NOTICES.md)
 
 ---
@@ -232,12 +317,11 @@ pnpm verify
 
 我们热烈欢迎开源社区参与贡献！无论是提交 Issue、发起 Pull Request 还是为 Aimake 贡献新的视觉模板：
 
-1. Fork 本仓库
-2. 创建特性分支：`git checkout -b feature/my-new-template`
-3. 确保测试全部通过：`pnpm verify`
-4. 提交更改：`git commit -am 'feat: add my new template'`
-5. 推送到分支：`git push origin feature/my-new-template`
-6. 创建 Pull Request
+1. 查阅我们的 [贡献指南](./CONTRIBUTING.md) 与 [行为准则](./CODE_OF_CONDUCT.md)。
+2. Fork 本仓库并创建特性分支：`git checkout -b feature/my-new-template`。
+3. 运行本地完整检验：`pnpm verify`。
+4. 提交更改：`git commit -am 'feat: add my new template'`。
+5. 推送到分支并创建 Pull Request。
 
 ---
 

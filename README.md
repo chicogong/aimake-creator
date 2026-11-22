@@ -58,6 +58,67 @@ Existing presentation and content generation tools suffer from vendor lock-in, b
 
 ---
 
+## 🔄 The Creative Flywheel: Beyond Just Markdown
+
+Aimake is **not** just another Markdown-to-slide converter. It is an **End-to-End Multimodal Knowledge Distillation & Omni-Channel Distribution Engine**. 
+
+True high-leverage content creation rarely starts with a blank slide. It begins with raw sparks—a sudden inspiration, an automated industry research scan, a spreadsheet of benchmark numbers, or historical project archives. Aimake transforms this fragmented intake into grounded, authoritative visual assets distributed across five native media formats:
+
+```mermaid
+flowchart TD
+    subgraph Phase1["1. Intake & Multi-Source Research"]
+        A1["aimake radar<br/>(HN, Tech Trends, RSS, arXiv)"]
+        A2["Web URLs & Deep Articles"]
+        A3["Data Tables, Metrics & CSV Spreadsheets"]
+        A4["Meeting Transcripts, Voice Memos & Notes"]
+        A5["aimake import<br/>(Marp, Slidev, Legacy Decks)"]
+    end
+
+    subgraph Phase2["2. Grounded Karpathy LLM Wiki"]
+        B1["aimake wiki<br/>(Recursive Knowledge Distillation)"]
+        B2["Bounded Context Budget<br/>(<= 3000 Tokens Per Artifact)"]
+        B3["Strict Citation Tracking<br/>(cite: file#line coordinates)"]
+        B4["aimake persona<br/>(Anti-AI Slop Humanizer & Style DNA)"]
+    end
+
+    subgraph Phase3["3. Parametric Design Studio & Co-Pilot"]
+        C1["36 Parametric Design Templates<br/>(Bento Grid, Swiss, Risograph, Tech)"]
+        C2["Calm Studio Local Canvas<br/>(Full Keyboard Nav, Tactile Pill Strip)"]
+        C3["Conversational AI Co-Pilot<br/>(Visual Diffs, 1-Click Apply & Rollback)"]
+    end
+
+    subgraph Phase4["4. Omni-Channel Multi-Modal Distribution"]
+        D1["Xiaohongshu & Instagram<br/>(3x Ultra-Sharp Retina PNGs)"]
+        D2["WeChat Official Accounts<br/>(Inline CSS Rich HTML, Clipboard Dual-MIME)"]
+        D3["LinkedIn & Executive Feeds<br/>(High-Density Vector PDF Carousel)"]
+        D4["Keynote & Enterprise Pitches<br/>(Native Editable PPTX Shapes & Text)"]
+        D5["Short Video & Reels<br/>(60fps Kinetic MP4 & Subtitles)"]
+    end
+
+    Phase1 --> Phase2
+    Phase2 --> Phase3
+    Phase3 --> Phase4
+    Phase4 -.->|"Compounding Knowledge Vault"| Phase2
+```
+
+### The 4 Flywheel Stages:
+1. **Intake & Multi-Source Research (`aimake radar` & `aimake import`)**:
+   - Ingest raw inspiration from RSS feeds, HackerNews tech trends, arXiv abstracts, or competitor announcements.
+   - Import structured tables (CSV financial figures, benchmark numbers) and unstructured notes (voice transcripts, interview memos, Obsidian vaults).
+   - Effortlessly migrate existing slide decks from Marp and Slidev into Aimake format via `aimake import`.
+2. **Grounded Local Knowledge Base (`aimake wiki` & `aimake persona`)**:
+   - Compiles research into a local Karpathy-inspired LLM Wiki with bounded token budgets ($\le 3000$ tokens per index) to guarantee speed and context precision.
+   - Enforces strict `cite: [source#L12-L34]` coordinates on every factual card, eliminating hallucinations.
+   - Runs the Anti-AI Humanizer across 4 locales (EN, ZH, JA, KO) to prune synthetic clichés and preserve distinct personal voice.
+3. **Parametric Studio & Conversational Co-Pilot (`aimake studio` & `aimake deck`)**:
+   - Instantly applies 36 handcrafted design systems without manual Figma/Canva pixel pushing.
+   - Co-pilot chat features prompt suggestion chips, toggleable side-by-side diff cards, and non-destructive snapshot rollback.
+4. **Omni-Channel Multi-Modal Distribution (`aimake render`)**:
+   - Compiles one single `.deck.md` into 5 native deliverables (PNG, WeChat HTML, PDF, PPTX, MP4).
+   - Completed presentations compound back into the local Wiki repository, continually growing your creative asset vault.
+
+---
+
 ## 📸 Product Features & Visual Showcase
 
 ### 1. 2026 Trending Styles & Benchmark Decks
@@ -100,19 +161,25 @@ aimake doctor                                    # Verify system health, Node.js
 aimake templates                                 # List all 36 design templates & aspect ratios
 aimake market list                               # Inspect downloadable template packs
 
-# 2. Scaffolding & Conversational Creation
+# 2. Automated Trend Research & Multimodal Intake
+aimake radar --topic "embodied-ai"               # Scan HackerNews, arXiv & tech feeds for fresh angles
+aimake wiki init ./vault                         # Initialize a Karpathy-style local LLM Wiki
+aimake wiki distill ./vault/sources -o ./vault   # Recursively distill articles/tables into bounded notes
+aimake persona extract ./my-writings             # Extract personal tone DNA & calibrate Anti-AI Humanizer
+
+# 3. Scaffolding & Conversational Creation
 aimake workspace init ./my-space                 # Scaffold workspace with 7 preset skills (0 symlinks)
 aimake deck create "2026 AI Agent Revolution"   # Conversationally draft a new deck with local AI
 aimake deck edit ./my-space/decks/story.deck.md  # Multi-turn conversational slide editing
 
-# 3. Launch Local Calm Studio
+# 4. Launch Local Calm Studio
 aimake studio --demo                             # Launch instant demo workspace
 aimake studio ./my-space/decks/story.deck.md     # Launch Studio on a specific deck
 
-# 4. Migrate Existing Decks
+# 5. Migrate Existing Decks
 aimake import ./legacy-slides.md -o ./deck.md    # Convert Marp / Slidev / Markdown slides
 
-# 5. One-Click Native Multi-Format Rendering
+# 6. One-Click Native Multi-Format Rendering
 aimake render ./deck.md -f png -o ./out/cards    # 3x Ultra-sharp Retina PNG cards (XHS / IG)
 aimake render ./deck.md -f wechat -o ./out.html  # WeChat official account inline-styled HTML
 aimake render ./deck.md -f pdf -o ./out/deck.pdf # High-density vector PDF (LinkedIn Carousel)
@@ -219,11 +286,29 @@ pnpm verify
 
 ---
 
-## 📄 Documentation
+## 🏛️ Prior Art & Open-Source Inspirations
 
-- [1.0 Architecture & Acceptance Report](./docs/ACCEPTANCE-1.0.md)
+Aimake stands on the shoulders of remarkable open-source projects, design philosophies, and developer tooling:
+
+- **[Marp](https://marp.app/) & [Slidev](https://sli.dev/)**: Pioneered Markdown-driven slide presentations. Aimake honors this lineage while expanding beyond single-slide decks into omni-channel multimodal formats (PNG, WeChat, PDF, editable PPTX, and kinetic MP4) and strict local-first design contracts.
+- **[Reveal.js](https://revealjs.com/)**: Laid the technical groundwork for modern web-based presentations.
+- **[Andrej Karpathy's LLM Wiki Concept](https://gist.github.com/karpathy)**: Inspired Aimake's local wiki distillation engine (`aimake wiki`)—enforcing bounded token contexts ($\le 3000$ tokens) and verifiable citation coordinates to anchor AI generation in fact.
+- **[Obsidian](https://obsidian.md/)**: Exemplified the compounding value of local-first Markdown vaults and durable, user-owned knowledge.
+- **Apple Keynote & Bento Grid**: The gold standard in visual restraint, modular grid hierarchy, and keynote storytelling.
+- **[Linear](https://linear.app/) & [Vercel Geist](https://vercel.com/font)**: Inspired Aimake Calm Studio's dark aesthetic, micro-interactions, and relentless typography discipline.
+- **CLI AI Agent Ecosystem**: Seamless integration with [Claude Code](https://github.com/anthropics/claude-code), [OpenAI Codex](https://github.com/openai/codex), [Google Antigravity (AGY)](https://github.com/google), and [Tencent CodeBuddy](https://github.com/tencent).
+- **Underlying Rendering Engines**: [Mermaid.js](https://mermaid.js.org/) for offline SVG diagrams, [Highlight.js](https://highlightjs.org/) for code syntax, and [PptxGenJS](https://gitbrent.github.io/PptxGenJS/) for native PowerPoint generation.
+
+---
+
+## 📄 Documentation & Policies
+
+- [Architecture & Acceptance Report](./docs/ACCEPTANCE-1.0.md)
 - [Aimake 2.0 Calm Workspace Design](./docs/AIMAKE_2_0_CALM_WORKSPACE_DESIGN.md)
 - [Evolution Roadmap](./docs/ROADMAP-2.0.md)
+- [Contributing Guide](./CONTRIBUTING.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+- [Security & Local-First Privacy Policy](./SECURITY.md)
 - [Third-Party Notices & Licenses](./THIRD_PARTY_NOTICES.md)
 
 ---
@@ -232,12 +317,11 @@ pnpm verify
 
 Contributions are warmly welcomed! Please feel free to submit issues, open pull requests, or propose new design templates.
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-new-template`
-3. Verify test suites pass: `pnpm verify`
-4. Commit your changes: `git commit -am 'feat: add my new template'`
-5. Push to branch: `git push origin feature/my-new-template`
-6. Submit a Pull Request
+1. Review our [Contributing Guide](./CONTRIBUTING.md) and [Code of Conduct](./CODE_OF_CONDUCT.md).
+2. Fork the repository and create your feature branch: `git checkout -b feature/my-new-template`.
+3. Verify test suites and audits pass: `pnpm verify`.
+4. Commit your changes: `git commit -am 'feat: add my new template'`.
+5. Push to your branch and submit a Pull Request.
 
 ---
 

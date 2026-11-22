@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/chicogong/aimake-creator/discussions
+    about: Ask questions, showcase your decks, or discuss new design systems.
+  - name: 🌐 Online Web Playground
+    url: https://aimake.cc/playground/
+    about: Test Aimake directly in your browser with zero install.

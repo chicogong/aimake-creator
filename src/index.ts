@@ -31,3 +31,4 @@ export * from './revision/index.js';
 export * from './desktop/opencode-bridge.js';
 export * from './workspace/index.js';
 export * from './templates/index.js';
+export * from './publisher/index.js';

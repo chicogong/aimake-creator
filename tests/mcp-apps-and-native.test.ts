@@ -48,6 +48,7 @@ describe('MCP Server 2.0: SEP-1865 MCP Apps & Workspace Sync Tools', () => {
     expect(names).toContain('aimake_render_deck');
     expect(names).toContain('aimake_workspace_status');
     expect(names).toContain('aimake_stage_focus');
+    expect(names).toContain('aimake_publish_content');
 
     const remixTool = tools.find((t) => t.name === 'aimake_remix_deck');
     const renderTool = tools.find((t) => t.name === 'aimake_render_deck');

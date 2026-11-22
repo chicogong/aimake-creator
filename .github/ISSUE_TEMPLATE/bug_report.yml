@@ -1,0 +1,61 @@
+name: 🐛 Bug Report
+description: Report an issue or unexpected behavior in Aimake Studio, CLI, or templates
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please check existing issues or discussion threads before opening a new one.
+
+  - type: input
+    id: version
+    attributes:
+      label: Aimake Version
+      description: What version of aimake-studio are you using? (Run `aimake --version`)
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: OS & Runtime
+      description: What platform are you running on?
+      options:
+        - macOS (Apple Silicon M-series)
+        - macOS (Intel x86_64)
+        - Linux (Ubuntu/Debian/Arch)
+        - Windows (WSL2)
+        - Windows (Native PowerShell)
+        - Browser Only (aimake.cc/playground)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what happened.
+      placeholder: "When running `aimake render story.deck.md -f pptx`, the slide shapes..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction Steps & Deck Markdown
+      description: Minimal steps to reproduce, or paste the `.deck.md` snippet.
+      placeholder: |
+        1. Run `aimake workspace init ./demo`
+        2. Edit slide with template `apple-bento-launch`
+        3. See error in console...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Terminal or Browser Console Output
+      description: Paste any error stack traces or terminal outputs here.
+      render: shell

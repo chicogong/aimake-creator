@@ -1,0 +1,41 @@
+name: 🎨 New Template / Design Style Request
+description: Suggest a new design aesthetic, editorial layout, or channel-specific template
+title: "[Template]: "
+labels: ["template", "design"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Aimake ships with 36 parametric design templates. If there is a trending design style (e.g. brutalism, luxury editorial, scientific paper), pitch it here!
+
+  - type: input
+    id: template_name
+    attributes:
+      label: Suggested Template Slug / Name
+      description: e.g. `tech-cyberpunk-grid` or `academic-nature-brief`
+      placeholder: "e.g. luxury-fashion-lookbook"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: aspect_ratio
+    attributes:
+      label: Target Aspect Ratio
+      options:
+        - "16:9 (Pitch / Keynote / Presentation)"
+        - "3:4 (Xiaohongshu / Instagram Feed)"
+        - "4:5 (LinkedIn Carousel / Substack Card)"
+        - "1:1 (Square Social Post)"
+        - "9:16 (Vertical Short Video / Reel)"
+        - "Responsive (WeChat Longform)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: visual_reference
+    attributes:
+      label: Visual References & Aesthetic Inspirations
+      description: Links to inspiration images, design systems, font choices, or color palettes.
+      placeholder: "Inspired by Apple's Event slides and Swiss grid posters. Uses high contrast monospaced numbers..."
+    validations:
+      required: true

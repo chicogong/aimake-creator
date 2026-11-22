@@ -70,6 +70,7 @@ import {
   readWorkspaceState,
 } from './workspace/index.js';
 import type { AgentHostId, WorkspaceScenarioPreset } from './workspace/index.js';
+import { publishContent } from './publisher/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = __dirname.endsWith('dist')
@@ -1042,6 +1043,58 @@ program
       );
     }
   );
+
+program
+  .command('publish <file>')
+  .description('Package and cross-post a Markdown article or .deck.md to WeChat, Zhihu, Juejin, Xiaohongshu, and Wechatsync manifest')
+  .option('-t, --target <targets>', 'Comma-separated target platforms: wechat | zhihu | juejin | xiaohongshu | pack | all', 'all')
+  .option('--draft', 'Keep as draft in platform draft box (default: true)', true)
+  .option('--no-draft', 'Publish directly if supported')
+  .option('--browser', 'Automate publishing via local Chrome session (port 9222)')
+  .option('--port <n>', 'Local Chrome remote debugging port', '9222')
+  .option('--out <dir>', 'Custom output bundle directory')
+  .option('--tags <tags>', 'Comma-separated tags for Juejin/XHS')
+  .option('--category <category>', 'Article category (default: 人工智能)')
+  .option('--topics <topics>', 'Comma-separated topics for Zhihu')
+  .option('--json', 'Emit machine-readable JSON')
+  .action(async (file: string, opts: {
+    target: string;
+    draft: boolean;
+    browser?: boolean;
+    port?: string;
+    out?: string;
+    tags?: string;
+    category?: string;
+    topics?: string;
+    json?: boolean;
+  }) => {
+    const targets = opts.target.split(',').map((s) => s.trim().toLowerCase()) as any;
+    const tags = opts.tags ? opts.tags.split(',').map((s) => s.trim()) : undefined;
+    const topics = opts.topics ? opts.topics.split(',').map((s) => s.trim()) : undefined;
+    const chromePort = opts.port ? parseInt(opts.port, 10) : 9222;
+
+    const res = await publishContent(file, {
+      targets,
+      draft: opts.draft,
+      browser: opts.browser,
+      chromePort,
+      outDir: opts.out,
+      tags,
+      category: opts.category,
+      topics,
+      asJson: opts.json,
+    });
+
+    const lines = [
+      `🚀 Multi-Platform Publishing Bundle Generated:`,
+      `  Title: ${res.title}`,
+      `  Source: ${res.sourceFile}`,
+      `  Bundle: ${res.bundleDir}`,
+      `  Channels:`,
+      ...res.results.map((r) => `    • [${r.platform}] ${r.status}: ${r.message || r.filePath || r.url || 'OK'}`),
+    ];
+    printResult(res, opts.json, lines.join('\n'));
+  });
 
 const siteCmd = program.command('site').description('Build zero-backend 4-language static showcase & SEO pages');
 
