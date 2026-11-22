@@ -12,6 +12,7 @@ const IGNORE_DIRS = new Set([
   'dist-site',
   'dist-desktop',
   '.aimake-tmp',
+  '.aimake',
   '.local-sandbox-hosts',
   '.vercel',
   'out',

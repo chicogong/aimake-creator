@@ -1,8 +1,8 @@
 ---
 title: 跑完 203 亿 Token 后：超级个体的纯本地创作飞轮
-template: xhs-swiss-grid
+template: apple-bento-launch
 locale: zh-CN
-aspect: 3:4
+aspect: "16:9"
 author: Chico Gong
 handle: "@chicogong"
 watermark: true
@@ -12,10 +12,13 @@ tags:
   - AI-Native
   - LLM-Wiki
   - 超级个体
+  - "remixedFrom: template:apple-bento-launch@1.0.0"
 ---
 
 <!-- scene: hook | layout: metrics | eyebrow: BENCHMARK 2026 | cite: wiki/token-governance.md#L34 -->
+
 # 为什么纯本地 LLM Wiki 是超级个体最深的护城河？
+
 ## 告别一次性聊天消耗，让每一篇笔记产生复利
 
 ```metric
@@ -30,6 +33,7 @@ tags:
 ---
 
 <!-- scene: compare | layout: comparison | eyebrow: PARADIGM SHIFT | cite: wiki/creator-os.md#L12 -->
+
 # 通用聊天套壳 vs 爱创 Aimake 闭环
 
 ```compare
@@ -44,14 +48,16 @@ Aimake 爱创 :: 锚定本地真实笔记 | 画布双击秒改错字 | 一套模
 ---
 
 <!-- scene: code | layout: code | eyebrow: ONE COMMAND | cite: wiki/cli-spec.md#L8 -->
+
 # 一行命令挂载全生态 AI 工具
 
 - 原生兼容 WorkBuddy、Codex、AGY、Claude Code 与 Cursor
+
 - 企业文稿自动隐私脱敏，安心跨团队复用设计模板
+
+> 真正的效率不是让 AI 替你堆砌废话，而是让你的每一次思考都自带多模态传播力。 — Aimake Manifesto
 
 ```bash
 aimake wiki ingest ./weekly-report.docx --vault ./vault
 aimake render story.deck.md -f pptx -o report.pptx
 ```
-
-> 真正的效率不是让 AI 替你堆砌废话，而是让你的每一次思考都自带多模态传播力。 — Aimake Manifesto

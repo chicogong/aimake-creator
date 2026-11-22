@@ -6,7 +6,7 @@
   "description": "Zero-backend local 4-stage creative flywheel (Intake -> Distill -> Create -> Publish), Karpathy LLM Wiki, and parametric HTML-to-Cards/WeChat/PDF/PPTX/MP4 compiler.",
   "author": "Chico Gong",
   "homepage": "https://aimake.cc",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "extensions": {
     "com.openai": {
       "presentation": {

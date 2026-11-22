@@ -102,20 +102,69 @@ flowchart TD
 ```
 
 ### The 4 Flywheel Stages:
-1. **Intake & Multi-Source Research (`aimake radar` & `aimake import`)**:
+1. **Intake & Multi-Source Research (`aimake radar` & `aimake import` & `aimake intake`)**:
    - Ingest raw inspiration from RSS feeds, HackerNews tech trends, arXiv abstracts, or competitor announcements.
    - Import structured tables (CSV financial figures, benchmark numbers) and unstructured notes (voice transcripts, interview memos, Obsidian vaults).
    - Effortlessly migrate existing slide decks from Marp and Slidev into Aimake format via `aimake import`.
-2. **Grounded Local Knowledge Base (`aimake wiki` & `aimake persona`)**:
+2. **Grounded Local Knowledge Base (`aimake wiki` & `aimake persona` & `aimake distill`)**:
    - Compiles research into a local Karpathy-inspired LLM Wiki with bounded token budgets ($\le 3000$ tokens per index) to guarantee speed and context precision.
    - Enforces strict `cite: [source#L12-L34]` coordinates on every factual card, eliminating hallucinations.
    - Runs the Anti-AI Humanizer across 4 locales (EN, ZH, JA, KO) to prune synthetic clichés and preserve distinct personal voice.
-3. **Parametric Studio & Conversational Co-Pilot (`aimake studio` & `aimake deck`)**:
+3. **Parametric Studio & Conversational Co-Pilot (`aimake studio` & `aimake create` & `aimake deck`)**:
    - Instantly applies 36 handcrafted design systems without manual Figma/Canva pixel pushing.
    - Co-pilot chat features prompt suggestion chips, toggleable side-by-side diff cards, and non-destructive snapshot rollback.
-4. **Omni-Channel Multi-Modal Distribution (`aimake render`)**:
+4. **Omni-Channel Multi-Modal Distribution (`aimake render` & `aimake publish`)**:
    - Compiles one single `.deck.md` into 5 native deliverables (PNG, WeChat HTML, PDF, PPTX, MP4).
-   - Completed presentations compound back into the local Wiki repository, continually growing your creative asset vault.
+   - Cross-posts ready-to-publish drafts to WeChat Official Accounts, Zhihu, Juejin, Xiaohongshu, and Wechatsync bundles.
+   - Completed presentations compound back into `wiki/published.md`, continually growing your creative asset vault.
+
+---
+
+## 🧩 Architecture: Decoupling CLI, Skills, and MCP
+
+Aimake follows a strict separation of concerns: **Deterministic Execution sink to the Core CLI / Cognitive Reasoning bubble up to Agent Skills / External Connectivity converge on standard MCP**:
+
+```
+                ┌─────────────────────────────────────────────────┐
+                │          AI Agents & IDE Hosts (Claude, Cursor, AGY)│
+                └───────────────────────┬─────────────────────────┘
+                                        │ (JSON-RPC)
+                                        ▼
+             ┌────────────────────────────────────────────────────────┐
+             │  MCP Service Layer (src/mcp/mcp-server.ts - 16 tools)  │
+             │  aimake_publish_content, aimake_pipeline_inspect ...   │
+             └──────────────────────────┬─────────────────────────────┘
+                                        │
+           ┌────────────────────────────┴─────────────────────────────┐
+           ▼                                                          ▼
+┌───────────────────────────┐                            ┌───────────────────────────┐
+│     Agent Skills Layer    │                            │     Core CLI Engine       │
+│ (skills/workspace-presets)│                            │        (src/cli.ts)       │
+├───────────────────────────┤                            ├───────────────────────────┤
+│ ① aimake-intake           │ ── Prompt guidance/intent ─►│ ① aimake intake <sources> │
+│ ② aimake-wiki-synth       │ ── Recursive distillation ─►│ ② aimake distill [topic]  │
+│ ③ aimake-deck-composer    │ ── Visual layout & diffs ──►│ ③ aimake create / studio   │
+│ ④ aimake-deliver-narrator │ ── Narration / copy hooks ─►│ ④ aimake render / publish │
+└───────────────────────────┘                            ├───────────────────────────┤
+                                                         │ 🔄 aimake pipeline status │
+                                                         └───────────────────────────┘
+```
+
+### 1. Intake
+- **Core CLI**: `aimake intake <sources...>` handles high-throughput file I/O, local PDF/Office text extraction, URL scraping, and SHA-256 fingerprinting.
+- **Agent Skill**: `aimake-intake` analyzes messy notes, strips UI boilerplate, and preserves key figures, data points, and provenance.
+
+### 2. Distill
+- **Core CLI**: `aimake distill [topic]` validates token budgets ($\le 3000$ tokens per index), scaffolds `briefs/<slug>.brief.md`, and maintains graph reference index.
+- **Agent Skill**: `aimake-wiki-synth` & `aimake-humanizer` perform Chain-of-Thought synthesis, 4-locale tone de-slop humanization, and bind strict `cite:` file#line coordinates.
+
+### 3. Create
+- **Core CLI**: `aimake create [prompt]` & `aimake studio` start the local Calm Studio canvas, compile offline Mermaid SVGs, stream SSE updates, and manage snapshot rollbacks.
+- **Agent Skill**: `aimake-deck-composer` & `aimake-brief-architect` orchestrate multi-turn conversational edits, audience-targeted template selection, and visual diff reviews.
+
+### 4. Publish
+- **Core CLI**: `aimake render` compiles the 5 native formats (PNG, PPTX, PDF, MP4, WeChat HTML) and `aimake publish` packages cross-posting bundles for WeChat, Zhihu, Juejin, Xiaohongshu, and Wechatsync, compounding into `wiki/published.md`.
+- **Agent Skill**: `aimake-deliver-narrator` generates platform-specific hook copy, spoken narration scripts, and distribution tag strategies.
 
 ---
 
@@ -161,16 +210,19 @@ aimake doctor                                    # Verify system health, Node.js
 aimake templates                                 # List all 36 design templates & aspect ratios
 aimake market list                               # Inspect downloadable template packs
 
-# 2. Automated Trend Research & Multimodal Intake
+# 2. End-to-End 4-Stage Creative Flywheel
+aimake workspace init ./my-space                 # Scaffold workspace with 7 preset skills (0 symlinks)
+aimake pipeline                                  # Inspect flywheel status & recommended next step
+aimake intake https://example.com/rep.html       # ① Intake: Ingest web, PDF, or notes into sources/ & wiki
+aimake distill "2026 AI Agent Revolution"       # ② Distill: Recursively distill facts (<=3000 tokens) & brief
+aimake create "2026 AI Agent Revolution"        # ③ Create: Conversationally draft storyboard slides
+aimake publish ./decks/agent.deck.md             # ④ Publish: Cross-post to WeChat, Zhihu, Juejin, XHS & pack
+
+# 3. Automated Trend Research & Knowledge Base
 aimake radar --topic "embodied-ai"               # Scan HackerNews, arXiv & tech feeds for fresh angles
 aimake wiki init ./vault                         # Initialize a Karpathy-style local LLM Wiki
 aimake wiki distill ./vault/sources -o ./vault   # Recursively distill articles/tables into bounded notes
 aimake persona extract ./my-writings             # Extract personal tone DNA & calibrate Anti-AI Humanizer
-
-# 3. Scaffolding & Conversational Creation
-aimake workspace init ./my-space                 # Scaffold workspace with 7 preset skills (0 symlinks)
-aimake deck create "2026 AI Agent Revolution"   # Conversationally draft a new deck with local AI
-aimake deck edit ./my-space/decks/story.deck.md  # Multi-turn conversational slide editing
 
 # 4. Launch Local Calm Studio
 aimake studio --demo                             # Launch instant demo workspace
@@ -245,6 +297,46 @@ Aimake bridges the gap between raw LLMs and deterministic visual layouts:
    - **OpenAI Codex CLI**: `codex exec --skip-git-repo-check '...'`
    - **Google Antigravity (AGY)**: `agy -p '...'`
    - **Tencent CodeBuddy CLI**: `codebuddy -p '...'`
+
+---
+
+## 🔌 Platform Ecosystem & AI Hosts (WorkBuddy / Claude / Cursor / Codex / AGY)
+
+Aimake is architected with a **"Single Core, Universal Ecosystem"** strategy, providing standard plugin manifests and MCP connectivity for major AI hosts:
+
+### 1. Tencent WorkBuddy (CodeBuddy) Enterprise Integration
+- **Pre-packaged manifests**: Located in [`integrations/workbuddy/`](./integrations/workbuddy/)
+  - `connector-meta.json`: Standard WorkBuddy Connector metadata & bilingual descriptions
+  - `mcp.json`: stdio MCP server declaration `{"command": "npx", "args": ["-y", "aimake", "mcp"]}`
+  - `expert/aimake-producer.md`: Pre-configured "Aimake Producer" expert role
+- **Installation**: Import the `integrations/workbuddy/` directory into WorkBuddy / CodeBuddy plugin settings or enterprise repository to invoke all 16 Aimake MCP tools directly in chat.
+
+### 2. Claude Desktop & Claude Code
+- **Official Plugin Manifests**: Top-level [`plugin.json`](./plugin.json) and [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json)
+- **Claude Desktop MCP Configuration**: In `~/Library/Application Support/Claude/claude_desktop_config.json`:
+  ```json
+  {
+    "mcpServers": {
+      "aimake": {
+        "command": "npx",
+        "args": ["-y", "aimake", "mcp"]
+      }
+    }
+  }
+  ```
+
+### 3. Cursor & VSCode
+- In Cursor **Settings -> Features -> MCP**, add a new server:
+  - **Name**: `aimake`
+  - **Type**: `command`
+  - **Command**: `npx -y aimake mcp`
+- Call all 16 MCP tools (such as `aimake_publish_content`, `aimake_pipeline_inspect`, `aimake_wiki_ingest`) directly from Cursor Composer.
+
+### 4. OpenAI Codex CLI & Google Antigravity (AGY)
+- **Universal Skill Standard**: [`skills/aimake/SKILL.md`](./skills/aimake/SKILL.md) adheres to the standard Agent Skill YAML frontmatter contract.
+- **1-Click Launch Recipes**: Studio provides pre-filled commands with workspace context:
+  - Codex: `codex exec --skip-git-repo-check '...'`
+  - AGY: `agy -p '...'`
 
 ---
 

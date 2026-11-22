@@ -18,11 +18,18 @@ function inlineFormatHtml(text: string, accent = '#2B6BE6'): string {
     .replace(/`([^`]+)`/g, `<code style="background:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;font-family:Menlo,Consolas,monospace;font-size:0.9em;">$1</code>`);
 }
 
+export function normalizeToCdn(text: string): string {
+  return text
+    .replace(/https:\/\/raw\.githubusercontent\.com\/chicogong\/agent-systems\/main\//g, 'https://cdn.jsdelivr.net/gh/chicogong/agent-systems@main/')
+    .replace(/https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\//g, 'https://cdn.jsdelivr.net/gh/$1/$2@$3/');
+}
+
 /**
  * Converts a standard Markdown string into WeChat-ready inline HTML.
  */
 export function convertStandardMarkdownToWechatHtml(rawMd: string, title: string, accent = '#2B6BE6'): string {
-  const lines = rawMd.split('\n');
+  const normalizedMd = normalizeToCdn(rawMd);
+  const lines = normalizedMd.split('\n');
   const htmlParts: string[] = [];
 
   htmlParts.push(`
@@ -36,9 +43,58 @@ export function convertStandardMarkdownToWechatHtml(rawMd: string, title: string
   let codeLang = '';
   let codeBuffer: string[] = [];
   let inList = false;
+  let inTable = false;
+  let tableRows: string[][] = [];
+
+  const flushTable = () => {
+    if (!inTable || tableRows.length === 0) return;
+    const [header, ...rows] = tableRows;
+    const bodyRows = rows.filter((r) => !r.every((c) => /^[-:| ]+$/.test(c)));
+
+    let tableHtml = `
+      <div style="margin:22px 0;overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.6;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;">
+    `;
+    if (header) {
+      tableHtml += `
+        <thead>
+          <tr style="background:#f1f5f9;color:#0f172a;font-weight:700;">
+            ${header.map((c) => `<th style="padding:10px 12px;border:1px solid #e2e8f0;text-align:left;">${inlineFormatHtml(c, accent)}</th>`).join('')}
+          </tr>
+        </thead>
+      `;
+    }
+    tableHtml += `<tbody>`;
+    for (let ri = 0; ri < bodyRows.length; ri++) {
+      const bg = ri % 2 === 0 ? '#ffffff' : '#f8fafc';
+      tableHtml += `
+        <tr style="background:${bg};">
+          ${bodyRows[ri].map((c) => `<td style="padding:10px 12px;border:1px solid #e2e8f0;color:#334155;vertical-align:top;">${inlineFormatHtml(c, accent)}</td>`).join('')}
+        </tr>
+      `;
+    }
+    tableHtml += `</tbody></table></div>`;
+    htmlParts.push(tableHtml);
+    tableRows = [];
+    inTable = false;
+  };
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trimEnd();
+
+    // Tables
+    if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+      if (inList) {
+        htmlParts.push(`</ul>`);
+        inList = false;
+      }
+      inTable = true;
+      const cells = line.trim().slice(1, -1).split('|').map((c) => c.trim());
+      tableRows.push(cells);
+      continue;
+    } else if (inTable) {
+      flushTable();
+    }
 
     // Code blocks
     if (line.startsWith('```')) {
@@ -74,6 +130,24 @@ export function convertStandardMarkdownToWechatHtml(rawMd: string, title: string
         inList = false;
       }
       htmlParts.push(`<hr style="border:none;border-top:1px dashed #cbd5e1;margin:28px 0;" />`);
+      continue;
+    }
+
+    // Images: ![alt](url)
+    const imgMatch = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imgMatch) {
+      if (inList) {
+        htmlParts.push(`</ul>`);
+        inList = false;
+      }
+      const alt = imgMatch[1];
+      const src = imgMatch[2];
+      htmlParts.push(`
+        <figure style="margin:24px 0;text-align:center;">
+          <img src="${esc(src)}" alt="${esc(alt)}" style="display:block;max-width:100%;margin:0 auto;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,0.08);" />
+          ${alt ? `<figcaption style="margin-top:8px;font-size:12.5px;color:#64748b;line-height:1.4;">${esc(alt)}</figcaption>` : ''}
+        </figure>
+      `);
       continue;
     }
 
@@ -140,6 +214,10 @@ export function convertStandardMarkdownToWechatHtml(rawMd: string, title: string
     if (line.trim().length > 0) {
       htmlParts.push(`<p style="margin:0 0 14px 0;font-size:15.5px;color:#1f2937;line-height:1.8;text-align:justify;">${inlineFormatHtml(line.trim(), accent)}</p>`);
     }
+  }
+
+  if (inTable) {
+    flushTable();
   }
 
   if (inList) {
@@ -246,6 +324,9 @@ export function adaptContentForPlatforms(
       }
     }
   }
+
+  // Normalize all image URLs to fast, reliable CDN (jsdelivr) for domestic access
+  cleanMarkdown = normalizeToCdn(cleanMarkdown);
 
   // 1. WeChat: 100% Inline CSS HTML
   const wechatHtml = deckDoc

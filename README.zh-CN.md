@@ -102,20 +102,68 @@ flowchart TD
 ```
 
 ### 飞轮四大演进阶段：
-1. **多源摄入与自动化调研 (`aimake radar` & `aimake import`)**：
+1. **多源摄入与自动化调研 (`aimake radar` & `aimake import` & `aimake intake`)**：
    - 自动扫描技术前沿、RSS 订阅源与社区热门话题，提取灵感线索。
    - 导入结构化表格（CSV 财务数据、评测跑分表）与非结构化素材（语音转录、Obsidian 笔记）。
    - 通过 `aimake import` 一键迁移 Marp、Slidev 等历史演示文稿。
-2. **可信本地知识库 (`aimake wiki` & `aimake persona`)**：
+2. **可信本地知识库 (`aimake wiki` & `aimake persona` & `aimake distill`)**：
    - 遵循 Andrej Karpathy LLM Wiki 思想，单篇知识卡片严格控制在 $\le 3000$ Token 上下文预算内，保障模型注意力聚焦。
    - 引入 `cite: [source#L12-L34]` 行级信源锚点，从根本上杜绝 AI 事实幻觉。
    - 搭载 4 语言（中/英/日/韩）去 AI 味润色引擎，剔除公文套话，保留作者最真实独特的语气。
-3. **参数化设计工坊与 AI 协同 (`aimake studio` & `aimake deck`)**：
+3. **参数化设计工坊与 AI 协同 (`aimake studio` & `aimake create` & `aimake deck`)**：
    - 告别在 Figma/Canva 中反复对齐像素的繁琐手工，36 套大师级参数化模板自动适配字距与版式。
    - Studio 内置对话改稿，支持一键并排 Diff 审查，改坏随时一键回滚。
-4. **全渠道多模态分发 (`aimake render`)**：
+4. **全渠道多模态分发 (`aimake render` & `aimake publish`)**：
    - 一份源文件直接编译为 5 种原生交付产物（超清图组、公众号直粘代码、矢量 PDF、可编辑 PPTX、60fps MP4）。
    - 交付的内容自动归档回本地知识库，形成越写越厚的个人知识壁垒与复利资产。
+
+---
+
+## 🧩 架构分层解耦：CLI、Agent Skills 与 MCP 的职责划分
+
+参考现代自动化流水线设计模式，Aimake 确立了**「确定性计算下沉到 CLI / 认知推理上浮到 Skill / 外部互联收敛到 MCP」**的解耦原则：
+
+```
+                ┌─────────────────────────────────────────────────┐
+                │          AI Agents & IDE 宿主 (Claude, Cursor, AGY)│
+                └───────────────────────┬─────────────────────────┘
+                                        │ (JSON-RPC)
+                                        ▼
+             ┌────────────────────────────────────────────────────────┐
+             │  MCP 服务层 (src/mcp/mcp-server.ts - 16 大原子工具)     │
+             │  aimake_publish_content, aimake_pipeline_inspect ...   │
+             └──────────────────────────┬─────────────────────────────┘
+                                        │
+           ┌────────────────────────────┴─────────────────────────────┐
+           ▼                                                          ▼
+┌───────────────────────────┐                            ┌───────────────────────────┐
+│     Agent Skills 认知层    │                            │     Core CLI 确定性引擎   │
+│ (skills/workspace-presets)│                            │        (src/cli.ts)       │
+├───────────────────────────┤                            ├───────────────────────────┤
+│ ① aimake-intake           │ ─── 提示词引导/意图分类 ──►│ ① aimake intake <sources> │
+│ ② aimake-wiki-synth       │ ─── 递归提炼/去AI味 ────►│ ② aimake distill [topic]  │
+│ ③ aimake-deck-composer    │ ─── 版式编排/Diff对比 ───►│ ③ aimake create / studio   │
+│ ④ aimake-deliver-narrator │ ─── 口播配音/分发文案 ───►│ ④ aimake render / publish │
+└───────────────────────────┘                            ├───────────────────────────┤
+                                                         │ 🔄 aimake pipeline (看板) │
+                                                         └───────────────────────────┘
+```
+
+### 1. 抓取 (Intake)
+- **Core CLI 职责**：`aimake intake <sources...>` 执行高吞吐文件 I/O、本地 PDF/Office 格式正规化提取、网络 URL 抓取与 SHA-256 唯一指纹哈希校验。
+- **Agent Skill 职责**：`aimake-intake` 分析杂乱非结构化草稿，剔除无关排版噪声，结构化保留核心数据指标、结论与溯源依据。
+
+### 2. 萃取 (Distill)
+- **Core CLI 职责**：`aimake distill [topic]` 校验上下文 Token 计数（$\le 3000$ tokens 边界预算）、自动生成 `briefs/<slug>.brief.md`，维护图谱引用索引。
+- **Agent Skill 职责**：`aimake-wiki-synth` 与 `aimake-humanizer` 进行多步思维链知识蒸馏、4 语种去 AI 味校准、作者风格基因（Style DNA）匹配与 `cite:` 溯源坐标绑定。
+
+### 3. 创作 (Create)
+- **Core CLI 职责**：`aimake create [prompt]`、`aimake studio` 启动 Calm Studio 本地画板，编译 Mermaid 离线矢量 SVG 图表，处理 SSE 热重载与时间旅行快照无损回滚。
+- **Agent Skill 职责**：`aimake-deck-composer` 与 `aimake-brief-architect` 负责多轮对话交互改稿、36 套模板按受众风格智能选型与并排 Diff 审查。
+
+### 4. 发布 (Publish)
+- **Core CLI 职责**：`aimake render` 多模态转码（Retina PNG、原生 PPTX、矢量 PDF、60fps MP4）以及 `aimake publish` 批量打包微信公众号内联 HTML、知乎 Markdown、掘金专栏、小红书速记卡与 Wechatsync 清单，自动追加归档至 `wiki/published.md`。
+- **Agent Skill 职责**：`aimake-deliver-narrator` 生成针对不同平台的引流钩子文案、口播分镜脚本与 SEO 标签策略。
 
 ---
 
@@ -161,16 +209,19 @@ aimake doctor                                    # 检测系统环境、Node.js 
 aimake templates                                 # 查看 36 套内置设计风格及其适用画幅
 aimake market list                               # 查看在线扩展风格包与预设套件
 
-# 2. 自动化科技雷达与多模态摄入
+# 2. 闭环工作区与 4 阶段创作飞轮流水线
+aimake workspace init ./my-space                 # 初始化自包含工作区（实体预设 7 大 Skill，零软链接）
+aimake pipeline                                  # 查看当前工作区飞轮状态与推荐下一步动作
+aimake intake https://example.com/rep.html       # ① 抓取：将网页、PDF、文档摄入 sources/ 与 wiki
+aimake distill "2026 AI Agent 大变革"            # ② 萃取：递归蒸馏事实卡片 (<=3000 tokens) 与大纲
+aimake create "2026 AI Agent 大变革"             # ③ 创作：对话式生成视觉卡片原稿并开启 Studio 舞台
+aimake publish ./decks/agent.deck.md             # ④ 发布：全渠道直出微信、知乎、掘金、小红书与同步包
+
+# 3. 自动化科技雷达与知识库
 aimake radar --topic "embodied-ai"               # 自动扫描 HackerNews、arXiv 与行业前沿动态
 aimake wiki init ./vault                         # 初始化 Karpathy 风格本地 LLM 知识库
 aimake wiki distill ./vault/sources -o ./vault   # 递归蒸馏长文/表格为定界上下文知识卡
 aimake persona extract ./my-writings             # 提取个人行文 DNA 并校准去 AI 味润色引擎
-
-# 3. 闭环工作区搭建与对话创作
-aimake workspace init ./my-space                 # 初始化自包含工作区（实体预设 7 大 Skill，零软链接）
-aimake deck create "2026 AI Agent 大变革"        # 基于本地提示词快速起草全套幻灯片
-aimake deck edit ./my-space/decks/story.deck.md  # 终端命令行多轮交互修改指定幻灯片
 
 # 4. 启动本地沉浸式工作室 (Calm Studio)
 aimake studio --demo                             # 快速打开预设示例工作区
@@ -245,6 +296,46 @@ Aimake 在底层打通了非确定性的大语言模型与确定性的高保真�
    - **OpenAI Codex CLI**：`codex exec --skip-git-repo-check '...'`
    - **Google Antigravity (AGY)**：`agy -p '...'`
    - **Tencent CodeBuddy CLI**：`codebuddy -p '...'`
+
+---
+
+## 🔌 平台生态与多 AI 宿主接入 (WorkBuddy / Claude / Cursor / Codex / AGY)
+
+Aimake 采用**「一套内核，全平台生态互通」**的插件化与 MCP 架构，支持主流 AI 客户端与 IDE 宿主免配置集成：
+
+### 1. 腾讯 WorkBuddy (CodeBuddy) 企微企业级接入
+- **已打包集成配置**：位于 [`integrations/workbuddy/`](./integrations/workbuddy/)
+  - `connector-meta.json`：定义 WorkBuddy 标准 Connector 扩展元数据与多语种介绍；
+  - `mcp.json`：配置基于 stdio 的 MCP 服务 `{"command": "npx", "args": ["-y", "aimake", "mcp"]}`；
+  - `expert/aimake-producer.md`：预置「爱创总制片（Aimake Producer）」专家角色，自动按素材水源、发布平台与文风基因编排作品。
+- **上架与使用**：在 WorkBuddy 中导入自定义插件目录，或在团队企业知识库中挂载，即可在聊天对话中直接调度 Aimake 16 大 MCP 工具完成文档转 PPT 与全渠道分发。
+
+### 2. Claude Desktop & Claude Code
+- **官方插件标准支持**：维护顶级 [`plugin.json`](./plugin.json) 与 [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json)。
+- **Claude Desktop MCP 配置**：在 `~/Library/Application Support/Claude/claude_desktop_config.json` 中添加：
+  ```json
+  {
+    "mcpServers": {
+      "aimake": {
+        "command": "npx",
+        "args": ["-y", "aimake", "mcp"]
+      }
+    }
+  }
+  ```
+
+### 3. Cursor & VSCode
+- 在 Cursor **Settings -> Features -> MCP** 中新增服务器：
+  - **Name**: `aimake`
+  - **Type**: `command`
+  - **Command**: `npx -y aimake mcp`
+- 即可在 Cursor Composer 中直接调用 16 个 Aimake 原子工具（如 `aimake_publish_content`、`aimake_pipeline_inspect`、`aimake_wiki_ingest`）。
+
+### 4. OpenAI Codex CLI & Google Antigravity (AGY)
+- **通用 Agent Skill 规范**：位于 [`skills/aimake/SKILL.md`](./skills/aimake/SKILL.md)，严格符合标准 Agent Frontmatter 规范。
+- **1-Click 启动配方**：在 Aimake Studio 中点击 AI Launcher，自动生成带完整工作区上下文的即跑命令：
+  - Codex: `codex exec --skip-git-repo-check '...'`
+  - AGY: `agy -p '...'`
 
 ---
 
