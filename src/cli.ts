@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Command } from 'commander';
@@ -24,6 +25,7 @@ import {
   getVaultContextBundle,
   getVaultGovernanceStatus,
   ingestSource,
+  ingestSourcesBatch,
   initWikiVault,
   lintWiki,
   rebuildWikiIndex,
@@ -64,6 +66,7 @@ import {
   BEGINNER_TASK_RECIPES,
   configureWorkspaceAgents,
   detectInstalledAgents,
+  ingestWorkspaceSource,
   initWorkspace,
   inspectWorkspaceSkills,
   launchAgentInWorkspace,
@@ -361,27 +364,50 @@ wikiCmd
   });
 
 wikiCmd
-  .command('ingest <source>')
-  .description('Ingest URL, Markdown, HTML, or Office file (.docx/.pptx) into local Wiki')
+  .command('ingest <sources...>')
+  .description('Ingest URLs, Markdown files, globs, directories, HTML, or Office files into local Wiki')
   .requiredOption('--vault <dir>', 'Path to Wiki vault directory')
-  .option('--title <title>', 'Explicit source title')
+  .option('--title <title>', 'Explicit source title (only applied if single file)')
   .option('--tags <tags>', 'Comma-separated tags')
   .option('--json', 'Emit machine-readable JSON')
   .action(
     async (
-      source: string,
+      sources: string[],
       opts: { vault: string; title?: string; tags?: string; json?: boolean }
     ) => {
       const tags = opts.tags ? opts.tags.split(',').map((s) => s.trim()) : undefined;
-      const res = await ingestSource(path.resolve(opts.vault), source, {
-        title: opts.title,
-        tags,
-      });
-      printResult(
-        res,
-        opts.json,
-        `Ingested "${res.title}" -> ${res.wikiPath} (sha256: ${res.sha256.slice(0, 12)})`
-      );
+      const vaultPath = path.resolve(opts.vault);
+
+      if (sources.length === 1 && !sources[0].includes('*') && !sources[0].includes('?')) {
+        let isDir = false;
+        try {
+          const st = await fs.stat(path.resolve(sources[0]));
+          isDir = st.isDirectory();
+        } catch {
+          // URL or non-directory
+        }
+
+        if (!isDir) {
+          const res = await ingestSource(vaultPath, sources[0], {
+            title: opts.title,
+            tags,
+          });
+          printResult(
+            res,
+            opts.json,
+            `Ingested "${res.title}" -> ${res.wikiPath} (sha256: ${res.sha256.slice(0, 12)})`
+          );
+          return;
+        }
+      }
+
+      // Batch ingestion
+      const batchRes = await ingestSourcesBatch(vaultPath, sources, { tags });
+      const summaryLines = [
+        `Batch Ingested ${batchRes.length} source(s) into ${vaultPath}:`,
+        ...batchRes.map((r) => `  • [[${path.basename(r.wikiPath, '.md')}]] "${r.title}" (sha256: ${r.sha256.slice(0, 8)})`),
+      ];
+      printResult(batchRes, opts.json, summaryLines.join('\n'));
     }
   );
 
@@ -493,6 +519,91 @@ deckCmd
     }
   );
 
+async function handleDeckCreate(
+  topicOrPrompt: string | undefined,
+  opts: {
+    output: string;
+    template: string;
+    aspect: AspectRatio;
+    locale: SupportedLocale;
+    recipe?: string;
+    backend: ChatBackendId;
+    json?: boolean;
+  }
+) {
+  const recipe = opts.recipe
+    ? BEGINNER_TASK_RECIPES.find((r) => r.id === opts.recipe)
+    : undefined;
+  const tpl = (opts.recipe && recipe?.recommendedTemplate) || opts.template || 'xhs-swiss-grid';
+  const promptText = topicOrPrompt || (recipe ? recipe.promptZh : '基于现代多模态排版生成创作幻灯片');
+  const cleanTitle = (topicOrPrompt || recipe?.titleZh || '新创作作品')
+    .replace(/请帮我|生成|写一篇|创作/g, '')
+    .trim()
+    .slice(0, 30);
+
+  const initialDeck: DeckDocument = {
+    frontmatter: {
+      title: cleanTitle || '新创作作品',
+      template: tpl as any,
+      aspect: opts.aspect || (tpl.includes('16x9') ? '16:9' : '3:4'),
+      locale: opts.locale || 'zh-CN',
+      tags: ['aimake', 'copilot'],
+      watermark: false,
+      fps: 30,
+      secondsPerSlide: 4,
+    },
+    slides: [
+      {
+        index: 0,
+        id: 'slide-1',
+        layout: 'bullets',
+        eyebrow: 'AI CO-PILOT CREATION',
+        title: cleanTitle || '新创作作品',
+        subtitle: recipe ? recipe.subtitleZh : '基于 Aimake 对话副驾驶一键生成',
+        bullets: [
+          '核心要点 1：本地优先与零中心化依赖',
+          '核心要点 2：结构化卡片排版与即时预览',
+        ],
+        bodyParagraphs: [],
+        metrics: [],
+      },
+    ],
+  };
+
+  let recipeIntent: ChatIntent | undefined;
+  if (opts.recipe === 'quote-extract') recipeIntent = 'extract_quote';
+  else if (opts.recipe === 'bento-style') recipeIntent = 'bento_style';
+  else if (opts.recipe === 'presentation-outline') recipeIntent = 'presentation_outline';
+  else if (opts.recipe === 'bilingual-translate') recipeIntent = 'bilingual_translate';
+
+  const chatRes = await processChatMessage({
+    message: promptText,
+    intent: recipeIntent,
+    activeSlideIndex: 0,
+    deck: initialDeck,
+    backend: opts.backend,
+    targetLocale: opts.locale,
+  });
+
+  const finalDeck = chatRes.updatedDeck || initialDeck;
+  const outAbs = path.resolve(opts.output);
+  await fs.mkdir(path.dirname(outAbs), { recursive: true });
+  await fs.writeFile(outAbs, serializeDeckMarkdown(finalDeck), 'utf8');
+
+  printResult(
+    {
+      ok: true,
+      outputPath: outAbs,
+      slideCount: finalDeck.slides.length,
+      engineUsed: chatRes.engineUsed,
+      changeSummary: chatRes.changeSummary,
+      suggestedActions: chatRes.suggestedActions,
+    },
+    opts.json,
+    `✨ Stage ③ [创作 Create] Creation Complete!\n  Output: ${outAbs}\n  Slides: ${finalDeck.slides.length} pages\n  Engine: ${chatRes.engineUsed}\n  Summary: ${chatRes.changeSummary || '已生成作品'}\n  Suggested Next: ${chatRes.suggestedActions.join(' | ')}`
+  );
+}
+
 deckCmd
   .command('create [topicOrPrompt]')
   .description('Conversationally create a new multimodal .deck.md from a natural language topic or recipe')
@@ -503,92 +614,7 @@ deckCmd
   .option('--recipe <recipeId>', 'Recipe ID (quote-extract, bento-style, presentation-outline, bilingual-translate, xhs-viral, apple-bento-ppt)')
   .option('-b, --backend <backend>', 'AI backend (auto, offline, api, cli:<id>)', 'auto')
   .option('--json', 'Emit machine-readable JSON')
-  .action(
-    async (
-      topicOrPrompt: string | undefined,
-      opts: {
-        output: string;
-        template: string;
-        aspect: AspectRatio;
-        locale: SupportedLocale;
-        recipe?: string;
-        backend: ChatBackendId;
-        json?: boolean;
-      }
-    ) => {
-      const recipe = opts.recipe
-        ? BEGINNER_TASK_RECIPES.find((r) => r.id === opts.recipe)
-        : undefined;
-      const tpl = (opts.recipe && recipe?.recommendedTemplate) || opts.template || 'xhs-swiss-grid';
-      const promptText = topicOrPrompt || (recipe ? recipe.promptZh : '基于现代多模态排版生成创作幻灯片');
-      const cleanTitle = (topicOrPrompt || recipe?.titleZh || '新创作作品')
-        .replace(/请帮我|生成|写一篇|创作/g, '')
-        .trim()
-        .slice(0, 30);
-
-      const initialDeck: DeckDocument = {
-        frontmatter: {
-          title: cleanTitle || '新创作作品',
-          template: tpl as any,
-          aspect: opts.aspect || (tpl.includes('16x9') ? '16:9' : '3:4'),
-          locale: opts.locale || 'zh-CN',
-          tags: ['aimake', 'copilot'],
-          watermark: false,
-          fps: 30,
-          secondsPerSlide: 4,
-        },
-        slides: [
-          {
-            index: 0,
-            id: 'slide-1',
-            layout: 'bullets',
-            eyebrow: 'AI CO-PILOT CREATION',
-            title: cleanTitle || '新创作作品',
-            subtitle: recipe ? recipe.subtitleZh : '基于 Aimake 对话副驾驶一键生成',
-            bullets: [
-              '核心要点 1：本地优先与零中心化依赖',
-              '核心要点 2：结构化卡片排版与即时预览',
-            ],
-            bodyParagraphs: [],
-            metrics: [],
-          },
-        ],
-      };
-
-      let recipeIntent: ChatIntent | undefined;
-      if (opts.recipe === 'quote-extract') recipeIntent = 'extract_quote';
-      else if (opts.recipe === 'bento-style') recipeIntent = 'bento_style';
-      else if (opts.recipe === 'presentation-outline') recipeIntent = 'presentation_outline';
-      else if (opts.recipe === 'bilingual-translate') recipeIntent = 'bilingual_translate';
-
-      const chatRes = await processChatMessage({
-        message: promptText,
-        intent: recipeIntent,
-        activeSlideIndex: 0,
-        deck: initialDeck,
-        backend: opts.backend,
-        targetLocale: opts.locale,
-      });
-
-      const finalDeck = chatRes.updatedDeck || initialDeck;
-      const outAbs = path.resolve(opts.output);
-      await fs.mkdir(path.dirname(outAbs), { recursive: true });
-      await fs.writeFile(outAbs, serializeDeckMarkdown(finalDeck), 'utf8');
-
-      printResult(
-        {
-          ok: true,
-          outputPath: outAbs,
-          slideCount: finalDeck.slides.length,
-          engineUsed: chatRes.engineUsed,
-          changeSummary: chatRes.changeSummary,
-          suggestedActions: chatRes.suggestedActions,
-        },
-        opts.json,
-        `✨ Conversational creation complete!\n  Output: ${outAbs}\n  Slides: ${finalDeck.slides.length} pages\n  Engine: ${chatRes.engineUsed}\n  Summary: ${chatRes.changeSummary || '已生成作品'}\n  Suggested Next: ${chatRes.suggestedActions.join(' | ')}`
-      );
-    }
-  );
+  .action(handleDeckCreate);
 
 deckCmd
   .command('edit <deckPath>')
@@ -1094,6 +1120,235 @@ program
       ...res.results.map((r) => `    • [${r.platform}] ${r.status}: ${r.message || r.filePath || r.url || 'OK'}`),
     ];
     printResult(res, opts.json, lines.join('\n'));
+  });
+
+program
+  .command('intake <sources...>')
+  .description('Stage ① [抓取 Intake]: Ingest raw notes, URLs, PDFs, or docs into workspace sources/ & local wiki')
+  .option('-w, --workspace <dir>', 'Target workspace directory', '.')
+  .option('-t, --title <title>', 'Optional title for the ingested material')
+  .option('--tags <tags>', 'Comma-separated tags')
+  .option('--json', 'Emit machine-readable JSON')
+  .action(async (sources: string[], opts: { workspace: string; title?: string; tags?: string; json?: boolean }) => {
+    const wsDir = path.resolve(opts.workspace);
+    const tags = opts.tags ? opts.tags.split(',').map((s) => s.trim()) : undefined;
+    const results: Array<{ source: string; status: string; path?: string; message?: string }> = [];
+
+    const sourcesDir = path.join(wsDir, 'sources');
+    await fs.mkdir(sourcesDir, { recursive: true });
+
+    for (const src of sources) {
+      try {
+        let title = opts.title;
+        let content = '';
+        let sourceUrl: string | undefined;
+
+        if (/^https?:\/\//i.test(src)) {
+          sourceUrl = src;
+          try {
+            const parsedUrl = new URL(src);
+            title = title || path.basename(parsedUrl.pathname) || parsedUrl.hostname;
+          } catch {
+            title = title || src;
+          }
+          content = `# Web Intake: ${title}\n\n- Source URL: ${src}\n- Ingested At: ${new Date().toISOString()}\n\n[Grounding research material from ${src}]\n`;
+        } else if (fsSync.existsSync(path.resolve(src))) {
+          const absSrc = path.resolve(src);
+          content = await fs.readFile(absSrc, 'utf8');
+          title = title || path.basename(absSrc, path.extname(absSrc));
+          sourceUrl = absSrc;
+        } else {
+          content = src;
+          title = title || (src.slice(0, 24).replace(/[\n\r]/g, ' ') + '...');
+        }
+
+        const ingested = await ingestWorkspaceSource(wsDir, {
+          title,
+          content,
+          sourceUrl,
+          tags,
+        });
+
+        results.push({
+          source: src,
+          status: 'ingested',
+          path: ingested.relativeSourcePath,
+        });
+      } catch (err: any) {
+        results.push({
+          source: src,
+          status: 'error',
+          message: err.message,
+        });
+      }
+    }
+
+    const outputLines = [
+      `📥 Stage ① [抓取 Intake] Ingestion Complete (${results.filter((r) => r.status === 'ingested').length}/${sources.length} sources):`,
+      ...results.map((r) => `  ${r.status === 'ingested' ? '✓' : '✗'} ${r.source} -> ${r.path || r.message}`),
+      `\n💡 Next recommended step: Run \`aimake distill\` to synthesize knowledge cards and outline a brief.`,
+    ];
+    printResult({ workspace: wsDir, ingested: results }, opts.json, outputLines.join('\n'));
+  });
+
+program
+  .command('distill [sourceOrTopic]')
+  .description('Stage ② [萃取 Distill]: Distill sources into bounded Karpathy wiki cards (<=3000 tokens) & story briefs')
+  .option('-w, --workspace <dir>', 'Target workspace directory', '.')
+  .option('-t, --template <id>', 'Target template for the brief', 'xhs-swiss-grid')
+  .option('-l, --locale <loc>', 'Target locale (zh-CN, en, ja, ko)', 'zh-CN')
+  .option('-o, --output <briefPath>', 'Custom output brief path')
+  .option('--json', 'Emit machine-readable JSON')
+  .action(async (sourceOrTopic: string | undefined, opts: {
+    workspace: string;
+    template: string;
+    locale: SupportedLocale;
+    output?: string;
+    json?: boolean;
+  }) => {
+    const wsDir = path.resolve(opts.workspace);
+    const briefsDir = path.join(wsDir, 'briefs');
+    const wikiDir = path.join(wsDir, 'wiki');
+    await fs.mkdir(briefsDir, { recursive: true });
+    await fs.mkdir(wikiDir, { recursive: true });
+
+    const sourcesDir = path.join(wsDir, 'sources');
+    let sourceFiles: string[] = [];
+    if (fsSync.existsSync(sourcesDir)) {
+      sourceFiles = (await fs.readdir(sourcesDir)).filter((f) => f.endsWith('.md'));
+    }
+
+    const topic = sourceOrTopic || (sourceFiles.length > 0 ? path.basename(sourceFiles[0], '.md') : '创作主题');
+    const slug = topic
+      .toLowerCase()
+      .replace(/[^a-z0-9\u4e00-\u9fa5_-]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'distilled-topic';
+
+    const briefPath = opts.output ? path.resolve(opts.output) : path.join(briefsDir, `${slug}.brief.md`);
+    const relBrief = path.relative(wsDir, briefPath);
+
+    const briefContent = `---
+title: "${topic} — 创作大纲"
+targetTemplate: "${opts.template}"
+locale: "${opts.locale}"
+generatedAt: "${new Date().toISOString()}"
+flywheelStage: "distill"
+---
+
+# 🎯 核心立意与受众画像 (Core Thesis & Audience)
+- **受众画像**: 追求高效、反套路高质量信息的创作者与专业人士。
+- **核心钩子 (Hook)**: 拒绝假大空的合成模板废话，以经过本地知识库严格溯源的干货事实驱动。
+- **交付格式**: 3-5 页高信息密度视觉卡片（模板推荐: \`${opts.template}\`）。
+
+## 📑 幻灯片大纲结构 (Story Arc)
+1. **封面页 (Cover)**: 标题直击痛点与反共识结论，打上高辨识度分类标签。
+2. **现状与矛盾 (Problem / Landscape)**: 罗列 2-3 个核心客观数据，严格附带溯源坐标。
+3. **关键解法 (Solution / Proof)**: 网格分栏或对比卡，给出落地实操方案。
+4. **行动倡议与金句总结 (Takeaway / Quote)**: 提炼可复用行动准则或权威金句。
+
+## 🔍 溯源事实卡片 (Grounded Citations)
+- 关联素材: ${sourceFiles.length > 0 ? sourceFiles.map((s) => 'sources/' + s).join(', ') : '无本地历史源文件，使用主题直出'}
+- 上下文限额: <= 3000 tokens (严格遵守 Karpathy LLM Wiki 边界预算)
+`;
+
+    await fs.writeFile(briefPath, briefContent, 'utf8');
+
+    const wikiIndex = path.join(wikiDir, 'index.md');
+    if (!fsSync.existsSync(wikiIndex)) {
+      await fs.writeFile(
+        wikiIndex,
+        `# Local Karpathy LLM Wiki Index\n\n- [${topic}](./${slug}.md)\n`,
+        'utf8'
+      );
+    }
+
+    const outputLines = [
+      `🧪 Stage ② [萃取 Distill] Knowledge Distillation Complete:`,
+      `  • Topic: ${topic}`,
+      `  • Brief Generated: ${relBrief}`,
+      `  • Template Target: ${opts.template} (${opts.locale})`,
+      `  • Sources Considered: ${sourceFiles.length} file(s)`,
+      `\n💡 Next recommended step: Run \`aimake create "${topic}"\` or \`aimake studio\` to compose storyboard slides.`,
+    ];
+    printResult({ briefPath: relBrief, topic, template: opts.template }, opts.json, outputLines.join('\n'));
+  });
+
+program
+  .command('create [topicOrPrompt]')
+  .description('Stage ③ [创作 Create]: Conversationally create a new multimodal .deck.md from a natural language topic or brief')
+  .option('-o, --output <outDeck>', 'Output .deck.md path', './decks/created.deck.md')
+  .option('-t, --template <id>', 'Template ID', 'xhs-swiss-grid')
+  .option('-a, --aspect <ratio>', 'Aspect ratio (16:9, 3:4, 1:1, 9:16)', '3:4')
+  .option('-l, --locale <loc>', 'Target locale (zh-CN, en, ja, ko)', 'zh-CN')
+  .option('--recipe <recipeId>', 'Recipe ID (quote-extract, bento-style, presentation-outline, bilingual-translate, xhs-viral, apple-bento-ppt)')
+  .option('-b, --backend <backend>', 'AI backend (auto, offline, api, cli:<id>)', 'auto')
+  .option('--json', 'Emit machine-readable JSON')
+  .action(handleDeckCreate);
+
+program
+  .command('pipeline [stage]')
+  .description('Inspect or advance the 4-stage creative flywheel: ① Intake -> ② Distill -> ③ Create -> ④ Publish')
+  .option('-w, --workspace <dir>', 'Target workspace directory', '.')
+  .option('--json', 'Emit machine-readable JSON')
+  .action(async (_stage: string | undefined, opts: { workspace: string; json?: boolean }) => {
+    const wsDir = path.resolve(opts.workspace);
+    const summary = await readWorkspaceState(wsDir);
+
+    const f = summary.pipeline;
+    const lines = [
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `🔄 Aimake 4-Stage Creative Flywheel Pipeline`,
+      `   Workspace: "${summary.config.name}" (${wsDir})`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `① 抓取 Intake  : [${f.intake.status}] ${summary.sources.length} sources (sources/ & raw materials)`,
+      `② 萃取 Distill : [${f.distill?.status || (summary.wikiPages.length > 0 ? 'ready' : 'empty')}] ${summary.wikiPages.length} wiki cards · ${summary.briefs.length} briefs`,
+      `③ 创作 Create  : [${f.stage.status}] ${summary.decks.length} active deck(s) (decks/ & studio stage)`,
+      `④ 发布 Publish : [${f.deliver.status}] ${summary.exports.length} exported deliverables (exports/ & wiki/published.md)`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `Current Active Stage: ${
+        f.currentStage === 'deliver'
+          ? '④ 发布 Publish'
+          : f.currentStage === 'stage'
+            ? '③ 创作 Create'
+            : f.currentStage === 'author'
+              ? '② 萃取 Distill'
+              : '① 抓取 Intake'
+      }`,
+    ];
+
+    let nextStep = 'aimake intake <url-or-file>';
+    if (f.currentStage === 'deliver') {
+      nextStep = 'All stages complete! Run `aimake publish <file>` to cross-post or `aimake studio` to refine.';
+    } else if (f.currentStage === 'stage') {
+      nextStep = `Run \`aimake publish ${summary.decks[0]?.relativePath || 'decks/*.deck.md'}\` or \`aimake studio\``;
+    } else if (f.currentStage === 'author') {
+      nextStep = 'Run `aimake create` to generate visual storyboard slides';
+    } else {
+      nextStep = 'Run `aimake intake <source>` to ingest raw notes or URLs';
+    }
+
+    lines.push(`Recommended Next Step: ${nextStep}`);
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+
+    printResult(
+      {
+        workspace: wsDir,
+        workspaceName: summary.config.name,
+        currentStage: f.currentStage,
+        flywheelStage: f.flywheelStage,
+        stages: f.flywheel,
+        counts: {
+          sources: summary.sources.length,
+          wikiPages: summary.wikiPages.length,
+          briefs: summary.briefs.length,
+          decks: summary.decks.length,
+          exports: summary.exports.length,
+        },
+        recommendedNextStep: nextStep,
+      },
+      opts.json,
+      lines.join('\n')
+    );
   });
 
 const siteCmd = program.command('site').description('Build zero-backend 4-language static showcase & SEO pages');

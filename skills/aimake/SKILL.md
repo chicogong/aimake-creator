@@ -7,12 +7,30 @@ description: Local-first multimodal content creation & Karpathy LLM Wiki skill. 
 
 Aimake turns your AI agent (Antigravity, Codex, WorkBuddy, Claude Code, Cursor, dsh) into an end-to-end personal IP & multimodal publishing studio—**100% locally with zero backend servers**.
 
-## Interactive 3-Step Guided Workflow
+## The 4-Stage Creative Flywheel Pipeline
 
-Unless the user already specified all inputs in a single prompt, guide them with **3 concise questions**:
+Every piece of high-leverage content flows through four deterministic, local stages:
+
+```text
+① 抓取 Intake  ──>  ② 萃取 Distill  ──>  ③ 创作 Create  ──>  ④ 发布 Publish
+ (sources/)          (wiki/ & briefs/)     (decks/ & studio)      (exports/ & multi-platform)
+```
+
+1. **Stage ① 抓取 Intake (`aimake intake` / `aimake radar` / `aimake import`)**:
+   - Ingest raw research, URLs, office documents, or markdown into `sources/` and the local knowledge vault.
+2. **Stage ② 萃取 Distill (`aimake distill` / `aimake wiki` / `aimake persona`)**:
+   - Distills raw facts into grounded Karpathy LLM Wiki cards ($\le 3,000$ tokens budget) and structured briefs in `briefs/` with strict `cite:` coordinates.
+3. **Stage ③ 创作 Create (`aimake create` / `aimake deck create` / `aimake studio`)**:
+   - Transforms distilled facts into 36 parametric design templates (Bento Grid, Swiss Grid, Risograph, Tech Keynote), with conversational diff iteration in Studio.
+4. **Stage ④ 发布 Publish (`aimake publish` / `aimake render`)**:
+   - Compiles one `.deck.md` into 5 native deliverables (PNG, WeChat HTML, PDF, PPTX, MP4) and publishes to WeChat, Zhihu, Juejin, Xiaohongshu, while compounding back into `wiki/published.md`.
+
+## Interactive Guided Workflow
+
+Unless the user already specified all inputs in a single prompt, check workspace state via `aimake pipeline` or ask:
 
 1. **Source & Knowledge Grounding**:
-   - Where is the source material? (Live trend via `aimake radar` / Grok search, a URL/Office doc via `aimake wiki ingest`, or existing notes in `wiki/index.md`?)
+   - Where is the source material? (Live trend via `aimake radar` / Grok search, a URL/Office doc via `aimake intake <source>`, or existing notes in `wiki/index.md`?)
 2. **Target Market, Platform & Language**:
    - Which deliverable & locale?
      - `zh-CN` / `zh-TW`: Xiaohongshu `3:4` (`xhs-swiss-grid`, `xhs-paper-editorial`, `xhs-neon-tech`), WeChat Greenbook (`wechat-greenbook`), WeChat Official Account (`wechat-editorial-article`), Douyin/Channels `9:16` MP4 (`video-kinetic-reel`), Workplace 16:9 Editable `.pptx` (`ppt-executive-16x9`), or Classroom Flashcards (`edu-flashcard-kids`).
@@ -27,26 +45,29 @@ Unless the user already specified all inputs in a single prompt, guide them with
 Aimake CLI requires **zero LLM API keys**—your host agent authors the clean `.deck.md` storyboard, and Aimake compiles deterministic visual/media deliverables:
 
 ```bash
-# 1. Initialize or inspect local LLM Wiki (raw/ -> wiki/ + index.md <= 3,000 tokens)
-aimake wiki init ./my-vault
-aimake wiki ingest "https://example.com/article" --vault ./my-vault
-aimake wiki lint ./my-vault
+# 0. Check full pipeline progress at any time
+aimake pipeline
 
-# 2. Check live tech/creator trends
+# 1. Stage ① [抓取 Intake]: Ingest research URLs, notes, or documents
+aimake intake "https://example.com/deepseek-r1-benchmark" -w ./my-workspace
 aimake radar --sources hackernews,github --keywords "agent,mcp,tts"
 
-# 3. Strip AI slop across zh-CN / en / ja / ko
-aimake persona humanize draft.deck.md --locale zh-CN -o clean.deck.md
+# 2. Stage ② [萃取 Distill]: Distill facts into <=3,000 token wiki cards & briefs
+aimake distill "DeepSeek-R1 本地部署评测" -t xhs-neon-tech -w ./my-workspace
+aimake wiki lint ./my-workspace/wiki
 
-# 4. Render One .deck.md -> 5 Native Deliverables (with automatic Wiki compound write-back!)
-aimake render clean.deck.md -t xhs-swiss-grid -f png -o ./out/xhs --vault ./my-vault
-aimake render clean.deck.md -t wechat-editorial-article -f wechat -o ./out/wechat.html
-aimake render clean.deck.md -t linkedin-exec-carousel -f pdf -o ./out/carousel.pdf
-aimake render clean.deck.md -t ppt-executive-16x9 -f pptx -o ./out/report.pptx
-aimake render clean.deck.md -t video-kinetic-reel -f mp4 -o ./out/reel.mp4
+# 3. Stage ③ [创作 Create]: Generate or conversationally edit visual storyboard
+aimake create "DeepSeek-R1 本地部署评测" -t xhs-neon-tech -o ./my-workspace/decks/deepseek.deck.md
+aimake studio ./my-workspace/decks/deepseek.deck.md
 
-# 5. Launch local interactive WYSIWYG canvas for inline text micro-tuning
-aimake studio clean.deck.md
+# 4. Stage ④ [发布 Publish]: Package & cross-post to WeChat, Zhihu, Juejin, Xiaohongshu
+aimake publish ./my-workspace/decks/deepseek.deck.md --target wechat,zhihu,juejin,xiaohongshu
+
+# Or render individual native deliverables
+aimake render ./my-workspace/decks/deepseek.deck.md -t xhs-neon-tech -f png -o ./out/xhs
+aimake render ./my-workspace/decks/deepseek.deck.md -t wechat-editorial-article -f wechat -o ./out/article.html
+aimake render ./my-workspace/decks/deepseek.deck.md -t ppt-tech-architecture -f pptx -o ./out/slides.pptx
+aimake render ./my-workspace/decks/deepseek.deck.md -t video-kinetic-reel -f mp4 -o ./out/reel.mp4
 ```
 
 ## Privacy-Safe Desensitized Template Sharing

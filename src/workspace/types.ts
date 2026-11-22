@@ -143,11 +143,22 @@ export interface MaterializeResult {
   includeClaude: boolean;
 }
 
-export type PipelineStageId = 'intake' | 'author' | 'stage' | 'deliver';
+export type PipelineStageId =
+  | 'intake'
+  | 'author'
+  | 'stage'
+  | 'deliver'
+  | 'distill'
+  | 'create'
+  | 'publish';
+
+export type FlywheelStageId = 'intake' | 'distill' | 'create' | 'publish';
 export type PipelineStageStatus = 'empty' | 'active' | 'ready';
 
 export interface WorkspacePipelineStage {
   id: PipelineStageId;
+  name?: string;
+  nameZh?: string;
   count: number;
   status: PipelineStageStatus;
   detail: string;
@@ -155,10 +166,15 @@ export interface WorkspacePipelineStage {
 
 export interface WorkspacePipelineState {
   currentStage: PipelineStageId;
+  flywheelStage?: FlywheelStageId;
   intake: WorkspacePipelineStage;
   author: WorkspacePipelineStage;
   stage: WorkspacePipelineStage;
   deliver: WorkspacePipelineStage;
+  distill?: WorkspacePipelineStage;
+  create?: WorkspacePipelineStage;
+  publish?: WorkspacePipelineStage;
+  flywheel?: WorkspacePipelineStage[];
 }
 
 export interface WorkspaceFileEntry {

@@ -243,6 +243,17 @@ const MCP_TOOLS = [
       },
     },
   },
+  {
+    name: 'aimake_pipeline_inspect',
+    description: 'Inspect the 4-stage creative flywheel pipeline (① 抓取 Intake -> ② 萃取 Distill -> ③ 创作 Create -> ④ 发布 Publish) for an Aimake workspace, returning stage metrics, completion status, and recommended next action.',
+    inputSchema: {
+      type: 'object',
+      required: ['workspaceDir'],
+      properties: {
+        workspaceDir: { type: 'string', description: 'Path to local Aimake workspace directory' },
+      },
+    },
+  },
 ];
 
 function escapeHtml(value: string): string {
@@ -758,10 +769,48 @@ async function inspectWorkspaceStatus(rawWorkspaceDir: string): Promise<Record<s
       brief: { ready: briefs.length > 0, count: briefs.length, files: briefs },
       stage: { ready: activeDecks.length > 0, count: activeDecks.length },
       deliver: { ready: exportsList.length > 0, count: exportsList.length, files: exportsList },
+      flywheel: {
+        currentStage: activeDecks.length > 0 ? (exportsList.length > 0 ? 'publish' : 'create') : (wiki.length > 0 ? 'distill' : 'intake'),
+        stages: [
+          { id: 'intake', nameZh: '抓取素材', ready: sources.length > 0, count: sources.length },
+          { id: 'distill', nameZh: '萃取知识', ready: wiki.length > 0 || briefs.length > 0, count: wiki.length + briefs.length },
+          { id: 'create', nameZh: '创作视觉', ready: activeDecks.length > 0, count: activeDecks.length },
+          { id: 'publish', nameZh: '全渠道发布', ready: exportsList.length > 0, count: exportsList.length },
+        ],
+      },
     },
     activeDecks,
     presetSkillsCount: presetSkills.length,
     presetSkills,
+  };
+}
+
+async function inspectWorkspacePipeline(workspaceDir: string): Promise<Record<string, unknown>> {
+  const ws = path.resolve(workspaceDir);
+  const status = await inspectWorkspaceStatus(ws);
+  const flywheel = (status.pipeline as any).flywheel as {
+    currentStage: string;
+    stages: Array<{ id: string; nameZh: string; ready: boolean; count: number }>;
+  };
+
+  let recommendedAction = 'Run `aimake intake <source>` to ingest raw notes, files, or URLs';
+  if (flywheel.currentStage === 'distill') {
+    recommendedAction = 'Run `aimake distill` to distill sources into wiki cards and story briefs';
+  } else if (flywheel.currentStage === 'create') {
+    recommendedAction = 'Run `aimake create <prompt>` or `aimake studio` to compose storyboard deck';
+  } else if (flywheel.currentStage === 'publish') {
+    recommendedAction = 'Run `aimake publish <deck>` to render and cross-post to WeChat/Zhihu/Juejin/XHS';
+  }
+
+  return {
+    workspaceName: status.name,
+    workspaceDir: ws,
+    currentStage: status.currentStage,
+    flywheelStage: flywheel.currentStage,
+    flywheel: flywheel.stages,
+    counts: status.counts,
+    activeDecks: status.activeDecks,
+    recommendedAction,
   };
 }
 
@@ -1083,6 +1132,14 @@ export async function handleMcpRequest(req: JsonRpcRequest): Promise<Record<stri
           outDir: args.outDir ? path.resolve(String(args.outDir)) : undefined,
         });
         return okTool(req.id, res);
+      }
+
+      if (toolName === 'aimake_pipeline_inspect') {
+        if (!args.workspaceDir || typeof args.workspaceDir !== 'string') {
+          throw new Error('workspaceDir is required');
+        }
+        const pipeRes = await inspectWorkspacePipeline(args.workspaceDir);
+        return okTool(req.id, pipeRes);
       }
 
       return {

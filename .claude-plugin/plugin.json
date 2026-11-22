@@ -1,7 +1,7 @@
 {
   "name": "aimake",
   "version": "1.0.0",
-  "description": "Zero-backend multimodal content creation & Karpathy LLM Wiki OS (Xiaohongshu, WeChat, LinkedIn PDF, Zukai, Card News, Editable PPTX, 60fps Video).",
+  "description": "Zero-backend 4-stage multimodal creative flywheel (Intake -> Distill -> Create -> Publish) & Karpathy LLM Wiki OS (Xiaohongshu, WeChat, LinkedIn PDF, Zukai, Card News, Editable PPTX, 60fps Video).",
   "author": {
     "name": "Chico Gong",
     "url": "https://aimake.cc"

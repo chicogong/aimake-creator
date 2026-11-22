@@ -1456,8 +1456,9 @@ function getVariantCss(variant, manifest, theme) {
           background-image:
             linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
             linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-          background-size: 40px 40px;
-          border: 4px solid var(--border);
+          background-size: 36px 36px;
+          border: 1px solid var(--border);
+          box-shadow: var(--card-shadow);
         }
         .aimake-slide::before {
           content: '';
@@ -1465,39 +1466,46 @@ function getVariantCss(variant, manifest, theme) {
           top: 0;
           left: 0;
           bottom: 0;
-          width: 18px;
+          width: 6px;
           background: var(--accent);
         }
         .top-bar {
-          border-bottom: 3px solid var(--border);
-          padding-bottom: 18px;
+          border-bottom: 1px solid var(--border);
+          padding-bottom: 16px;
         }
         .eyebrow {
           background: var(--ink);
           color: var(--bg);
-          padding: 8px 16px;
-          letter-spacing: 0.14em;
+          padding: 6px 14px;
+          border-radius: 4px;
+          letter-spacing: 0.12em;
+          font-size: 15px;
         }
         .page-index {
           background: var(--accent);
           color: #FFFFFF;
-          padding: 6px 14px;
+          padding: 5px 12px;
+          border-radius: 4px;
           font-weight: 800;
         }
         h1.slide-title {
-          border-bottom: 3px solid var(--border);
-          padding-bottom: 18px;
-          letter-spacing: -0.03em;
+          border-bottom: 1px solid var(--border);
+          padding-bottom: 16px;
+          letter-spacing: -0.035em;
         }
         .bullet-dot {
           background: var(--accent);
           color: #FFFFFF;
           padding: 4px 10px;
-          font-size: 19px;
+          border-radius: 4px;
+          font-size: 17px;
           line-height: 1.2;
         }
         .metric-card {
-          border-top: 6px solid var(--accent);
+          border: 1px solid var(--border);
+          border-top: 3px solid var(--accent);
+          box-shadow: var(--card-shadow);
+          backdrop-filter: blur(16px);
         }
       `;
 
@@ -1902,14 +1910,13 @@ function getVariantCss(variant, manifest, theme) {
     case 'founder-whiteboard':
       return `
         .aimake-slide {
-          background-color: #F7FAFE;
+          background-color: var(--bg);
           background-image:
-            linear-gradient(to right, rgba(37, 99, 235, 0.08) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(37, 99, 235, 0.08) 1px, transparent 1px),
-            linear-gradient(to right, rgba(37, 99, 235, 0.16) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(37, 99, 235, 0.16) 1px, transparent 1px);
-          background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
-          border: 2px solid #93C5FD;
+            linear-gradient(to right, rgba(37, 99, 235, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(37, 99, 235, 0.05) 1px, transparent 1px);
+          background-size: 28px 28px;
+          border: 1px solid var(--border);
+          box-shadow: var(--card-shadow);
         }
         .aimake-slide::before {
           content: '┌  SCHEMATIC WHITEBOARD  ┐';
@@ -1939,8 +1946,10 @@ function getVariantCss(variant, manifest, theme) {
           padding-bottom: 10px;
         }
         .metric-card, ul.bullet-list li, .compare-col {
-          background: rgba(255, 255, 255, 0.94);
-          border: 2px dashed #60A5FA;
+          background: var(--surface);
+          border: 1px dashed rgba(59, 130, 246, 0.4);
+          box-shadow: var(--card-shadow);
+          backdrop-filter: blur(12px);
         }
         .quote-box {
           background: #EFF6FF;
@@ -2008,23 +2017,24 @@ function getVariantCss(variant, manifest, theme) {
     case 'x-zukai':
       return `
         .aimake-slide {
-          background-color: #EEF3FA;
+          background-color: var(--bg);
           background-image:
-            linear-gradient(to right, rgba(30, 64, 175, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(30, 64, 175, 0.05) 1px, transparent 1px);
+            linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
           background-size: 32px 32px;
-          border: 3px solid #1E3A8A;
+          border: 1px solid var(--border);
           padding: 0 64px 44px 64px !important;
           line-break: strict;
           word-break: normal;
           overflow-wrap: anywhere;
+          box-shadow: var(--card-shadow);
         }
         .top-bar {
           background: #1E3A8A;
           color: #FFFFFF;
           margin: 0 -64px 26px -64px;
-          padding: 22px 64px;
-          border-bottom: 4px solid #3B82F6;
+          padding: 20px 64px;
+          border-bottom: 2px solid #3B82F6;
         }
         .eyebrow {
           color: #93C5FD;
@@ -2041,10 +2051,11 @@ function getVariantCss(variant, manifest, theme) {
           gap: 16px;
         }
         ul.bullet-list li, .metric-card, .compare-col {
-          background: #FFFFFF;
-          border: 2px solid #94A3B8;
-          border-top: 5px solid #1E40AF;
-          box-shadow: 0 4px 12px rgba(23, 35, 54, 0.06);
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-top: 3px solid #1E40AF;
+          box-shadow: var(--card-shadow);
+          backdrop-filter: blur(16px);
         }
         .bullet-dot {
           background: #1E40AF;
@@ -2279,22 +2290,23 @@ function getVariantCss(variant, manifest, theme) {
           background: #0A2540;
           color: #FFFFFF;
           margin: 0 -88px 26px -88px;
-          padding: 20px 88px;
-          border-bottom: 4px solid #0066B3;
+          padding: 18px 88px;
+          border-bottom: 2px solid #0066B3;
         }
         .eyebrow {
           color: #93C5FD;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.12em;
         }
         .page-index {
           color: #E2E8F0;
         }
         h1.slide-title {
-          background: #F0F5FA;
-          border-left: 8px solid #0A2540;
-          padding: 18px 26px;
+          background: rgba(10, 37, 64, 0.04);
+          border-left: 4px solid #0A2540;
+          padding: 16px 24px;
           color: #0A2540;
           font-weight: 800;
+          border-radius: 0 8px 8px 0;
         }
         .bullet-list.grid-2col {
           display: grid;
@@ -2302,16 +2314,18 @@ function getVariantCss(variant, manifest, theme) {
           gap: 16px;
         }
         .metric-card {
-          background: #FFFFFF;
-          border: 1px solid #C7D6E6;
-          border-top: 5px solid #0A2540;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-top: 3px solid #0A2540;
+          box-shadow: var(--card-shadow);
         }
         ul.bullet-list li {
-          background: #F8FAFD;
-          border: 1px solid #D4E0EC;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          box-shadow: var(--card-shadow);
         }
         .compare-col {
-          border-top: 5px solid #0A2540;
+          border-top: 3px solid #0A2540;
         }
         .compare-col.highlight {
           border-top-color: #0066B3;
@@ -2327,14 +2341,15 @@ function getVariantCss(variant, manifest, theme) {
       return `
         .aimake-slide {
           background: radial-gradient(circle at 50% 0%, #FFFDF5 0%, #FFF7E0 100%);
-          border: 4px solid #F59E0B;
+          border: 1.5px solid #F59E0B;
+          box-shadow: var(--card-shadow);
         }
         .aimake-slide::before {
           content: '';
           position: absolute;
-          inset: 22px;
-          border: 3px dashed #FBBF24;
-          border-radius: 28px;
+          inset: 20px;
+          border: 1.5px dashed rgba(245, 158, 11, 0.45);
+          border-radius: 24px;
           pointer-events: none;
         }
         .top-bar {
@@ -2354,9 +2369,9 @@ function getVariantCss(variant, manifest, theme) {
           border-radius: 999px;
         }
         .metric-card, ul.bullet-list li, .compare-col {
-          background: #FFFFFF;
-          border: 3px solid #FCD34D;
-          box-shadow: 0 6px 0 #FDE68A;
+          background: var(--surface);
+          border: 1px solid #FCD34D;
+          box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
         }
         .bullet-dot {
           background: #F59E0B;
@@ -4499,12 +4514,15 @@ function buildStandaloneTemplateHtml(manifest, theme) {
     body {
       margin: 0;
       padding: 32px;
-      background: #0d0f13;
+      background: #090B0F;
       font-family: var(--font);
       color: var(--ink);
       display: flex;
       flex-direction: column;
       align-items: center;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
     #aimake-deck-root {
       display: flex;
@@ -4524,6 +4542,9 @@ function buildStandaloneTemplateHtml(manifest, theme) {
       position: relative;
       overflow: hidden;
       border: var(--bw) solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
     .top-bar {
       display: flex;
@@ -4562,13 +4583,14 @@ function buildStandaloneTemplateHtml(manifest, theme) {
     h1.slide-title {
       margin: 0;
       font-weight: 800;
-      line-height: 1.22;
-      letter-spacing: -0.02em;
+      line-height: 1.16;
+      letter-spacing: -0.035em;
     }
     p.slide-subtitle {
       margin: 0;
       font-size: calc(26px * var(--content-scale));
-      line-height: 1.48;
+      line-height: 1.5;
+      letter-spacing: -0.015em;
       color: var(--muted);
     }
     .metrics-grid {
@@ -4580,7 +4602,10 @@ function buildStandaloneTemplateHtml(manifest, theme) {
       background: var(--surface);
       border: var(--bw) solid var(--border);
       border-radius: var(--radius);
-      padding: calc(22px * var(--content-scale)) calc(24px * var(--content-scale));
+      padding: calc(22px * var(--content-scale)) calc(26px * var(--content-scale));
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
     .metric-label {
       font-size: calc(19px * var(--content-scale));
@@ -4618,10 +4643,13 @@ function buildStandaloneTemplateHtml(manifest, theme) {
       border-radius: var(--radius);
       padding: calc(18px * var(--content-scale)) calc(24px * var(--content-scale));
       font-size: calc(25px * var(--content-scale));
-      line-height: 1.48;
+      line-height: 1.5;
       display: flex;
       gap: 16px;
       align-items: flex-start;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
     .bullet-dot {
       color: var(--accent);
@@ -4639,9 +4667,13 @@ function buildStandaloneTemplateHtml(manifest, theme) {
       border: var(--bw) solid var(--border);
       border-radius: var(--radius);
       padding: calc(22px * var(--content-scale));
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
     .compare-col.highlight {
       border-color: var(--accent);
+      box-shadow: 0 10px 30px var(--accent-soft);
     }
     .compare-col h3 {
       margin: 0 0 12px 0;
@@ -4699,8 +4731,8 @@ function buildStandaloneTemplateHtml(manifest, theme) {
       position: absolute;
       top: 0;
       left: 0;
-      height: 7px;
-      background: var(--accent);
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent) 0%, rgba(99, 102, 241, 0.9) 100%);
       width: 100%;
       transform-origin: left center;
       z-index: 3;

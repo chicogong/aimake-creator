@@ -18,11 +18,31 @@ const GSC_VERIFICATION = {
   bing: 'B543FF67D291AA27F8D470ADEA45F876',
 } as const;
 
+interface BentoItem {
+  stage: string;
+  title: string;
+  desc: string;
+  tag: string;
+  badge: string;
+  type: 'wide' | 'tall' | 'normal';
+  details: string[];
+}
+
+interface TerminalScenario {
+  id: string;
+  label: string;
+  cmd: string;
+  desc: string;
+  output: string;
+}
+
 interface LangCopy {
   htmlLang: string;
   deckLocale: SupportedLocale;
   navPlayground: string;
+  navFlywheel: string;
   navTemplates: string;
+  navCli: string;
   navStudio: string;
   navUniverse: string;
   heroTag: string;
@@ -30,7 +50,15 @@ interface LangCopy {
   heroSub: string;
   primaryCta: string;
   secondaryCta: string;
+  quickInstall: string;
+  cliCopyNotice: string;
   stageCaption: string;
+  flywheelHeading: string;
+  flywheelSub: string;
+  bentoItems: BentoItem[];
+  terminalHeading: string;
+  terminalSub: string;
+  terminalScenarios: TerminalScenario[];
   pillarsHeading: string;
   pillars: Array<{ code: string; title: string; desc: string }>;
   galleryHeading: string;
@@ -48,7 +76,9 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     htmlLang: 'zh-CN',
     deckLocale: 'zh-CN',
     navPlayground: '在线工坊',
+    navFlywheel: '创作飞轮',
     navTemplates: '36 套设计模板',
+    navCli: '终端 & MCP',
     navStudio: '爱创声画 Studio',
     navUniverse: '爱创星球 Universe',
     heroTag: 'LOCAL-FIRST · 零后端隐私架构 · 兼容 16+ AI 助手',
@@ -57,7 +87,112 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
       'Aimake（爱创）将本地 Karpathy LLM Wiki 知识库、四语种个人风格基因（Style DNA）与确定性排版编译核融为一体。写好一份 .deck.md 原稿，同步直出小红书 3x 高清套图、微信公众号 100% 内联富文本、矢量 PDF、原生可编辑 .pptx 与 60fps 动画短视频。',
     primaryCta: '🚀 网页版在线体验 (免安装)',
     secondaryCta: '浏览 36 套设计系统与同款',
-    stageCaption: '实时编译舞台 · 点击上方介质标签切换同一原稿的多端渲染画布',
+    quickInstall: 'npm i -g @aimake/cli',
+    cliCopyNotice: '已复制终端命令至剪贴板',
+    stageCaption: '确定性排版编译舞台 · 点击上方介质标签实时切换同一原稿的多端渲染画布',
+    flywheelHeading: '端到端创作飞轮 · 四步完成知识沉淀与全域分发',
+    flywheelSub:
+      '从零碎素材摄入，到 Karpathy LLM Wiki 深度萃取，再到参数化排版与全渠道一键直发，每一步都 100% 运行在本机。',
+    bentoItems: [
+      {
+        stage: 'STAGE 01 · 零损耗全域摄入',
+        title: '网页、研报、周报与文档，一键入库为纯净 Markdown',
+        desc: '拖入 PDF、DOCX、PPTX 或粘贴微信文章、知乎长帖，本地解析引擎自动剥离广告排版杂质，原汁原味留存事实论据至 sources/。',
+        tag: 'INTAKE & RESEARCH',
+        badge: '0 杂质 · 格式全保真',
+        type: 'wide',
+        details: ['PDF / DOCX / PPTX 提取', '微信 / 知乎 / 网页深度清洗', '自动建立 sources/ 溯源归档'],
+      },
+      {
+        stage: 'STAGE 02 · 知识复利',
+        title: '严格控限 <= 3,000 Token 的永久记忆网络',
+        desc: '基于 Karpathy LLM Wiki 架构，每篇笔记提炼为高密度概念卡，按索引预算常驻上下文，让 AI 越创作越懂你的领域黑话与深度认知。',
+        tag: 'WIKI COMPLIANCE',
+        badge: '95% 上下文节省',
+        type: 'tall',
+        details: ['index.md <= 3,000 Tokens 预算', '概念卡与实体关系图谱', '严格标注事实来源坐标 cite'],
+      },
+      {
+        stage: 'STAGE 03 · 确定性编译',
+        title: '写一份 .deck.md，同步直出五种原生商业交付物',
+        desc: '告别重复搬运排版：PPTX 是原生双击可编辑的微软 OOXML 文本框，公众号是 100% 纯内联样式无外部依赖，视频采用精准帧级语音字幕对齐。',
+        tag: 'PARAMETRIC COMPILER',
+        badge: '1 原稿 · 5 原生介质',
+        type: 'wide',
+        details: [
+          '3x 高清小红书社交套图',
+          '公众号 100% 内联富文本',
+          '微软 Office 双击可编辑 PPTX',
+          '60fps H.264 逐帧语音视频',
+        ],
+      },
+      {
+        stage: 'STAGE 04 · 全渠道直达',
+        title: '一键发布至微信公众号、小红书、知乎与掘金',
+        desc: '内置微信草稿箱、小红书网页同步与开源跨平台发布适配器，发布记录自动写回 wiki/published.md，闭环创作者成长飞轮。',
+        tag: 'OMNI-CHANNEL PUBLISH',
+        badge: '多端协同',
+        type: 'normal',
+        details: ['WeChat 公众号草稿箱', '小红书社交图文矩阵', '知乎 / 掘金 Markdown 同步'],
+      },
+      {
+        stage: 'PRIVACY · 绝对安全',
+        title: '0 云端数据回传 · 100% 数据留存本机',
+        desc: '本地 127.0.0.1 闭环运行，兼容 Ollama、LM Studio 等私有化本地权重；任何 API Key 仅存留在本机配置文件中，断网亦可全功能编译。',
+        tag: 'ZERO-CLOUD PRIVACY',
+        badge: '100% 本地优先',
+        type: 'normal',
+        details: ['零外部服务器依赖', '断网全功能离线编译', '私有 Ollama / LM Studio 即插即用'],
+      },
+    ],
+    terminalHeading: '极简终端命令与 MCP 协议 · 无缝集成 16+ AI 助手',
+    terminalSub:
+      '只需一行命令，即可在终端快速初始化工作区、排版作品、一键全渠道发布，或作为 MCP Server 接入 Claude Code、OpenAI Codex 与 AGY。',
+    terminalScenarios: [
+      {
+        id: 'init',
+        label: '1. 初始化工作区',
+        cmd: 'aimake init my-workspace --scenario creator-growth',
+        desc: '在本地新建包含 7 大预设 Skill（零软链接污染）、Karpathy Wiki 骨架与示例原稿的独立创作工作区。',
+        output: `✔ Created local workspace at ./my-workspace
+✔ Materialized 7 preset skills (0 symlinks) into .agents/skills/
+✔ Initialized Karpathy LLM Wiki skeleton in wiki/
+✔ Generated starter storyboard in decks/welcome.deck.md
+🎉 Done! Run 'cd my-workspace && aimake studio' to open canvas.`,
+      },
+      {
+        id: 'compose',
+        label: '2. 创作与排版',
+        cmd: 'aimake compose decks/growth.deck.md --template xhs-swiss-grid',
+        desc: '根据 Markdown 原稿与选定视觉风格，在 80ms 内极速编译出 3x Retina PNG、公众号富文本与可编辑 PPTX。',
+        output: `✔ Parsed decks/growth.deck.md (4 slides, 16:9 aspect)
+✔ Applied 4-locale Humanizer (0 AI clichés detected)
+✔ Compiled Retina PNG: exports/growth-01.png ~ exports/growth-04.png
+✔ Generated WeChat Inline HTML: exports/growth-wechat.html
+✔ Built Native PowerPoint: exports/growth.pptx (real editable OOXML text)`,
+      },
+      {
+        id: 'publish',
+        label: '3. 全渠道分发',
+        cmd: 'aimake publish decks/growth.deck.md --channel all --dry-run',
+        desc: '一键将排版成品推送到微信公众号草稿箱、小红书与知乎，并把发布记录回写到 wiki/published.md。',
+        output: `[WeChat] Rendering inline HTML & uploading covers... Done (MediaId: wx_8f912a)
+[Xiaohongshu] Packaging 4-card 3:4 carousel... Ready for browser sync
+[Zhihu] Formatted column article with citations... Synced
+✔ Appended publishing record to wiki/published.md (Compound leverage +1)`,
+      },
+      {
+        id: 'mcp',
+        label: '4. 启动 MCP 协议',
+        cmd: 'aimake mcp',
+        desc: '启动独立 Model Context Protocol 服务，为 Claude Code、OpenAI Codex 与 Cursor 提供本地编译与排版工具。',
+        output: `[aimake-mcp] Server initialized on stdio (JSON-RPC 2.0)
+[aimake-mcp] Registered 6 tools: aimake_compile_deck, aimake_humanize,
+             aimake_publish_content, aimake_remix_template,
+             aimake_wiki_distill, aimake_market_search
+[aimake-mcp] Ready to receive host requests.`,
+      },
+    ],
     pillarsHeading: '为什么超级个体与专业团队选择 Aimake？',
     pillars: [
       {
@@ -94,7 +229,9 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     htmlLang: 'en',
     deckLocale: 'en',
     navPlayground: 'Web Playground',
+    navFlywheel: 'Flywheel',
     navTemplates: '36 Design Systems',
+    navCli: 'CLI & MCP',
     navStudio: 'Aimake Studio',
     navUniverse: 'Aimake Universe',
     heroTag: 'LOCAL-FIRST · ZERO-BACKEND PRIVACY · WORKS WITH 16+ AI AGENTS',
@@ -103,7 +240,112 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
       'Aimake unites a compounding Karpathy LLM Wiki, a 4-locale anti-slop Style DNA engine, and a deterministic layout compiler. Author one plain-Markdown .deck.md storyboard and output 3x Retina social cards, inline newsletter HTML, vector PDF carousels, native editable PowerPoint (.pptx), and 60fps MP4 reels.',
     primaryCta: '🚀 Try Live Web Playground (No Install)',
     secondaryCta: 'Explore 36 Design Systems',
-    stageCaption: 'LIVE COMPILER STAGE · Switch tabs to inspect real parametric HTML outputs',
+    quickInstall: 'npm i -g @aimake/cli',
+    cliCopyNotice: 'Command copied to clipboard',
+    stageCaption: 'Deterministic layout compiler stage · Switch tabs to inspect real parametric HTML outputs',
+    flywheelHeading: 'The 4-Stage Creative Flywheel: From Raw Notes to Omni-Channel Assets',
+    flywheelSub:
+      'Intake research, distill structured Karpathy LLM Wikis, author parametric storyboards, and publish across channels with 100% local privacy.',
+    bentoItems: [
+      {
+        stage: 'STAGE 01 · LOSSLESS INTAKE',
+        title: 'Ingest articles, reports, and PDFs into pristine Markdown',
+        desc: 'Drag and drop PDFs, Office documents, or URLs. The local intake parser strips clutter and stores clean factual citations into sources/.',
+        tag: 'INTAKE & RESEARCH',
+        badge: 'Zero Clutter',
+        type: 'wide',
+        details: ['PDF / DOCX / PPTX Parsing', 'Deep Web & Article Cleaner', 'Automatic sources/ Archival'],
+      },
+      {
+        stage: 'STAGE 02 · KNOWLEDGE LEVERAGE',
+        title: 'Strictly bounded <= 3,000-token index memory network',
+        desc: 'Compacting your knowledge into dense Karpathy concept cards that stay inside the LLM prompt budget without forgetting past insights.',
+        tag: 'WIKI COMPLIANCE',
+        badge: '95% Context Saved',
+        type: 'tall',
+        details: ['index.md <= 3,000 Token Cap', 'Concept & Entity Graph', 'Strict Source Citations (cite:)'],
+      },
+      {
+        stage: 'STAGE 03 · DETERMINISTIC COMPILE',
+        title: 'Write one .deck.md, generate five commercial native formats',
+        desc: 'No blurry screenshots: PowerPoint exports are genuine editable OOXML text boxes, newsletters are 100% inline HTML, and video is synced per frame.',
+        tag: 'PARAMETRIC COMPILER',
+        badge: '1 Source · 5 Formats',
+        type: 'wide',
+        details: [
+          '3x Retina PNG Social Cards',
+          '100% Inline CSS Newsletter HTML',
+          'Native Editable PowerPoint (.pptx)',
+          '60fps H.264 Narrated Video',
+        ],
+      },
+      {
+        stage: 'STAGE 04 · OMNI-CHANNEL REACH',
+        title: 'One-click publish to social feeds, newsletters, and slides',
+        desc: 'Built-in multi-platform publishing adapters sync finished drafts and record publication milestones back into wiki/published.md.',
+        tag: 'OMNI-CHANNEL PUBLISH',
+        badge: 'Multi-Target',
+        type: 'normal',
+        details: ['Social Carousel Exports', 'Inline Newsletter Drafts', 'Compounded Publishing Log'],
+      },
+      {
+        stage: 'PRIVACY · ZERO-CLOUD',
+        title: '0 Cloud Telemetry · 100% Data Stays on Your Machine',
+        desc: 'Runs completely on 127.0.0.1. Works with local Ollama or LM Studio models. API keys never leave your device, working offline seamlessly.',
+        tag: 'ZERO-CLOUD PRIVACY',
+        badge: '100% Local-First',
+        type: 'normal',
+        details: ['Zero External Cloud Servers', 'Full Offline Compile Support', 'Private Local LLMs Supported'],
+      },
+    ],
+    terminalHeading: 'Minimal CLI & Standalone MCP Server for 16+ AI Hosts',
+    terminalSub:
+      'Initialize isolated workspaces, compile decks, and multi-publish in one command — or bridge natively with Claude Code, OpenAI Codex, and Cursor.',
+    terminalScenarios: [
+      {
+        id: 'init',
+        label: '1. Initialize Workspace',
+        cmd: 'aimake init my-workspace --scenario creator-growth',
+        desc: 'Scaffolds an isolated local workspace with 7 materialized preset skills (zero symlinks), Karpathy Wiki, and a starter storyboard.',
+        output: `✔ Created local workspace at ./my-workspace
+✔ Materialized 7 preset skills (0 symlinks) into .agents/skills/
+✔ Initialized Karpathy LLM Wiki skeleton in wiki/
+✔ Generated starter storyboard in decks/welcome.deck.md
+🎉 Done! Run 'cd my-workspace && aimake studio' to open canvas.`,
+      },
+      {
+        id: 'compose',
+        label: '2. Compose & Compile',
+        cmd: 'aimake compose decks/growth.deck.md --template xhs-swiss-grid',
+        desc: 'Compiles your Markdown deck into 3x Retina PNGs, newsletter HTML, and native PowerPoint in under 80ms.',
+        output: `✔ Parsed decks/growth.deck.md (4 slides, 16:9 aspect)
+✔ Applied 4-locale Humanizer (0 AI clichés detected)
+✔ Compiled Retina PNG: exports/growth-01.png ~ exports/growth-04.png
+✔ Generated WeChat Inline HTML: exports/growth-wechat.html
+✔ Built Native PowerPoint: exports/growth.pptx (real editable OOXML text)`,
+      },
+      {
+        id: 'publish',
+        label: '3. Multi-Channel Publish',
+        cmd: 'aimake publish decks/growth.deck.md --channel all --dry-run',
+        desc: 'One-click multi-platform publisher that updates drafts and logs history back to wiki/published.md.',
+        output: `[WeChat] Rendering inline HTML & uploading covers... Done
+[Xiaohongshu] Packaging 4-card 3:4 carousel... Ready for sync
+[Zhihu] Formatted column article with citations... Synced
+✔ Appended publishing record to wiki/published.md (Compound leverage +1)`,
+      },
+      {
+        id: 'mcp',
+        label: '4. Start MCP Protocol',
+        cmd: 'aimake mcp',
+        desc: 'Starts a standard Model Context Protocol server exposing compiler, humanizer, and publishing tools to your AI agent.',
+        output: `[aimake-mcp] Server initialized on stdio (JSON-RPC 2.0)
+[aimake-mcp] Registered 6 tools: aimake_compile_deck, aimake_humanize,
+             aimake_publish_content, aimake_remix_template,
+             aimake_wiki_distill, aimake_market_search
+[aimake-mcp] Ready to receive host requests.`,
+      },
+    ],
     pillarsHeading: 'Engineered for Solopreneurs & High-Output Teams',
     pillars: [
       {
@@ -140,7 +382,9 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     htmlLang: 'ja',
     deckLocale: 'ja',
     navPlayground: 'Web プレイグラウンド',
+    navFlywheel: '制作フライホイール',
     navTemplates: '36 種デザインシステム',
+    navCli: 'CLI & MCP',
     navStudio: 'Aimake Studio',
     navUniverse: 'Aimake Universe',
     heroTag: 'ローカルファースト · サーバー不要 · 16以上のAIエージェント対応',
@@ -149,7 +393,112 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
       'Aimakeは、知識が複利で増えるKarpathy式LLM Wiki、AI臭さを消す文体DNAエンジン、厳格な日本語禁則処理（line-break: strict）を備えたマルチモーダル制作スタジオです。1つの .deck.md 原稿からXの「図解」・Note用HTML・LinkedIn PDF・編集可能なPPTX・60fps動画を同時出力します。',
     primaryCta: '🚀 Web版を今すぐ体験（インストール不要）',
     secondaryCta: '36種類のデザインシステムを見る',
-    stageCaption: 'ライブプレビュー · タブを切り替えて各メディアの描画を確認',
+    quickInstall: 'npm i -g @aimake/cli',
+    cliCopyNotice: 'コマンドをクリップボードにコピーしました',
+    stageCaption: '確定性レイアウトコンパイラ · タブを切り替えて各メディアの描画を確認',
+    flywheelHeading: '4段階の制作フライホイール：知識蓄積からマルチメディア同時配信まで',
+    flywheelSub:
+      '素材の自動摂取から Karpathy 式 LLM Wiki での知識蒸留、パラメトリック組版、そして主要プラットフォームへの一括配信まで、すべてローカルで完結。',
+    bentoItems: [
+      {
+        stage: 'STAGE 01 · 劣化なし素材摂取',
+        title: '記事URL、PDF、Office文書をクリーンなMarkdownに構造化',
+        desc: 'ドラッグ＆ドロップでPDFや文書を即座に取り込み。広告やノイズをローカルで除去し、生の根拠をsources/に保存。',
+        tag: 'INTAKE & RESEARCH',
+        badge: 'ノイズゼロ',
+        type: 'wide',
+        details: ['PDF / DOCX / PPTX 抽出', 'Web 記事クレンジング', 'sources/ 自動アーカイブ'],
+      },
+      {
+        stage: 'STAGE 02 · 知識複利化',
+        title: 'index.md を 3,000 トークン以下に制限する永久記憶',
+        desc: 'Karpathy 式 LLM Wiki により、過去の洞察をコンパクトな概念カードとして保持。文脈を圧迫せず AI の理解を深めます。',
+        tag: 'WIKI COMPLIANCE',
+        badge: '95% トークン削減',
+        type: 'tall',
+        details: ['index.md <= 3,000 トークン', '概念・エンティティ図譜', '厳格な典拠タグ (cite:)'],
+      },
+      {
+        stage: 'STAGE 03 · 確定性組版',
+        title: '1つの原稿から、5形式のネイティブ成果物を同時生成',
+        desc: '画像キャプチャの手抜きなし：PowerPointはダブルクリックで編集可能なOOXMLテキストボックス、記事は100%インラインCSS、動画はフレーム同期。',
+        tag: 'PARAMETRIC COMPILER',
+        badge: '1原稿 · 5形式出力',
+        type: 'wide',
+        details: [
+          'Retina 3倍 X用図解カード',
+          '100% インライン記事 HTML',
+          '文字編集可能なネイティブ PPTX',
+          '60fps H.264 音声同期動画',
+        ],
+      },
+      {
+        stage: 'STAGE 04 · マルチチャネル配信',
+        title: '主要プラットフォームへの一括配信と履歴蓄積',
+        desc: 'マルチ配信アダプターでワンクリック配信。公開実績は wiki/published.md に自動記録され、成長サイクルを完結。',
+        tag: 'OMNI-CHANNEL PUBLISH',
+        badge: 'マルチ配信',
+        type: 'normal',
+        details: ['SNS 用カルーセル出力', 'インライン記事下書き', 'wiki/published.md 連動'],
+      },
+      {
+        stage: 'PRIVACY · 完全保護',
+        title: 'クラウド送信 0 KB · データは100%ローカルに保持',
+        desc: '127.0.0.1 のローカル完結で動作。Ollama や LM Studio とも連携可能。APIキーも端末外に一切送信されません。',
+        tag: 'ZERO-CLOUD PRIVACY',
+        badge: '100% ローカル優先',
+        type: 'normal',
+        details: ['外部サーバー通信ゼロ', 'オフライン完全動作', 'プライベート LLM 即座接続'],
+      },
+    ],
+    terminalHeading: '洗練された CLI ＆ MCP 連携 · 16以上の AI エージェントに対応',
+    terminalSub:
+      'コマンド一行でワークスペース構築、複数フォーマット出力、一括配信を実行。Claude Code や Cursor の MCP ツールとしても即座に稼働。',
+    terminalScenarios: [
+      {
+        id: 'init',
+        label: '1. ワークスペース初期化',
+        cmd: 'aimake init my-workspace --scenario creator-growth',
+        desc: '7つのプリセットSkill（0シンボリックリンク）、Karpathy Wiki、サンプル原稿を含む独立環境を即座に作成。',
+        output: `✔ Created local workspace at ./my-workspace
+✔ Materialized 7 preset skills (0 symlinks) into .agents/skills/
+✔ Initialized Karpathy LLM Wiki skeleton in wiki/
+✔ Generated starter storyboard in decks/welcome.deck.md
+🎉 Done! Run 'cd my-workspace && aimake studio' to open canvas.`,
+      },
+      {
+        id: 'compose',
+        label: '2. 原稿コンパイル',
+        cmd: 'aimake compose decks/growth.deck.md --template x-zukai-quad',
+        desc: 'Markdown原稿から80ms以内で高解像度PNG、インラインHTML、編集可能PPTXを一括コンパイル。',
+        output: `✔ Parsed decks/growth.deck.md (4 slides, 16:9 aspect)
+✔ Applied 4-locale Humanizer (0 AI clichés detected)
+✔ Compiled Retina PNG: exports/growth-01.png ~ exports/growth-04.png
+✔ Generated WeChat Inline HTML: exports/growth-wechat.html
+✔ Built Native PowerPoint: exports/growth.pptx (real editable OOXML text)`,
+      },
+      {
+        id: 'publish',
+        label: '3. マルチチャネル配信',
+        cmd: 'aimake publish decks/growth.deck.md --channel all --dry-run',
+        desc: '各SNS・記事メディアへの一括配信をシミュレートし、wiki/published.md に記録を追記。',
+        output: `[WeChat] Rendering inline HTML & uploading covers... Done
+[Xiaohongshu] Packaging 4-card 3:4 carousel... Ready for sync
+[Zhihu] Formatted column article with citations... Synced
+✔ Appended publishing record to wiki/published.md (Compound leverage +1)`,
+      },
+      {
+        id: 'mcp',
+        label: '4. MCP サーバー起動',
+        cmd: 'aimake mcp',
+        desc: 'Claude Code や OpenAI Codex に標準 MCP ツール（コンパイル・文体調整・配信）を提供。',
+        output: `[aimake-mcp] Server initialized on stdio (JSON-RPC 2.0)
+[aimake-mcp] Registered 6 tools: aimake_compile_deck, aimake_humanize,
+             aimake_publish_content, aimake_remix_template,
+             aimake_wiki_distill, aimake_market_search
+[aimake-mcp] Ready to receive host requests.`,
+      },
+    ],
     pillarsHeading: '個人の発信力を複利で伸ばす4つのコア設計',
     pillars: [
       {
@@ -186,7 +535,9 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     htmlLang: 'ko',
     deckLocale: 'ko',
     navPlayground: '웹 플레이그라운드',
+    navFlywheel: '플라이휠',
     navTemplates: '36 종 디자인 시스템',
+    navCli: 'CLI & MCP',
     navStudio: 'Aimake Studio',
     navUniverse: 'Aimake Universe',
     heroTag: '로컬 퍼스트 · 무서버 프라이버시 · 16개 이상 AI 에이전트 연동',
@@ -195,7 +546,112 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
       'Aimake는 Karpathy 방식의 로컬 LLM 위키, AI 특유의 번역투를 제거하는 스타일 DNA 엔진, 그리고 Pretendard 단어 단위 줄바꿈(keep-all)이 적용된 멀티모달 제작 스튜디오입니다. 하나의 .deck.md 원고로 인스타그램 카드뉴스, 뉴스레터 HTML, 링크드인 PDF, 편집 가능한 네이티브 PPTX, 60fps 숏폼 영상을 완성하세요.',
     primaryCta: '🚀 웹 플레이그라운드 체험하기 (설치 불필요)',
     secondaryCta: '36가지 글로벌 템플릿 보기',
-    stageCaption: '실시간 컴파일 스테이지 · 탭을 눌러 매체별 렌더링 결과를 확인하세요',
+    quickInstall: 'npm i -g @aimake/cli',
+    cliCopyNotice: '명령어가 클립보드에 복사되었습니다',
+    stageCaption: '결정론적 레이아웃 컴파일러 · 탭을 눌러 매체별 렌더링 결과를 확인하세요',
+    flywheelHeading: '4단계 크리에이티브 플라이휠: 지식 정리부터 멀티 플랫폼 배포까지',
+    flywheelSub:
+      '원문 수집부터 Karpathy 방식의 LLM 위키 구조화, 5종 네이티브 컴파일, 멀티 플랫폼 동시 발행까지 100% 로컬 프라이버시 환경에서 실행.',
+    bentoItems: [
+      {
+        stage: 'STAGE 01 · 손실 없는 원문 수집',
+        title: '기사 URL, 리포트, 문서를 깔끔한 마크다운으로 변환',
+        desc: 'PDF나 문서를 드래그 앤 드롭하면 로컬 파서가 불필요한 서식을 제거하고 핵심 사실을 sources/에 안전하게 저장합니다.',
+        tag: 'INTAKE & RESEARCH',
+        badge: '무손실 수집',
+        type: 'wide',
+        details: ['PDF / DOCX / PPTX 텍스트 추출', '웹 기사 클리너', 'sources/ 자동 아카이빙'],
+      },
+      {
+        stage: 'STAGE 02 · 지식 복리화',
+        title: 'index.md 3,000 토큰 엄격 제한 영구 기억망',
+        desc: 'Karpathy LLM 위키 구조로 지식을 응축 카드화하여 컨텍스트 낭비 없이 AI가 나의 업무 맥락을 지속 학습합니다.',
+        tag: 'WIKI COMPLIANCE',
+        badge: '95% 토큰 절약',
+        type: 'tall',
+        details: ['index.md <= 3,000 토큰 상한', '개념 및 개체 관계망', '명확한 출처 표기 (cite:)'],
+      },
+      {
+        stage: 'STAGE 03 · 결정론적 컴파일',
+        title: '원고 한 편으로 5종 네이티브 상업 포맷 동시 출력',
+        desc: '단순 캡처가 아닌 진짜 파워포인트 OOXML 텍스트 상자, 100% 인라인 HTML, 프레임 단위 음성 동기화 영상을 생성합니다.',
+        tag: 'PARAMETRIC COMPILER',
+        badge: '1원고 · 5종 포맷',
+        type: 'wide',
+        details: [
+          '3x 고해상도 카드뉴스 PNG',
+          '100% 인라인 CSS 뉴스레터 HTML',
+          '텍스트 수정 가능한 네이티브 PPTX',
+          '60fps H.264 음성 합성 영상',
+        ],
+      },
+      {
+        stage: 'STAGE 04 · 멀티 채널 배포',
+        title: '카드뉴스, 블로그, 슬라이드 멀티 플랫폼 원클릭 발행',
+        desc: '멀티 플랫폼 발행 어댑터로 다양한 채널에 원클릭 전송하고, 발행 기록을 wiki/published.md에 누적합니다.',
+        tag: 'OMNI-CHANNEL PUBLISH',
+        badge: '멀티 발행',
+        type: 'normal',
+        details: ['SNS 카드뉴스 패키징', '인라인 에디터 초안 전송', 'wiki/published.md 기록'],
+      },
+      {
+        stage: 'PRIVACY · 완벽 보호',
+        title: '클라우드 전송 0 KB · 데이터는 100% 내 컴퓨터에 보관',
+        desc: '127.0.0.1 로컬 환경에서 단독 구동. Ollama, LM Studio 등 로컬 모델 지원. 인터넷이 끊겨도 모든 기능이 작동합니다.',
+        tag: 'ZERO-CLOUD PRIVACY',
+        badge: '100% 로컬 퍼스트',
+        type: 'normal',
+        details: ['외부 서버 의존 없음', '오프라인 완전 구동', '프라이빗 로컬 LLM 연동'],
+      },
+    ],
+    terminalHeading: '미니멀 CLI & 독립 MCP 서버 · 16개 이상 AI 에이전트 연동',
+    terminalSub:
+      '명령어 한 줄로 워크스페이스 생성, 포맷 컴파일, 채널 동시 발행 완료. Claude Code, Codex, Cursor를 위한 표준 MCP 프로토콜 완벽 지원.',
+    terminalScenarios: [
+      {
+        id: 'init',
+        label: '1. 워크스페이스 초기화',
+        cmd: 'aimake init my-workspace --scenario creator-growth',
+        desc: '7가지 프리셋 Skill(0 심볼릭 링크), Karpathy 위키 골격, 시작 예제 원고가 포함된 독립 환경을 생성합니다.',
+        output: `✔ Created local workspace at ./my-workspace
+✔ Materialized 7 preset skills (0 symlinks) into .agents/skills/
+✔ Initialized Karpathy LLM Wiki skeleton in wiki/
+✔ Generated starter storyboard in decks/welcome.deck.md
+🎉 Done! Run 'cd my-workspace && aimake studio' to open canvas.`,
+      },
+      {
+        id: 'compose',
+        label: '2. 원고 컴파일',
+        cmd: 'aimake compose decks/growth.deck.md --template ig-cardnews-kr',
+        desc: '마크다운 원고를 80ms 이내에 고해상도 PNG, 인라인 HTML, 수정 가능한 PPTX로 일괄 변환합니다.',
+        output: `✔ Parsed decks/growth.deck.md (4 slides, 16:9 aspect)
+✔ Applied 4-locale Humanizer (0 AI clichés detected)
+✔ Compiled Retina PNG: exports/growth-01.png ~ exports/growth-04.png
+✔ Generated WeChat Inline HTML: exports/growth-wechat.html
+✔ Built Native PowerPoint: exports/growth.pptx (real editable OOXML text)`,
+      },
+      {
+        id: 'publish',
+        label: '3. 멀티 채널 발행',
+        cmd: 'aimake publish decks/growth.deck.md --channel all --dry-run',
+        desc: '다양한 플랫폼으로의 전송을 시뮬레이션하고 wiki/published.md에 발행 이력을 보관합니다.',
+        output: `[WeChat] Rendering inline HTML & uploading covers... Done
+[Xiaohongshu] Packaging 4-card 3:4 carousel... Ready for sync
+[Zhihu] Formatted column article with citations... Synced
+✔ Appended publishing record to wiki/published.md (Compound leverage +1)`,
+      },
+      {
+        id: 'mcp',
+        label: '4. MCP 프로토콜 구동',
+        cmd: 'aimake mcp',
+        desc: 'Claude Code나 Cursor에 컴파일, 문체 정돈, 멀티 발행 도구를 제공하는 표준 MCP 서버를 실행합니다.',
+        output: `[aimake-mcp] Server initialized on stdio (JSON-RPC 2.0)
+[aimake-mcp] Registered 6 tools: aimake_compile_deck, aimake_humanize,
+             aimake_publish_content, aimake_remix_template,
+             aimake_wiki_distill, aimake_market_search
+[aimake-mcp] Ready to receive host requests.`,
+      },
+    ],
     pillarsHeading: '1인 크리에이터와 실무 팀을 위한 4대 핵심 아키텍처',
     pillars: [
       {
@@ -369,81 +825,567 @@ function verificationMetaTags(): string {
 function sharedSiteCss(): string {
   return `
     :root {
-      --bg: #0c0f14;
-      --surface: #131821;
-      --elevated: #1a212e;
-      --border: #263042;
-      --ink: #f2f5fa;
-      --muted: #9ba6b8;
-      --cobalt: #3b7bf6;
-      --amber: #e29d3e;
-      --emerald: #2ec486;
-      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-      --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans', 'Pretendard', sans-serif;
+      --bg: #07090e;
+      --bg-alt: #0d111a;
+      --surface: rgba(18, 24, 35, 0.75);
+      --surface-elevated: rgba(26, 34, 49, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --border-hover: rgba(59, 130, 246, 0.55);
+      --ink: #f8fafc;
+      --muted: #94a3b8;
+      --dim: #64748b;
+      --cobalt: #3b82f6;
+      --cobalt-glow: rgba(59, 130, 246, 0.28);
+      --indigo: #6366f1;
+      --violet: #8b5cf6;
+      --amber: #f59e0b;
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Plus Jakarta Sans', 'PingFang SC', 'Hiragino Sans', 'Pretendard', sans-serif;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.62; -webkit-font-smoothing: antialiased; }
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 90% 45% at 50% -12%, rgba(59, 130, 246, 0.16), transparent 70%),
+        radial-gradient(circle 600px at 90% 25%, rgba(139, 92, 246, 0.07), transparent 60%),
+        radial-gradient(circle 500px at 10% 50%, rgba(16, 185, 129, 0.05), transparent 60%);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.62;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
     a { color: inherit; text-decoration: none; }
-    a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    nav.topbar { border-bottom: 1px solid var(--border); padding: 14px 0; background: rgba(12, 15, 20, 0.88); position: sticky; top: 0; z-index: 30; backdrop-filter: blur(12px); }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+    .container { max-width: 1220px; margin: 0 auto; padding: 0 24px; }
+
+    /* Topbar */
+    nav.topbar {
+      border-bottom: 1px solid var(--border);
+      padding: 13px 0;
+      background: rgba(7, 9, 14, 0.85);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(20px) saturate(1.8);
+      -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    }
     .nav-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-    .logo { font-weight: 800; font-size: 18px; display: inline-flex; align-items: center; gap: 10px; letter-spacing: -0.02em; }
-    .logo-badge { background: linear-gradient(135deg, var(--cobalt), #2454b8); color: #fff; width: 28px; height: 28px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 14px; font-weight: 700; box-shadow: 0 0 0 1px rgba(255,255,255,0.14) inset; }
-    .logo-sub { font-size: 12px; font-weight: 500; color: var(--muted); padding-left: 8px; border-left: 1px solid var(--border); }
-    .nav-links { display: flex; align-items: center; gap: 20px; font-size: 13.5px; color: var(--muted); }
+    .logo { font-weight: 800; font-size: 17.5px; display: inline-flex; align-items: center; gap: 10px; letter-spacing: -0.025em; }
+    .logo-badge {
+      background: linear-gradient(135deg, var(--cobalt), var(--indigo));
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset, 0 4px 12px var(--cobalt-glow);
+    }
+    .logo-sub { font-size: 12px; font-weight: 500; color: var(--muted); padding-left: 10px; border-left: 1px solid var(--border); }
+    .nav-links { display: flex; align-items: center; gap: 22px; font-size: 13.5px; color: var(--muted); font-weight: 500; }
+    .nav-links a { transition: color 0.15s; }
     .nav-links a:hover { color: var(--ink); }
-    .lang-switch { display: flex; gap: 6px; font-family: var(--mono); font-size: 11.5px; }
-    .lang-switch a { padding: 4px 8px; border-radius: 5px; border: 1px solid var(--border); color: var(--muted); transition: border-color 0.15s, color 0.15s; }
-    .lang-switch a:hover { color: var(--ink); border-color: #3c4a63; }
-    .lang-switch a.active { border-color: var(--cobalt); color: #fff; background: rgba(59, 123, 246, 0.2); }
-    .hero { padding: 64px 0 56px; border-bottom: 1px solid var(--border); background: radial-gradient(circle at 78% 18%, rgba(59, 123, 246, 0.13), transparent 44%); }
-    .hero-split { display: grid; grid-template-columns: 1.06fr 0.94fr; gap: 40px; align-items: center; }
+    .nav-pill-highlight {
+      color: #93c5fd !important;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s, border-color 0.15s !important;
+    }
+    .nav-pill-highlight:hover { background: rgba(59, 130, 246, 0.22); border-color: var(--cobalt); color: #fff !important; }
+    .lang-switch { display: flex; gap: 4px; font-family: var(--mono); font-size: 11px; }
+    .lang-switch a {
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+    .lang-switch a:hover { color: var(--ink); border-color: var(--border-strong); }
+    .lang-switch a.active { border-color: var(--cobalt); color: #fff; background: rgba(59, 130, 246, 0.2); }
+
+    /* Hero */
+    .hero {
+      padding: 72px 0 64px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .hero-split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 44px; align-items: center; }
     @media (max-width: 980px) { .hero-split { grid-template-columns: 1fr; } .logo-sub { display: none; } }
-    .eyebrow { font-family: var(--mono); font-size: 11.5px; color: var(--amber); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
-    .hero h1 { font-size: clamp(30px, 3.8vw, 46px); line-height: 1.15; margin: 14px 0 18px; letter-spacing: -0.028em; font-weight: 800; }
-    .hero p.lead { font-size: 16px; color: var(--muted); margin: 0 0 26px; max-width: 620px; }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
-    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--cobalt); color: #fff; font-weight: 600; font-size: 14px; padding: 11px 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.14); transition: background 0.15s; }
-    .btn-primary:hover { background: #2d6ae3; }
-    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); color: var(--ink); font-weight: 600; font-size: 14px; padding: 11px 18px; border-radius: 8px; border: 1px solid var(--border); transition: border-color 0.15s; }
-    .btn-secondary:hover { border-color: var(--cobalt); }
-    .spec-strip { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--mono); font-size: 11.5px; color: #cbd5e1; }
-    .spec-pill { background: var(--surface); border: 1px solid var(--border); padding: 5px 10px; border-radius: 6px; }
-    .stage-shell { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45); }
-    .stage-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 14px; background: #0e1219; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--emerald);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 18px;
+    }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+      animation: pulseGlow 2s infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+    .hero h1 {
+      font-size: clamp(32px, 4.2vw, 54px);
+      line-height: 1.14;
+      margin: 0 0 18px;
+      letter-spacing: -0.035em;
+      font-weight: 800;
+      background: linear-gradient(180deg, #ffffff 15%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p.lead {
+      font-size: 15.5px;
+      color: var(--muted);
+      margin: 0 0 28px;
+      max-width: 620px;
+      line-height: 1.7;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; align-items: center; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--cobalt), #2563eb);
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 22px;
+      border-radius: 9px;
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 4px 18px var(--cobalt-glow);
+      transition: all 0.15s;
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, #2563eb, #1d4ed8); transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      backdrop-filter: blur(12px);
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 20px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      transition: all 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--border-hover); background: var(--surface-elevated); transform: translateY(-1px); }
+    .quick-cli-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(13, 17, 26, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #93c5fd;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .quick-cli-pill:hover { border-color: var(--cobalt); color: #fff; background: rgba(22, 29, 44, 0.95); }
+    .spec-strip { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--mono); font-size: 11px; color: #cbd5e1; }
+    .spec-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 5px 11px;
+      border-radius: 6px;
+      backdrop-filter: blur(8px);
+    }
+
+    /* Hero Stage */
+    .stage-shell {
+      background: var(--surface);
+      backdrop-filter: blur(24px) saturate(1.8);
+      -webkit-backdrop-filter: blur(24px) saturate(1.8);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.06) inset;
+    }
+    .stage-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      background: rgba(11, 15, 23, 0.92);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .stage-mac-dots { display: flex; gap: 6px; align-items: center; }
+    .stage-mac-dot { width: 10px; height: 10px; border-radius: 50%; }
     .stage-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-    .stage-tab { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: var(--mono); font-size: 11px; padding: 5px 9px; border-radius: 5px; cursor: pointer; }
-    .stage-tab.active { background: rgba(59, 123, 246, 0.22); color: #fff; border-color: var(--cobalt); }
-    .stage-viewport { height: 470px; background: #090b0f; position: relative; }
+    .stage-tab {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .stage-tab:hover { color: var(--ink); border-color: var(--border-strong); }
+    .stage-tab.active {
+      background: rgba(59, 130, 246, 0.22);
+      color: #fff;
+      border-color: var(--cobalt);
+      box-shadow: 0 0 10px var(--cobalt-glow);
+    }
+    .stage-viewport { height: 470px; background: #07090e; position: relative; }
     .stage-viewport iframe { width: 100%; height: 100%; border: none; display: block; }
-    .stage-foot { padding: 9px 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); background: #0e1219; }
-    .section-block { padding: 64px 0; border-bottom: 1px solid var(--border); }
-    .section-head { margin-bottom: 28px; }
-    .section-head h2 { font-size: clamp(22px, 2.8vw, 30px); margin: 6px 0 8px; letter-spacing: -0.02em; }
-    .section-head p { margin: 0; color: var(--muted); font-size: 15px; max-width: 740px; }
-    .pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
-    .pillar-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
-    .pillar-code { font-family: var(--mono); font-size: 11px; color: var(--amber); margin-bottom: 8px; letter-spacing: 0.05em; }
-    .pillar-card h3 { margin: 0 0 8px; font-size: 17px; }
-    .pillar-card p { margin: 0; font-size: 13.8px; color: var(--muted); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
-    .tpl-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s, border-color 0.15s; }
-    .tpl-card:hover { transform: translateY(-2px); border-color: var(--cobalt); }
-    .meta-row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
-    .tpl-card h3 { margin: 0 0 8px; font-size: 17.5px; }
-    .tpl-card p { margin: 0 0 16px; font-size: 13.8px; color: var(--muted); }
+    .stage-foot {
+      padding: 10px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: rgba(11, 15, 23, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .stage-foot-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--emerald);
+      font-size: 10.5px;
+    }
+
+    /* Sections */
+    .section-block { padding: 76px 0; border-bottom: 1px solid var(--border); position: relative; }
+    .section-head { margin-bottom: 34px; }
+    .eyebrow { font-family: var(--mono); font-size: 11.5px; color: var(--amber); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+    .section-head h2 { font-size: clamp(24px, 3.2vw, 36px); margin: 0 0 10px; letter-spacing: -0.03em; font-weight: 700; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 15px; max-width: 760px; line-height: 1.65; }
+
+    /* Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 980px) { .bento-grid { grid-template-columns: 1fr; } }
+    .bento-card {
+      background: var(--surface);
+      backdrop-filter: blur(24px) saturate(1.8);
+      -webkit-backdrop-filter: blur(24px) saturate(1.8);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03) inset;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .bento-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-hover);
+      box-shadow: 0 22px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.3) inset;
+    }
+    .bento-wide { grid-column: span 2; }
+    @media (max-width: 980px) { .bento-wide { grid-column: span 1; } }
+    .bento-tall { grid-row: span 2; }
+    @media (max-width: 980px) { .bento-tall { grid-row: span 1; } }
+    .bento-top { margin-bottom: 20px; }
+    .bento-stage-tag { font-family: var(--mono); font-size: 11px; color: var(--amber); margin-bottom: 8px; font-weight: 600; letter-spacing: 0.05em; }
+    .bento-card h3 { margin: 0 0 10px; font-size: 19px; line-height: 1.3; font-weight: 700; letter-spacing: -0.02em; }
+    .bento-card p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .bento-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 5px;
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      width: fit-content;
+      margin-top: 14px;
+    }
+    .bento-details {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .bento-detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      font-family: var(--mono);
+    }
+    .bento-detail-check { color: var(--emerald); font-weight: 700; font-size: 11px; }
+
+    /* Interactive Terminal Section */
+    .terminal-shell {
+      background: #090c12;
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 28px 70px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset;
+    }
+    .terminal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: rgba(16, 21, 31, 0.95);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .terminal-dots { display: flex; gap: 7px; align-items: center; }
+    .t-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .t-dot-red { background: #ff5f56; }
+    .t-dot-yellow { background: #ffbd2e; }
+    .t-dot-green { background: #27c93f; }
+    .terminal-title { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+    .terminal-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 10px 18px;
+      background: rgba(12, 16, 24, 0.9);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .terminal-tab-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .terminal-tab-btn:hover { color: var(--ink); border-color: var(--border-strong); }
+    .terminal-tab-btn.active {
+      background: rgba(59, 130, 246, 0.22);
+      color: #fff;
+      border-color: var(--cobalt);
+      box-shadow: 0 0 8px var(--cobalt-glow);
+    }
+    .terminal-prompt-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background: rgba(18, 24, 36, 0.6);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .terminal-prompt-cmd {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      color: #93c5fd;
+      font-weight: 600;
+      overflow-x: auto;
+    }
+    .terminal-prompt-prefix { color: var(--emerald); }
+    .btn-copy-cmd {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      padding: 5px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-copy-cmd:hover { border-color: var(--cobalt); color: #fff; }
+    .terminal-output {
+      padding: 22px 24px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.75;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      margin: 0;
+      min-height: 150px;
+      background: #090c12;
+    }
+    .terminal-desc-foot {
+      padding: 10px 18px;
+      background: rgba(12, 16, 24, 0.95);
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--sans);
+    }
+
+    /* Template Cards & Gallery */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; }
+    .tpl-card {
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.18s ease, box-shadow 0.18s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.03) inset;
+    }
+    .tpl-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-hover);
+      box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.3) inset;
+    }
+    .meta-row { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+    .aspect-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .aspect-16-9 { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.35); }
+    .aspect-3-4 { background: rgba(245, 158, 11, 0.18); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .aspect-4-5 { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .aspect-9-16 { background: rgba(139, 92, 246, 0.18); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.35); }
+    .aspect-1-1 { background: rgba(14, 165, 233, 0.18); color: #7dd3fc; border: 1px solid rgba(14, 165, 233, 0.35); }
+    .tpl-card h3 { margin: 0 0 8px; font-size: 17.5px; font-weight: 700; letter-spacing: -0.02em; }
+    .tpl-card p { margin: 0 0 16px; font-size: 13.5px; color: var(--muted); line-height: 1.6; }
     .formats { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
     .fmt-tag { font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: #cbd5e1; }
+
+    /* Industry Packs */
+    .pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; }
+    .pillar-card {
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      transition: all 0.15s;
+    }
+    .pillar-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .pillar-code { font-family: var(--mono); font-size: 11px; color: var(--amber); margin-bottom: 8px; letter-spacing: 0.05em; font-weight: 600; }
+    .pillar-card h3 { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
+    .pillar-card p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+
+    /* Family */
     .family-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-    .family-card { background: linear-gradient(180deg, var(--surface), #10141c); border: 1px solid var(--border); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; }
-    .family-badge { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 3px 8px; border-radius: 5px; background: rgba(46, 196, 134, 0.14); color: var(--emerald); border: 1px solid rgba(46, 196, 134, 0.35); width: fit-content; }
-    footer { padding: 36px 0 44px; font-size: 13px; color: var(--muted); }
+    .family-card {
+      background: linear-gradient(180deg, var(--surface), rgba(12, 16, 24, 0.9));
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.35);
+      transition: all 0.18s;
+    }
+    .family-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .family-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 5px;
+      background: rgba(16, 185, 129, 0.14);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      width: fit-content;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer { padding: 42px 0 52px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); }
     .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; }
     .footer-links a:hover { color: var(--ink); }
-    @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+
+    /* Toast */
+    #site-toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--cobalt);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-family: var(--mono);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6), 0 0 16px var(--cobalt-glow);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #site-toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
   `;
 }
 
@@ -458,8 +1400,10 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
         <span class="logo-sub">Multimodal Creator &amp; LLM Wiki</span>
       </div>
       <div class="nav-links">
-        <a href="/playground/" style="color:#60a5fa;font-weight:600;">🚀 ${esc(copy.navPlayground)}</a>
+        <a href="/playground/" class="nav-pill-highlight">🚀 ${esc(copy.navPlayground)}</a>
+        <a href="/${lang}/#flywheel">${esc(copy.navFlywheel)}</a>
         <a href="/${lang}/#templates">${esc(copy.navTemplates)}</a>
+        <a href="/${lang}/#cli">${esc(copy.navCli)}</a>
         <a href="https://studio.aimake.cc" target="_blank" rel="noopener">${esc(copy.navStudio)} ↗</a>
         <a href="/universe/">${esc(copy.navUniverse)}</a>
       </div>
@@ -506,20 +1450,31 @@ function renderLandingHtml(
     .join('\n');
 
   const cardsHtml = templates
-    .map(
-      (tpl) => `
-      <div class="tpl-card" data-market-card="true" data-cat="${esc(tpl.category)}" data-loc="${esc(tpl.defaultLocale)}" data-search="${esc((tpl.id + ' ' + tpl.name.zh + ' ' + tpl.name.en + ' ' + tpl.styleFamily + ' ' + tpl.tags.join(' ')).toLowerCase())}">
+    .map((tpl) => {
+      const aspectClass =
+        tpl.aspect === '16:9'
+          ? 'aspect-16-9'
+          : tpl.aspect === '3:4'
+          ? 'aspect-3-4'
+          : tpl.aspect === '4:5'
+          ? 'aspect-4-5'
+          : tpl.aspect === '9:16'
+          ? 'aspect-9-16'
+          : 'aspect-1-1';
+
+      return `
+      <div class="tpl-card" data-market-card="true" data-cat="${esc(tpl.category)}" data-aspect="${esc(tpl.aspect)}" data-loc="${esc(tpl.defaultLocale)}" data-search="${esc((tpl.id + ' ' + tpl.name.zh + ' ' + tpl.name.en + ' ' + tpl.styleFamily + ' ' + tpl.tags.join(' ')).toLowerCase())}">
         <div>
           <div class="meta-row">
             <span>#${esc(tpl.id)} · v${esc(tpl.version)}</span>
-            <span>${esc(tpl.aspect)} · ${esc(tpl.defaultLocale)}</span>
+            <span class="aspect-badge ${aspectClass}">${esc(tpl.aspect)}</span>
           </div>
           <h3><a href="/${lang}/templates/${tpl.id}/">${esc(tpl.name[lang])}</a></h3>
           <p>${esc(tpl.description[lang])}</p>
         </div>
         <div>
-          <div class="formats" style="margin-bottom:12px;">
-            <span class="fmt-tag" style="color:var(--amber);border-color:rgba(226,157,62,0.4);">${esc(tpl.styleFamily)}</span>
+          <div class="formats" style="margin-bottom:14px;">
+            <span class="fmt-tag" style="color:var(--amber);border-color:rgba(245,158,11,0.4);">${esc(tpl.styleFamily)}</span>
             ${tpl.supportedFormats.slice(0, 4).map((f) => `<span class="fmt-tag">${esc(f.toUpperCase())}</span>`).join('')}
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -527,20 +1482,34 @@ function renderLandingHtml(
             <a class="btn-primary" style="padding:7px 12px;font-size:12.5px;" href="aimake://remix?template=${esc(tpl.id)}">一键做同款 Remix</a>
           </div>
         </div>
-      </div>`
-    )
+      </div>`;
+    })
     .join('\n');
 
-  const pillarsHtml = copy.pillars
-    .map(
-      (p) => `
-      <div class="pillar-card">
-        <div class="pillar-code">${esc(p.code)}</div>
-        <h3>${esc(p.title)}</h3>
-        <p>${esc(p.desc)}</p>
-      </div>`
-    )
+  const bentoHtml = copy.bentoItems
+    .map((item) => {
+      const typeClass = item.type === 'wide' ? 'bento-wide' : item.type === 'tall' ? 'bento-tall' : '';
+      return `
+      <div class="bento-card ${typeClass}">
+        <div class="bento-top">
+          <div class="bento-stage-tag">${esc(item.stage)}</div>
+          <h3>${esc(item.title)}</h3>
+          <p>${esc(item.desc)}</p>
+          <span class="bento-badge">${esc(item.badge)}</span>
+        </div>
+        <div class="bento-details">
+          ${item.details
+            .map(
+              (d) =>
+                `<div class="bento-detail-item"><span class="bento-detail-check">✓</span><span>${esc(d)}</span></div>`
+            )
+            .join('')}
+        </div>
+      </div>`;
+    })
     .join('\n');
+
+  const firstScenario = copy.terminalScenarios[0];
 
   return `<!DOCTYPE html>
 <html lang="${copy.htmlLang}">
@@ -563,15 +1532,24 @@ function renderLandingHtml(
 <body>
   ${renderTopNav(lang)}
 
+  <!-- HERO -->
   <header class="hero">
     <div class="container hero-split">
       <div>
-        <div class="eyebrow">${esc(copy.heroTag)}</div>
+        <div class="hero-badge-pill">
+          <span class="pulse-dot"></span>
+          <span>${esc(copy.heroTag)}</span>
+        </div>
         <h1>${esc(copy.heroTitle)}</h1>
         <p class="lead">${esc(copy.heroSub)}</p>
         <div class="cta-row">
           <a class="btn-primary" href="/playground/">${esc(copy.primaryCta)} →</a>
           <a class="btn-secondary" href="#templates">${esc(copy.secondaryCta)}</a>
+          <div class="quick-cli-pill" id="hero-quick-cli" title="Click to copy install command" data-copy="${esc(copy.quickInstall)}">
+            <span style="color:var(--emerald);">$</span>
+            <span>${esc(copy.quickInstall)}</span>
+            <span style="font-size:11px;opacity:0.7;">📋</span>
+          </div>
         </div>
         <div class="spec-strip">
           <span class="spec-pill">3x Retina PNG</span>
@@ -584,6 +1562,11 @@ function renderLandingHtml(
 
       <div class="stage-shell" aria-label="Interactive compiler stage">
         <div class="stage-bar">
+          <div class="stage-mac-dots">
+            <span class="stage-mac-dot t-dot-red"></span>
+            <span class="stage-mac-dot t-dot-yellow"></span>
+            <span class="stage-mac-dot t-dot-green"></span>
+          </div>
           <div class="stage-tabs" role="tablist">
             ${stagePresets
               .map(
@@ -596,21 +1579,72 @@ function renderLandingHtml(
         <div class="stage-viewport">
           <iframe id="hero-stage-frame" src="/${lang}/templates/${stagePresets[0].tplId}/preview.html" title="Aimake live template preview" loading="eager"></iframe>
         </div>
-        <div class="stage-foot">${esc(copy.stageCaption)}</div>
+        <div class="stage-foot">
+          <span>${esc(copy.stageCaption)}</span>
+          <span class="stage-foot-badge">● 0 外部依赖 · 100% 本地编译</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <section class="section-block">
+  <!-- BENTO GRID SHOWCASE (THE 4-STAGE CREATIVE FLYWHEEL) -->
+  <section id="flywheel" class="section-block">
     <div class="container">
       <div class="section-head">
-        <div class="eyebrow">ARCHITECTURE</div>
-        <h2>${esc(copy.pillarsHeading)}</h2>
+        <div class="eyebrow">THE 4-STAGE CREATIVE FLYWHEEL</div>
+        <h2>${esc(copy.flywheelHeading)}</h2>
+        <p>${esc(copy.flywheelSub)}</p>
       </div>
-      <div class="pillars-grid">${pillarsHtml}</div>
+      <div class="bento-grid">${bentoHtml}</div>
     </div>
   </section>
 
+  <!-- INTERACTIVE CLI & MCP TERMINAL PREVIEW -->
+  <section id="cli" class="section-block">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">DEVELOPER &amp; POWER USER WORKFLOW</div>
+        <h2>${esc(copy.terminalHeading)}</h2>
+        <p>${esc(copy.terminalSub)}</p>
+      </div>
+
+      <div class="terminal-shell">
+        <div class="terminal-head">
+          <div class="terminal-dots">
+            <span class="t-dot t-dot-red"></span>
+            <span class="t-dot t-dot-yellow"></span>
+            <span class="t-dot t-dot-green"></span>
+          </div>
+          <div class="terminal-title">aimake-terminal — zsh (100% local-first)</div>
+          <button type="button" class="btn-copy-cmd" id="btn-copy-terminal" data-copy="${esc(firstScenario.cmd)}">
+            <span id="copy-icon">📋</span>
+            <span id="copy-text">Copy Command</span>
+          </button>
+        </div>
+
+        <div class="terminal-tabs">
+          ${copy.terminalScenarios
+            .map(
+              (sc, idx) =>
+                `<button type="button" class="terminal-tab-btn ${idx === 0 ? 'active' : ''}" data-scenario-id="${esc(sc.id)}">${esc(sc.label)}</button>`
+            )
+            .join('')}
+        </div>
+
+        <div class="terminal-prompt-bar">
+          <div class="terminal-prompt-cmd">
+            <span class="terminal-prompt-prefix">❯</span>
+            <span id="terminal-active-cmd">${esc(firstScenario.cmd)}</span>
+          </div>
+        </div>
+
+        <pre class="terminal-output" id="terminal-active-output">${esc(firstScenario.output)}</pre>
+        <div class="terminal-desc-foot" id="terminal-active-desc">${esc(firstScenario.desc)}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEMPLATE MARKETPLACE & ONE-CLICK REMIX -->
   <section id="templates" class="section-block">
     <div class="container">
       <div class="section-head">
@@ -618,28 +1652,32 @@ function renderLandingHtml(
         <h2>${esc(copy.galleryHeading)}</h2>
         <p>${esc(copy.gallerySub)}</p>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px;">
-        <input id="site-market-search" type="search" placeholder="搜索模板风格 / 平台 / 语种 (Search 36 templates)..." style="flex:1;min-width:240px;background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px;" />
+
+      <!-- Filters & Search -->
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:24px;">
+        <input id="site-market-search" type="search" placeholder="搜索 36 套设计系统 / 平台 / 语种 (Search templates)..." style="flex:1;min-width:240px;background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:9px;padding:11px 16px;font-size:14px;outline:none;" />
         <div style="display:flex;gap:6px;flex-wrap:wrap;" id="site-market-filters">
-          <button type="button" class="stage-tab active" data-filter-cat="all">All (22)</button>
-          <button type="button" class="stage-tab" data-filter-cat="xiaohongshu">小红书</button>
-          <button type="button" class="stage-tab" data-filter-cat="wechat">微信</button>
-          <button type="button" class="stage-tab" data-filter-cat="linkedin">EN/Global</button>
-          <button type="button" class="stage-tab" data-filter-cat="x-japan">日本 JA</button>
-          <button type="button" class="stage-tab" data-filter-cat="instagram-kr">韩国 KO</button>
+          <button type="button" class="stage-tab active" data-filter-cat="all">全部 (All 36)</button>
+          <button type="button" class="stage-tab" data-filter-cat="xiaohongshu">小红书 3:4</button>
+          <button type="button" class="stage-tab" data-filter-cat="wechat">微信公众号</button>
+          <button type="button" class="stage-tab" data-filter-cat="linkedin">LinkedIn 4:5</button>
           <button type="button" class="stage-tab" data-filter-cat="ppt">PPT 16:9</button>
-          <button type="button" class="stage-tab" data-filter-cat="education">教育</button>
-          <button type="button" class="stage-tab" data-filter-cat="video">短视频</button>
+          <button type="button" class="stage-tab" data-filter-cat="x-japan">日本図解 JA</button>
+          <button type="button" class="stage-tab" data-filter-cat="instagram-kr">韩国 카드뉴스</button>
+          <button type="button" class="stage-tab" data-filter-cat="video">短视频 9:16</button>
         </div>
       </div>
+
       <div class="grid" id="site-market-grid">${cardsHtml}</div>
-      <div style="margin-top:42px;">
+
+      <div style="margin-top:46px;">
         <div class="eyebrow" style="margin-bottom:12px;">VERSIONED INDUSTRY PACKS (SHA-256 VERIFIED)</div>
         <div class="pillars-grid">${packsHtml}</div>
       </div>
     </div>
   </section>
 
+  <!-- AIMAKE PRODUCT FAMILY -->
   <section id="ecosystem" class="section-block">
     <div class="container">
       <div class="section-head">
@@ -652,7 +1690,7 @@ function renderLandingHtml(
           <div>
             <span class="family-badge">FLAGSHIP · aimake.cc</span>
             <h3 style="margin:12px 0 8px;font-size:20px;">Aimake 爱创 · 多模态创作与知识复利平台</h3>
-            <p style="margin:0;color:var(--muted);font-size:14px;">连接本地 Karpathy LLM Wiki、个人风格基因与 12 套四国商业设计系统，在 Claude Code / Codex / WorkBuddy 内一键交付图文、公众号、可编辑 PPTX 与短视频。</p>
+            <p style="margin:0;color:var(--muted);font-size:14px;">连接本地 Karpathy LLM Wiki、个人风格基因与 36 套四国商业设计系统，在 Claude Code / Codex / WorkBuddy 内一键交付图文、公众号、可编辑 PPTX 与短视频。</p>
           </div>
           <a class="btn-secondary" style="width:fit-content;" href="#templates">${esc(copy.primaryCta)} →</a>
         </div>
@@ -681,6 +1719,7 @@ function renderLandingHtml(
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
     <div class="container footer-inner">
       <div>${esc(copy.footerLine)}</div>
@@ -695,26 +1734,113 @@ function renderLandingHtml(
     </div>
   </footer>
 
+  <!-- TOAST -->
+  <div id="site-toast"></div>
+
   <script>
     (function () {
+      // Toast notification helper
+      var toastEl = document.getElementById('site-toast');
+      var toastTimer = null;
+      function showToast(text) {
+        if (!toastEl) return;
+        toastEl.textContent = text;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toastEl.classList.remove('show');
+        }, 2200);
+      }
+
+      // Copy helper
+      function copyToClipboard(text, successMsg) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            showToast(successMsg || '${esc(copy.cliCopyNotice)}');
+          }).catch(function () {
+            fallbackCopy(text, successMsg);
+          });
+        } else {
+          fallbackCopy(text, successMsg);
+        }
+      }
+      function fallbackCopy(text, successMsg) {
+        var input = document.createElement('textarea');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        try {
+          document.execCommand('copy');
+          showToast(successMsg || '${esc(copy.cliCopyNotice)}');
+        } catch (_) {}
+        document.body.removeChild(input);
+      }
+
+      // Hero quick CLI copy
+      var heroQuickCli = document.getElementById('hero-quick-cli');
+      if (heroQuickCli) {
+        heroQuickCli.addEventListener('click', function () {
+          var cmd = heroQuickCli.getAttribute('data-copy') || 'npm i -g @aimake/cli';
+          copyToClipboard(cmd, '${esc(copy.cliCopyNotice)}: ' + cmd);
+        });
+      }
+
+      // Hero stage iframe tab switcher
       var tabs = document.querySelectorAll('.stage-tab');
       var frame = document.getElementById('hero-stage-frame');
-      if (!frame) return;
       tabs.forEach(function (btn) {
         btn.addEventListener('click', function () {
           tabs.forEach(function (b) { b.classList.remove('active'); });
           btn.classList.add('active');
           var nextSrc = btn.getAttribute('data-src');
-          if (nextSrc && frame.getAttribute('src') !== nextSrc) {
+          if (nextSrc && frame && frame.getAttribute('src') !== nextSrc) {
             frame.setAttribute('src', nextSrc);
           }
         });
       });
 
+      // Terminal scenarios interactive tabs
+      var scenarios = ${JSON.stringify(copy.terminalScenarios)};
+      var scenarioTabBtns = document.querySelectorAll('.terminal-tab-btn');
+      var termCmdEl = document.getElementById('terminal-active-cmd');
+      var termOutputEl = document.getElementById('terminal-active-output');
+      var termDescEl = document.getElementById('terminal-active-desc');
+      var btnCopyTerminal = document.getElementById('btn-copy-terminal');
+
+      scenarioTabBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          scenarioTabBtns.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          var scId = btn.getAttribute('data-scenario-id');
+          var activeSc = scenarios.find(function (s) { return s.id === scId; }) || scenarios[0];
+          if (termCmdEl) termCmdEl.textContent = activeSc.cmd;
+          if (termOutputEl) termOutputEl.textContent = activeSc.output;
+          if (termDescEl) termDescEl.textContent = activeSc.desc;
+          if (btnCopyTerminal) btnCopyTerminal.setAttribute('data-copy', activeSc.cmd);
+        });
+      });
+
+      if (btnCopyTerminal) {
+        btnCopyTerminal.addEventListener('click', function () {
+          var cmd = btnCopyTerminal.getAttribute('data-copy') || '';
+          if (cmd) {
+            copyToClipboard(cmd, '${esc(copy.cliCopyNotice)}: ' + cmd);
+            var copyText = document.getElementById('copy-text');
+            if (copyText) {
+              var old = copyText.textContent;
+              copyText.textContent = '✓ Copied!';
+              setTimeout(function () { copyText.textContent = old; }, 1800);
+            }
+          }
+        });
+      }
+
+      // Template Marketplace search & category filter
       var searchEl = document.getElementById('site-market-search');
       var filterBtns = document.querySelectorAll('[data-filter-cat]');
       var cards = document.querySelectorAll('[data-market-card]');
       var activeCat = 'all';
+
       function applyMarketFilter() {
         var q = searchEl ? searchEl.value.trim().toLowerCase() : '';
         cards.forEach(function (card) {
@@ -725,6 +1851,7 @@ function renderLandingHtml(
           card.style.display = okCat && okQ ? 'flex' : 'none';
         });
       }
+
       if (searchEl) searchEl.addEventListener('input', applyMarketFilter);
       filterBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -747,7 +1874,7 @@ function renderUniverseBridgeHtml(): string {
         <div>
           <div class="meta-row">
             <span>${esc(p.nameEn.toUpperCase())}</span>
-            <span>LIVE · ${esc(p.href.replace('https://', ''))}</span>
+            <span class="aspect-badge aspect-4-5">LIVE · ${esc(p.href.replace('https://', ''))}</span>
           </div>
           <h3>${esc(p.nameCn)}</h3>
           <p>${esc(p.desc)}</p>
@@ -775,7 +1902,10 @@ function renderUniverseBridgeHtml(): string {
   ${renderTopNav('zh')}
   <header class="hero">
     <div class="container">
-      <div class="eyebrow">AIMAKE UNIVERSE · 家庭与儿童跨学科探索生态</div>
+      <div class="hero-badge-pill">
+        <span class="pulse-dot"></span>
+        <span>AIMAKE UNIVERSE · 家庭与儿童跨学科探索生态</span>
+      </div>
       <h1>爱创星球矩阵已独立迁至 universe.aimake.cc</h1>
       <p class="lead">Aimake 主站（aimake.cc）现已升级为多模态创作与知识复利旗舰平台；面向孩子与家庭的「爱创星球」六大互动星球保持 100% 独立运行、零广告、免登录，可直接从下方一键进入。</p>
       <div class="cta-row">
@@ -921,9 +2051,9 @@ export async function buildStaticSite(outDir: string): Promise<{
   <style>${sharedSiteCss()}
     .detail-layout { display: grid; grid-template-columns: 1fr 360px; gap: 28px; padding: 36px 0 72px; }
     @media (max-width: 900px) { .detail-layout { grid-template-columns: 1fr; } }
-    .preview-box { background: #090b0f; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; height: 680px; }
+    .preview-box { background: #07090e; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; height: 680px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
     .preview-box iframe { width: 100%; height: 100%; border: none; }
-    .info-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; height: fit-content; }
+    .info-panel { background: var(--surface); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 14px; padding: 26px; height: fit-content; box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
   </style>
 </head>
 <body>
@@ -934,11 +2064,11 @@ export async function buildStaticSite(outDir: string): Promise<{
     </div>
     <aside class="info-panel">
       <div class="eyebrow">#${esc(tpl.id)} · ${esc(tpl.aspect)}</div>
-      <h1 style="font-size:24px;margin:10px 0 12px;">${esc(tpl.name[lang])}</h1>
-      <p style="color:var(--muted);font-size:14.5px;">${esc(tpl.description[lang])}</p>
+      <h1 style="font-size:24px;margin:10px 0 12px;font-weight:700;">${esc(tpl.name[lang])}</h1>
+      <p style="color:var(--muted);font-size:14px;line-height:1.65;">${esc(tpl.description[lang])}</p>
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
         <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${esc(copy.specLabel)}</div>
-        <div style="font-family:var(--mono);font-size:13px;">${tpl.width} × ${tpl.height}px (${esc(tpl.aspect)})</div>
+        <div style="font-family:var(--mono);font-size:13px;color:#93c5fd;">${tpl.width} × ${tpl.height}px (${esc(tpl.aspect)})</div>
       </div>
       <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);">
         <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${esc(copy.deliverablesLabel)}</div>
@@ -951,7 +2081,7 @@ export async function buildStaticSite(outDir: string): Promise<{
         <strong> ${esc(tpl.contributor.name)}</strong>
         <span style="color:var(--muted);font-family:var(--mono);font-size:11px;"> · v${esc(tpl.version)}</span>
       </div>
-      <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+      <div style="margin-top:18px;display:flex;flex-direction:column;gap:8px;">
         <a class="btn-primary" style="width:100%;justify-content:center;" href="aimake://remix?template=${esc(tpl.id)}">一键做同款（Aimake 桌面端打开） →</a>
         <pre style="margin:0;background:var(--bg);padding:10px;border-radius:8px;border:1px solid var(--border);overflow-x:auto;font-family:var(--mono);font-size:11.5px;color:#93c5fd;">aimake remix ${esc(tpl.id)} --deck my.deck.md</pre>
         <a class="btn-secondary" style="width:100%;justify-content:center;" href="/${lang}/#templates">← ${esc(copy.navTemplates)}</a>

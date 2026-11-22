@@ -212,6 +212,35 @@ aspect: 3:4
         template: 'xhs-swiss-grid',
         slideCount: 2,
       });
+
+      // 4-stage pipeline inspection tool
+      const pipeResp = (await handleMcpRequest({
+        jsonrpc: '2.0',
+        id: 7,
+        method: 'tools/call',
+        params: {
+          name: 'aimake_pipeline_inspect',
+          arguments: { workspaceDir: tmpWorkspace },
+        },
+      })) as { result: { content: Array<{ text: string }> } };
+
+      const pipePayload = JSON.parse(pipeResp.result.content[0].text) as {
+        workspaceName: string;
+        currentStage: string;
+        flywheelStage: string;
+        flywheel: Array<{ id: string; nameZh: string; ready: boolean; count: number }>;
+        counts: Record<string, number>;
+        recommendedAction: string;
+      };
+
+      expect(pipePayload.workspaceName).toBe('新品发布会工作区');
+      expect(pipePayload.flywheelStage).toBe('publish');
+      expect(pipePayload.flywheel).toHaveLength(4);
+      expect(pipePayload.flywheel[0]).toMatchObject({ id: 'intake', nameZh: '抓取素材', ready: true, count: 1 });
+      expect(pipePayload.flywheel[1]).toMatchObject({ id: 'distill', nameZh: '萃取知识', ready: true, count: 2 });
+      expect(pipePayload.flywheel[2]).toMatchObject({ id: 'create', nameZh: '创作视觉', ready: true, count: 1 });
+      expect(pipePayload.flywheel[3]).toMatchObject({ id: 'publish', nameZh: '全渠道发布', ready: true, count: 1 });
+      expect(pipePayload.recommendedAction).toContain('aimake publish');
     } finally {
       await fs.rm(tmpWorkspace, { recursive: true, force: true });
     }

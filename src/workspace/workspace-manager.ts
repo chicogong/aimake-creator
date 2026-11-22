@@ -20,6 +20,7 @@ import type {
   WorkspaceBrandKit,
   WorkspaceConfig,
   WorkspaceFileEntry,
+  WorkspacePipelineStage,
   WorkspacePipelineState,
   WorkspaceScenarioPreset,
   WorkspaceSummary,
@@ -756,16 +757,65 @@ function computePipelineState(counts: {
     currentStage = 'author';
   }
 
+  const intakeStage: WorkspacePipelineStage = {
+    id: 'intake',
+    name: 'Intake',
+    nameZh: '抓取素材',
+    count: intakeCount,
+    status: intakeCount > 0 ? 'ready' : currentStage === 'intake' ? 'active' : 'empty',
+    detail: `${counts.sources} sources · ${counts.wikiPages} wiki cards`,
+  };
+
+  const distillStage: WorkspacePipelineStage = {
+    id: 'distill',
+    name: 'Distill',
+    nameZh: '萃取知识',
+    count: counts.wikiPages + counts.briefs,
+    status:
+      counts.briefs > 0 || counts.wikiPages > 0
+        ? 'ready'
+        : currentStage === 'author'
+          ? 'active'
+          : 'empty',
+    detail: `${counts.wikiPages} wiki cards · ${counts.briefs} briefs`,
+  };
+
+  const createStage: WorkspacePipelineStage = {
+    id: 'create',
+    name: 'Create',
+    nameZh: '创作视觉',
+    count: stageCount,
+    status: stageCount > 0 ? 'ready' : currentStage === 'stage' ? 'active' : 'empty',
+    detail: `${counts.decks} active decks`,
+  };
+
+  const publishStage: WorkspacePipelineStage = {
+    id: 'publish',
+    name: 'Publish',
+    nameZh: '全渠道发布',
+    count: deliverCount,
+    status: deliverCount > 0 ? 'ready' : currentStage === 'deliver' ? 'active' : 'empty',
+    detail: `${counts.exports} exported deliverables`,
+  };
+
+  const flywheelMap: Record<string, 'intake' | 'distill' | 'create' | 'publish'> = {
+    intake: 'intake',
+    author: 'distill',
+    stage: 'create',
+    deliver: 'publish',
+    distill: 'distill',
+    create: 'create',
+    publish: 'publish',
+  };
+
   return {
     currentStage,
-    intake: {
-      id: 'intake',
-      count: intakeCount,
-      status: intakeCount > 0 ? 'ready' : currentStage === 'intake' ? 'active' : 'empty',
-      detail: `${counts.sources} sources · ${counts.wikiPages} wiki cards`,
-    },
+    flywheelStage: flywheelMap[currentStage] || 'intake',
+    intake: intakeStage,
     author: {
       id: 'author',
+      name: 'Author',
+      nameZh: '创作准备',
       count: authorCount,
       status:
         counts.briefs > 0 || counts.decks > 0
@@ -777,16 +827,24 @@ function computePipelineState(counts: {
     },
     stage: {
       id: 'stage',
+      name: 'Stage',
+      nameZh: '视觉舞台',
       count: stageCount,
       status: stageCount > 0 ? 'ready' : currentStage === 'stage' ? 'active' : 'empty',
       detail: `${counts.decks} active decks`,
     },
     deliver: {
       id: 'deliver',
+      name: 'Deliver',
+      nameZh: '成品交付',
       count: deliverCount,
       status: deliverCount > 0 ? 'ready' : currentStage === 'deliver' ? 'active' : 'empty',
       detail: `${counts.exports} exported artifacts`,
     },
+    distill: distillStage,
+    create: createStage,
+    publish: publishStage,
+    flywheel: [intakeStage, distillStage, createStage, publishStage],
   };
 }
 

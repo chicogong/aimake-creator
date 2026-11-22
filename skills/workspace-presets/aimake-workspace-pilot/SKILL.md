@@ -5,11 +5,14 @@ description: End-to-end closed-loop creator pipeline router for Aimake 2.0 works
 
 # Aimake Workspace Pilot — Closed-Loop Router
 
-You are the orchestrator of an Aimake 2.0 local-first creator workspace. Every folder in this workspace represents a deterministic stage of the end-to-end closed-loop pipeline:
+You are the orchestrator of an Aimake 2.0 local-first creator workspace. Every folder in this workspace represents a deterministic stage of the 4-stage creative flywheel pipeline:
 
 ```text
-sources/  -->  wiki/  -->  briefs/  -->  decks/  -->  exports/  -->  wiki/published.md
-  (1)           (2)          (3)          (4+5)          (6)          (compounding loop)
+① 抓取 Intake  ──>  ② 萃取 Distill  ──>  ③ 创作 Create  ──>  ④ 发布 Publish
+  (sources/)           (wiki/ & briefs/)     (decks/ & studio)      (exports/ & wiki/published.md)
+      |                       |                     |                      |
+[aimake-intake]     [aimake-wiki-synth]    [aimake-brief-architect]  [aimake-deliver-narrator]
+                    [aimake-humanizer]     [aimake-deck-composer]    (aimake publish)
 ```
 
 ## Input & Output Contract
@@ -19,7 +22,7 @@ sources/  -->  wiki/  -->  briefs/  -->  decks/  -->  exports/  -->  wiki/publis
   - `.aimake/brand-kit.json` (author, handle, voice tone, primary color, favorite templates)
   - Directory listing of `sources/`, `wiki/`, `briefs/`, `decks/`, `exports/`
 - **Output**:
-  - Clear status announcement showing the current pipeline stage
+  - Clear status announcement showing the current pipeline stage (`aimake pipeline`)
   - Routed execution across skills `1 -> 6` without skipping mandatory gates
 
 ## Workflow Steps
@@ -29,15 +32,15 @@ sources/  -->  wiki/  -->  briefs/  -->  decks/  -->  exports/  -->  wiki/publis
    - Scan `sources/`, `wiki/index.md`, `briefs/`, `decks/`, and `exports/`.
    - Tell the user in 2-3 crisp lines what artifacts already exist and which step you are starting from.
 
-2. **Route Across the 6 Closed-Loop Skills**:
-   | Stage | Workspace Signal | Route To Skill | Required Artifact |
+2. **Route Across the 4-Stage Creative Flywheel Skills**:
+   | Flywheel Stage | Workspace Signal | Route To Skill | Required Artifact |
    | :--- | :--- | :--- | :--- |
-   | **1. Intake** | User provides URLs, PDFs, DOCX, PPTX, notes, or raw files exist outside `sources/` | `aimake-intake` | Normalized `sources/*.md` with exact facts & URLs |
-   | **2. Synthesize** | New/updated `sources/*.md` not yet distilled into `wiki/` | `aimake-wiki-synth` | Grounded `wiki/*.md` entity cards + updated `wiki/index.md` (`<= 3,000` tokens) |
-   | **3. Brief** | User requests a new deck/post/video and no matching `briefs/<slug>.brief.md` exists | `aimake-brief-architect` | `briefs/<slug>.brief.md` (audience, hook, slide plan, chosen template) |
-   | **4. Compose / Remix** | Brief is ready, OR user wants to edit / One-Click Remix an existing `.deck.md` | `aimake-deck-composer` | Valid `decks/<slug>.deck.md` synced live to Aimake Studio stage |
-   | **5. Humanize & Density Gate** | Draft `.deck.md` is written and needs pre-delivery polish | `aimake-humanizer` | Anti-AI-slop & overflow-checked `decks/<slug>.deck.md` |
-   | **6. Narrate & Deliver** | Deck is approved for export (PNG / WeChat / PDF / PPTX / MP4) | `aimake-deliver-narrator` | `exports/` deliverables + compounding entry in `wiki/published.md` |
+   | **Stage ① 抓取 Intake** | Raw notes, URLs, PDFs, or files exist outside `sources/` | `aimake-intake` | Normalized `sources/*.md` with exact facts & URLs (`aimake intake`) |
+   | **Stage ② 萃取 Distill** | New/updated `sources/*.md` not yet distilled into `wiki/` | `aimake-wiki-synth` | Grounded `wiki/*.md` entity cards + updated `wiki/index.md` (`<= 3,000` tokens) |
+   | **Stage ② 萃取 Distill** | Audience & slide plan needed for content | `aimake-brief-architect` | `briefs/<slug>.brief.md` (hook, thesis, slide plan, template choice) |
+   | **Stage ③ 创作 Create** | Brief ready, or edit / One-Click Remix existing deck | `aimake-deck-composer` | Valid `decks/<slug>.deck.md` synced live to Aimake Studio (`aimake create`) |
+   | **Stage ③ 创作 Create** | Draft `.deck.md` needs pre-delivery anti-AI polish | `aimake-humanizer` | Humanized & density-checked `decks/<slug>.deck.md` |
+   | **Stage ④ 发布 Publish** | Approved deck ready for multimodal delivery & publishing | `aimake-deliver-narrator` | Deliverables in `exports/`, multi-platform posting (`aimake publish`), & `wiki/published.md` |
 
 3. **Respect Fast-Path Requests Without Breaking Quality Gates**:
    - If the user asks to **One-Click Remix** an existing deck into a new platform or template, jump directly to `aimake-deck-composer` -> `aimake-humanizer` -> `aimake-deliver-narrator`.

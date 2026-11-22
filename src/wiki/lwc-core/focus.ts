@@ -20,13 +20,33 @@ const normalized = (value: string) => withoutMd(value.replaceAll("\\", "/").repl
 export function resolveFocusNode(graph: WikiGraph, query: string): WikiNode {
   const wanted = normalized(query.trim());
   if (!wanted) throw new Error("Focused diagram requires a non-empty --focus value");
-  const matches = graph.nodes.filter((node) => {
+  
+  // 1. Exact match by id, path, basename, or title
+  const exactMatches = graph.nodes.filter((node) => {
     const keys = [node.id, node.path, path.posix.basename(node.path), node.title].map(normalized);
     return keys.includes(wanted);
   });
-  if (matches.length === 0) throw new Error(`Focus page not found: ${query}`);
-  if (matches.length > 1) throw new Error(`Focus page is ambiguous: ${query} matches ${matches.map((node) => node.path).join(", ")}`);
-  return matches[0];
+  if (exactMatches.length === 1) return exactMatches[0];
+  if (exactMatches.length > 1) {
+    throw new Error(`Focus page is ambiguous: ${query} matches ${exactMatches.map((node) => node.path).join(", ")}`);
+  }
+
+  // 2. Substring / fuzzy match fallback
+  const fuzzyMatches = graph.nodes.filter((node) => {
+    const keys = [node.id, node.path, path.posix.basename(node.path), node.title].map(normalized);
+    return keys.some((k) => k.includes(wanted));
+  });
+  if (fuzzyMatches.length === 1) return fuzzyMatches[0];
+
+  // Prefer formal wiki/ concept pages over raw snapshots when ambiguous
+  const wikiFuzzy = fuzzyMatches.filter((n) => n.path.startsWith("wiki/"));
+  if (wikiFuzzy.length === 1) return wikiFuzzy[0];
+
+  if (fuzzyMatches.length > 1) {
+    throw new Error(`Focus page is ambiguous: ${query} matches ${fuzzyMatches.map((node) => node.path).join(", ")}`);
+  }
+
+  throw new Error(`Focus page not found: ${query}`);
 }
 
 function diagnosticsFor(nodes: WikiNode[], diagnostics: Diagnostic[]): Diagnostic[] {

@@ -65,12 +65,15 @@
     body {
       margin: 0;
       padding: 32px;
-      background: #0d0f13;
+      background: #090B0F;
       font-family: var(--font);
       color: var(--ink);
       display: flex;
       flex-direction: column;
       align-items: center;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
     #aimake-deck-root {
       display: flex;
@@ -90,6 +93,9 @@
       position: relative;
       overflow: hidden;
       border: var(--bw) solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
     .top-bar {
       display: flex;
@@ -128,13 +134,14 @@
     h1.slide-title {
       margin: 0;
       font-weight: 800;
-      line-height: 1.22;
-      letter-spacing: -0.02em;
+      line-height: 1.16;
+      letter-spacing: -0.035em;
     }
     p.slide-subtitle {
       margin: 0;
       font-size: calc(26px * var(--content-scale));
-      line-height: 1.48;
+      line-height: 1.5;
+      letter-spacing: -0.015em;
       color: var(--muted);
     }
     .metrics-grid {
@@ -146,7 +153,10 @@
       background: var(--surface);
       border: var(--bw) solid var(--border);
       border-radius: var(--radius);
-      padding: calc(22px * var(--content-scale)) calc(24px * var(--content-scale));
+      padding: calc(22px * var(--content-scale)) calc(26px * var(--content-scale));
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
     .metric-label {
       font-size: calc(19px * var(--content-scale));
@@ -184,10 +194,13 @@
       border-radius: var(--radius);
       padding: calc(18px * var(--content-scale)) calc(24px * var(--content-scale));
       font-size: calc(25px * var(--content-scale));
-      line-height: 1.48;
+      line-height: 1.5;
       display: flex;
       gap: 16px;
       align-items: flex-start;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
     .bullet-dot {
       color: var(--accent);
@@ -205,9 +218,13 @@
       border: var(--bw) solid var(--border);
       border-radius: var(--radius);
       padding: calc(22px * var(--content-scale));
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
     .compare-col.highlight {
       border-color: var(--accent);
+      box-shadow: 0 10px 30px var(--accent-soft);
     }
     .compare-col h3 {
       margin: 0 0 12px 0;
@@ -265,8 +282,8 @@
       position: absolute;
       top: 0;
       left: 0;
-      height: 7px;
-      background: var(--accent);
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent) 0%, rgba(99, 102, 241, 0.9) 100%);
       width: 100%;
       transform-origin: left center;
       z-index: 3;
@@ -277,8 +294,9 @@
           background-image:
             linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
             linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-          background-size: 40px 40px;
-          border: 4px solid var(--border);
+          background-size: 36px 36px;
+          border: 1px solid var(--border);
+          box-shadow: var(--card-shadow);
         }
         .aimake-slide::before {
           content: '';
@@ -286,39 +304,46 @@
           top: 0;
           left: 0;
           bottom: 0;
-          width: 18px;
+          width: 6px;
           background: var(--accent);
         }
         .top-bar {
-          border-bottom: 3px solid var(--border);
-          padding-bottom: 18px;
+          border-bottom: 1px solid var(--border);
+          padding-bottom: 16px;
         }
         .eyebrow {
           background: var(--ink);
           color: var(--bg);
-          padding: 8px 16px;
-          letter-spacing: 0.14em;
+          padding: 6px 14px;
+          border-radius: 4px;
+          letter-spacing: 0.12em;
+          font-size: 15px;
         }
         .page-index {
           background: var(--accent);
           color: #FFFFFF;
-          padding: 6px 14px;
+          padding: 5px 12px;
+          border-radius: 4px;
           font-weight: 800;
         }
         h1.slide-title {
-          border-bottom: 3px solid var(--border);
-          padding-bottom: 18px;
-          letter-spacing: -0.03em;
+          border-bottom: 1px solid var(--border);
+          padding-bottom: 16px;
+          letter-spacing: -0.035em;
         }
         .bullet-dot {
           background: var(--accent);
           color: #FFFFFF;
           padding: 4px 10px;
-          font-size: 19px;
+          border-radius: 4px;
+          font-size: 17px;
           line-height: 1.2;
         }
         .metric-card {
-          border-top: 6px solid var(--accent);
+          border: 1px solid var(--border);
+          border-top: 3px solid var(--accent);
+          box-shadow: var(--card-shadow);
+          backdrop-filter: blur(16px);
         }
       
   </style>

@@ -116,6 +116,11 @@ export async function buildGraph(root: string, now = new Date(), fixedModifiedAt
   }));
   for (const source of drafts) {
     for (const link of source.rawLinks) {
+      // Ingested raw source snapshots contain external relative links from their original repos.
+      // Standard markdown links in raw/ should not be treated as broken wiki graph links.
+      if (source.path.startsWith('raw/') && link.kind === 'markdown') {
+        continue;
+      }
       const relativeCandidate = link.target.startsWith("/") ? normalizedKey(link.target) : normalizedKey(path.join(path.dirname(source.path), link.target));
       const directCandidate = normalizedKey(link.target);
       const candidates = byKey.get(relativeCandidate) ?? byKey.get(directCandidate) ?? byKey.get(normalizedKey(path.basename(link.target))) ?? [];

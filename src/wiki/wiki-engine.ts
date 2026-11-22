@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import fg from 'fast-glob';
 import type { DeckDocument, WikiIngestResult, WikiLintReport } from '../schema/types.js';
 import {
   compileVaultGraph,
@@ -290,6 +291,15 @@ export async function ingestSource(
       contentMd = parsed.markdown;
     } else {
       contentMd = await fs.readFile(absPath, 'utf8');
+      if (!options?.title) {
+        const h1 = contentMd.match(/^#\s+(.+)$/m);
+        const fmTitle = contentMd.match(/^title:\s*["']?([^"'\n\r]+)["']?/m);
+        if (h1 && h1[1].trim()) {
+          rawTitle = h1[1].trim();
+        } else if (fmTitle && fmTitle[1].trim()) {
+          rawTitle = fmTitle[1].trim();
+        }
+      }
     }
   }
 
@@ -320,7 +330,15 @@ export async function ingestSource(
   const summaryLines = contentMd
     .split('\n')
     .map((l) => l.trim())
-    .filter((l) => l.length > 12 && !l.startsWith('#') && !l.startsWith('---'))
+    .filter((l) => {
+      if (l.length <= 12 || l.startsWith('#') || l.startsWith('---')) return false;
+      if (l.startsWith('![') || l.startsWith('<') || /\[返回[^\]]*\]\(/.test(l)) return false;
+      return true;
+    })
+    .map((l) => {
+      // Strip markdown links [text](url) -> text to avoid broken relative links in excerpts
+      return l.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').slice(0, 180);
+    })
     .slice(0, 5);
 
   const excerptBlock = [
@@ -384,7 +402,8 @@ export async function rebuildWikiIndex(vaultDir: string): Promise<string> {
       .split('\n')
       .map((l) => l.trim())
       .find((l) => l.startsWith('- ') && !l.includes('**Origin**') && !l.includes('**SHA-256**'));
-    const snippet = firstBullet ? firstBullet.slice(2, 90) : 'Structured concept entry';
+    const rawSnippet = firstBullet ? firstBullet.slice(2, 90) : 'Structured concept entry';
+    const snippet = rawSnippet.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
     const slug = path.basename(file, '.md');
     items.push({
       file,
@@ -432,6 +451,61 @@ export async function rebuildWikiIndex(vaultDir: string): Promise<string> {
   const indexPath = path.join(wikiDir, 'index.md');
   await fs.writeFile(indexPath, `${header}${activeLines.join('\n')}\n`, 'utf8');
   return indexPath;
+}
+
+/**
+ * Ingests multiple sources, directories, or glob patterns in batch into local Wiki vault.
+ */
+export async function ingestSourcesBatch(
+  vaultDir: string,
+  sources: string[],
+  options?: { tags?: string[] }
+): Promise<WikiIngestResult[]> {
+  await initWikiVault(vaultDir);
+  const resolvedFiles: string[] = [];
+
+  for (const pattern of sources) {
+    if (/^https?:\/\//i.test(pattern)) {
+      resolvedFiles.push(pattern);
+      continue;
+    }
+    const abs = path.resolve(pattern);
+    try {
+      const st = await fs.stat(abs);
+      if (st.isDirectory()) {
+        const matched = await fg(['**/*.md', '**/*.docx', '**/*.pptx', '**/*.html'], {
+          cwd: abs,
+          absolute: true,
+        });
+        resolvedFiles.push(...matched);
+        continue;
+      }
+    } catch {
+      // Might be a glob pattern
+    }
+
+    if (pattern.includes('*') || pattern.includes('?')) {
+      const matched = await fg([pattern], { absolute: true });
+      resolvedFiles.push(...matched);
+    } else {
+      resolvedFiles.push(abs);
+    }
+  }
+
+  const uniqueFiles = Array.from(new Set(resolvedFiles));
+  const results: WikiIngestResult[] = [];
+
+  for (const file of uniqueFiles) {
+    try {
+      const res = await ingestSource(vaultDir, file, { tags: options?.tags });
+      results.push(res);
+    } catch {
+      // Continue with remaining files
+    }
+  }
+
+  await rebuildWikiIndex(vaultDir);
+  return results;
 }
 
 export async function compoundOutputToWiki(

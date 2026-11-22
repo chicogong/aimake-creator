@@ -293,13 +293,18 @@ describe('Aimake 2.0 Workspace Presets & Agent Engine', () => {
     expect(afterDeck.decks[0].title).toBe('Q4 Product Architecture Review');
     expect(afterDeck.decks[0].aspect).toBe('16:9');
     expect(afterDeck.pipeline.currentStage).toBe('stage');
+    expect(afterDeck.pipeline.flywheelStage).toBe('create');
+    expect(afterDeck.pipeline.create?.count).toBe(1);
 
-    // 4. Add an export file -> pipeline moves to deliver
+    // 4. Add an export file -> pipeline moves to deliver (flywheel: publish)
     await fs.writeFile(path.join(wsDir, 'exports', 'q4-review.pptx'), 'stub-pptx', 'utf8');
     const afterExport = await readWorkspaceState(wsDir);
     expect(afterExport.exports).toHaveLength(1);
     expect(afterExport.exports[0].format).toBe('pptx');
     expect(afterExport.pipeline.currentStage).toBe('deliver');
+    expect(afterExport.pipeline.flywheelStage).toBe('publish');
+    expect(afterExport.pipeline.publish?.count).toBe(1);
+    expect(afterExport.pipeline.flywheel).toHaveLength(4);
 
     // 5. Register recent workspace in isolated registry
     const updatedRecents = await registerRecentWorkspace(

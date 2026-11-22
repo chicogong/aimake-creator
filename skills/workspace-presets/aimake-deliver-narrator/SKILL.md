@@ -28,9 +28,12 @@ Turn an approved, humanized `decks/<slug>.deck.md` into ready-to-publish deliver
      - `ko`: ~3.5–4.2 syllables/sec (15–24 chars per 4–6s slide)
    - Write conversational sentences with natural breath pauses (commas/periods) so TTS synthesis and auto-generated SRT captions align cleanly without cramped 3-line subtitle wraps.
 
-2. **Compile Deliverables to `exports/`**:
-   Use Aimake MCP `aimake_render_deck` (preferred) or deterministic Aimake CLI (`aimake render`):
+2. **Compile Deliverables to `exports/` & Publish Omni-Channel**:
+   Use Aimake MCP (`aimake_render_deck`, `aimake_publish_content`) or deterministic Aimake CLI (`aimake render`, `aimake publish`):
 
+   - **Omni-Channel Multi-Platform Distribution** (WeChat Official, Zhihu, Juejin, Xiaohongshu):
+     `aimake publish decks/<slug>.deck.md --target wechat,zhihu,juejin,xiaohongshu`
+     Or via MCP: `aimake_publish_content({ sourceFile: "decks/<slug>.deck.md", targets: ["all"] })`
    - **PNG Card Set** (Xiaohongshu / Greenbook / IG / Zukai):
      `aimake_render_deck({ deckPath: "decks/<slug>.deck.md", format: "png", output: "exports/<slug>-png", vaultDir: "." })`
    - **WeChat Inline HTML** (100% inline-CSS copy-paste):
