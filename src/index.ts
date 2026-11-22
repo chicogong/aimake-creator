@@ -32,3 +32,4 @@ export * from './desktop/opencode-bridge.js';
 export * from './workspace/index.js';
 export * from './templates/index.js';
 export * from './publisher/index.js';
+export * from './intake/index.js';

@@ -20,6 +20,9 @@ function inlineFormatHtml(text: string, accent = '#2B6BE6'): string {
 
 export function normalizeToCdn(text: string): string {
   return text
+    // Convert relative figure paths to jsdelivr CDN preview.png
+    .replace(/\(!?(\.\.\/)+figures\/([a-zA-Z0-9_-]+)\/(preview\.png|diagram\.svg)\)/g, '(https://cdn.jsdelivr.net/gh/chicogong/agent-systems@main/figures/$2/preview.png)')
+    // Convert raw.githubusercontent.com to cdn.jsdelivr.net
     .replace(/https:\/\/raw\.githubusercontent\.com\/chicogong\/agent-systems\/main\//g, 'https://cdn.jsdelivr.net/gh/chicogong/agent-systems@main/')
     .replace(/https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\//g, 'https://cdn.jsdelivr.net/gh/$1/$2@$3/');
 }

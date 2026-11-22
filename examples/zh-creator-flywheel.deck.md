@@ -2,7 +2,7 @@
 title: 跑完 203 亿 Token 后：超级个体的纯本地创作飞轮
 template: apple-bento-launch
 locale: zh-CN
-aspect: "16:9"
+aspect: 16:9
 author: Chico Gong
 handle: "@chicogong"
 watermark: true

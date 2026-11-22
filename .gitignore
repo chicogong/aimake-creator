@@ -2,6 +2,8 @@ node_modules/
 dist/
 dist-site/
 dist-desktop/
+dist-exports/
+**/dist-exports/
 .aimake-tmp/
 .local-sandbox-hosts/
 /workspace/

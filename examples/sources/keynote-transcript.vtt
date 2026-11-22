@@ -1,0 +1,16 @@
+WEBVTT - Aimake Developer Keynote 2026
+
+00:00:01.000 --> 00:00:04.500
+[Chico Gong] Welcome everyone to the Aimake 2026 developer release keynote.
+
+00:00:05.000 --> 00:00:09.200
+[Chico Gong] For the past two years, digital creators have been caught in a trap of repetitive formatting.
+
+00:00:09.500 --> 00:00:15.000
+[Chico Gong] You write a research memo in Notion, rebuild it as slides in Keynote, copy-paste into WeChat, and render short videos separately.
+
+00:00:15.500 --> 00:00:21.000
+[Chico Gong] Today, we are unifying this entire creative cycle into a single, deterministic local engine.
+
+00:00:21.500 --> 00:00:28.000
+[Chico Gong] Write once in plain Markdown, ground every fact against local citations, and ship to five native deliverables in seconds.

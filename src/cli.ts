@@ -74,6 +74,7 @@ import {
 } from './workspace/index.js';
 import type { AgentHostId, WorkspaceScenarioPreset } from './workspace/index.js';
 import { publishContent } from './publisher/index.js';
+import { normalizeSource } from './intake/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = __dirname.endsWith('dist')
@@ -1139,34 +1140,16 @@ program
 
     for (const src of sources) {
       try {
-        let title = opts.title;
-        let content = '';
-        let sourceUrl: string | undefined;
-
-        if (/^https?:\/\//i.test(src)) {
-          sourceUrl = src;
-          try {
-            const parsedUrl = new URL(src);
-            title = title || path.basename(parsedUrl.pathname) || parsedUrl.hostname;
-          } catch {
-            title = title || src;
-          }
-          content = `# Web Intake: ${title}\n\n- Source URL: ${src}\n- Ingested At: ${new Date().toISOString()}\n\n[Grounding research material from ${src}]\n`;
-        } else if (fsSync.existsSync(path.resolve(src))) {
-          const absSrc = path.resolve(src);
-          content = await fs.readFile(absSrc, 'utf8');
-          title = title || path.basename(absSrc, path.extname(absSrc));
-          sourceUrl = absSrc;
-        } else {
-          content = src;
-          title = title || (src.slice(0, 24).replace(/[\n\r]/g, ' ') + '...');
-        }
+        const normalized = await normalizeSource(src, {
+          title: opts.title,
+          tags,
+        });
 
         const ingested = await ingestWorkspaceSource(wsDir, {
-          title,
-          content,
-          sourceUrl,
-          tags,
+          title: normalized.title,
+          content: normalized.markdown,
+          sourceUrl: normalized.sourceUrl,
+          tags: normalized.tags,
         });
 
         results.push({

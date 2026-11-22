@@ -22,6 +22,8 @@ import {
 } from '../marketplace/index.js';
 import { sanitizeContentForPR } from '../sanitizer/pr-sanitizer.js';
 import { publishContent } from '../publisher/index.js';
+import { normalizeSource } from '../intake/index.js';
+import { ingestWorkspaceSource } from '../workspace/index.js';
 import type { ExportFormat, SupportedLocale } from '../schema/types.js';
 
 export interface JsonRpcRequest {
@@ -251,6 +253,20 @@ const MCP_TOOLS = [
       required: ['workspaceDir'],
       properties: {
         workspaceDir: { type: 'string', description: 'Path to local Aimake workspace directory' },
+      },
+    },
+  },
+  {
+    name: 'aimake_intake_source',
+    description: 'Ingest raw research materials into an Aimake workspace: supports X (Twitter) status URLs (with metrics & quotes), WeChat/Zhihu articles, web URLs, CSV spreadsheets (auto-extracting Bento metrics), and audio/video transcripts.',
+    inputSchema: {
+      type: 'object',
+      required: ['source'],
+      properties: {
+        source: { type: 'string', description: 'Web URL, X/Twitter URL, local CSV/TSV table, VTT/SRT transcript, or file path' },
+        workspaceDir: { type: 'string', default: '.', description: 'Path to workspace directory' },
+        title: { type: 'string', description: 'Optional explicit title' },
+        tags: { type: 'array', items: { type: 'string' }, description: 'Tags to attach to the ingested source' },
       },
     },
   },
@@ -1140,6 +1156,32 @@ export async function handleMcpRequest(req: JsonRpcRequest): Promise<Record<stri
         }
         const pipeRes = await inspectWorkspacePipeline(args.workspaceDir);
         return okTool(req.id, pipeRes);
+      }
+
+      if (toolName === 'aimake_intake_source') {
+        if (!args.source || typeof args.source !== 'string') {
+          throw new Error('source is required');
+        }
+        const sourceStr = String(args.source);
+        const wsDir = path.resolve(String(args.workspaceDir || '.'));
+        const normalized = await normalizeSource(sourceStr, {
+          title: args.title ? String(args.title) : undefined,
+          tags: Array.isArray(args.tags) ? args.tags.map(String) : undefined,
+        });
+        const ingested = await ingestWorkspaceSource(wsDir, {
+          title: normalized.title,
+          content: normalized.markdown,
+          sourceUrl: normalized.sourceUrl,
+          tags: normalized.tags,
+        });
+        return okTool(req.id, {
+          source: sourceStr,
+          sourceType: normalized.sourceType,
+          title: normalized.title,
+          metrics: normalized.metrics,
+          ingestedPath: ingested.relativeSourcePath,
+          wikiCardPath: ingested.wikiIngest?.wikiPath,
+        });
       }
 
       return {
