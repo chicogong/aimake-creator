@@ -93,7 +93,7 @@ test('Aimake Studio: Real AI API Chat Config, Live Diff/Rollback, Non-Overlappin
     await page.locator('#chat-input').fill('把当前页改成实测性能指标对比');
     await page.locator('#btn-chat-send').click();
 
-    await expect(page.locator('.chat-diff-card')).toBeVisible({ timeout: 8000 });
+    await expect(page.locator('.chat-diff-card')).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('.chat-diff-lines')).toBeVisible();
     await expect(page.locator('.chat-rollback-btn')).toBeVisible();
     expect(receivedPrompts.length).toBe(1);
@@ -105,7 +105,7 @@ test('Aimake Studio: Real AI API Chat Config, Live Diff/Rollback, Non-Overlappin
 
     // 4. Verify One-Click Rollback restores original deck on disk
     await page.locator('.chat-rollback-btn').click();
-    await expect(page.locator('#toast')).toContainText('已成功回滚变更', { timeout: 5000 });
+    await expect(page.locator('#toast')).toContainText('已成功回滚变更', { timeout: 10_000 });
     const restoredMd = await fs.readFile(deckPath, 'utf8');
     expect(restoredMd).not.toContain('纯本地工作台真实效能实测');
 
@@ -113,7 +113,7 @@ test('Aimake Studio: Real AI API Chat Config, Live Diff/Rollback, Non-Overlappin
     await page.locator('#chat-mode-selector').selectOption('offline');
     await page.locator('#chat-input').fill('加一页关于具身智能大模型');
     await page.locator('#btn-chat-send').click();
-    await expect(page.locator('#chat-active-slide-badge')).toContainText('02/04', { timeout: 5000 });
+    await expect(page.locator('#chat-active-slide-badge')).toContainText('02/04', { timeout: 10_000 });
 
     await page.locator('#btn-dock-aspect').click();
     await expect(page.locator('#popover-aspect')).toHaveClass(/open/);

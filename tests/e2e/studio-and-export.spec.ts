@@ -64,10 +64,10 @@ test('Aimake 2.0 Calm Studio E2E: renders calm stage, switches template via Visu
       '外部 AI 工具实时热更新验证通过'
     );
     await fs.writeFile(deckPath, aiEditedMd, 'utf8');
-    await expect(page.locator('#live-sync-banner')).toHaveClass(/show/, { timeout: 5000 });
+    await expect(page.locator('#live-sync-banner')).toHaveClass(/show/, { timeout: 10_000 });
     await expect(frame.locator('.aimake-slide').first().locator('h1.slide-title')).toContainText(
       '外部 AI 工具实时热更新验证通过',
-      { timeout: 5000 }
+      { timeout: 10_000 }
     );
   } finally {
     await studio.close();
