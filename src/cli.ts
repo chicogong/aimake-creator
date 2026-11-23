@@ -95,7 +95,7 @@ const program = new Command();
 program
   .name('aimake')
   .description('Aimake — Local-first multimodal content creation, Marketplace & Karpathy LLM Wiki studio')
-  .version('1.0.0');
+  .version('2.0.0');
 
 program
   .command('doctor')
@@ -127,7 +127,7 @@ program
     };
 
     const lines = [
-      `Aimake v1.0.0 Doctor`,
+      `Aimake v2.0.0 Doctor`,
       `  Node.js       : ${report.nodeVersion}`,
       `  FFmpeg Engine : ${report.ffmpegPath}`,
       `  OpenCode CLI  : ${report.opencode.available ? report.opencode.version : 'not detected'}`,

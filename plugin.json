@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.openai.com/schemas/plugin/2026/plugin.json",
   "name": "aimake",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "display_name": "Aimake — Multimodal Creator & LLM Wiki OS",
   "description": "Zero-backend local 4-stage creative flywheel (Intake -> Distill -> Create -> Publish), Karpathy LLM Wiki, and parametric HTML-to-Cards/WeChat/PDF/PPTX/MP4 compiler.",
   "author": "Chico Gong",

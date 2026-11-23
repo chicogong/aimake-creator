@@ -1,6 +1,6 @@
 {
   "name": "aimake",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Zero-backend 4-stage multimodal creative flywheel (Intake -> Distill -> Create -> Publish) & Karpathy LLM Wiki OS (Xiaohongshu, WeChat, LinkedIn PDF, Zukai, Card News, Editable PPTX, 60fps Video).",
   "author": {
     "name": "Chico Gong",
