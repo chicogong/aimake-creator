@@ -331,10 +331,15 @@ export function adaptContentForPlatforms(
   // Normalize all image URLs to fast, reliable CDN (jsdelivr) for domestic access
   cleanMarkdown = normalizeToCdn(cleanMarkdown);
 
+  // Strip relative local file links (e.g. [返回首页](../../README.md)) as they are invalid on external platforms
+  const platformCleanMarkdown = cleanMarkdown
+    .replace(/(?:^|\n)\s*\[返回[^\]]*\]\([^)]+\)[^\n]*/g, '')
+    .replace(/(?<!\!)\[([^\]]+)\]\((?!https?:\/\/|#|mailto:)([^)]+)\)/g, '$1');
+
   // 1. WeChat: 100% Inline CSS HTML
   const wechatHtml = deckDoc
     ? renderWeChatInlineHtml(deckDoc)
-    : convertStandardMarkdownToWechatHtml(cleanMarkdown, title);
+    : convertStandardMarkdownToWechatHtml(platformCleanMarkdown, title);
 
   // 2. Zhihu: Clean Markdown with topics header & LaTeX math support
   const zhihuContent = [
@@ -342,7 +347,7 @@ export function adaptContentForPlatforms(
     '',
     `> 推荐话题：${topics.join(' / ')}`,
     '',
-    cleanMarkdown.replace(/^#\s+.+\n+/, ''), // Strip redundant duplicate H1
+    platformCleanMarkdown.replace(/^#\s+.+\n+/, ''), // Strip redundant duplicate H1
   ].join('\n');
 
   // 3. Juejin: Bytemd frontmatter + GitHub markdown
@@ -354,11 +359,11 @@ export function adaptContentForPlatforms(
     `tags: [${tags.map((t) => `"${t}"`).join(', ')}]`,
     '---',
     '',
-    cleanMarkdown,
+    platformCleanMarkdown,
   ].join('\n');
 
   // 4. Xiaohongshu: High-engagement short copy
-  const xhsContent = extractSocialSummary(title, cleanMarkdown, tags);
+  const xhsContent = extractSocialSummary(title, platformCleanMarkdown, tags);
 
   // 5. Cross-post Manifest (Wechatsync / OpenWrite compatible)
   const manifest = {

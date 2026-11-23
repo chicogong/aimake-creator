@@ -827,8 +827,13 @@ function verificationMetaTags(): string {
     `<meta name="yandex-verification" content="${GSC_VERIFICATION.yandex}" />`,
     `<meta name="baidu-site-verification" content="${GSC_VERIFICATION.baidu}" />`,
     `<meta name="msvalidate.01" content="${GSC_VERIFICATION.bing}" />`,
+    `<link rel="icon" href="/brand/icons/favicon.ico" sizes="any" />`,
+    `<link rel="icon" href="/brand/icons/icon-192.png" sizes="192x192" type="image/png" />`,
     `<link rel="icon" href="/brand/icon-192.png" sizes="192x192" type="image/png" />`,
-    `<link rel="apple-touch-icon" href="/brand/icon-192.png" />`,
+    `<link rel="apple-touch-icon" href="/brand/icons/apple-touch-icon.png" />`,
+    `<link rel="manifest" href="/brand/icons/site.webmanifest" />`,
+    `<meta property="og:image" content="https://aimake.cc/brand/social/og-cover-1200x630.png" />`,
+    `<meta name="twitter:image" content="https://aimake.cc/brand/social/og-cover-1200x630.png" />`,
   ].join('\n  ');
 }
 
@@ -1406,8 +1411,11 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
   <nav class="topbar">
     <div class="container nav-inner">
       <div style="display:flex;align-items:center;gap:12px;">
-        <a class="logo" href="/${lang}/"><span class="logo-badge">A</span><span>Aimake 爱创</span></a>
-        <span class="logo-sub">Multimodal Creator &amp; LLM Wiki</span>
+        <a class="logo" href="/${lang}/">
+          <img src="/brand/logos/symbol-color.svg" width="28" height="28" style="vertical-align:middle;display:inline-block;border-radius:6px;" alt="Aimake Studio Logo" />
+          <span>Aimake Studio</span>
+        </a>
+        <span class="logo-sub">爱创工坊 · Local-First Multimodal Studio</span>
       </div>
       <div class="nav-links">
         <a href="/playground/" class="nav-pill-highlight">🚀 ${esc(copy.navPlayground)}</a>
@@ -1988,13 +1996,15 @@ export async function buildStaticSite(outDir: string): Promise<{
   await fs.mkdir(outDir, { recursive: true });
   await fs.mkdir(path.join(outDir, 'brand'), { recursive: true });
 
-  // Copy Aimake brand icon if present in sibling aimake-home, otherwise generate clean SVG icon fallback
-  const siblingIcon = path.resolve(
-    outDir,
-    '../../../aimake-labs/aimake-home/public/brand/icon-192.png'
-  );
+  // Copy comprehensive official brand assets from assets/brand
+  const brandSrc = path.resolve(PACKAGE_ROOT, 'assets/brand');
   try {
-    await fs.copyFile(siblingIcon, path.join(outDir, 'brand', 'icon-192.png'));
+    await fs.cp(brandSrc, path.join(outDir, 'brand'), { recursive: true });
+    // Also copy icons/icon-192.png to brand/icon-192.png for backwards compatibility
+    await fs.copyFile(
+      path.join(brandSrc, 'icons/icon-192.png'),
+      path.join(outDir, 'brand/icon-192.png')
+    );
   } catch {
     // Fallback minimal valid 1x1 PNG if built outside full workspace
     const minimalPng = Buffer.from(

@@ -1,7 +1,7 @@
 # Aimake Studio — Local-First Multimodal Creator Studio & CLI
 
 <p align="center">
-  <a href="https://aimake.cc"><img src="./dist-site/brand/icon-192.png" width="80" alt="Aimake Logo" /></a>
+  <a href="https://aimake.cc"><img src="./assets/brand/logos/symbol-color.svg" width="80" alt="Aimake Studio Logo" /></a>
 </p>
 
 <p align="center">
@@ -44,6 +44,19 @@ aimake wizard
 ```
 
 Try the instant zero-install browser sandbox: **[https://aimake.cc/playground/](https://aimake.cc/playground/)**
+
+---
+
+## 🏛️ Ecosystem & Architecture Hierarchy
+
+Aimake follows a structured three-tier architecture (see [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) and [docs/brand-kit/BRAND_GUIDELINES.md](./docs/brand-kit/BRAND_GUIDELINES.md)):
+
+| Tier | Entity Name | Role & Responsibility | Key Assets & Access |
+| :--- | :--- | :--- | :--- |
+| **Mother Brand** | **Aimake** | Local-First multimodal creative infrastructure brand | Core design tokens & local-first philosophy |
+| **Flagship Product** | **Aimake Studio** | **Primary Tool**: Web canvas, CLI, desktop app, 36 templates, 5+1 deliverables | This repository (`products/aimake`), npm `aimake-studio@2.0.0`, [aimake.cc](https://aimake.cc) |
+| **Core Engine** | **Aimake Engine** | **Headless Runtime**: Video rendering kernel, Whisper word-level alignment, Plan/Run receipts | `aimake-labs/aimake-studio`, npm `@aimake/engine`, bin `aimake-engine` |
+| **Maintenance Matrix** | **Aimake Universe** | **LTS Assets**: 6 educational interdisciplinary planets for families and kids | `aimake-labs/*`, persistent live subdomains (zero 404s) |
 
 ---
 
