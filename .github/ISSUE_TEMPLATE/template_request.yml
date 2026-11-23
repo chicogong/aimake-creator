@@ -1,7 +1,7 @@
 name: 🎨 New Template / Design Style Request
 description: Suggest a new design aesthetic, editorial layout, or channel-specific template
 title: "[Template]: "
-labels: ["template", "design"]
+labels: ["area: templates", "community: template-submission"]
 body:
   - type: markdown
     attributes:

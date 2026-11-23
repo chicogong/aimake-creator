@@ -13,7 +13,7 @@ body:
     attributes:
       label: Aimake Version
       description: What version of aimake-studio are you using? (Run `aimake --version`)
-      placeholder: "1.0.0"
+      placeholder: "2.0.0"
     validations:
       required: true
 

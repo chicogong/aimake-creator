@@ -1,0 +1,26 @@
+'area: templates':
+  - 'templates/**'
+  - 'src/templates/**'
+
+'area: intake':
+  - 'src/intake/**'
+  - 'examples/sources/**'
+
+'area: distill':
+  - 'src/wiki/**'
+  - 'src/persona/**'
+
+'area: create':
+  - 'src/composer/**'
+  - 'src/studio/**'
+  - 'examples/*.deck.md'
+
+'area: publish':
+  - 'src/publisher/**'
+
+'area: mcp':
+  - 'src/mcp/**'
+
+'documentation':
+  - '**/*.md'
+  - 'docs/**'

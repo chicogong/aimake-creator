@@ -48,3 +48,9 @@ jobs:
 
       - name: NPM publication tarball check
         run: pnpm pack:check
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright E2E test suites
+        run: pnpm test:e2e

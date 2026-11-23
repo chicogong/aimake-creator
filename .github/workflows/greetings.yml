@@ -1,0 +1,21 @@
+name: Community Welcome & Greetings
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: '👋 Welcome to the Aimake community! Thank you for opening your first issue. Our team and contributors will review it shortly. In the meantime, feel free to check out our [Documentation](https://aimake.cc) or join our [Discussions](https://github.com/chicogong/aimake-creator/discussions)!'
+          pr-message: '🎉 Thank you for opening your first pull request! We truly appreciate your contribution to Aimake. Please ensure your PR adheres to our [Contributing Guide](https://github.com/chicogong/aimake-creator/blob/main/CONTRIBUTING.md) and that all automated checks pass.'
