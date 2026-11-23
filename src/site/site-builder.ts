@@ -26,6 +26,7 @@ interface BentoItem {
   badge: string;
   type: 'wide' | 'tall' | 'normal';
   details: string[];
+  illustration?: string;
 }
 
 interface TerminalScenario {
@@ -87,7 +88,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
       'Aimake（爱创）将本地 Karpathy LLM Wiki 知识库、四语种个人风格基因（Style DNA）与确定性排版编译核融为一体。写好一份 .deck.md 原稿，同步直出小红书 3x 高清套图、微信公众号 100% 内联富文本、矢量 PDF、原生可编辑 .pptx 与 60fps 动画短视频。',
     primaryCta: '🚀 网页版在线体验 (免安装)',
     secondaryCta: '浏览 36 套设计系统与同款',
-    quickInstall: 'npm i -g @aimake/cli',
+    quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: '已复制终端命令至剪贴板',
     stageCaption: '确定性排版编译舞台 · 点击上方介质标签实时切换同一原稿的多端渲染画布',
     flywheelHeading: '端到端创作飞轮 · 四步完成知识沉淀与全域分发',
@@ -101,6 +102,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         tag: 'UNIVERSAL INTAKE',
         badge: '0 凭证 · 格式全保真',
         type: 'wide',
+        illustration: '/brand/illustrations/feature-visual-layout.svg',
         details: [
           'X (Twitter) 零凭证指标提取',
           '微信 / 知乎 / 网页深度清洗',
@@ -115,6 +117,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         tag: 'WIKI COMPLIANCE',
         badge: '95% 上下文节省',
         type: 'tall',
+        illustration: '/brand/illustrations/feature-ai-copilot.svg',
         details: ['index.md <= 3,000 Tokens 预算', '概念卡与实体关系图谱', '严格标注事实来源坐标 cite'],
       },
       {
@@ -124,6 +127,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         tag: 'PARAMETRIC COMPILER',
         badge: '1 原稿 · 5 原生介质',
         type: 'wide',
+        illustration: '/brand/illustrations/feature-one-source-many-formats.svg',
         details: [
           '3x 高清小红书社交套图',
           '公众号 100% 内联富文本',
@@ -245,7 +249,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
       'Aimake unites a compounding Karpathy LLM Wiki, a 4-locale anti-slop Style DNA engine, and a deterministic layout compiler. Author one plain-Markdown .deck.md storyboard and output 3x Retina social cards, inline newsletter HTML, vector PDF carousels, native editable PowerPoint (.pptx), and 60fps MP4 reels.',
     primaryCta: '🚀 Try Live Web Playground (No Install)',
     secondaryCta: 'Explore 36 Design Systems',
-    quickInstall: 'npm i -g @aimake/cli',
+    quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: 'Command copied to clipboard',
     stageCaption: 'Deterministic layout compiler stage · Switch tabs to inspect real parametric HTML outputs',
     flywheelHeading: 'The 4-Stage Creative Flywheel: From Raw Notes to Omni-Channel Assets',
@@ -259,6 +263,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         tag: 'UNIVERSAL INTAKE',
         badge: 'Zero Clutter · Zero-Key',
         type: 'wide',
+        illustration: '/brand/illustrations/feature-visual-layout.svg',
         details: [
           'X (Twitter) Zero-Auth Extraction',
           'WeChat & Web Article Cleaner',
@@ -273,6 +278,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         tag: 'WIKI COMPLIANCE',
         badge: '95% Context Saved',
         type: 'tall',
+        illustration: '/brand/illustrations/feature-ai-copilot.svg',
         details: ['index.md <= 3,000 Token Cap', 'Concept & Entity Graph', 'Strict Source Citations (cite:)'],
       },
       {
@@ -282,6 +288,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         tag: 'PARAMETRIC COMPILER',
         badge: '1 Source · 5 Formats',
         type: 'wide',
+        illustration: '/brand/illustrations/feature-one-source-many-formats.svg',
         details: [
           '3x Retina PNG Social Cards',
           '100% Inline CSS Newsletter HTML',
@@ -403,7 +410,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
       'Aimakeは、知識が複利で増えるKarpathy式LLM Wiki、AI臭さを消す文体DNAエンジン、厳格な日本語禁則処理（line-break: strict）を備えたマルチモーダル制作スタジオです。1つの .deck.md 原稿からXの「図解」・Note用HTML・LinkedIn PDF・編集可能なPPTX・60fps動画を同時出力します。',
     primaryCta: '🚀 Web版を今すぐ体験（インストール不要）',
     secondaryCta: '36種類のデザインシステムを見る',
-    quickInstall: 'npm i -g @aimake/cli',
+    quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: 'コマンドをクリップボードにコピーしました',
     stageCaption: '確定性レイアウトコンパイラ · タブを切り替えて各メディアの描画を確認',
     flywheelHeading: '4段階の制作フライホイール：知識蓄積からマルチメディア同時配信まで',
@@ -556,7 +563,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
       'Aimake는 Karpathy 방식의 로컬 LLM 위키, AI 특유의 번역투를 제거하는 스타일 DNA 엔진, 그리고 Pretendard 단어 단위 줄바꿈(keep-all)이 적용된 멀티모달 제작 스튜디오입니다. 하나의 .deck.md 원고로 인스타그램 카드뉴스, 뉴스레터 HTML, 링크드인 PDF, 편집 가능한 네이티브 PPTX, 60fps 숏폼 영상을 완성하세요.',
     primaryCta: '🚀 웹 플레이그라운드 체험하기 (설치 불필요)',
     secondaryCta: '36가지 글로벌 템플릿 보기',
-    quickInstall: 'npm i -g @aimake/cli',
+    quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: '명령어가 클립보드에 복사되었습니다',
     stageCaption: '결정론적 레이아웃 컴파일러 · 탭을 눌러 매체별 렌더링 결과를 확인하세요',
     flywheelHeading: '4단계 크리에이티브 플라이휠: 지식 정리부터 멀티 플랫폼 배포까지',
@@ -846,12 +853,17 @@ function sharedSiteCss(): string {
       --surface-elevated: rgba(26, 34, 49, 0.85);
       --border: rgba(255, 255, 255, 0.08);
       --border-strong: rgba(255, 255, 255, 0.16);
-      --border-hover: rgba(59, 130, 246, 0.55);
+      --border-hover: rgba(105, 81, 255, 0.55);
       --ink: #f8fafc;
       --muted: #94a3b8;
       --dim: #64748b;
-      --cobalt: #3b82f6;
-      --cobalt-glow: rgba(59, 130, 246, 0.28);
+      --cobalt: #6951ff;
+      --cobalt-glow: rgba(105, 81, 255, 0.35);
+      --am-violet: #6951ff;
+      --am-violet-hover: #5236f3;
+      --am-yellow: #ffcb49;
+      --am-coral: #ff6b74;
+      --am-lavender: #b7aaff;
       --indigo: #6366f1;
       --violet: #8b5cf6;
       --amber: #f59e0b;
@@ -939,6 +951,9 @@ function sharedSiteCss(): string {
       padding: 72px 0 64px;
       border-bottom: 1px solid var(--border);
       position: relative;
+      background-image:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(105, 81, 255, 0.22), transparent 70%),
+        radial-gradient(circle 500px at 90% 20%, rgba(255, 203, 73, 0.08), transparent 60%);
     }
     .hero-split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 44px; align-items: center; }
     @media (max-width: 980px) { .hero-split { grid-template-columns: 1fr; } .logo-sub { display: none; } }
@@ -973,7 +988,7 @@ function sharedSiteCss(): string {
       font-size: clamp(32px, 4.2vw, 54px);
       line-height: 1.14;
       margin: 0 0 18px;
-      letter-spacing: -0.035em;
+      letter-spacing: -0.04em;
       font-weight: 800;
       background: linear-gradient(180deg, #ffffff 15%, #cbd5e1 100%);
       -webkit-background-clip: text;
@@ -991,7 +1006,7 @@ function sharedSiteCss(): string {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(135deg, var(--cobalt), #2563eb);
+      background: linear-gradient(135deg, var(--am-violet), var(--am-violet-hover));
       color: #fff;
       font-weight: 600;
       font-size: 14px;
@@ -1001,7 +1016,7 @@ function sharedSiteCss(): string {
       box-shadow: 0 4px 18px var(--cobalt-glow);
       transition: all 0.15s;
     }
-    .btn-primary:hover { background: linear-gradient(135deg, #2563eb, #1d4ed8); transform: translateY(-1px); }
+    .btn-primary:hover { background: linear-gradient(135deg, var(--am-violet-hover), #4324e4); transform: translateY(-1px); }
     .btn-secondary {
       display: inline-flex;
       align-items: center;
@@ -1175,6 +1190,29 @@ function sharedSiteCss(): string {
       font-family: var(--mono);
     }
     .bento-detail-check { color: var(--emerald); font-weight: 700; font-size: 11px; }
+    .bento-art {
+      width: 100%;
+      height: 140px;
+      margin: 14px 0 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(13, 17, 26, 0.7);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bento-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.92;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .bento-card:hover .bento-art img {
+      transform: scale(1.03);
+      opacity: 1;
+    }
 
     /* Interactive Terminal Section */
     .terminal-shell {
@@ -1507,12 +1545,16 @@ function renderLandingHtml(
   const bentoHtml = copy.bentoItems
     .map((item) => {
       const typeClass = item.type === 'wide' ? 'bento-wide' : item.type === 'tall' ? 'bento-tall' : '';
+      const artHtml = item.illustration
+        ? `<div class="bento-art"><img src="${esc(item.illustration)}" alt="${esc(item.title)}" loading="lazy" /></div>`
+        : '';
       return `
       <div class="bento-card ${typeClass}">
         <div class="bento-top">
           <div class="bento-stage-tag">${esc(item.stage)}</div>
           <h3>${esc(item.title)}</h3>
           <p>${esc(item.desc)}</p>
+          ${artHtml}
           <span class="bento-badge">${esc(item.badge)}</span>
         </div>
         <div class="bento-details">
@@ -1798,7 +1840,7 @@ function renderLandingHtml(
       var heroQuickCli = document.getElementById('hero-quick-cli');
       if (heroQuickCli) {
         heroQuickCli.addEventListener('click', function () {
-          var cmd = heroQuickCli.getAttribute('data-copy') || 'npm i -g @aimake/cli';
+          var cmd = heroQuickCli.getAttribute('data-copy') || 'npm i -g aimake-studio';
           copyToClipboard(cmd, '${esc(copy.cliCopyNotice)}: ' + cmd);
         });
       }
