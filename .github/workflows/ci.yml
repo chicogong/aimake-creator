@@ -49,6 +49,9 @@ jobs:
       - name: NPM publication tarball check
         run: pnpm pack:check
 
+      - name: Build Official Static Website
+        run: pnpm site:build
+
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 

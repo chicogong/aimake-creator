@@ -88,7 +88,8 @@ test('Aimake Studio: Real AI API Chat Config, Live Diff/Rollback, Non-Overlappin
     expect(inputBox).not.toBeNull();
     expect(toastBox!.y + toastBox!.height).toBeLessThan(inputBox!.y);
 
-    // 3. Send natural instruction routed to the real OpenAI-compat transport
+    // 3. Ensure mode selector has direct API selected, then send natural instruction
+    await page.locator('#chat-mode-selector').selectOption('api');
     await page.locator('#chat-input').fill('把当前页改成实测性能指标对比');
     await page.locator('#btn-chat-send').click();
 
@@ -133,6 +134,12 @@ test('Aimake Web Playground: Single-Row Header, Clean Metric Rendering & Paginat
 }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
   const playgroundFile = path.resolve(process.cwd(), 'dist-site/playground/index.html');
+  try {
+    await fs.access(playgroundFile);
+  } catch {
+    const { execSync } = await import('node:child_process');
+    execSync('pnpm site:build', { stdio: 'inherit' });
+  }
   await page.goto(`file://${playgroundFile}`);
 
   // 1. Verify Topbar buttons never wrap into two lines (single-row height check)
