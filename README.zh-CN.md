@@ -9,9 +9,12 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/chicogong/aimake-creator/actions/workflows/ci.yml"><img src="https://github.com/chicogong/aimake-creator/actions/workflows/ci.yml/badge.svg" alt="CI 质量门禁" /></a>
   <a href="https://www.npmjs.com/package/aimake-studio"><img src="https://img.shields.io/npm/v/aimake-studio.svg?style=flat-square&color=blue" alt="npm version" /></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="license" /></a>
   <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen.svg?style=flat-square" alt="node version" /></a>
+  <a href="https://aimake.cc"><img src="https://img.shields.io/badge/官网-aimake.cc-0284c7.svg?style=flat-square" alt="website" /></a>
+  <a href="https://github.com/chicogong/aimake-creator/projects"><img src="https://img.shields.io/badge/项目看板-经营与路线图-purple.svg?style=flat-square" alt="project board" /></a>
   <a href="https://aimake.cc/playground/"><img src="https://img.shields.io/badge/在线工坊-零安装秒开-purple.svg?style=flat-square" alt="playground" /></a>
   <a href="#"><img src="https://img.shields.io/badge/内置模板-36套商业体系-orange.svg?style=flat-square" alt="templates" /></a>
   <a href="#"><img src="https://img.shields.io/badge/数据隐私-100%25纯本地-success.svg?style=flat-square" alt="local-first" /></a>

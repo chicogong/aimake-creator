@@ -9,9 +9,12 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/chicogong/aimake-creator/actions/workflows/ci.yml"><img src="https://github.com/chicogong/aimake-creator/actions/workflows/ci.yml/badge.svg" alt="CI Quality Gate" /></a>
   <a href="https://www.npmjs.com/package/aimake-studio"><img src="https://img.shields.io/npm/v/aimake-studio.svg?style=flat-square&color=blue" alt="npm version" /></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="license" /></a>
   <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen.svg?style=flat-square" alt="node version" /></a>
+  <a href="https://aimake.cc"><img src="https://img.shields.io/badge/website-aimake.cc-0284c7.svg?style=flat-square" alt="website" /></a>
+  <a href="https://github.com/chicogong/aimake-creator/projects"><img src="https://img.shields.io/badge/project-roadmap%20board-purple.svg?style=flat-square" alt="project board" /></a>
   <a href="https://aimake.cc/playground/"><img src="https://img.shields.io/badge/playground-live%20sandbox-purple.svg?style=flat-square" alt="playground" /></a>
   <a href="#"><img src="https://img.shields.io/badge/templates-36%20built--in-orange.svg?style=flat-square" alt="templates" /></a>
   <a href="#"><img src="https://img.shields.io/badge/privacy-100%25%20local--first-success.svg?style=flat-square" alt="local-first" /></a>
