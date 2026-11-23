@@ -58,7 +58,7 @@ aimake render deck.md -f pptx -o launch.pptx
 \`\`\`
 `,
   creator: `---
-title: 跑完 203 亿 Token 后：超级个体的纯本地创作飞轮
+title: 跑完超 1000 亿 Token 后：超级个体的纯本地创作飞轮
 template: xhs-swiss-grid
 locale: zh-CN
 aspect: 3:4
@@ -71,7 +71,7 @@ handle: "@chicogong"
 ## 告别一次性聊天消耗，让每一篇笔记产生复利
 
 \`\`\`metric
-- 处理 Token: 203 亿+ (+450%)
+- 处理 Token: 1000 亿+ (超大规模实战)
 - 沉淀知识卡片: 1,840 篇 (本地 Markdown)
 - 一稿多出介质: 5 种 (图文+长文+PPT+视频)
 \`\`\`
@@ -586,7 +586,7 @@ export async function buildWebPlaygroundHtml(
       <select class="pg-select" id="sample-select" title="载入示范原稿">
         <option value="agent">2026 AI Agent 架构 (16:9)</option>
         <option value="architecture">Aimake 架构 Mermaid 流程图 (16:9)</option>
-        <option value="creator">203 亿 Token 飞轮 (3:4)</option>
+        <option value="creator">千亿 Token 创作飞轮 (3:4)</option>
         <option value="launch">苹果便当盒发布会 (16:9)</option>
         <option value="poster">孔版印刷海报 (1:1)</option>
       </select>

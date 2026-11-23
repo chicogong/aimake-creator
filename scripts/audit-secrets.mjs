@@ -11,6 +11,8 @@ const IGNORE_DIRS = new Set([
   'dist',
   'dist-site',
   'dist-desktop',
+  'dist-exports',
+  'dist-promotions',
   '.aimake-tmp',
   '.aimake',
   '.local-sandbox-hosts',

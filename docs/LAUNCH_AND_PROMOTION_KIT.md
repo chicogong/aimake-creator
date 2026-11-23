@@ -26,11 +26,11 @@ Aimake 是一套将**「素材抓取 (Intake) → 知识萃取 (Distill) → 参
 
 ### 一句话 Slogan
 - **中文（开发者/创作者视角）**：
-  > 跑完 203 亿 Token 后，我把超级个体的全套创作飞轮开源了：一个 100% 运行在本地的多模态工坊与 CLI。
+  > 跑完超 1000 亿 Token 后，我把超级个体的全套创作飞轮开源了：一个 100% 运行在本地的多模态工坊与 CLI。
 - **中文（产品功效视角）**：
   > 从 X 推文、微信文章与数据表格，到公众号富文本、原生可编辑 PPTX 与 3x 超清图组，只需 80ms 确定性编译。
 - **英文 (Global Tagline)**：
-  > Aimake — The Local-First Multimodal Creative Flywheel. Turn messy notes, X threads & spreadsheets into WeChat HTML, native editable PPTX, and 3x Retina decks in 80ms.
+  > Aimake — The Local-First Multimodal Creative Flywheel. Distilling 100B+ tokens of real-world research into WeChat HTML, native editable PPTX, and 3x Retina decks in 80ms.
 
 ---
 
@@ -41,7 +41,7 @@ Aimake 是一套将**「素材抓取 (Intake) → 知识萃取 (Distill) → 参
 
 We are thrilled to officially open-source **Aimake 2.0**! 
 
-Aimake started as an internal creative system used to distill hundreds of millions of LLM tokens into high-impact presentation decks, technical reports, and viral social cards. Today, we're giving the entire engine to the open-source community under Apache-2.0.
+Aimake started as an internal creative system used to distill over 100 Billion (1000 亿+) real-world LLM tokens into high-impact presentation decks, technical reports, and viral social cards. Today, we're giving the entire engine to the open-source community under Apache-2.0.
 
 ### 🌟 What's New in v2.0.0
 
@@ -95,7 +95,7 @@ aimake studio
 2. 每月支付 $30 订阅费，换来充满「不仅如此、值得注意的是」的 AI 废话腔；
 3. 导出拼贴在一起的「死图」，错了一个标点就得全盘推倒。
 
-今天，我们正式开源 **Aimake (爱创)** —— 跑完 203 亿 Token 后沉淀的「纯本地端到端创作飞轮」。
+今天，我们正式开源 **Aimake (爱创)** —— 跑完超 1000 亿 Token 后沉淀的「纯本地端到端创作飞轮」。
 
 100% 开源 / 本地优先 / 零凭证抓取 / 80ms 确定性编译 🧵👇
 
@@ -192,7 +192,7 @@ npx aimake wizard
 ## 4. 微信公众号深度宣发长文 (Editorial Article)
 
 ### 备选标题
-- 《跑完 203 亿 Token 后：超级个体的纯本地创作飞轮（全套开源）》
+- 《跑完超 1000 亿 Token 后：超级个体的纯本地创作飞轮（全套开源）》
 - 《告别排版内耗：为什么我不推荐你再用 Figma 或云端 AI 做 PPT？》
 - 《80 毫秒生成原生 PPTX 与公众号排版：我们开源了 Aimake》
 
@@ -231,7 +231,7 @@ npx aimake wizard
 - **Cover (第 1 张 · 封面卡)**：
   - 眉标：`OPEN SOURCE 2026`
   - 主标题：**超级个体的纯本地创作飞轮**
-  - 副标题：跑完 203 亿 Token 后，我把自用的全套排版与分发工具开源了
+  - 副标题：跑完超 1000 亿 Token 后，我把自用的全套排版与分发工具开源了
   - 核心标签：`100% Local-First` · `80ms 原生编译` · `0 云端数据外泄`
 - **Slide 2 (第 2 张 · 痛点与解法)**：
   - 标题：**为什么拒绝传统 AI 创作工具？**
@@ -278,7 +278,7 @@ npx aimake wizard
 ## 6. 开发者技术社区发布稿 (V2EX / 掘金 / 知乎专栏)
 
 ### 帖子标题
-`[开源] Aimake 2.0: 跑完 203 亿 Token 后，我们开源了纯本地多模态创作工坊与 CLI`
+`[开源] Aimake 2.0: 跑完超 1000 亿 Token 后，我们开源了纯本地多模态创作工坊与 CLI`
 
 ### 技术细节亮点
 - **拒绝大模型算 CSS**：排版是一门确定性的视觉数学，字阶比、行距、发丝边框与安全间距应当交给经过验证的参数化模板，LLM 仅负责意图理解与提炼；

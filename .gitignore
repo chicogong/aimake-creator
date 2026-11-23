@@ -4,6 +4,8 @@ dist-site/
 dist-desktop/
 dist-exports/
 **/dist-exports/
+dist-promotions/
+**/dist-promotions/
 .aimake-tmp/
 .local-sandbox-hosts/
 /workspace/

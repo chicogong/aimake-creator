@@ -1,5 +1,5 @@
 ---
-title: 跑完 203 亿 Token 后：超级个体的纯本地创作飞轮
+title: 跑完超 1000 亿 Token 后：超级个体的纯本地创作飞轮
 template: apple-bento-launch
 locale: zh-CN
 aspect: 16:9
