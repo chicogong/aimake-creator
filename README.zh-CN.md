@@ -1,4 +1,4 @@
-# Aimake（爱创）— 纯本地多模态创作工作室与 CLI
+# Aimake Studio（爱创工坊）— 纯本地多模态创作工作室与 CLI
 
 <p align="center">
   <a href="https://aimake.cc"><img src="./dist-site/brand/icon-192.png" width="80" alt="Aimake Logo" /></a>

@@ -79,7 +79,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     navFlywheel: '创作飞轮',
     navTemplates: '36 套设计模板',
     navCli: '终端 & MCP',
-    navStudio: '爱创声画 Studio',
+    navStudio: '爱创工坊 Studio',
     navUniverse: '爱创星球 Universe',
     heroTag: 'LOCAL-FIRST · 零后端隐私架构 · 兼容 16+ AI 助手',
     heroTitle: '把每一次深度思考，编译成五种专业介质的复利资产',
@@ -1707,11 +1707,11 @@ function renderLandingHtml(
 
         <div class="family-card">
           <div>
-            <span class="family-badge">AUDIO &amp; VIDEO · studio.aimake.cc</span>
-            <h3 style="margin:12px 0 8px;font-size:20px;">Aimake Studio · 爱创声画</h3>
-            <p style="margin:0;color:var(--muted);font-size:14px;">面向发布视频、播客与多语言配音的智能音视频审阅专线。支持可追溯事实抽取、逐场景配音修订与本地确定性合成。</p>
+            <span class="family-badge">CORE ENGINE · @aimake/engine</span>
+            <h3 style="margin:12px 0 8px;font-size:20px;">Aimake Engine · 爱创核心引擎</h3>
+            <p style="margin:0;color:var(--muted);font-size:14px;">底层无头音视频渲染内核与 Recipe 执行引擎。支持 Plan/Run 可验证收据、逐场景音频重用、Whisper 词级对齐与本地确定性媒体合成。</p>
           </div>
-          <a class="btn-secondary" style="width:fit-content;" href="https://studio.aimake.cc" target="_blank" rel="noopener">前往 studio.aimake.cc ↗</a>
+          <a class="btn-secondary" style="width:fit-content;" href="https://github.com/chicogong/aimake-studio" target="_blank" rel="noopener">浏览 Engine 源码 ↗</a>
         </div>
 
         <div class="family-card">
@@ -1738,7 +1738,7 @@ function renderLandingHtml(
         <a href="/en/">English</a>
         <a href="/ja/">日本語</a>
         <a href="/ko/">한국어</a>
-        <a href="https://studio.aimake.cc">爱创声画</a>
+        <a href="https://github.com/chicogong/aimake-studio">Aimake Engine</a>
         <a href="/universe/">爱创星球</a>
       </div>
     </div>
@@ -1939,8 +1939,8 @@ function renderUniverseBridgeHtml(): string {
     <div class="container footer-inner">
       <div>Aimake Universe 爱创星球 · No Ads · No Login · Local-First</div>
       <div class="footer-links">
-        <a href="/">返回 Aimake 创作主站</a>
-        <a href="https://studio.aimake.cc">爱创声画 Studio</a>
+        <a href="/">返回 Aimake Studio 旗舰主站</a>
+        <a href="https://github.com/chicogong/aimake-studio">Aimake Engine 核心引擎</a>
       </div>
     </div>
   </footer>

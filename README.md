@@ -1,4 +1,4 @@
-# Aimake — Local-First Multimodal Creator Studio & CLI
+# Aimake Studio — Local-First Multimodal Creator Studio & CLI
 
 <p align="center">
   <a href="https://aimake.cc"><img src="./dist-site/brand/icon-192.png" width="80" alt="Aimake Logo" /></a>

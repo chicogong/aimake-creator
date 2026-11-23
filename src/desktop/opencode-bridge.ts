@@ -203,7 +203,7 @@ function synthesizeDeterministicRefinement(
           template: 'xhs-swiss-grid',
           locale,
           aspect: '3:4',
-          author: 'Aimake Creator',
+          author: 'Aimake Studio',
           handle: '@aimake',
           watermark: true,
           fps: 24,
