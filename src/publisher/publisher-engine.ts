@@ -96,7 +96,7 @@ export async function publishContent(
     await fs.writeFile(targetFilePath, item.content, 'utf-8');
 
     let browserResult: PlatformPublishResult | null = null;
-    if (options.browser && (t === 'zhihu' || t === 'juejin')) {
+    if (options.browser && (t === 'zhihu' || t === 'juejin' || t === 'wechat')) {
       browserResult = await attemptBrowserPublish(t, title, item.content, options);
     }
 

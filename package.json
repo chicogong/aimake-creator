@@ -52,6 +52,7 @@
     "aimake": "tsx src/cli.ts",
     "build": "tsc --noEmit && tsup src/cli.ts src/index.ts --format esm --dts --clean",
     "desktop:build": "pnpm build && node scripts/build-macos-app.mjs",
+    "desktop:dmg": "pnpm build && node scripts/build-macos-dmg.mjs",
     "desktop:open": "open dist-desktop/Aimake.app",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

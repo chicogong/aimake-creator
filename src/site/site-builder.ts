@@ -2124,6 +2124,7 @@ export async function buildStaticSite(outDir: string): Promise<{
     '',
   ].join('\n');
   await fs.writeFile(path.join(outDir, 'sitemap.xml'), sitemapXml, 'utf8');
+  await fs.writeFile(path.join(outDir, 'CNAME'), 'aimake.cc\n', 'utf8');
   await fs.writeFile(
     path.join(outDir, 'robots.txt'),
     'User-agent: *\nAllow: /\nSitemap: https://aimake.cc/sitemap.xml\n',
