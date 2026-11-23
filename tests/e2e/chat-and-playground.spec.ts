@@ -131,7 +131,9 @@ test('Aimake Studio: Real AI API Chat Config, Live Diff/Rollback, Non-Overlappin
 
 test('Aimake Web Playground: Single-Row Header, Clean Metric Rendering & Pagination', async ({
   page,
+  context,
 }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']).catch(() => {});
   await page.setViewportSize({ width: 1280, height: 800 });
   const playgroundFile = path.resolve(process.cwd(), 'dist-site/playground/index.html');
   try {

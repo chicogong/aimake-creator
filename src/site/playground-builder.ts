@@ -1562,15 +1562,39 @@ export async function buildWebPlaygroundHtml(
         const html = cloned.outerHTML;
         const plainText = deckRoot.innerText || html;
 
-        if (navigator.clipboard && navigator.clipboard.write) {
-          const blob = new Blob([html], { type: 'text/html' });
-          const textBlob = new Blob([plainText], { type: 'text/plain' });
-          await navigator.clipboard.write([
-            new ClipboardItem({ 'text/html': blob, 'text/plain': textBlob })
-          ]);
-        } else {
-          await navigator.clipboard.writeText(html);
+        let copySuccess = false;
+        try {
+          if (navigator.clipboard && navigator.clipboard.write) {
+            const blob = new Blob([html], { type: 'text/html' });
+            const textBlob = new Blob([plainText], { type: 'text/plain' });
+            await navigator.clipboard.write([
+              new ClipboardItem({ 'text/html': blob, 'text/plain': textBlob })
+            ]);
+            copySuccess = true;
+          }
+        } catch (_) {}
+
+        if (!copySuccess) {
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(html);
+              copySuccess = true;
+            }
+          } catch (_) {}
         }
+
+        if (!copySuccess) {
+          const ta = document.createElement('textarea');
+          ta.value = html;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          copySuccess = true;
+        }
+
         btnCopyWechat.disabled = false;
         setBtnFeedback(btnCopyWechat, '已复制富文本 ✓', '${lucideIcon('check')}');
         showToast('已复制微信公众号富文本！可直接粘贴至公众号后台');
