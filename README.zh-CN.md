@@ -150,7 +150,12 @@ flowchart TD
 ```
 
 ### 1. 抓取 (Intake)
-- **Core CLI 职责**：`aimake intake <sources...>` 执行高吞吐文件 I/O、本地 PDF/Office 格式正规化提取、网络 URL 抓取与 SHA-256 唯一指纹哈希校验。
+- **Core CLI 职责**：`aimake intake <sources...>` 执行高吞吐文件 I/O、本地 PDF/Office 格式正规化提取、多源网络抓取与 SHA-256 唯一指纹哈希校验。
+  - **X (Twitter) 动态与长推**：基于全球边缘 API（`api.fxtwitter.com`）实现**零 API Key / 零登录凭证**直出结构化数据，提取推文全文、作者画像、点赞/转推/浏览互动指标、多张高清配图与引用推文（Quote Tweet）；配合 Jina Reader 自动展开长推文串。
+  - **微信公众号文章 (`mp.weixin.qq.com`)**：突破图片防盗链限制，将微信动态 `<img data-src="...">` 懒加载图片正规化为 Markdown 图片标准语法。
+  - **数据表格 (CSV/TSV/Excel)**：原生解析行列结构，自动探测高对比度核心数值指标，秒级提炼为 Bento 网格卡片专用的 ````metric` 语法块。
+  - **音视频字幕 (VTT/SRT)**：剥离冗余微秒时间轴代码与行号，按发言人与 `[01:23]` 时间戳锚点聚类为连贯语义段落。
+  - **全生态调研报告**：详细开源方案比对参见 [docs/INTAKE_ECOSYSTEM_RESEARCH.md](./docs/INTAKE_ECOSYSTEM_RESEARCH.md)。
 - **Agent Skill 职责**：`aimake-intake` 分析杂乱非结构化草稿，剔除无关排版噪声，结构化保留核心数据指标、结论与溯源依据。
 
 ### 2. 萃取 (Distill)
@@ -396,6 +401,8 @@ Aimake 的诞生与演进，深受以下开源项目、设计哲学与前沿开�
 
 - [1.0 架构与验收测试报告](./docs/ACCEPTANCE-1.0.md)
 - [Aimake 2.0 沉浸式工作区设计白皮书](./docs/AIMAKE_2_0_CALM_WORKSPACE_DESIGN.md)
+- [全生态多源素材抓取与各环节开源工具调研报告](./docs/INTAKE_ECOSYSTEM_RESEARCH.md)
+- [全渠道宣发与开源推广媒体套件 (Launch & Promotion Kit)](./docs/LAUNCH_AND_PROMOTION_KIT.md)
 - [演进路线图](./docs/ROADMAP-2.0.md)
 - [开发者贡献指南](./CONTRIBUTING.md)
 - [社区行为准则](./CODE_OF_CONDUCT.md)

@@ -96,12 +96,17 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     bentoItems: [
       {
         stage: 'STAGE 01 · 零损耗全域摄入',
-        title: '网页、研报、周报与文档，一键入库为纯净 Markdown',
-        desc: '拖入 PDF、DOCX、PPTX 或粘贴微信文章、知乎长帖，本地解析引擎自动剥离广告排版杂质，原汁原味留存事实论据至 sources/。',
-        tag: 'INTAKE & RESEARCH',
-        badge: '0 杂质 · 格式全保真',
+        title: 'X推文、微信长文、表格与音视频字幕，一键入库为纯净 Markdown',
+        desc: '支持零凭证提取 X (Twitter) 推文与互动指标、清洗微信公众号防盗链文章、解析 CSV/Excel 表格提炼 Bento 卡片指标，以及聚类带时间戳的音视频字幕，原汁原味留存事实论据至 sources/。',
+        tag: 'UNIVERSAL INTAKE',
+        badge: '0 凭证 · 格式全保真',
         type: 'wide',
-        details: ['PDF / DOCX / PPTX 提取', '微信 / 知乎 / 网页深度清洗', '自动建立 sources/ 溯源归档'],
+        details: [
+          'X (Twitter) 零凭证指标提取',
+          '微信 / 知乎 / 网页深度清洗',
+          'CSV 表格提取 Bento 卡片指标',
+          '音视频字幕 (VTT/SRT) 智能聚类',
+        ],
       },
       {
         stage: 'STAGE 02 · 知识复利',
@@ -187,10 +192,10 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         cmd: 'aimake mcp',
         desc: '启动独立 Model Context Protocol 服务，为 Claude Code、OpenAI Codex 与 Cursor 提供本地编译与排版工具。',
         output: `[aimake-mcp] Server initialized on stdio (JSON-RPC 2.0)
-[aimake-mcp] Registered 6 tools: aimake_compile_deck, aimake_humanize,
-             aimake_publish_content, aimake_remix_template,
-             aimake_wiki_distill, aimake_market_search
-[aimake-mcp] Ready to receive host requests.`,
+[aimake-mcp] Registered 16 atomic tools: aimake_intake_source,
+             aimake_pipeline_inspect, aimake_publish_content,
+             aimake_remix_deck, aimake_render_deck, aimake_stage_focus...
+[aimake-mcp] Ready to receive host requests from Claude / Cursor / AGY / WorkBuddy.`,
       },
     ],
     pillarsHeading: '为什么超级个体与专业团队选择 Aimake？',
@@ -249,12 +254,17 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     bentoItems: [
       {
         stage: 'STAGE 01 · LOSSLESS INTAKE',
-        title: 'Ingest articles, reports, and PDFs into pristine Markdown',
-        desc: 'Drag and drop PDFs, Office documents, or URLs. The local intake parser strips clutter and stores clean factual citations into sources/.',
-        tag: 'INTAKE & RESEARCH',
-        badge: 'Zero Clutter',
+        title: 'Ingest X posts, articles, spreadsheets & transcripts into clean Markdown',
+        desc: 'Zero-auth ingestion for X (Twitter) status and engagement metrics, WeChat anti-hotlink normalization, CSV/Excel Bento metric extraction, and timestamp-cleaned VTT/SRT transcripts directly into sources/.',
+        tag: 'UNIVERSAL INTAKE',
+        badge: 'Zero Clutter · Zero-Key',
         type: 'wide',
-        details: ['PDF / DOCX / PPTX Parsing', 'Deep Web & Article Cleaner', 'Automatic sources/ Archival'],
+        details: [
+          'X (Twitter) Zero-Auth Extraction',
+          'WeChat & Web Article Cleaner',
+          'CSV Spreadsheets to Bento Metrics',
+          'VTT/SRT Transcript Clustering',
+        ],
       },
       {
         stage: 'STAGE 02 · KNOWLEDGE LEVERAGE',
@@ -336,14 +346,14 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
       },
       {
         id: 'mcp',
-        label: '4. Start MCP Protocol',
+        label: '4. Standalone MCP Server',
         cmd: 'aimake mcp',
         desc: 'Starts a standard Model Context Protocol server exposing compiler, humanizer, and publishing tools to your AI agent.',
         output: `[aimake-mcp] Server initialized on stdio (JSON-RPC 2.0)
-[aimake-mcp] Registered 6 tools: aimake_compile_deck, aimake_humanize,
-             aimake_publish_content, aimake_remix_template,
-             aimake_wiki_distill, aimake_market_search
-[aimake-mcp] Ready to receive host requests.`,
+[aimake-mcp] Registered 16 atomic tools: aimake_intake_source,
+             aimake_pipeline_inspect, aimake_publish_content,
+             aimake_remix_deck, aimake_render_deck, aimake_stage_focus...
+[aimake-mcp] Ready to receive host requests from Claude / Cursor / AGY / WorkBuddy.`,
       },
     ],
     pillarsHeading: 'Engineered for Solopreneurs & High-Output Teams',

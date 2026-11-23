@@ -151,7 +151,12 @@ Aimake follows a strict separation of concerns: **Deterministic Execution sink t
 ```
 
 ### 1. Intake
-- **Core CLI**: `aimake intake <sources...>` handles high-throughput file I/O, local PDF/Office text extraction, URL scraping, and SHA-256 fingerprinting.
+- **Core CLI**: `aimake intake <sources...>` handles high-throughput file I/O, local PDF/Office text extraction, multi-source scraping, and SHA-256 fingerprinting.
+  - **X (Twitter) Posts & Threads**: Zero-auth ingestion via global edge API (`api.fxtwitter.com`) extracting tweet text, author info, engagement metrics (likes, retweets, views), high-res media, and quote tweets with 0 API keys; paired with Jina Reader for expanded threads.
+  - **WeChat Articles (`mp.weixin.qq.com`)**: Bypasses anti-hotlinking by normalizing dynamic `data-src` images into standard Markdown image syntax.
+  - **Data Spreadsheets (CSV/TSV/Excel)**: Parses row/column structure and auto-extracts high-contrast numerical metrics into Bento-ready ````metric` blocks.
+  - **Video/Voice Transcripts (VTT/SRT)**: Strips microsecond timestamp clutter and clusters speech into coherent paragraphs anchored by time coordinates (`[01:23]`).
+  - **Ecosystem Survey**: See [docs/INTAKE_ECOSYSTEM_RESEARCH.md](./docs/INTAKE_ECOSYSTEM_RESEARCH.md) for full benchmarks and open-source tooling comparisons.
 - **Agent Skill**: `aimake-intake` analyzes messy notes, strips UI boilerplate, and preserves key figures, data points, and provenance.
 
 ### 2. Distill
@@ -397,6 +402,8 @@ Aimake stands on the shoulders of remarkable open-source projects, design philos
 
 - [Architecture & Acceptance Report](./docs/ACCEPTANCE-1.0.md)
 - [Aimake 2.0 Calm Workspace Design](./docs/AIMAKE_2_0_CALM_WORKSPACE_DESIGN.md)
+- [Multi-Platform Intake & Open-Source Ecosystem Research](./docs/INTAKE_ECOSYSTEM_RESEARCH.md)
+- [Omni-Channel Launch & Promotion Media Kit](./docs/LAUNCH_AND_PROMOTION_KIT.md)
 - [Evolution Roadmap](./docs/ROADMAP-2.0.md)
 - [Contributing Guide](./CONTRIBUTING.md)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
