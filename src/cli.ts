@@ -523,7 +523,8 @@ deckCmd
 async function handleDeckCreate(
   topicOrPrompt: string | undefined,
   opts: {
-    output: string;
+    output?: string;
+    workspace?: string;
     template: string;
     aspect: AspectRatio;
     locale: SupportedLocale;
@@ -587,7 +588,14 @@ async function handleDeckCreate(
   });
 
   const finalDeck = chatRes.updatedDeck || initialDeck;
-  const outAbs = path.resolve(opts.output);
+  const slug = (cleanTitle || 'created')
+    .toLowerCase()
+    .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 32) || 'created';
+  const wsDir = opts.workspace ? path.resolve(opts.workspace) : undefined;
+  const defaultOut = wsDir ? path.join(wsDir, 'decks', `${slug}.deck.md`) : './decks/created.deck.md';
+  const outAbs = path.resolve(opts.output || defaultOut);
   await fs.mkdir(path.dirname(outAbs), { recursive: true });
   await fs.writeFile(outAbs, serializeDeckMarkdown(finalDeck), 'utf8');
 
@@ -608,7 +616,8 @@ async function handleDeckCreate(
 deckCmd
   .command('create [topicOrPrompt]')
   .description('Conversationally create a new multimodal .deck.md from a natural language topic or recipe')
-  .option('-o, --output <outDeck>', 'Output .deck.md path', './decks/created.deck.md')
+  .option('-w, --workspace <dir>', 'Target workspace directory')
+  .option('-o, --output <outDeck>', 'Output .deck.md path')
   .option('-t, --template <id>', 'Template ID', 'xhs-swiss-grid')
   .option('-a, --aspect <ratio>', 'Aspect ratio (16:9, 3:4, 1:1, 9:16)', '3:4')
   .option('-l, --locale <loc>', 'Target locale (zh-CN, en, ja, ko)', 'zh-CN')
@@ -785,7 +794,7 @@ program
   .command('render <deckPath>')
   .description('Compile a .deck.md storyboard into PNG cards, WeChat HTML, PDF, Editable PPTX, or narrated 60fps MP4')
   .requiredOption('-f, --format <fmt>', 'Output format: png | wechat | pdf | pptx | mp4 | html')
-  .requiredOption('-o, --output <target>', 'Output directory (for png) or output file path')
+  .option('-o, --output <target>', 'Output directory (for png) or output file path (defaults to same folder as deck)')
   .option('-t, --template <id>', 'Override template ID')
   .option('-l, --locale <loc>', 'Override locale (zh-CN, zh-TW, en, ja, ko, es)')
   .option('--vault <dir>', 'Optional Wiki vault directory for automatic compound write-back')
@@ -798,7 +807,7 @@ program
       deckPath: string,
       opts: {
         format: ExportFormat;
-        output: string;
+        output?: string;
         template?: string;
         locale?: SupportedLocale;
         vault?: string;
@@ -814,12 +823,22 @@ program
       if (opts.template) doc.frontmatter.template = opts.template;
       if (opts.locale) doc.frontmatter.locale = opts.locale;
 
-      const outAbs = path.resolve(opts.output);
+      const baseName = path.basename(absDeck, path.extname(absDeck)).replace(/\.deck$/, '');
+      const defaultOut =
+        opts.format === 'png'
+          ? path.join(path.dirname(absDeck), `${baseName}.png`)
+          : opts.format === 'wechat'
+          ? path.join(path.dirname(absDeck), `${baseName}.wechat.html`)
+          : path.join(path.dirname(absDeck), `${baseName}.${opts.format}`);
+      const outAbs = path.resolve(opts.output || defaultOut);
       let audioTrackPath: string | undefined;
       let subtitlesSrtPath: string | undefined;
       let slideDurationsMs: number[] | undefined;
 
-      if (opts.format === 'mp4' && opts.narrate) {
+      const hasSpeech = doc.slides.some((s) => s.speech && s.speech.trim().length > 0);
+      const shouldNarrate = opts.narrate || (opts.format === 'mp4' && hasSpeech);
+
+      if (opts.format === 'mp4' && shouldNarrate) {
         const speechRunDir = path.join(path.dirname(outAbs), `${path.basename(outAbs, '.mp4')}-speech`);
         const provider =
           opts.narrate === 'tencent-tccli'
@@ -1259,7 +1278,8 @@ flywheelStage: "distill"
 program
   .command('create [topicOrPrompt]')
   .description('Stage ③ [创作 Create]: Conversationally create a new multimodal .deck.md from a natural language topic or brief')
-  .option('-o, --output <outDeck>', 'Output .deck.md path', './decks/created.deck.md')
+  .option('-w, --workspace <dir>', 'Target workspace directory')
+  .option('-o, --output <outDeck>', 'Output .deck.md path')
   .option('-t, --template <id>', 'Template ID', 'xhs-swiss-grid')
   .option('-a, --aspect <ratio>', 'Aspect ratio (16:9, 3:4, 1:1, 9:16)', '3:4')
   .option('-l, --locale <loc>', 'Target locale (zh-CN, en, ja, ko)', 'zh-CN')
