@@ -47,7 +47,7 @@ import {
   type WikiGraph,
   type WikiNode,
   type WikiReport,
-} from '@lwc/core';
+} from './lwc-core/index.js';
 import type { DeckDocument } from '../schema/types.js';
 
 export type {

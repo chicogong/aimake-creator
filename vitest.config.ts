@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   resolve: {
     alias: {
-      '@lwc/core': path.resolve(__dirname, '../open-source/llm-wiki-canvas/src/core/index.ts'),
+      '@lwc/core': path.resolve(__dirname, 'src/wiki/lwc-core/index.ts'),
     },
   },
   test: {
