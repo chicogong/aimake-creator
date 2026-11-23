@@ -1,6 +1,6 @@
 name: 💡 Feature Request / Proposal
 description: Propose a new capability, export format, CLI workflow, or AI Co-Pilot integration
-title: "[Feature]: "
+title: "feat: "
 labels: ["enhancement"]
 body:
   - type: markdown
@@ -8,11 +8,28 @@ body:
       value: |
         We love community ideas! Aimake is built around the "Research → Grounded Wiki → Compose → Omni-Channel Deliver" creative flywheel.
 
+  - type: dropdown
+    id: area
+    attributes:
+      label: Target Subsystem / Area
+      description: Which area does this feature enhance?
+      options:
+        - "area: intake (Material ingestion, scrapers, data sources)"
+        - "area: distill (Wiki, persona, knowledge extraction)"
+        - "area: create (Composer, Calm Studio canvas, live preview)"
+        - "area: publish (Omni-channel exporters, social platforms)"
+        - "area: templates (New design systems, aspect ratios)"
+        - "area: mcp (Model Context Protocol, agent tools)"
+        - "area: desktop (macOS native desktop experience)"
+        - "area: infra (CI/CD, developer ergonomics)"
+    validations:
+      required: true
+
   - type: textarea
     id: problem
     attributes:
-      label: Is your feature request related to a problem?
-      description: A clear description of the friction or workflow limitation.
+      label: Problem Statement
+      description: A clear description of the friction, workflow limitation, or missing capability.
       placeholder: "I'm always frustrated when I need to convert my research tables into..."
     validations:
       required: true
@@ -20,8 +37,8 @@ body:
   - type: textarea
     id: solution
     attributes:
-      label: Describe the Solution You'd Like
-      description: How should this work in the CLI, Studio, or MCP server?
+      label: Proposed Solution & User Experience
+      description: How should this work in the CLI, Calm Studio, or MCP server?
       placeholder: "Add support for CSV/Excel table auto-intake into Bento metrics tiles..."
     validations:
       required: true

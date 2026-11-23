@@ -1,0 +1,46 @@
+name: 🛠️ Task / Maintenance
+description: Refactoring, dependencies, documentation, CI/CD, or maintenance work
+title: "chore: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for maintenance, refactoring, documentation, dependencies, or infrastructure tasks.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area / Component
+      description: Which area of Aimake Studio does this task involve?
+      options:
+        - "area: intake (Material ingestion, scrapers, sources)"
+        - "area: distill (Wiki, persona, knowledge extraction)"
+        - "area: create (Composer, Calm Studio canvas, live preview)"
+        - "area: publish (Omni-channel exporters, WeChat MP CDP, PPTX, PDF, MP4)"
+        - "area: templates (Parametric design systems & styles)"
+        - "area: mcp (Model Context Protocol & agent tools)"
+        - "area: desktop (macOS Swift native shell & DMG)"
+        - "area: ci-cd (GitHub Actions, workflows, automation)"
+        - "documentation (Docs, guides, website, branding)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Task Description
+      description: What needs to be done and why?
+      placeholder: "Upgrade Vite and tsup dependencies, optimize asset bundle size..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Acceptance Criteria / Checklist
+      description: What defines this task as complete?
+      placeholder: |
+        - [ ] Update package.json
+        - [ ] Verify test suite passes (`pnpm test`)
+        - [ ] Ensure `pnpm audit:secrets` is clean

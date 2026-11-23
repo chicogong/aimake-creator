@@ -1,6 +1,6 @@
 name: 🐛 Bug Report
 description: Report an issue or unexpected behavior in Aimake Studio, CLI, or templates
-title: "[Bug]: "
+title: "fix: "
 labels: ["bug"]
 body:
   - type: markdown
@@ -29,6 +29,22 @@ body:
         - Windows (WSL2)
         - Windows (Native PowerShell)
         - Browser Only (aimake.cc/playground)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected Subsystem / Area
+      description: Where did the bug occur?
+      options:
+        - "area: cli & engine (Local CLI commands, parser, compiler)"
+        - "area: create & studio (Calm UI, web canvas, slide editor)"
+        - "area: publish & exporters (PNG, PPTX, PDF, HTML, MP4)"
+        - "area: templates (Parametric styles, fonts, layouts)"
+        - "area: intake (Material scrapers, Twitter, WeChat, CSV)"
+        - "area: mcp (Model Context Protocol server)"
+        - "area: desktop (macOS Swift native shell & DMG)"
     validations:
       required: true
 

@@ -1,0 +1,214 @@
+name: Project Automation
+
+on:
+  issues:
+    types: [opened, assigned, closed, reopened]
+  pull_request_target:
+    types: [opened, closed, reopened]
+
+permissions:
+  issues: read
+  pull-requests: read
+
+jobs:
+  add-to-project:
+    name: Add to Kanban Board
+    if: >-
+      github.event.action == 'opened' &&
+      (github.event_name != 'pull_request_target' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add Issue or PR to Project #3
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          CONTENT_ID=""
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            CONTENT_ID="${{ github.event.issue.node_id }}"
+          else
+            CONTENT_ID="${{ github.event.pull_request.node_id }}"
+          fi
+
+          PROJECT_ID="PVT_kwHOCQAeU84Bs1Iu"
+
+          echo "Adding content $CONTENT_ID to Project $PROJECT_ID..."
+          gh api graphql -f query='mutation($pid: ID!, $cid: ID!) {
+            addProjectV2ItemById(input: { projectId: $pid, contentId: $cid }) {
+              item { id }
+            }
+          }' -f pid="$PROJECT_ID" -f cid="$CONTENT_ID" > /dev/null 2>&1 || {
+            echo "Notice: Could not automatically add to Project #3. Check if PROJECT_TOKEN has 'project' scope."
+          }
+
+  issue-assigned:
+    name: Issue assigned → In Progress
+    if: github.event_name == 'issues' && github.event.action == 'assigned'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move Issue to In Progress
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          ISSUE_URL="${{ github.event.issue.html_url }}"
+          PROJECT_ID="PVT_kwHOCQAeU84Bs1Iu"
+          STATUS_FIELD="PVTSSF_lAHOCQAeU84Bs1IuzhrBYX4"
+          IN_PROGRESS="47fc9ee4"
+
+          ITEM_ID=$(gh api graphql -f query='query($url: URI!) {
+            resource(url: $url) { ... on Issue {
+              projectItems(first: 10) { nodes { id project { id } } }
+            }}
+          }' -f url="$ISSUE_URL" --jq ".data.resource.projectItems.nodes[] | select(.project.id == \"$PROJECT_ID\") | .id" 2>/dev/null || true)
+
+          if [ -n "$ITEM_ID" ]; then
+            gh api graphql -f query='mutation($pid:ID!,$iid:ID!, $fid:ID!,$oid:String!) {
+              updateProjectV2ItemFieldValue(input:{projectId:$pid,itemId:$iid,fieldId:$fid,value:{singleSelectOptionId:$oid}})
+              { projectV2Item { id } }
+            }' -f pid="$PROJECT_ID" -f iid="$ITEM_ID" -f fid="$STATUS_FIELD" -f oid="$IN_PROGRESS" > /dev/null 2>&1 || true
+            echo "Issue moved to In Progress"
+          fi
+
+  issue-closed:
+    name: Issue closed → Done
+    if: github.event_name == 'issues' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move Issue to Done
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          ISSUE_URL="${{ github.event.issue.html_url }}"
+          PROJECT_ID="PVT_kwHOCQAeU84Bs1Iu"
+          STATUS_FIELD="PVTSSF_lAHOCQAeU84Bs1IuzhrBYX4"
+          DONE_OPTION="98236657"
+
+          ITEM_ID=$(gh api graphql -f query='query($url: URI!) {
+            resource(url: $url) { ... on Issue {
+              projectItems(first: 10) { nodes { id project { id } } }
+            }}
+          }' -f url="$ISSUE_URL" --jq ".data.resource.projectItems.nodes[] | select(.project.id == \"$PROJECT_ID\") | .id" 2>/dev/null || true)
+
+          if [ -n "$ITEM_ID" ]; then
+            gh api graphql -f query='mutation($pid:ID!,$iid:ID!, $fid:ID!,$oid:String!) {
+              updateProjectV2ItemFieldValue(input:{projectId:$pid,itemId:$iid,fieldId:$fid,value:{singleSelectOptionId:$oid}})
+              { projectV2Item { id } }
+            }' -f pid="$PROJECT_ID" -f iid="$ITEM_ID" -f fid="$STATUS_FIELD" -f oid="$DONE_OPTION" > /dev/null 2>&1 || true
+            echo "Issue moved to Done"
+          fi
+
+  pr-opened:
+    name: PR opened → In Review (+ linked Issues to In Progress)
+    if: >-
+      github.event_name == 'pull_request_target' &&
+      github.event.action == 'opened' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update PR and Linked Issues Status
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          PROJECT_ID="PVT_kwHOCQAeU84Bs1Iu"
+          STATUS_FIELD="PVTSSF_lAHOCQAeU84Bs1IuzhrBYX4"
+          IN_REVIEW="1a3951f4"
+          IN_PROGRESS="47fc9ee4"
+
+          # 1. Move PR to In Review
+          PR_ITEM=$(gh api graphql -f query='query($url: URI!) {
+            resource(url: $url) { ... on PullRequest {
+              projectItems(first: 10) { nodes { id project { id } } }
+            }}
+          }' -f url="$PR_URL" --jq ".data.resource.projectItems.nodes[] | select(.project.id == \"$PROJECT_ID\") | .id" 2>/dev/null || true)
+
+          if [ -n "$PR_ITEM" ]; then
+            gh api graphql -f query='mutation($pid:ID!,$iid:ID!, $fid:ID!,$oid:String!) {
+              updateProjectV2ItemFieldValue(input:{projectId:$pid,itemId:$iid,fieldId:$fid,value:{singleSelectOptionId:$oid}})
+              { projectV2Item { id } }
+            }' -f pid="$PROJECT_ID" -f iid="$PR_ITEM" -f fid="$STATUS_FIELD" -f oid="$IN_REVIEW" > /dev/null 2>&1 || true
+            echo "PR moved to In Review"
+          fi
+
+          # 2. Move linked closing issues to In Progress
+          ISSUE_URLS=$(gh api graphql -f query='query($url: URI!) {
+            resource(url: $url) { ... on PullRequest {
+              closingIssuesReferences(first: 10) { nodes { url } }
+            }}
+          }' -f url="$PR_URL" --jq '.data.resource.closingIssuesReferences.nodes[].url' 2>/dev/null || true)
+
+          for ISSUE_URL in $ISSUE_URLS; do
+            ISSUE_ITEM=$(gh api graphql -f query='query($url: URI!) {
+              resource(url: $url) { ... on Issue {
+                projectItems(first: 10) { nodes { id project { id } } }
+              }}
+            }' -f url="$ISSUE_URL" --jq ".data.resource.projectItems.nodes[] | select(.project.id == \"$PROJECT_ID\") | .id" 2>/dev/null || true)
+
+            if [ -n "$ISSUE_ITEM" ]; then
+              gh api graphql -f query='mutation($pid:ID!,$iid:ID!, $fid:ID!,$oid:String!) {
+                updateProjectV2ItemFieldValue(input:{projectId:$pid,itemId:$iid,fieldId:$fid,value:{singleSelectOptionId:$oid}})
+                { projectV2Item { id } }
+              }' -f pid="$PROJECT_ID" -f iid="$ISSUE_ITEM" -f fid="$STATUS_FIELD" -f oid="$IN_PROGRESS" > /dev/null 2>&1 || true
+              echo "Linked issue $ISSUE_URL moved to In Progress"
+            fi
+          done
+
+  pr-merged:
+    name: PR merged → Done (+ linked Issues to Done)
+    if: >-
+      github.event_name == 'pull_request_target' &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update PR and Linked Issues to Done
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          PROJECT_ID="PVT_kwHOCQAeU84Bs1Iu"
+          STATUS_FIELD="PVTSSF_lAHOCQAeU84Bs1IuzhrBYX4"
+          DONE_OPTION="98236657"
+
+          # 1. Move PR to Done
+          PR_ITEM=$(gh api graphql -f query='query($url: URI!) {
+            resource(url: $url) { ... on PullRequest {
+              projectItems(first: 10) { nodes { id project { id } } }
+            }}
+          }' -f url="$PR_URL" --jq ".data.resource.projectItems.nodes[] | select(.project.id == \"$PROJECT_ID\") | .id" 2>/dev/null || true)
+
+          if [ -n "$PR_ITEM" ]; then
+            gh api graphql -f query='mutation($pid:ID!,$iid:ID!, $fid:ID!,$oid:String!) {
+              updateProjectV2ItemFieldValue(input:{projectId:$pid,itemId:$iid,fieldId:$fid,value:{singleSelectOptionId:$oid}})
+              { projectV2Item { id } }
+            }' -f pid="$PROJECT_ID" -f iid="$PR_ITEM" -f fid="$STATUS_FIELD" -f oid="$DONE_OPTION" > /dev/null 2>&1 || true
+            echo "PR moved to Done"
+          fi
+
+          # 2. Move linked closing issues to Done
+          ISSUE_URLS=$(gh api graphql -f query='query($url: URI!) {
+            resource(url: $url) { ... on PullRequest {
+              closingIssuesReferences(first: 10) { nodes { url } }
+            }}
+          }' -f url="$PR_URL" --jq '.data.resource.closingIssuesReferences.nodes[].url' 2>/dev/null || true)
+
+          for ISSUE_URL in $ISSUE_URLS; do
+            ISSUE_ITEM=$(gh api graphql -f query='query($url: URI!) {
+              resource(url: $url) { ... on Issue {
+                projectItems(first: 10) { nodes { id project { id } } }
+              }}
+            }' -f url="$ISSUE_URL" --jq ".data.resource.projectItems.nodes[] | select(.project.id == \"$PROJECT_ID\") | .id" 2>/dev/null || true)
+
+            if [ -n "$ISSUE_ITEM" ]; then
+              gh api graphql -f query='mutation($pid:ID!,$iid:ID!, $fid:ID!,$oid:String!) {
+                updateProjectV2ItemFieldValue(input:{projectId:$pid,itemId:$iid,fieldId:$fid,value:{singleSelectOptionId:$oid}})
+                { projectV2Item { id } }
+              }' -f pid="$PROJECT_ID" -f iid="$ISSUE_ITEM" -f fid="$STATUS_FIELD" -f oid="$DONE_OPTION" > /dev/null 2>&1 || true
+              echo "Linked issue $ISSUE_URL moved to Done"
+            fi
+          done

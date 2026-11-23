@@ -1,6 +1,8 @@
-# Contributing to Aimake
+# Contributing to Aimake Studio
 
-Thank you for your interest in contributing to **Aimake**! We are building the local-first multimodal creation engine for the AI era — turning ideas, research, spreadsheets, and notes into grounded, design-grade content delivered across every channel.
+Thank you for your interest in contributing to **Aimake Studio**! We are building the local-first multimodal creation engine for the AI era — turning ideas, research, spreadsheets, and notes into grounded, design-grade content delivered across every channel.
+
+For an exhaustive guide covering the automated Kanban board, issue forms, branch policies, and GitHub CLI workflows, see the **[Development & Contribution Workflow Guide](docs/guides/DEVELOPMENT_WORKFLOW.md)**.
 
 ---
 
@@ -10,7 +12,7 @@ This project adheres to the [Contributor Covenant (Code of Conduct)](./CODE_OF_C
 
 ---
 
-## 🛠️ Development Setup
+## 🛠️ Quickstart Development Setup
 
 Aimake requires **Node.js >= 22.0.0** and **pnpm >= 9**.
 
@@ -26,10 +28,45 @@ pnpm install
 pnpm typecheck
 pnpm test
 
-# 4. Launch development CLI
+# 4. Launch development CLI or Studio
 pnpm aimake --help
 pnpm aimake studio --demo
 ```
+
+---
+
+## 🔄 Development & PR Workflow
+
+Aimake enforces a **Squash-and-Merge** policy with a single linear history on `main`:
+
+```bash
+# 1. Start from an Issue (e.g. #12), branch from main
+git checkout main && git pull origin main
+git checkout -b feat/my-feature
+
+# 2. Develop, test, and commit with Conventional Commits
+git commit -m "feat(publisher): implement Zhihu draft CDP publisher"
+
+# 3. Verify locally before opening PR
+pnpm typecheck
+pnpm test
+pnpm audit:secrets
+
+# 4. Push and create PR referencing the issue
+git push origin feat/my-feature
+gh pr create --title "feat(publisher): implement Zhihu draft publisher" --body "Closes #12"
+```
+
+### Automated Kanban Board Transitions
+
+Our GitHub Actions automation (`.github/workflows/project-automation.yml`) automatically synchronizes state with **[Aimake Project Board #3](https://github.com/users/chicogong/projects/3)**:
+
+| Action | Resulting Board State |
+| :--- | :--- |
+| Issue created | Added to **Todo** |
+| Issue assigned | Moved to **In Progress** |
+| PR opened (with `Closes #N`) | PR moved to **In Review**; Issue moved to **In Progress** |
+| PR merged (squash) | PR and linked Issue automatically moved to **Done** |
 
 ---
 
@@ -69,28 +106,30 @@ Aimake workspaces use **materialized, isolated preset skills** (`skills/workspac
 
 ## 🛡️ Quality Gate & Verification
 
-Before opening a pull request, run the full verification pipeline:
+Before submitting a Pull Request, run the full verification pipeline:
 
 ```bash
 pnpm verify
 ```
 
-This runs:
+This automated gate runs:
 - `pnpm typecheck` (TypeScript 0 errors)
-- `pnpm test` (Vitest suites)
-- `pnpm build` (tsup ESM & DTS)
+- `pnpm test` (All Vitest test suites)
+- `pnpm test:e2e` (Playwright browser suites)
+- `pnpm build` (tsup ESM & DTS bundle)
 - `pnpm validate:skill` & `pnpm audit:skills`
-- `pnpm audit:secrets` (ensures 0 private credentials/paths)
+- `pnpm audit:secrets` (ensures 0 private credentials or personal paths)
 - `pnpm pack:check` (dry-run npm packaging)
 - `pnpm site:build` (static showcase build)
 - `pnpm desktop:build` (macOS native app build)
-- `pnpm test:e2e` (Playwright end-to-end tests)
 
 ---
 
-## 📜 Pull Request Process
+## 📜 Pull Request Checklist
 
-1. Fork the repo and create your branch from `main`: `git checkout -b feature/amazing-feature`.
-2. Follow Conventional Commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`.
-3. Open a Pull Request referencing any related issues.
-4. Aimake maintainers will review your PR promptly!
+When submitting a PR, ensure the template is completed:
+- [ ] Description contains `Closes #N` or `Fixes #N`
+- [ ] Appropriate labels assigned (`area:*`, `type:*`)
+- [ ] Local-first & offline capability preserved (zero telemetry)
+- [ ] All tests pass cleanly (`pnpm test`, `pnpm test:e2e`)
+- [ ] No private paths or secrets leaked (`pnpm audit:secrets`)
