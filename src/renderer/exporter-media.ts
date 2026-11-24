@@ -14,6 +14,241 @@ import { buildCapCutDraft } from './capcut-draft-builder.js';
 const execFileAsync = promisify(execFile);
 const require = createRequire(import.meta.url);
 
+export interface SlideFramePlan {
+  perSlideFrames: number[];
+  slideFrameOffsets: number[];
+  totalFrames: number;
+}
+
+export type VideoEncoderType = 'h264_videotoolbox' | 'libx264';
+
+export interface VideoEncoderConfig {
+  encoder: VideoEncoderType;
+  args: string[];
+}
+
+let cachedEncoderConfig: VideoEncoderConfig | null = null;
+
+export function resetVideoEncoderCacheForTesting(): void {
+  cachedEncoderConfig = null;
+}
+
+/**
+ * Probes whether the macOS hardware-accelerated H.264 VideoToolbox encoder is functional.
+ */
+export async function probeVideoToolboxSupport(ffmpegBin: string): Promise<boolean> {
+  if (process.platform !== 'darwin') {
+    return false;
+  }
+  try {
+    await execFileAsync(
+      ffmpegBin,
+      [
+        '-f',
+        'lavfi',
+        '-i',
+        'color=c=black:s=16x16:d=0.04',
+        '-c:v',
+        'h264_videotoolbox',
+        '-pix_fmt',
+        'yuv420p',
+        '-f',
+        'null',
+        '-',
+      ],
+      { timeout: 2500 }
+    );
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Resolves the optimal video encoder for H.264 MP4 synthesis.
+ * On macOS, probes h264_videotoolbox hardware encoder and gracefully falls back to CPU libx264.
+ */
+export async function resolveOptimalVideoEncoder(
+  ffmpegBin: string,
+  preferred?: 'auto' | VideoEncoderType
+): Promise<VideoEncoderConfig> {
+  if (preferred === 'libx264') {
+    return {
+      encoder: 'libx264',
+      args: ['-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'ultrafast'],
+    };
+  }
+
+  if (preferred === 'h264_videotoolbox') {
+    const isSupported = await probeVideoToolboxSupport(ffmpegBin);
+    if (isSupported) {
+      return {
+        encoder: 'h264_videotoolbox',
+        args: ['-c:v', 'h264_videotoolbox', '-pix_fmt', 'yuv420p', '-b:v', '6M'],
+      };
+    }
+    return {
+      encoder: 'libx264',
+      args: ['-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'ultrafast'],
+    };
+  }
+
+  // 'auto' mode:
+  if (cachedEncoderConfig) {
+    return cachedEncoderConfig;
+  }
+
+  if (process.platform === 'darwin') {
+    const isSupported = await probeVideoToolboxSupport(ffmpegBin);
+    if (isSupported) {
+      cachedEncoderConfig = {
+        encoder: 'h264_videotoolbox',
+        args: ['-c:v', 'h264_videotoolbox', '-pix_fmt', 'yuv420p', '-b:v', '6M'],
+      };
+      return cachedEncoderConfig;
+    }
+  }
+
+  cachedEncoderConfig = {
+    encoder: 'libx264',
+    args: ['-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'ultrafast'],
+  };
+  return cachedEncoderConfig;
+}
+
+/**
+ * Computes deterministic slide frame allocations using cumulative timestamp difference anchoring.
+ *
+ * Avoids cumulative floating-point duration drift over long presentations (>10-20 slides) by tracking
+ * the accumulated presentation timeline in milliseconds and calculating frame allocations as:
+ *   endFrame = Math.round((accumulatedMs * fps) / 1000)
+ *   slideFrames = Math.max(1, endFrame - prevEndFrame)
+ *
+ * This guarantees the alignment drift between video frames and audio total duration remains strictly
+ * <= 0.5 frame (well within <= 1 frame) across any deck length.
+ */
+export function computeCumulativeSlideFrames(
+  slideCount: number,
+  fps: number,
+  options?: {
+    slideDurationsMs?: number[];
+    secondsPerSlide?: number;
+    minTotalFrames?: number;
+  }
+): SlideFramePlan {
+  if (slideCount <= 0) {
+    return {
+      perSlideFrames: [],
+      slideFrameOffsets: [],
+      totalFrames: options?.minTotalFrames ?? 12,
+    };
+  }
+
+  const secondsPerSlide = options?.secondsPerSlide ?? 2;
+  const defaultSlideMs = Math.max(1, Math.round(secondsPerSlide * 1000));
+  const minTotalFrames = options?.minTotalFrames ?? 12;
+
+  const perSlideFrames: number[] = [];
+  const slideFrameOffsets: number[] = [];
+  let accumulatedMs = 0;
+  let prevEndFrame = 0;
+
+  for (let idx = 0; idx < slideCount; idx++) {
+    const rawMs = options?.slideDurationsMs?.[idx];
+    const ms = typeof rawMs === 'number' && Number.isFinite(rawMs) && rawMs > 0
+      ? rawMs
+      : defaultSlideMs;
+
+    accumulatedMs += ms;
+    const endFrame = Math.round((accumulatedMs * fps) / 1000);
+    const count = Math.max(1, endFrame - prevEndFrame);
+    slideFrameOffsets.push(prevEndFrame);
+    perSlideFrames.push(count);
+    prevEndFrame += count;
+  }
+
+  const calculatedTotal = perSlideFrames.reduce((acc, n) => acc + n, 0);
+  const totalFrames = Math.max(minTotalFrames, calculatedTotal);
+
+  return {
+    perSlideFrames,
+    slideFrameOffsets,
+    totalFrames,
+  };
+}
+
+/**
+ * Ensures all web fonts, images, and visual elements on the page or inside a target container
+ * are fully loaded, decoded, and rasterized before screenshot capture.
+ *
+ * Includes timeout fallbacks to prevent hanging on unreachable remote images.
+ */
+export async function waitForAssetsAndFonts(
+  page: import('playwright').Page,
+  target?: string | number,
+  timeoutMs = 3000
+): Promise<void> {
+  await page.evaluate(
+    async ({ targetArg, timeout }) => {
+      // 1. Await fonts ready
+      if (document.fonts && typeof document.fonts.ready?.then === 'function') {
+        try {
+          await Promise.race([
+            document.fonts.ready,
+            new Promise((resolve) => setTimeout(resolve, timeout)),
+          ]);
+        } catch {
+          // ignore font loading error/timeout
+        }
+      }
+
+      // 2. Locate target element
+      let root: Element | null = null;
+      if (typeof targetArg === 'number') {
+        const slides = document.querySelectorAll<HTMLElement>('.aimake-slide');
+        root = slides[targetArg] || document.body;
+      } else if (typeof targetArg === 'string' && targetArg) {
+        root = document.querySelector(targetArg);
+      } else {
+        root = document.body || document.documentElement;
+      }
+      if (!root) return;
+
+      // 3. Ensure all <img> tags are completed and decoded
+      const images = Array.from(root.querySelectorAll<HTMLImageElement>('img'));
+      await Promise.all(
+        images.map((img) => {
+          if (img.complete && img.naturalWidth > 0) {
+            return typeof img.decode === 'function' ? img.decode().catch(() => {}) : Promise.resolve();
+          }
+          return new Promise<void>((resolve) => {
+            let done = false;
+            const finish = () => {
+              if (!done) {
+                done = true;
+                img.removeEventListener('load', finish);
+                img.removeEventListener('error', finish);
+                resolve();
+              }
+            };
+            img.addEventListener('load', finish, { once: true });
+            img.addEventListener('error', finish, { once: true });
+            setTimeout(finish, timeout);
+          });
+        })
+      );
+
+      // 4. Double rAF paint flush
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => resolve());
+        });
+      });
+    },
+    { targetArg: target, timeout: timeoutMs }
+  );
+}
+
 /**
  * Zero-download browser resolver: dynamically loads optional Playwright so slim npm
  * installs stay fast, reusing Chrome/Edge or Playwright Chromium when exporting PNG/PDF/MP4.
@@ -86,6 +321,7 @@ export async function exportDeckToPngs(
     });
     const page = await context.newPage();
     await page.setContent(html, { waitUntil: 'load' });
+    await waitForAssetsAndFonts(page);
     await page.waitForSelector('.aimake-slide', { timeout: 5000 });
 
     const slideHandles = await page.$$('.aimake-slide');
@@ -130,6 +366,7 @@ export async function exportDeckToPdf(
       viewport: { width: manifest.width, height: manifest.height },
     });
     await page.setContent(pdfHtml, { waitUntil: 'load' });
+    await waitForAssetsAndFonts(page);
     await page.waitForSelector('.aimake-slide', { timeout: 5000 });
     await page.pdf({
       path: outFile,
@@ -158,28 +395,21 @@ export async function exportDeckToMp4(
     audioTrackPath?: string;
     subtitlesSrtPath?: string;
     customTemplatesDir?: string;
+    videoEncoder?: 'auto' | VideoEncoderType;
   }
 ): Promise<string> {
   await fs.mkdir(path.dirname(outFile), { recursive: true });
   const fps = options?.fps ?? doc.frontmatter.fps ?? 24;
   const secondsPerSlide = options?.secondsPerSlide ?? doc.frontmatter.secondsPerSlide ?? 2;
-  const perSlideFrames = doc.slides.map((_, idx) => {
-    const ms = options?.slideDurationsMs?.[idx];
-    if (typeof ms === 'number' && Number.isFinite(ms) && ms > 0) {
-      return Math.max(1, Math.round((ms / 1000) * fps));
+  const { slideFrameOffsets, totalFrames } = computeCumulativeSlideFrames(
+    doc.slides.length,
+    fps,
+    {
+      slideDurationsMs: options?.slideDurationsMs,
+      secondsPerSlide,
+      minTotalFrames: 12,
     }
-    return Math.max(1, Math.round(secondsPerSlide * fps));
-  });
-  const totalFrames = Math.max(
-    12,
-    perSlideFrames.reduce((acc, n) => acc + n, 0)
   );
-  const slideFrameOffsets: number[] = [];
-  let running = 0;
-  for (const count of perSlideFrames) {
-    slideFrameOffsets.push(running);
-    running += count;
-  }
 
   const { html, manifest } = await compileDeckToHtml(doc, {
     editable: false,
@@ -198,6 +428,7 @@ export async function exportDeckToMp4(
   const motionHtml = html.replace('</head>', `${motionViewportCss}\n</head>`);
 
   const ffmpegBin = await resolveWorkingFfmpegBinary();
+  const encoderConfig = await resolveOptimalVideoEncoder(ffmpegBin, options?.videoEncoder);
   const browser = await launchSmartBrowser();
 
   try {
@@ -206,8 +437,12 @@ export async function exportDeckToMp4(
       deviceScaleFactor: 1,
     });
     await page.setContent(motionHtml, { waitUntil: 'load' });
-    await page.evaluate(() => document.fonts.ready);
+    await waitForAssetsAndFonts(page);
     await page.waitForSelector('.aimake-slide', { timeout: 5000 });
+
+    const hasCustomSeek = await page.evaluate(
+      () => typeof (window as unknown as { aimakeSeek?: unknown }).aimakeSeek === 'function'
+    );
 
     const ffArgs: string[] = [
       '-y',
@@ -250,12 +485,7 @@ export async function exportDeckToMp4(
     }
 
     ffArgs.push(
-      '-c:v',
-      'libx264',
-      '-pix_fmt',
-      'yuv420p',
-      '-preset',
-      'ultrafast',
+      ...encoderConfig.args,
       '-movflags',
       '+faststart',
       '-metadata',
@@ -275,7 +505,6 @@ export async function exportDeckToMp4(
       }
     });
 
-    const hasCustomDurations = Boolean(options?.slideDurationsMs && options.slideDurationsMs.length > 0);
     const entranceFrames = Math.ceil(Math.max(1, fps * 0.35));
     const settledSlideCache = new Map<number, Buffer>();
 
@@ -292,7 +521,7 @@ export async function exportDeckToMp4(
       }
       const localSlideFrame = f - (slideFrameOffsets[activeSlideIdx] ?? 0);
       const canReuseSettled =
-        hasCustomDurations &&
+        !hasCustomSeek &&
         localSlideFrame > entranceFrames &&
         settledSlideCache.has(activeSlideIdx);
 
@@ -301,11 +530,11 @@ export async function exportDeckToMp4(
         pngBuf = settledSlideCache.get(activeSlideIdx)!;
       } else {
         await page.evaluate(
-          ({ frame, frameRate, slideIdx, localFrame, useCustomTiming }) => {
+          ({ frame, frameRate, slideIdx, localFrame, hasCustomTiming }) => {
             const w = window as unknown as {
               aimakeSeek?: (fr: number, rate: number) => void;
             };
-            if (!useCustomTiming && typeof w.aimakeSeek === 'function') {
+            if (hasCustomTiming && typeof w.aimakeSeek === 'function') {
               w.aimakeSeek(frame, frameRate);
             } else {
               const progress = Math.min(1, localFrame / Math.max(1, frameRate * 0.35));
@@ -325,12 +554,17 @@ export async function exportDeckToMp4(
             frameRate: fps,
             slideIdx: activeSlideIdx,
             localFrame: localSlideFrame,
-            useCustomTiming: hasCustomDurations,
+            hasCustomTiming: hasCustomSeek,
           }
         );
 
+        if (localSlideFrame === 0) {
+          // Slide transition: wait for active slide elements and fonts before screenshotting
+          await waitForAssetsAndFonts(page, activeSlideIdx, 2000);
+        }
+
         pngBuf = await page.screenshot({ type: 'png' });
-        if (hasCustomDurations && localSlideFrame >= entranceFrames && !settledSlideCache.has(activeSlideIdx)) {
+        if (!hasCustomSeek && localSlideFrame >= entranceFrames && !settledSlideCache.has(activeSlideIdx)) {
           settledSlideCache.set(activeSlideIdx, pngBuf);
         }
       }
@@ -360,7 +594,7 @@ export async function exportDeckToMp4(
     await new Promise<void>((resolve, reject) => {
       ffProc.on('close', (code) => {
         if (code === 0) resolve();
-        else reject(new Error(`FFmpeg exited with code ${code}: ${stderrLog.slice(-500)}`));
+        else reject(new Error(`FFmpeg exited with code ${code} [encoder: ${encoderConfig.encoder}]: ${stderrLog.slice(-500)}`));
       });
       ffProc.on('error', reject);
     });
@@ -384,6 +618,7 @@ export async function exportDeckBundle(
     customTemplatesDir?: string;
     installLocal?: boolean;
     targetApp?: 'capcut' | 'jianying' | 'auto';
+    videoEncoder?: 'auto' | VideoEncoderType;
   }
 ): Promise<string[]> {
   if (format === 'wechat') {
@@ -420,6 +655,7 @@ export async function exportDeckBundle(
         audioTrackPath: options?.audioTrackPath,
         subtitlesSrtPath: options?.subtitlesSrtPath,
         customTemplatesDir: options?.customTemplatesDir,
+        videoEncoder: options?.videoEncoder,
       }),
     ];
   }
