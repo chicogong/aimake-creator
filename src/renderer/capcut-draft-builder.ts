@@ -140,6 +140,7 @@ export interface BuildCapCutDraftOptions {
   slideDurationsMs?: number[];
   slideImages?: string[];
   fps?: number;
+  localProjectsDir?: string;
 }
 
 export interface BuildCapCutDraftResult {
@@ -158,21 +159,25 @@ export interface BuildCapCutDraftResult {
 }
 
 /**
- * 1x1 transparent PNG fallback buffer (68 bytes)
- */
-const MINIMAL_PNG_BUFFER = Buffer.from(
-  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
-  'base64'
-);
-
-/**
  * Detect local CapCut and JianYing Pro user project draft directories.
  */
-export function detectLocalDraftDirectories(): CapCutLocalPaths {
+export function detectLocalDraftDirectories(customRoot?: string): CapCutLocalPaths {
   const home = os.homedir();
   const platform = process.platform;
   let jianying: string | undefined;
   let capcut: string | undefined;
+
+  const envRoot = process.env.AIMAKE_LOCAL_DRAFT_ROOT;
+  const root = customRoot || envRoot;
+  if (root) {
+    const resolvedRoot = path.resolve(root);
+    return {
+      jianying: path.join(resolvedRoot, 'JianyingPro', 'User Data', 'Projects', 'com.lveditor.draft'),
+      capcut: path.join(resolvedRoot, 'CapCut', 'User Data', 'Projects', 'com.lveditor.draft'),
+      preferred: resolvedRoot,
+      platform,
+    };
+  }
 
   if (platform === 'darwin') {
     const jyCandidate = path.join(
@@ -362,12 +367,17 @@ export async function buildCapCutDraft(
   let masterAudioId: string | undefined;
   if (options.audioTrackPath && fsSync.existsSync(options.audioTrackPath)) {
     masterAudioId = `mat_aud_master_${draftId.slice(0, 6)}`;
+    const srcAudio = path.resolve(options.audioTrackPath);
+    const draftAudioPath = path.join(draftDir, path.basename(srcAudio));
+    if (path.resolve(srcAudio) !== path.resolve(draftAudioPath)) {
+      await fs.copyFile(srcAudio, draftAudioPath);
+    }
     materials.audios.push({
       id: masterAudioId,
       type: 'record',
-      path: path.resolve(options.audioTrackPath),
+      path: draftAudioPath,
       duration: 0, // Will be updated to totalUs
-      material_name: path.basename(options.audioTrackPath),
+      material_name: path.basename(draftAudioPath),
     });
   }
 
@@ -379,13 +389,20 @@ export async function buildCapCutDraft(
     const sceneDurationUs = Math.round(slideDurationMs * US_PER_MS);
 
     // 1. Video Slide Card Material & Segment (Track 0)
-    const cardImgPath = options.slideImages?.[idx]
+    const rawImgPath = options.slideImages?.[idx]
       ? path.resolve(options.slideImages[idx])
       : path.join(draftDir, `slide_${idx + 1}.png`);
 
-    // Ensure slide card image file exists on disk
-    if (!fsSync.existsSync(cardImgPath)) {
-      await fs.writeFile(cardImgPath, MINIMAL_PNG_BUFFER);
+    // Real slide images must exist; placeholder logic removed
+    if (!fsSync.existsSync(rawImgPath)) {
+      throw new Error(
+        `Slide image not found for slide ${idx + 1}: ${rawImgPath}. Real slide images must be rendered (e.g. via exportDeckToPngs) before building CapCut draft.`
+      );
+    }
+
+    const cardImgPath = path.join(draftDir, `slide_${idx + 1}.png`);
+    if (path.resolve(rawImgPath) !== path.resolve(cardImgPath)) {
+      await fs.copyFile(rawImgPath, cardImgPath);
     }
 
     const vidMatId = `mat_vid_${String(idx + 1).padStart(3, '0')}`;
@@ -498,11 +515,11 @@ export async function buildCapCutDraft(
 
   // 5. Generate draft_cover.png
   const coverPath = path.join(draftDir, 'draft_cover.png');
-  const firstSlideImg = options.slideImages?.[0];
+  const firstSlideImg = materials.videos[0]?.path || options.slideImages?.[0];
   if (firstSlideImg && fsSync.existsSync(firstSlideImg)) {
     await fs.copyFile(firstSlideImg, coverPath);
   } else {
-    await fs.writeFile(coverPath, MINIMAL_PNG_BUFFER);
+    throw new Error('Draft cover image could not be created: no valid slide images available.');
   }
 
   // 6. Generate draft_meta_info.json
@@ -531,40 +548,71 @@ export async function buildCapCutDraft(
   let localDraftPath: string | undefined;
 
   if (options.installLocal) {
-    const localDirs = detectLocalDraftDirectories();
+    const localDirs = detectLocalDraftDirectories(options.localProjectsDir);
     const targetBase =
-      options.targetApp === 'jianying'
-        ? localDirs.jianying
-        : options.targetApp === 'capcut'
-          ? localDirs.capcut
-          : localDirs.preferred;
+      options.localProjectsDir
+        ? options.localProjectsDir
+        : options.targetApp === 'jianying'
+          ? localDirs.jianying
+          : options.targetApp === 'capcut'
+            ? localDirs.capcut
+            : localDirs.preferred;
 
     if (targetBase) {
       await fs.mkdir(targetBase, { recursive: true });
       localDraftPath = path.join(targetBase, draftId);
       await fs.mkdir(localDraftPath, { recursive: true });
 
-      // Copy project files into local application library
-      await fs.copyFile(contentPath, path.join(localDraftPath, 'draft_content.json'));
+      // Clone draftContent so localDraftPath has its own rewritten material paths
+      const localDraftContent: CapCutDraftContent = JSON.parse(JSON.stringify(draftContent));
+
+      // Copy referenced video images and rewrite paths
+      for (const vid of localDraftContent.materials.videos) {
+        if (vid.path && fsSync.existsSync(vid.path)) {
+          const destPath = path.join(localDraftPath, path.basename(vid.path));
+          if (path.resolve(vid.path) !== path.resolve(destPath)) {
+            await fs.copyFile(vid.path, destPath);
+          }
+          vid.path = destPath;
+        }
+      }
+
+      // Copy referenced audio assets and rewrite paths
+      for (const aud of localDraftContent.materials.audios) {
+        if (aud.path && fsSync.existsSync(aud.path)) {
+          const destPath = path.join(localDraftPath, path.basename(aud.path));
+          if (path.resolve(aud.path) !== path.resolve(destPath)) {
+            await fs.copyFile(aud.path, destPath);
+          }
+          aud.path = destPath;
+        }
+      }
+
+      // Copy cover image
+      const localCoverPath = path.join(localDraftPath, 'draft_cover.png');
+      if (fsSync.existsSync(coverPath)) {
+        await fs.copyFile(coverPath, localCoverPath);
+      }
+
+      // Write rewritten draft_content.json into localDraftPath
+      await fs.writeFile(
+        path.join(localDraftPath, 'draft_content.json'),
+        JSON.stringify(localDraftContent, null, 2),
+        'utf8'
+      );
+
+      // Write rewritten draft_meta_info.json into localDraftPath
       const localMeta: CapCutMetaInfo = {
         ...draftMeta,
         draft_root_path: localDraftPath,
-        draft_cover_path: path.join(localDraftPath, 'draft_cover.png'),
+        draft_fold_path: localDraftPath,
+        draft_cover_path: localCoverPath,
       };
       await fs.writeFile(
         path.join(localDraftPath, 'draft_meta_info.json'),
         JSON.stringify(localMeta, null, 2),
         'utf8'
       );
-      await fs.copyFile(coverPath, path.join(localDraftPath, 'draft_cover.png'));
-
-      // Copy referenced slide images if inside draftDir
-      const filesInDraft = await fs.readdir(draftDir);
-      for (const f of filesInDraft) {
-        if (f.endsWith('.png') || f.endsWith('.jpg') || f.endsWith('.wav')) {
-          await fs.copyFile(path.join(draftDir, f), path.join(localDraftPath, f)).catch(() => {});
-        }
-      }
 
       installedLocal = true;
     }
