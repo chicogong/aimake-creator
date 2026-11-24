@@ -65,6 +65,7 @@
     "audit:skills": "tsx scripts/audit-skills.ts",
     "audit:secrets": "node scripts/audit-secrets.mjs",
     "pack:check": "node scripts/prepare-npm.mjs",
+    "issue:create": "node scripts/issue-submit.mjs",
     "verify": "pnpm typecheck && pnpm build && pnpm test:smoke && pnpm test && pnpm validate:skill && pnpm audit:skills && pnpm audit:secrets && pnpm pack:check && pnpm site:build && pnpm desktop:build && pnpm test:e2e"
   },
   "dependencies": {

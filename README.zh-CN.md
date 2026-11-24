@@ -53,16 +53,15 @@ aimake wizard
 
 ---
 
-## 🏛️ 产品架构与生态分层 (Architecture & Ecosystem)
+## 🏛️ 产品架构与生态体系 (Architecture & Ecosystem)
 
-Aimake 统一收敛为清晰的三层体系（详见 [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) 与 [docs/brand-kit/BRAND_GUIDELINES.md](./docs/brand-kit/BRAND_GUIDELINES.md)）：
+Aimake 统一收敛为清晰的模块化架构（详见 [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) 与 [docs/brand-kit/BRAND_GUIDELINES.md](./docs/brand-kit/BRAND_GUIDELINES.md)）：
 
-| 层级 | 官方命名 | 定位与职责 | 核心资产与入口 |
+| 模块 | 官方命名 | 定位与核心功能 | 交付与使用方式 |
 | :--- | :--- | :--- | :--- |
-| **母品牌** | **Aimake**（爱创） | 面向超级个体的 Local-First 创作基础设施品牌 | 统一设计代币与品牌哲学 |
-| **旗舰产品** | **Aimake Studio**（爱创工坊） | **主打产品**：Web 画布、CLI、桌面端、36 套设计模板、5+1 全介质交付 | 本工程 (`products/aimake`)，npm `aimake-studio@2.0.0`，官网 [aimake.cc](https://aimake.cc) |
-| **核心引擎** | **Aimake Engine**（爱创核心引擎） | **底层引擎**：无头音视频渲染内核、Whisper 词级对齐、Plan/Run 验证收据 | `aimake-labs/aimake-studio`，npm `@aimake/engine`，命令 `aimake-engine` |
-| **维护生态** | **Aimake Universe**（爱创星球） | **历史资产**：少儿数理六大探索星球矩阵，全面进入 LTS 长期维护态 | `aimake-labs/*`，线上各域名持续稳定运行（零 404） |
+| **主创工坊** | **Aimake Studio**（爱创工坊） | **多模态创作主站**：Web 画布、交互式 CLI、桌面端、36 套设计模板、5+1 全渠道直出 | npm `aimake-studio`，命令 `aimake`，官网 [aimake.cc](https://aimake.cc) |
+| **核心引擎** | **Aimake Engine**（爱创核心引擎） | **底层无头媒体内核**：Plan/Run 确定性收据、Whisper 词级对齐、剪映草稿工程导出 | npm `@aimake/engine`，命令 `aimake-engine` |
+| **智能协议** | **Agent 协议栈 (ACP / MCP)** | **IDE 与 AI 助手协同**：支持 Zed、JetBrains、Cursor、Claude Code、Codex 等原生集成 | `aimake acp` 与 `aimake mcp` 协议入口 |
 
 ---
 
@@ -80,9 +79,9 @@ Aimake 统一收敛为清晰的三层体系（详见 [docs/ARCHITECTURE.md](./do
 
 ---
 
-## 🔄 核心飞轮：不只是 Markdown，而是端到端创作流
+## 🔄 核心飞轮：端到端多模态创作与分发引擎
 
-Aimake **绝不仅是**又一个 Markdown 转 PPT 的转换器，而是一个**端到端的多模态知识蒸馏与全渠道分发引擎**。
+Aimake 是一个**端到端的多模态知识蒸馏与全渠道分发引擎**。
 
 真正有穿透力的高杠杆创作，绝非从一张空白幻灯片开始。它始于灵感的闪现、自动化的技术雷达调研、业务指标与报表表格、或是团队历史沉淀的草稿。Aimake 将这些碎片化的输入，淬炼为严谨可信的视觉资产，并一键分发到五大多模态交付渠道：
 

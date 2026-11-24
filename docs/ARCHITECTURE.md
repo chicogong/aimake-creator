@@ -4,9 +4,9 @@
 
 ---
 
-## 1. 品牌与生态三层体系
+## 1. 系统架构与模块分工
 
-Aimake 采用 **“母品牌收口、旗舰工坊主推、核心引擎幕后、历史生态维护”** 的清晰结构：
+Aimake 采用聚焦高效的模块化架构：
 
 ```
                     ┌──────────────────────────────┐
@@ -14,18 +14,15 @@ Aimake 采用 **“母品牌收口、旗舰工坊主推、核心引擎幕后、�
                     │   面向超级个体的创作基础设施   │
                     └──────────────┬───────────────┘
                                    │
-       ┌───────────────────────────┼───────────────────────────┐
-       ▼                           ▼                           ▼
-【旗舰主产品 · 对外门户】       【底层核心引擎 · 幕后】        【历史资产 · LTS维护态】
- Aimake Studio (爱创工坊)       Aimake Engine (核心引擎)       Aimake Universe (星球矩阵)
- ───────────────────────        ───────────────────────        ──────────────────────────
- • 目录: products/aimake        • 目录: aimake-labs/           • 目录: aimake-labs/
- • 仓库: chicogong/aimake-      • 仓库: chicogong/aimake-      • 各星球: kids/math/brain
-   creator (保持原名)             studio                         planet 等
- • npm: aimake-studio@2.0.0     • npm: @aimake/engine          • 状态: Maintenance (LTS)
- • 命令: aimake                 • 命令: aimake-engine          • 线上域名稳定访问
- • 门面: aimake.cc              • 定位: Headless 音视频渲染内核   (不加新功能，零破坏)
- • 看板: GitHub Project #3        与 Recipe 运行时
+       ┌───────────────────────────┴───────────────────────────┐
+       ▼                                                       ▼
+【旗舰主创工坊 · 交付门户】                                 【底层核心引擎 · 媒体内核】
+ Aimake Studio (爱创工坊)                                   Aimake Engine (核心引擎)
+ ───────────────────────                                    ───────────────────────
+ • npm: aimake-studio                                       • npm: @aimake/engine
+ • CLI: aimake                                              • CLI: aimake-engine
+ • 门户: aimake.cc                                          • 协议: aimake acp / mcp
+ • 交付: 36 套设计模板、5+1 全渠道直出、Calm Studio 画布       • 定位: 确定性媒体收据、Whisper 词级对齐、剪映草稿导出
 ```
 
 ---

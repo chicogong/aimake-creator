@@ -53,16 +53,15 @@ For the best zero-configuration local-first experience with status bar dock and 
 
 ---
 
-## 🏛️ Ecosystem & Architecture Hierarchy
+## 🏛️ Architecture & Ecosystem
 
-Aimake follows a structured three-tier architecture (see [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) and [docs/brand-kit/BRAND_GUIDELINES.md](./docs/brand-kit/BRAND_GUIDELINES.md)):
+Aimake follows a clean, modular architecture (see [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) and [docs/brand-kit/BRAND_GUIDELINES.md](./docs/brand-kit/BRAND_GUIDELINES.md)):
 
-| Tier | Entity Name | Role & Responsibility | Key Assets & Access |
+| Component | Canonical Name | Role & Responsibility | Access & Deliverables |
 | :--- | :--- | :--- | :--- |
-| **Mother Brand** | **Aimake** | Local-First multimodal creative infrastructure brand | Core design tokens & local-first philosophy |
-| **Flagship Product** | **Aimake Studio** | **Primary Tool**: Web canvas, CLI, desktop app, 36 templates, 5+1 deliverables | This repository (`products/aimake`), npm `aimake-studio@2.0.0`, [aimake.cc](https://aimake.cc) |
-| **Core Engine** | **Aimake Engine** | **Headless Runtime**: Video rendering kernel, Whisper word-level alignment, Plan/Run receipts | `aimake-labs/aimake-studio`, npm `@aimake/engine`, bin `aimake-engine` |
-| **Maintenance Matrix** | **Aimake Universe** | **LTS Assets**: 6 educational interdisciplinary planets for families and kids | `aimake-labs/*`, persistent live subdomains (zero 404s) |
+| **Flagship Suite** | **Aimake Studio** | **Primary Workspace**: Web Canvas, Interactive CLI, Desktop App, 36 Design Templates, 5+1 Deliverables | npm `aimake-studio`, CLI `aimake`, [aimake.cc](https://aimake.cc) |
+| **Media Kernel** | **Aimake Engine** | **Headless Runtime**: Video synthesis, Whisper word-level alignment, CapCut draft exporter, Plan/Run receipts | npm `@aimake/engine`, CLI `aimake-engine` |
+| **Agent Protocols** | **ACP & MCP Stacks** | **AI Host Integrations**: Native Agent Client Protocol (Zed, Cursor, JetBrains) & Model Context Protocol server | `aimake acp`, `aimake mcp` |
 
 ---
 
@@ -80,9 +79,9 @@ Existing presentation and content generation tools suffer from vendor lock-in, b
 
 ---
 
-## 🔄 The Creative Flywheel: Beyond Just Markdown
+## 🔄 The Creative Flywheel: End-to-End Multimodal Content Studio
 
-Aimake is **not** just another Markdown-to-slide converter. It is an **End-to-End Multimodal Knowledge Distillation & Omni-Channel Distribution Engine**. 
+Aimake is an **End-to-End Multimodal Knowledge Distillation & Omni-Channel Distribution Engine**. 
 
 True high-leverage content creation rarely starts with a blank slide. It begins with raw sparks—a sudden inspiration, an automated industry research scan, a spreadsheet of benchmark numbers, or historical project archives. Aimake transforms this fragmented intake into grounded, authoritative visual assets distributed across five native media formats:
 
