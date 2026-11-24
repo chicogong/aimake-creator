@@ -78,12 +78,31 @@ export const CALM_STUDIO_MARKUP = `
             <span class="nav-item-main">
               <span class="nav-item-title" style="font-weight:650;color:var(--ink);display:flex;align-items:center;gap:6px;">
                 <span class="live-pulse-dot"></span>
-                <span>每周灵感雷达 · W47</span>
+                <span id="sidebar-radar-badge">每周灵感雷达 · <span id="sidebar-radar-week">${(() => { const d = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())); d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7)); const y = new Date(Date.UTC(d.getUTCFullYear(), 0, 1)); return 'W' + Math.ceil(((d.getTime() - y.getTime()) / 86400000 + 1) / 7); })()}</span></span>
               </span>
-              <span class="nav-item-sub">16 篇 X 前沿推文与时事 · 一键填装</span>
+              <span class="nav-item-sub" id="sidebar-radar-sub"><span id="sidebar-radar-count">16</span> 篇 X 前沿推文与时事 · 一键填装</span>
             </span>
             <span class="hot-pill" style="background:linear-gradient(135deg,rgba(105,81,255,0.2),rgba(139,92,246,0.25));color:var(--accent);">RADAR</span>
           </button>
+          <script>
+            (function() {
+              fetch('/api/radar?limit=16')
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                  if (!data) return;
+                  if (data.week) {
+                    var w = document.getElementById('sidebar-radar-week');
+                    if (w) w.textContent = data.week;
+                  }
+                  var count = typeof data.count === 'number' ? data.count : (Array.isArray(data.items) ? data.items.length : null);
+                  if (count !== null) {
+                    var c = document.getElementById('sidebar-radar-count');
+                    if (c) c.textContent = String(count);
+                  }
+                })
+                .catch(function() {});
+            })();
+          </script>
 
           <button class="trending-promo-btn" id="btn-open-trending" title="浏览 2026 最新科技时事成品，一键导入或做同款">
             <span class="nav-item-main">

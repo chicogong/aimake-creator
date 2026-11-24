@@ -206,6 +206,7 @@ export async function exportDeckToMp4(
       deviceScaleFactor: 1,
     });
     await page.setContent(motionHtml, { waitUntil: 'load' });
+    await page.evaluate(() => document.fonts.ready);
     await page.waitForSelector('.aimake-slide', { timeout: 5000 });
 
     const ffArgs: string[] = [
@@ -242,7 +243,7 @@ export async function exportDeckToMp4(
     }
 
     if (audioInputIdx !== null) {
-      ffArgs.push('-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', '-c:a', 'aac', '-shortest');
+      ffArgs.push('-af', 'loudnorm=I=-14:TP=-1.0:LRA=11', '-c:a', 'aac', '-shortest');
     }
     if (subtitleInputIdx !== null) {
       ffArgs.push('-c:s', 'mov_text');
