@@ -307,9 +307,13 @@ async function generateAppIconIcns(targetIcnsPath) {
     const iconsetDir = path.join(tmpWorkDir, 'AppIcon.iconset');
     await fs.mkdir(iconsetDir, { recursive: true });
 
+    const officialBrandIcon = path.join(repoRoot, 'assets', 'brand', 'logos', 'app-icon-dark-1024.png');
     const customMasterPath = path.join(repoRoot, 'desktop', 'macos', 'AppIconMaster.png');
     let iconSource = 'procedural';
-    if (await fileExists(customMasterPath)) {
+    if (await fileExists(officialBrandIcon)) {
+      await prepareSquircleMasterPng(officialBrandIcon, masterPngPath, tmpWorkDir);
+      iconSource = 'assets/brand/logos/app-icon-dark-1024.png';
+    } else if (await fileExists(customMasterPath)) {
       await prepareSquircleMasterPng(customMasterPath, masterPngPath, tmpWorkDir);
       iconSource = 'desktop/macos/AppIconMaster.png';
     } else {
@@ -445,9 +449,34 @@ async function main() {
   await fs.mkdir(macosDir, { recursive: true });
   await fs.mkdir(resourcesDir, { recursive: true });
 
-  // 1. Generate AppIcon.icns (from desktop/macos/AppIconMaster.png if present, else procedural)
+  // 1. Generate AppIcon.icns (from assets/brand/logos/app-icon-dark-1024.png)
   const iconSource = await generateAppIconIcns(iconIcnsPath);
   const iconStat = await fs.stat(iconIcnsPath);
+
+  // 1b. Generate TrayIcon.png (18x18) and TrayIcon@2x.png (36x36) for NSStatusBar menu item
+  const traySrc = path.join(repoRoot, 'assets', 'brand', 'logos', 'transparent-symbol-white-512.png');
+  if (await fileExists(traySrc)) {
+    execFileSync('/usr/bin/sips', ['-z', '18', '18', traySrc, '--out', path.join(resourcesDir, 'TrayIcon.png')], { stdio: 'pipe' });
+    execFileSync('/usr/bin/sips', ['-z', '36', '36', traySrc, '--out', path.join(resourcesDir, 'TrayIcon@2x.png')], { stdio: 'pipe' });
+  }
+  const svgMarkSrc = path.join(repoRoot, 'assets', 'brand', 'logos', 'symbol-color.svg');
+  if (await fileExists(svgMarkSrc)) {
+    await fs.copyFile(svgMarkSrc, path.join(resourcesDir, 'aimake-logo-mark.svg'));
+  }
+  const appIcon1024Src = path.join(repoRoot, 'assets', 'brand', 'logos', 'app-icon-dark-1024.png');
+  if (await fileExists(appIcon1024Src)) {
+    await fs.copyFile(appIcon1024Src, path.join(resourcesDir, 'AppIcon-1024.png'));
+  }
+
+  // 1c. Bundle standalone assets into Contents/Resources for zero-dependency portability
+  await fs.cp(path.join(repoRoot, 'dist'), path.join(resourcesDir, 'dist'), { recursive: true });
+  await fs.cp(path.join(repoRoot, 'templates'), path.join(resourcesDir, 'templates'), { recursive: true });
+  await fs.cp(path.join(repoRoot, 'assets'), path.join(resourcesDir, 'assets'), { recursive: true });
+  await fs.cp(path.join(repoRoot, 'examples'), path.join(resourcesDir, 'examples'), {
+    recursive: true,
+    filter: (src) => !src.includes('.aimake'),
+  });
+  await fs.copyFile(path.join(repoRoot, 'package.json'), path.join(resourcesDir, 'package.json'));
 
   // 2. Write & lint Contents/Info.plist
   await fs.writeFile(infoPlistPath, buildInfoPlistXml(appVersion), 'utf8');

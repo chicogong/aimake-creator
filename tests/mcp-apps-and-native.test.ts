@@ -374,7 +374,7 @@ describe('macOS Native Shell (AimakeApp.swift) System Appearance & Workspace Bri
     expect(source).not.toContain('win.appearance = NSAppearance(named: .darkAqua)');
     expect(source).toContain('win.backgroundColor = NSColor.windowBackgroundColor');
     expect(source).toContain('win.titlebarAppearsTransparent = true');
-    expect(source).toContain('Aimake — 端到端多模态创作工作台');
+    expect(source).toContain('Aimake Studio · 爱创工坊');
 
     // Version & shell identifier
     expect(source).toContain('private static let desktopShellId = "appkit-wkwebview"');

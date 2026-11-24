@@ -151,7 +151,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private var selfTestWatchdog: DispatchWorkItem?
     private var appearanceMode: String = "system"
 
-    private static let defaultWindowTitle = "Aimake — 端到端多模态创作工作台"
+    private static let defaultWindowTitle = "Aimake Studio · 爱创工坊"
     private static let desktopShellId = "appkit-wkwebview"
     private static let desktopVersion = "2.0.0"
 
@@ -290,27 +290,48 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private func setupStatusBarItem() {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = item.button {
-            button.title = "A"
-            button.toolTip = "Aimake — Multimodal Creator & LLM Wiki Studio"
-            button.font = NSFont.monospacedSystemFont(ofSize: 13, weight: .bold)
+            if let iconUrl = Bundle.main.url(forResource: "TrayIcon", withExtension: "png"),
+               let img = NSImage(contentsOf: iconUrl) {
+                img.size = NSSize(width: 18, height: 18)
+                img.isTemplate = true
+                button.image = img
+                button.imagePosition = .imageOnly
+                button.title = ""
+            } else if let altIconUrl = Bundle.main.url(forResource: "TrayIcon@2x", withExtension: "png"),
+                      let img = NSImage(contentsOf: altIconUrl) {
+                img.size = NSSize(width: 18, height: 18)
+                img.isTemplate = true
+                button.image = img
+                button.imagePosition = .imageOnly
+                button.title = ""
+            } else {
+                button.title = "✦ Aimake"
+                button.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
+            }
+            button.toolTip = "Aimake Studio · 爱创工坊"
         }
 
-        let trayMenu = NSMenu(title: "Aimake Status")
-        let quickClip = NSMenuItem(title: "Quick Clip", action: #selector(triggerQuickClipMenu(_:)), keyEquivalent: "")
-        quickClip.target = self
-        trayMenu.addItem(quickClip)
+        let trayMenu = NSMenu(title: "Aimake Studio")
+        let headerItem = NSMenuItem(title: "Aimake Studio · 爱创工坊", action: nil, keyEquivalent: "")
+        headerItem.isEnabled = false
+        trayMenu.addItem(headerItem)
+        trayMenu.addItem(.separator())
 
-        let trendRadar = NSMenuItem(title: "Trend Radar", action: #selector(triggerTrendRadarMenu(_:)), keyEquivalent: "")
-        trendRadar.target = self
-        trayMenu.addItem(trendRadar)
-
-        let showWindow = NSMenuItem(title: "Show Window", action: #selector(showMainWindow(_:)), keyEquivalent: "")
+        let showWindow = NSMenuItem(title: "打开工作台 (Show Studio)", action: #selector(showMainWindow(_:)), keyEquivalent: "o")
         showWindow.target = self
         trayMenu.addItem(showWindow)
 
+        let trendRadar = NSMenuItem(title: "灵感雷达 (Trend Radar)", action: #selector(triggerTrendRadarMenu(_:)), keyEquivalent: "r")
+        trendRadar.target = self
+        trayMenu.addItem(trendRadar)
+
+        let quickClip = NSMenuItem(title: "快速剪辑 (Quick Clip)", action: #selector(triggerQuickClipMenu(_:)), keyEquivalent: "")
+        quickClip.target = self
+        trayMenu.addItem(quickClip)
+
         trayMenu.addItem(.separator())
 
-        let quitItem = NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: "退出 Aimake Studio", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         trayMenu.addItem(quitItem)
 
         item.menu = trayMenu
@@ -430,24 +451,156 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         <html lang="zh-CN">
         <head>
           <meta charset="UTF-8" />
-          <meta name="color-scheme" content="light dark" />
-          <title>Aimake — 端到端多模态创作工作台</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Aimake Studio · 爱创工坊</title>
           <style>
-            :root { color-scheme: light dark; --bg: #f6f7f9; --card: #ffffff; --border: #e2e5eb; --fg: #181a1f; --muted: #5c6472; --accent: #2563eb; }
-            @media (prefers-color-scheme: dark) {
-              :root { --bg: #111317; --card: #181b21; --border: #2b313c; --fg: #eceef2; --muted: #949ba8; --accent: #60a5fa; }
+            :root {
+              --bg: #0B0D12;
+              --card: rgba(23, 27, 36, 0.88);
+              --border: rgba(255, 255, 255, 0.08);
+              --fg: #F4F8FF;
+              --muted: #8E9BAE;
+              --accent: #6951FF;
+              --accent-glow: rgba(105, 81, 255, 0.25);
             }
-            body { margin: 0; height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-            .card { max-width: 560px; padding: 32px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
-            h1 { margin: 0 0 12px; font-size: 20px; }
-            p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 14px; }
-            code { color: var(--accent); }
+            body {
+              margin: 0;
+              height: 100vh;
+              display: grid;
+              place-items: center;
+              background: var(--bg);
+              background-image:
+                radial-gradient(circle at 50% 25%, rgba(105, 81, 255, 0.14) 0%, transparent 60%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+              background-size: 100% 100%, 32px 32px, 32px 32px;
+              color: var(--fg);
+              font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", sans-serif;
+              user-select: none;
+              -webkit-user-select: none;
+            }
+            .atelier-card {
+              max-width: 580px;
+              padding: 40px;
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: 20px;
+              backdrop-filter: blur(24px);
+              -webkit-backdrop-filter: blur(24px);
+              box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+              text-align: center;
+            }
+            .logo-badge {
+              width: 64px;
+              height: 64px;
+              margin: 0 auto 20px;
+              background: rgba(105, 81, 255, 0.1);
+              border: 1px solid rgba(105, 81, 255, 0.25);
+              border-radius: 16px;
+              display: grid;
+              place-items: center;
+            }
+            h1 {
+              margin: 0 0 8px;
+              font-size: 24px;
+              font-weight: 700;
+              letter-spacing: -0.02em;
+            }
+            .badge {
+              display: inline-block;
+              padding: 3px 10px;
+              background: rgba(105, 81, 255, 0.15);
+              border: 1px solid rgba(105, 81, 255, 0.3);
+              border-radius: 999px;
+              color: #B7AAFF;
+              font-size: 12px;
+              font-weight: 600;
+              margin-bottom: 16px;
+            }
+            p {
+              margin: 0 0 24px;
+              color: var(--muted);
+              line-height: 1.6;
+              font-size: 14px;
+            }
+            .action-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 12px;
+              margin-bottom: 24px;
+            }
+            .btn {
+              padding: 12px 16px;
+              background: rgba(255, 255, 255, 0.05);
+              border: 1px solid var(--border);
+              border-radius: 10px;
+              color: var(--fg);
+              font-size: 13px;
+              font-weight: 500;
+              cursor: pointer;
+              transition: all 0.15s ease;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+            }
+            .btn:hover {
+              background: rgba(255, 255, 255, 0.1);
+              border-color: rgba(255, 255, 255, 0.2);
+              transform: translateY(-1px);
+            }
+            .btn-primary {
+              background: var(--accent);
+              border-color: var(--accent);
+              color: #FFFFFF;
+              box-shadow: 0 4px 14px var(--accent-glow);
+            }
+            .btn-primary:hover {
+              background: #7A65FF;
+              border-color: #7A65FF;
+            }
+            .status-note {
+              font-size: 12px;
+              color: var(--muted);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+            }
+            .status-dot {
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              background: #10B981;
+              box-shadow: 0 0 8px #10B981;
+            }
           </style>
         </head>
         <body>
-          <div class="card">
-            <h1>Aimake — 端到端多模态创作工作台</h1>
-            <p>Pass <code>--url http://127.0.0.1:4310</code> or <code>--cli ./dist/cli.js --deck ./examples/zh-creator-flywheel.deck.md</code> to attach to a local Aimake Studio workspace.</p>
+          <div class="atelier-card">
+            <div class="logo-badge">
+              <svg width="36" height="36" viewBox="0 0 512 512" fill="none">
+                <path fill="#6951FF" d="M117 121 L258 79 Q293 69 286 103 L231 370 Q226 394 205 394 H117 Q93 394 93 370 V148 Q93 130 117 121 Z"/>
+                <rect fill="#FFCB49" x="304" y="98" width="156" height="156" rx="28"/>
+                <path fill="#B7AAFF" d="M292 273 H346 Q364 273 360 296 L345 379 Q342 395 321 395 H276 Q258 395 263 377 L281 295 Q285 273 292 273 Z"/>
+                <path fill="#FF6B74" d="M460 282 V368 Q460 395 432 395 H361 Q358 395 359 384 C367 316 399 286 448 282 Z"/>
+              </svg>
+            </div>
+            <div class="badge">Aimake Studio v2.0</div>
+            <h1>Aimake Studio · 爱创工坊</h1>
+            <p>本地优先 · 参数化多模态创作工坊 · 36 套设计系统与 Karpathy LLM Wiki</p>
+            <div class="action-grid">
+              <button class="btn btn-primary" onclick="window.__aimakeInvokeNative && window.__aimakeInvokeNative('pickFolder', {})">
+                <span>📂 打开工作区目录</span>
+              </button>
+              <button class="btn" onclick="location.reload()">
+                <span>⚡ 重新连接引擎</span>
+              </button>
+            </div>
+            <div class="status-note">
+              <span class="status-dot"></span>
+              <span>本地创作内核就绪 · 零云端隐私上传</span>
+            </div>
           </div>
         </body>
         </html>
@@ -462,14 +615,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
         var candidateCli = options.cliPath
         if candidateCli == nil {
+            let resourceCli = Bundle.main.resourceURL?.appendingPathComponent("dist/cli.js").path
             let bundleParent = Bundle.main.bundleURL
                 .deletingLastPathComponent()
                 .deletingLastPathComponent()
                 .path
             let guesses = [
+                resourceCli,
                 "\(cwd)/dist/cli.js",
                 "\(bundleParent)/dist/cli.js",
-            ]
+                "/usr/local/bin/aimake",
+                "/opt/homebrew/bin/aimake",
+            ].compactMap { $0 }
             candidateCli = guesses.first { fm.fileExists(atPath: $0) }
         }
         guard let cli = candidateCli else { return nil }
@@ -482,12 +639,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
         var candidateDeck = options.deckPath
         if candidateDeck == nil {
+            let resourceDeck = Bundle.main.resourceURL?.appendingPathComponent("examples/zh-creator-flywheel.deck.md").path
             let repoGuess = URL(fileURLWithPath: absCli)
                 .deletingLastPathComponent()
                 .deletingLastPathComponent()
                 .path
             let deckGuesses = [
                 workspace.map { "\($0)/deck.deck.md" },
+                resourceDeck,
                 "\(cwd)/examples/zh-creator-flywheel.deck.md",
                 "\(repoGuess)/examples/zh-creator-flywheel.deck.md",
             ].compactMap { $0 }
@@ -495,7 +654,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         }
         guard let deck = candidateDeck else { return nil }
         let absDeck = deck.hasPrefix("/") ? deck : URL(fileURLWithPath: cwd).appendingPathComponent(deck).standardized.path
-        return (absCli, absDeck, workspace)
+
+        var effectiveWorkspace = workspace
+        if effectiveWorkspace == nil {
+            if absDeck.contains(".app/Contents/Resources") {
+                let userDocs = URL(fileURLWithPath: NSHomeDirectory())
+                    .appendingPathComponent("Documents")
+                    .appendingPathComponent("Aimake")
+                try? FileManager.default.createDirectory(at: userDocs, withIntermediateDirectories: true)
+                effectiveWorkspace = userDocs.path
+            }
+        }
+        return (absCli, absDeck, effectiveWorkspace)
     }
 
     private func spawnStudioProcess(

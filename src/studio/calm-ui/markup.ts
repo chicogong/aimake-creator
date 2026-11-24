@@ -10,9 +10,11 @@ export const CALM_STUDIO_MARKUP = `
 
       <button class="workspace-pill" id="btn-workspace-switcher" title="切换或新建创作工作区">
         <span class="brand-mark-badge" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 32 32" fill="none">
-            <path d="M13 6 4 24 20 27Z" fill="#F4F8FF"></path>
-            <path d="M14.5 5.65 21 4 28 25 21.4 26.65Z" fill="#60A5FA"></path>
+          <svg width="14" height="14" viewBox="0 0 512 512" fill="none">
+            <path fill="#6951FF" d="M117 121 L258 79 Q293 69 286 103 L231 370 Q226 394 205 394 H117 Q93 394 93 370 V148 Q93 130 117 121 Z"></path>
+            <rect fill="#FFCB49" x="304" y="98" width="156" height="156" rx="28"></rect>
+            <path fill="#B7AAFF" d="M292 273 H346 Q364 273 360 296 L345 379 Q342 395 321 395 H276 Q258 395 263 377 L281 295 Q285 273 292 273 Z"></path>
+            <path fill="#FF6B74" d="M460 282 V368 Q460 395 432 395 H361 Q358 395 359 384 C367 316 399 286 448 282 Z"></path>
           </svg>
         </span>
         <span class="workspace-name" id="workspace-name-label">Aimake 创作工作区</span>
