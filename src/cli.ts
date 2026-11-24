@@ -50,6 +50,7 @@ import {
   type ChatIntent,
 } from './studio/chat-engine.js';
 import { startStdioMcpServer } from './mcp/mcp-server.js';
+import { startStdioAcpServer } from './acp/index.js';
 import { buildStaticSite } from './site/site-builder.js';
 import {
   installMarketplaceItem,
@@ -1652,6 +1653,15 @@ program
   .description('Start standard JSON-RPC 2.0 stdio MCP server for OpenCode, Codex, WorkBuddy, Claude Code & AGY')
   .action(async () => {
     await startStdioMcpServer();
+  });
+
+program
+  .command('acp')
+  .description('Start Agent Client Protocol (ACP) JSON-RPC 2.0 stdio server for Zed, JetBrains, Cursor & IDE agents')
+  .option('-w, --workspace <path>', 'Bind explicitly to workspace directory')
+  .option('--debug', 'Emit verbose JSON-RPC protocol trace to stderr')
+  .action(async (opts: { workspace?: string; debug?: boolean }) => {
+    await startStdioAcpServer(opts);
   });
 
 if (process.argv.length <= 2 && process.stdin.isTTY && process.stdout.isTTY) {
