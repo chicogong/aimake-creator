@@ -424,15 +424,24 @@ export async function exportDeckBundle(
     ];
   }
   if (format === 'capcut') {
+    const slidesDir = path.join(outTarget, 'slides');
+    const slideImages =
+      (options as any)?.slideImages && Array.isArray((options as any).slideImages)
+        ? (options as any).slideImages
+        : await exportDeckToPngs(doc, slidesDir, {
+            customTemplatesDir: options?.customTemplatesDir,
+          });
     const res = await buildCapCutDraft(doc, {
       outputDir: outTarget,
       installLocal: options?.installLocal,
       targetApp: options?.targetApp,
       audioTrackPath: options?.audioTrackPath,
       slideDurationsMs: options?.slideDurationsMs,
+      slideImages,
       fps: options?.fps,
+      localProjectsDir: (options as any)?.localProjectsDir,
     });
-    const paths = [res.contentPath, res.metaPath, res.coverPath];
+    const paths = [res.contentPath, res.metaPath, res.coverPath, ...slideImages];
     if (res.localDraftPath) {
       paths.push(res.localDraftPath);
     }

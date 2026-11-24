@@ -180,10 +180,11 @@ const MCP_TOOLS = [
       required: ['deckPath', 'format', 'output'],
       properties: {
         deckPath: { type: 'string', description: 'Path to .deck.md file' },
-        format: { type: 'string', enum: ['png', 'wechat', 'pdf', 'pptx', 'mp4', 'html'] },
-        output: { type: 'string', description: 'Output directory (for png) or file path' },
+        format: { type: 'string', enum: ['png', 'wechat', 'pdf', 'pptx', 'mp4', 'html', 'capcut'] },
+        output: { type: 'string', description: 'Output directory (for png/capcut) or file path' },
         template: { type: 'string', description: 'Optional template ID override' },
         vaultDir: { type: 'string', description: 'Optional Wiki vault dir for automatic compound write-back & citation check' },
+        installLocal: { type: 'boolean', description: 'Optional flag to auto-install CapCut project into local application library' },
       },
     },
   },
@@ -1089,7 +1090,9 @@ export async function handleMcpRequest(req: JsonRpcRequest): Promise<Record<stri
         const doc = parseDeckMarkdown(raw, String(args.deckPath));
         if (args.template) doc.frontmatter.template = String(args.template);
         const format = String(args.format) as ExportFormat;
-        const artifacts = await exportDeckBundle(doc, format, String(args.output));
+        const artifacts = await exportDeckBundle(doc, format, String(args.output), {
+          installLocal: Boolean(args.installLocal),
+        });
         let compoundedPath: string | undefined;
         let citationReport: unknown;
         if (args.vaultDir) {

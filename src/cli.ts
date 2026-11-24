@@ -893,6 +893,7 @@ program
   .option('--seconds-per-slide <n>', 'Seconds per slide for mp4 export')
   .option('--narrate <provider>', 'Synthesize audio narration & SRT for mp4/capcut: offline-fixture | tencent-tccli')
   .option('--install-local', 'Auto-install CapCut project directly into local CapCut/JianYing application library')
+  .option('--target-app <app>', 'Target application for local install: capcut | jianying | auto')
   .option('--json', 'Emit machine-readable JSON')
   .action(
     async (
@@ -907,6 +908,7 @@ program
         secondsPerSlide?: string;
         narrate?: 'offline-fixture' | 'tencent-tccli';
         installLocal?: boolean;
+        targetApp?: 'capcut' | 'jianying' | 'auto';
         json?: boolean;
       }
     ) => {
@@ -952,6 +954,7 @@ program
         subtitlesSrtPath,
         slideDurationsMs,
         installLocal: opts.installLocal,
+        targetApp: opts.targetApp,
       });
 
       if (subtitlesSrtPath) artifacts.push(subtitlesSrtPath);
