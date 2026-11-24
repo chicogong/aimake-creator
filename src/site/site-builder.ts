@@ -133,7 +133,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     secondaryCta: '浏览 36 套设计模板',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: '已复制终端命令至剪贴板',
-    stageCaption: '确定性排版编译舞台 · 点击上方介质标签实时切换同一原稿的多端渲染画布',
+    stageCaption: '确定性排版舞台 · 切换标签实时预览多端画布',
     flywheelHeading: '端到端创作飞轮 · 四步完成知识沉淀与全域分发',
     flywheelSub:
       '从零碎素材摄入，到 Karpathy LLM Wiki 深度萃取，再到参数化排版与全渠道一键直发，每一步都 100% 运行在本机。',
@@ -1034,15 +1034,35 @@ function sharedSiteCss(): string {
     }
     [data-theme="light"] .work-card,
     [data-theme="light"] .tpl-card,
-    [data-theme="light"] .family-card {
+    [data-theme="light"] .family-card,
+    [data-theme="light"] .info-panel {
       background: #ffffff;
       border-color: var(--border);
       box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
     }
+    [data-theme="light"] .hero-badge-pill {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #047857;
+    }
+    [data-theme="light"] .family-badge,
+    [data-theme="light"] .radar-method-badge,
+    [data-theme="light"] .flywheel-vault-pill {
+      background: #ecfdf5;
+      color: #047857;
+      border-color: #a7f3d0;
+    }
+    [data-theme="light"] .stage-foot-badge { color: #047857; }
+    [data-theme="light"] .stage-shell .stage-foot-badge { color: #34d399; }
     [data-theme="light"] .fmt-tag {
       background: #f1f5f9;
       border-color: rgba(15, 23, 42, 0.1);
       color: #334155;
+    }
+    [data-theme="light"] .fmt-tag-family {
+      background: #fffbeb;
+      color: #b45309;
+      border-color: #fde68a;
     }
     [data-theme="light"] .aspect-16-9 { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
     [data-theme="light"] .aspect-3-4 { background: #fffbeb; color: #b45309; border-color: #fde68a; }
@@ -1121,6 +1141,7 @@ function sharedSiteCss(): string {
       border-color: #0f172a;
       box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
     }
+    .is-collapsed-extra { display: none !important; }
     .section-expand-wrap {
       display: flex;
       justify-content: center;
@@ -1895,6 +1916,50 @@ function sharedSiteCss(): string {
     .tpl-swatch-s { height: 4px; width: 42%; border-radius: 2px; opacity: 0.35; }
     .tpl-swatch-cards { display: flex; gap: 6px; }
     .tpl-swatch-card { flex: 1; height: 18px; border-radius: 4px; border: 1px solid rgba(127, 127, 127, 0.2); }
+    .tpl-thumb-box {
+      display: block;
+      position: relative;
+      height: 112px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      border: 1px solid rgba(127, 127, 127, 0.22);
+    }
+    .tpl-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tpl-card:hover .tpl-thumb-img { transform: scale(1.04); }
+    .tpl-palette-pill {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 6px;
+      border-radius: 999px;
+      background: rgba(10, 12, 18, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      z-index: 2;
+    }
+    .tpl-palette-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+    .fmt-tag-family { color: var(--amber); border-color: rgba(245, 158, 11, 0.38); }
+    .tpl-cta-row { display: flex; gap: 7px; align-items: center; margin-top: 14px; }
+    .tpl-cta-main { flex: 1; height: 34px; padding: 0 12px; font-size: 12px; justify-content: center; }
+    .tpl-cta-sub { height: 34px; padding: 0 11px; font-size: 12px; justify-content: center; }
+    .tpl-cta-icon { width: 34px; height: 34px; padding: 0; justify-content: center; flex-shrink: 0; }
     .formats { display: flex; flex-wrap: nowrap; overflow: hidden; gap: 6px; margin-top: auto; }
     .fmt-tag { font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: #cbd5e1; white-space: nowrap; flex-shrink: 0; }
 
@@ -1913,6 +1978,24 @@ function sharedSiteCss(): string {
     [data-theme="light"] .pillar-code { color: #b45309; }
     .pillar-card h3 { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
     .pillar-card p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+    .pack-cmd-box {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--code-ink);
+      background: var(--bg);
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      transition: border-color 0.15s ease;
+    }
+    .pack-cmd-box:hover { border-color: var(--cobalt); }
 
     /* Family */
     .family-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px; }
@@ -1982,6 +2065,85 @@ function sharedSiteCss(): string {
       flex-direction: column;
       justify-content: space-between;
     }
+    .work-preview-swiss {
+      background: #f6f4ee;
+      color: #111111;
+      background-image: linear-gradient(to right, rgba(17,17,17,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,17,17,0.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .work-preview-swiss::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: #e11d48;
+    }
+    .work-preview-linear {
+      background: radial-gradient(circle at 80% 0%, rgba(105,81,255,0.34), transparent 60%), #0a0d14;
+      color: #f8fafc;
+    }
+    .work-preview-wechat {
+      background: linear-gradient(135deg, #141720 0%, #0d1017 100%);
+      color: #f1f5f9;
+    }
+    .work-preview-video {
+      background: linear-gradient(160deg, #161028 0%, #090b12 100%);
+      color: #f8fafc;
+    }
+    .work-preview-linkedin {
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+      color: #0f172a;
+    }
+    .work-preview-riso {
+      background: #f4efe6;
+      color: #1d4ed8;
+    }
+    .wp-eyebrow {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .wp-headline {
+      font-size: 13.5px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+    .wp-chips {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 9.5px;
+    }
+    .wp-chip {
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    .wp-chip-light {
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      color: #1e293b;
+    }
+    .wp-timeline { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+    .wp-track { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 8.5px; color: #94a3b8; }
+    .wp-track-bar { height: 7px; border-radius: 3px; flex: 1; background: rgba(255, 255, 255, 0.08); overflow: hidden; display: flex; gap: 3px; }
+    .radar-cta-btn { height: 30px; padding: 0 11px; font-size: 11.5px; border-radius: 7px; flex-shrink: 0; white-space: nowrap; }
+    .micro-pill-accent { background: var(--pill-bg); border-color: var(--pill-border); color: var(--pill-ink); font-weight: 600; }
+    .micro-pill-ok { background: rgba(16, 185, 129, 0.14); border-color: rgba(16, 185, 129, 0.34); color: #6ee7b7; font-weight: 600; }
+    [data-theme="light"] .micro-pill-ok { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
     .work-card-head {
       display: flex;
       justify-content: space-between;
@@ -2472,7 +2634,7 @@ function renderLandingHtml(
   const langs: SiteLang[] = ['zh', 'en', 'ja', 'ko'];
 
   const stagePresets: Array<{ label: string; tplId: string }> = [
-    { label: '3:4 便当盒 · Bento', tplId: 'apple-bento-launch' },
+    { label: '16:9 便当盒 · Bento', tplId: 'apple-bento-launch' },
     { label: '3:4 瑞士版面 · Swiss', tplId: 'xhs-swiss-grid' },
     { label: '16:9 极客黑 · Linear', tplId: 'ppt-linear-dark' },
     { label: '4:5 LinkedIn · 专栏', tplId: 'linkedin-exec-carousel' },
@@ -2480,21 +2642,31 @@ function renderLandingHtml(
   ];
 
   const packsHtml = packs
-    .map(
-      (p) => `
+    .map((p) => {
+      const installCmd = `aimake market install ${p.id}@${p.version}`;
+      return `
       <div class="pillar-card" style="display:flex;flex-direction:column;justify-content:space-between;gap:12px;">
         <div>
           <div class="pillar-code">${esc(p.id)} · v${esc(p.version)} · ${p.templateIds.length} templates</div>
           <h3>${esc(p.name[lang])}</h3>
           <p>${esc(p.description[lang])}</p>
         </div>
-        <div style="font-family:var(--mono);font-size:11.5px;color:#93c5fd;background:var(--bg);padding:8px 10px;border-radius:6px;border:1px solid var(--border);overflow-x:auto;">aimake market install ${esc(p.id)}@${esc(p.version)}</div>
-      </div>`
-    )
+        <div class="pack-cmd-box" data-copy="${esc(installCmd)}" title="Click to copy command">
+          <span>${esc(installCmd)}</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.65;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </div>
+      </div>`;
+    })
     .join('\n');
 
+  const INITIAL_VISIBLE_TEMPLATES = 9;
+  const tplCategoryCounts: Record<string, number> = {};
+  for (const t of templates) {
+    tplCategoryCounts[t.category] = (tplCategoryCounts[t.category] || 0) + 1;
+  }
+
   const cardsHtml = templates
-    .map((tpl) => {
+    .map((tpl, idx) => {
       const aspectClass =
         tpl.aspect === '16:9'
           ? 'aspect-16-9'
@@ -2506,73 +2678,167 @@ function renderLandingHtml(
           ? 'aspect-9-16'
           : 'aspect-1-1';
 
+      const pal = getTemplatePalette(tpl.id);
+      const isExtra = idx >= INITIAL_VISIBLE_TEMPLATES;
+      const hasPreviewImg = fsSync.existsSync(path.join(PACKAGE_ROOT, 'templates', tpl.id, 'preview.png'));
+      const visualHeaderHtml = hasPreviewImg
+        ? `<a href="/playground/?template=${esc(tpl.id)}" class="tpl-thumb-box" style="background:${esc(pal.bg)};" aria-label="Open ${esc(tpl.name[lang])} in Web Playground">
+            <img src="/templates/${esc(tpl.id)}/preview.png" alt="${esc(tpl.name[lang])} visual preview" class="tpl-thumb-img" loading="lazy" />
+            <span class="tpl-palette-pill" aria-hidden="true">
+              <span class="tpl-palette-dot" style="background:${esc(pal.bg)};"></span>
+              <span class="tpl-palette-dot" style="background:${esc(pal.surface)};"></span>
+              <span class="tpl-palette-dot" style="background:${esc(pal.accent)};"></span>
+            </span>
+          </a>`
+        : `<a href="/playground/?template=${esc(tpl.id)}" class="tpl-swatch" style="background:${esc(pal.bg)};color:${esc(pal.ink)};" aria-label="Open ${esc(tpl.name[lang])} in Web Playground">
+            <span class="tpl-swatch-bar" style="background:${esc(pal.accent)};"></span>
+            <div class="tpl-swatch-lines">
+              <div class="tpl-swatch-h" style="background:${esc(pal.ink)};"></div>
+              <div class="tpl-swatch-s" style="background:${esc(pal.ink)};"></div>
+            </div>
+            <div class="tpl-swatch-cards">
+              <div class="tpl-swatch-card" style="background:${esc(pal.surface)};"></div>
+              <div class="tpl-swatch-card" style="background:${esc(pal.surface)};"></div>
+              <div class="tpl-swatch-card" style="background:${esc(pal.accent)};opacity:0.35;"></div>
+            </div>
+          </a>`;
+
       return `
-      <div class="tpl-card" data-market-card="true" data-cat="${esc(tpl.category)}" data-aspect="${esc(tpl.aspect)}" data-loc="${esc(tpl.defaultLocale)}" data-search="${esc((tpl.id + ' ' + tpl.name.zh + ' ' + tpl.name.en + ' ' + tpl.styleFamily + ' ' + tpl.tags.join(' ')).toLowerCase())}">
+      <div class="tpl-card${isExtra ? ' is-collapsed-extra' : ''}" data-market-card="true"${isExtra ? ' data-extra-tpl="true"' : ''} data-cat="${esc(tpl.category)}" data-aspect="${esc(tpl.aspect)}" data-loc="${esc(tpl.defaultLocale)}" data-search="${esc((tpl.id + ' ' + tpl.name.zh + ' ' + tpl.name.en + ' ' + tpl.styleFamily + ' ' + tpl.tags.join(' ')).toLowerCase())}">
         <div>
+          ${visualHeaderHtml}
           <div class="meta-row">
-            <span>#${esc(tpl.id)} · v${esc(tpl.version)}</span>
+            <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">#${esc(tpl.id)} · v${esc(tpl.version)}</span>
             <span class="aspect-badge ${aspectClass}">${esc(tpl.aspect)}</span>
           </div>
           <h3><a href="/${lang}/templates/${tpl.id}/">${esc(tpl.name[lang])}</a></h3>
           <p>${esc(tpl.description[lang])}</p>
         </div>
         <div>
-          <div class="formats" style="margin-bottom:14px;">
-            <span class="fmt-tag" style="color:var(--amber);border-color:rgba(245,158,11,0.4);">${esc(tpl.styleFamily)}</span>
-            ${tpl.supportedFormats.slice(0, 4).map((f) => `<span class="fmt-tag">${esc(f.toUpperCase())}</span>`).join('')}
+          <div class="formats">
+            <span class="fmt-tag fmt-tag-family">${esc(tpl.styleFamily)}</span>
+            ${tpl.supportedFormats.slice(0, 3).map((f) => `<span class="fmt-tag">${esc(f.toUpperCase())}</span>`).join('')}
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <a class="btn-secondary" style="padding:7px 12px;font-size:12.5px;" href="/${lang}/templates/${tpl.id}/">预览 Preview</a>
-            <a class="btn-primary" style="padding:7px 12px;font-size:12.5px;" href="aimake://remix?template=${esc(tpl.id)}">一键做同款 Remix</a>
+          <div class="tpl-cta-row">
+            <a class="btn-primary tpl-cta-main" href="/playground/?template=${esc(tpl.id)}">在线做同款 →</a>
+            <a class="btn-secondary tpl-cta-sub" href="/${lang}/templates/${tpl.id}/">详情</a>
+            <a class="btn-secondary tpl-cta-icon" href="aimake://remix?template=${esc(tpl.id)}" title="在 Aimake 桌面端打开做同款" aria-label="在 Aimake 桌面端打开做同款">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </a>
           </div>
         </div>
       </div>`;
     })
     .join('\n');
 
+  const INITIAL_VISIBLE_RADAR = 6;
   const radarItems = CURATED_TREND_FIXTURES.slice(0, 16);
+  const radarCatCounts: Record<string, number> = {};
+  let radarXCount = 0;
+  for (const r of radarItems) {
+    const c = r.category || 'ai-tech';
+    radarCatCounts[c] = (radarCatCounts[c] || 0) + 1;
+    if ((r.source || '').includes('X') || (r.source || '').includes('Twitter')) radarXCount++;
+  }
+
   const radarCardsHtml = radarItems
-    .map((item) => {
+    .map((item, idx) => {
       const isX = (item.source || '').includes('X') || (item.source || '').includes('Twitter');
       const authorText = item.author ? esc(item.author) : '@aimake-creator';
       const playgroundLink = `/playground/?template=${encodeURIComponent(item.suggestedTemplate || 'apple-bento-launch')}&title=${encodeURIComponent(item.title)}`;
+      const cleanHotness = stripDecorEmoji(item.hotness || '高关注');
+      const isExtra = idx >= INITIAL_VISIBLE_RADAR;
       return `
-      <div class="radar-card" data-radar-cat="${esc(item.category || 'ai-tech')}" data-radar-source="${isX ? 'x' : 'other'}">
+      <div class="radar-card${isExtra ? ' is-collapsed-extra' : ''}"${isExtra ? ' data-extra-radar="true"' : ''} data-radar-cat="${esc(item.category || 'ai-tech')}" data-radar-source="${isX ? 'x' : 'other'}">
         <div>
           <div class="radar-card-head" style="margin-bottom:10px;">
             <span class="radar-source-tag ${isX ? 'x-tag' : ''}">${isX ? '𝕏 ' : ''}${esc(item.source)}</span>
-            <span class="radar-hotness">${esc(item.hotness || '🔥 高关注')}</span>
+            <span class="radar-hotness">${esc(cleanHotness)}</span>
           </div>
           <h4 class="radar-title">${esc(item.title)}</h4>
           <p class="radar-summary">${esc(item.summary || '')}</p>
         </div>
         <div class="radar-foot">
-          <div style="display:flex;align-items:center;gap:6px;font-family:var(--mono);color:var(--dim);font-size:11.5px;">
+          <div class="radar-foot-meta">
             <span>${authorText}</span>
             <span>·</span>
             <span style="color:var(--cobalt);font-weight:600;">#${esc(item.suggestedTemplate || 'bento')}</span>
           </div>
-          <a href="${playgroundLink}" class="btn-primary" style="padding:6px 12px;font-size:12px;text-decoration:none;">在工坊做同款 ↗</a>
+          <a href="${playgroundLink}" class="btn-primary radar-cta-btn">做同款 ↗</a>
         </div>
       </div>`;
     })
     .join('\n');
 
-  const bentoHtml = copy.bentoItems
-    .map((item) => {
-      const typeClass = item.type === 'wide' ? 'bento-wide' : item.type === 'tall' ? 'bento-tall' : '';
-      const artHtml = item.illustration
-        ? `<div class="bento-art"><img src="${esc(item.illustration)}" alt="${esc(item.title)}" loading="lazy" /></div>`
-        : '';
+  const flywheelMicroUiList = [
+    `<div class="flywheel-micro-ui">
+      <div class="micro-row">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="micro-pill">X Thread</span>
+          <span class="micro-pill">WeChat</span>
+          <span class="micro-pill">CSV</span>
+          <span class="micro-pill">SRT/VTT</span>
+        </div>
+        <span class="micro-pill micro-pill-ok">→ sources/raw.md</span>
+      </div>
+      <div class="micro-row" style="font-size:10.5px;color:var(--dim);">
+        <span>0 凭证提取 · 防盗链清洗 · 事实坐标留存</span>
+        <span style="color:var(--emerald);font-weight:600;">100% Lossless</span>
+      </div>
+    </div>`,
+    `<div class="flywheel-micro-ui">
+      <div class="micro-row">
+        <span>wiki/index.md · 预算控制</span>
+        <span class="micro-pill micro-pill-ok">2,480 / 3,000 tokens</span>
+      </div>
+      <div class="micro-meter-track"><div class="micro-meter-fill" style="width:82%;"></div></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="micro-pill micro-pill-accent">[[style-dna]]</span>
+        <span class="micro-pill">[[llm-wiki]]</span>
+        <span class="micro-pill">cite:L18</span>
+      </div>
+    </div>`,
+    `<div class="flywheel-micro-ui">
+      <div class="micro-row">
+        <span class="micro-pill micro-pill-accent">storyboard.deck.md</span>
+        <span style="color:var(--emerald);font-weight:600;">74ms 编译直出</span>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="micro-pill">3x PNG</span>
+        <span class="micro-pill">WeChat HTML</span>
+        <span class="micro-pill">PDF</span>
+        <span class="micro-pill">OOXML PPTX</span>
+        <span class="micro-pill">60fps MP4</span>
+      </div>
+    </div>`,
+    `<div class="flywheel-micro-ui">
+      <div class="micro-row">
+        <span>WeChat 草稿箱 · 小红书 3:4 · 知乎专栏</span>
+        <span class="micro-pill micro-pill-ok">Synced</span>
+      </div>
+      <div class="micro-row" style="font-size:10.5px;">
+        <span style="color:var(--dim);">wiki/published.md</span>
+        <span class="micro-pill micro-pill-accent">Compound Leverage +1</span>
+      </div>
+    </div>`,
+  ];
+
+  const flywheelStages = copy.bentoItems.slice(0, 4);
+  const privacyItem = copy.bentoItems[4];
+
+  const bentoHtml = flywheelStages
+    .map((item, idx) => {
       return `
-      <div class="bento-card ${typeClass}">
-        <div class="bento-top">
-          <div class="bento-stage-tag">${esc(item.stage)}</div>
+      <div class="bento-card">
+        <div>
+          <div class="bento-card-head">
+            <div class="bento-stage-tag">${esc(item.stage)}</div>
+            <span class="bento-badge">${esc(item.badge)}</span>
+          </div>
           <h3>${esc(item.title)}</h3>
           <p>${esc(item.desc)}</p>
-          ${artHtml}
-          <span class="bento-badge">${esc(item.badge)}</span>
         </div>
+        ${flywheelMicroUiList[idx] || ''}
         <div class="bento-details">
           ${item.details
             .map(
@@ -2585,84 +2851,162 @@ function renderLandingHtml(
     })
     .join('\n');
 
+  const vaultBannerHtml = privacyItem
+    ? `
+      <div class="flywheel-vault-banner">
+        <div style="display:flex;align-items:flex-start;gap:14px;flex:1 1 400px;min-width:0;">
+          <div style="width:38px;height:38px;border-radius:10px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:var(--emerald);display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div>
+            <div class="bento-stage-tag" style="margin-bottom:4px;">${esc(privacyItem.stage)}</div>
+            <h3 style="margin:0 0 5px;font-size:17px;font-weight:700;letter-spacing:-0.02em;color:var(--ink);">${esc(privacyItem.title)}</h3>
+            <p style="margin:0;font-size:13px;color:var(--muted);line-height:1.58;">${esc(privacyItem.desc)}</p>
+          </div>
+        </div>
+        <div class="flywheel-vault-pills">
+          ${privacyItem.details
+            .map((d) => `<span class="flywheel-vault-pill">✓ ${esc(d)}</span>`)
+            .join('')}
+        </div>
+      </div>`
+    : '';
+
   const multimodalWorks = [
     {
       id: 'work-xhs',
       sampleKey: 'deepseek',
       aspect: '3:4',
       format: '3x Retina PNG',
-      platform: '小红书视觉图文',
+      platform: '小红书图文',
       template: 'xhs-swiss-grid',
       title: '《DeepSeek-R1 纯本地部署与知识蒸馏实战全景》',
       summary:
         '瑞士国际网格排版系统，高信息密度与无衬线严谨断行。全面拆解本地 Ollama / vLLM 权重部署、推理成本与真实知识库评测。',
-      badge: '4.8万 收藏 · 零数据泄露',
+      badge: '4.8万 收藏 · 零外泄',
       tplId: 'xhs-swiss-grid',
+      previewHtml: `
+        <div class="work-preview work-preview-swiss">
+          <div class="wp-eyebrow"><span>SWISS GRID · 3:4</span><span style="color:#e11d48;">01 / 04</span></div>
+          <div class="wp-headline">DeepSeek-R1 本地蒸馏<br/>与端侧知识库全景评测</div>
+          <div class="wp-chips">
+            <span class="wp-chip-light">压缩比 92%</span>
+            <span class="wp-chip-light">延迟 &lt;120ms</span>
+            <span class="wp-chip-light" style="color:#e11d48;border-color:rgba(225,29,72,0.3);">3x PNG</span>
+          </div>
+        </div>`,
     },
     {
       id: 'work-pptx',
       sampleKey: 'agent',
       aspect: '16:9',
       format: '原生 OOXML .pptx',
-      platform: '微软商业演示',
+      platform: '商业演示',
       template: 'ppt-linear-dark',
       title: '《2026 AI Agent 从对话套壳到端到端闭环体系》',
       summary:
         '极客黑几何科技排版。生成双击可编辑原生文本框与矢量形状，非截图拼凑。支持直接作为商业路演与年度技术汇报 Keynote。',
       badge: '双击可编辑 · 矢量原图',
       tplId: 'ppt-linear-dark',
+      previewHtml: `
+        <div class="work-preview work-preview-linear">
+          <div class="wp-eyebrow"><span style="color:#a5b4fc;">LINEAR DARK · 16:9</span><span>OOXML</span></div>
+          <div class="wp-headline">AI Agent 端到端闭环架构</div>
+          <div class="wp-chips">
+            <span class="wp-chip" style="border-color:rgba(105,81,255,0.5);color:#c4b5fd;">95% Token↓</span>
+            <span class="wp-chip">80ms 编译</span>
+            <span class="wp-chip" style="color:#6ee7b7;">5 介质</span>
+          </div>
+        </div>`,
     },
     {
       id: 'work-wechat',
       sampleKey: 'token',
-      aspect: '自适应流式',
-      format: '100% 内联富文本',
-      platform: '微信公众号长文',
+      aspect: '流式长文',
+      format: '100% 内联 HTML',
+      platform: '微信公众号',
       template: 'apple-dark-keynote',
       title: '《跑完超 1000 亿 Token 后：超级个体的纯本地创作飞轮》',
       summary:
         '极简暗黑杂志美学。零外部样式表与脚本依赖，在微信公众号后台直接 Cmd+V 粘贴即可无损呈现，杜绝防盗链与排版错乱。',
-      badge: '10w+ 深度长文 · 零格式错位',
+      badge: '10w+ 长文 · 零错位',
       tplId: 'apple-dark-keynote',
+      previewHtml: `
+        <div class="work-preview work-preview-wechat">
+          <div class="wp-eyebrow"><span style="color:#fbbf24;">EDITORIAL · INLINE CSS</span><span>Cmd+V</span></div>
+          <div class="wp-headline" style="border-left:2px solid #6951ff;padding-left:9px;">跑完 1000 亿 Token 后<br/>本地创作飞轮复盘</div>
+          <div class="wp-chips">
+            <span class="wp-chip">Zero External CSS</span>
+            <span class="wp-chip">防盗链清洗</span>
+          </div>
+        </div>`,
     },
     {
       id: 'work-video',
       sampleKey: 'podcast',
       aspect: '9:16',
-      format: '60fps MP4 / 剪映草稿',
-      platform: '移动短视频播客',
+      format: '60fps MP4 / 剪映',
+      platform: '短视频播客',
       template: 'video-cinema-talk',
       title: '《午夜播客 · 告别 AI 废话的四语种 Style DNA》',
       summary:
         '电影级对谈播客排版。精准微秒级音画同步、多轨字幕与安全边距规则，直接导出 60fps 高清视频或剪映/CapCut 工程。',
-      badge: '60fps 逐帧步进 · 剪映原生工程',
+      badge: '60fps 逐帧 · 剪映工程',
       tplId: 'video-cinema-talk',
+      previewHtml: `
+        <div class="work-preview work-preview-video">
+          <div class="wp-eyebrow"><span style="color:#c4b5fd;">CINEMA 9:16 · 60FPS</span><span style="color:#34d399;">CAPCUT</span></div>
+          <div class="wp-headline">午夜播客 · 四语种 Style DNA</div>
+          <div class="wp-timeline">
+            <div class="wp-track"><span style="width:16px;">V1</span><div class="wp-track-bar"><span style="width:45%;background:#6951ff;"></span><span style="width:52%;background:#8b5cf6;"></span></div></div>
+            <div class="wp-track"><span style="width:16px;">T1</span><div class="wp-track-bar"><span style="width:30%;background:#f59e0b;"></span><span style="width:35%;background:#fbbf24;"></span><span style="width:30%;background:#f59e0b;"></span></div></div>
+            <div class="wp-track"><span style="width:16px;">A1</span><div class="wp-track-bar"><span style="width:94%;background:#10b981;"></span></div></div>
+          </div>
+        </div>`,
     },
     {
       id: 'work-linkedin',
       sampleKey: 'mcp',
       aspect: '4:5',
       format: 'Retina PNG / PDF',
-      platform: '领英高管专栏',
+      platform: '领英专栏',
       template: 'linkedin-exec-carousel',
       title: '《Anthropic MCP 协议与开放外脑架构白皮书》',
       summary:
         '专为 LinkedIn 与 Substack 设计的高管级横滑卡片。严谨的方法论骨架、数据引用标与核心结论，专为深度商业受众打造。',
-      badge: '全球技术视野 · 高管沉浸阅读',
+      badge: '高管沉浸阅读 · 白皮书',
       tplId: 'linkedin-exec-carousel',
+      previewHtml: `
+        <div class="work-preview work-preview-linkedin">
+          <div class="wp-eyebrow" style="color:#1d4ed8;"><span>EXECUTIVE CAROUSEL · 4:5</span><span>01 / 06</span></div>
+          <div class="wp-headline" style="color:#0f172a;">MCP Protocol &amp; Local<br/>Brain Architecture</div>
+          <div class="wp-chips">
+            <span class="wp-chip-light">16 Atomic Tools</span>
+            <span class="wp-chip-light" style="color:#1d4ed8;">PDF Vector</span>
+          </div>
+        </div>`,
     },
     {
       id: 'work-poster',
       sampleKey: 'embodied',
       aspect: '1:1',
       format: '矢量 SVG / PDF',
-      platform: '极简科技海报',
+      platform: '科技海报',
       template: 'poster-risograph',
       title: '《具身智能的世界模型演进：空间感知与动作决策》',
       summary:
         '孔版印刷 Risograph 双色叠印质感。粗犷主义大字排版与硬核技术图解，适用于技术发声、活动封面与朋友圈极简视觉。',
-      badge: '孔版印刷质感 · 矢量级输出',
+      badge: '孔版双色 · 矢量输出',
       tplId: 'poster-risograph',
+      previewHtml: `
+        <div class="work-preview work-preview-riso">
+          <div class="wp-eyebrow" style="color:#e11d48;"><span>RISOGRAPH 2-INK · 1:1</span><span>ISSUE #26</span></div>
+          <div class="wp-headline" style="color:#1d4ed8;font-size:15px;letter-spacing:-0.03em;">WORLD MODELS 2026<br/><span style="color:#e11d48;">空间感知与动作决策</span></div>
+          <div class="wp-chips">
+            <span class="wp-chip-light" style="border-color:rgba(29,78,216,0.3);color:#1d4ed8;">COBALT + CORAL</span>
+            <span class="wp-chip-light">SVG</span>
+          </div>
+        </div>`,
     },
   ];
 
@@ -2672,6 +3016,7 @@ function renderLandingHtml(
       return `
       <div class="work-card">
         <div>
+          <a href="${playgroundLink}" style="display:block;text-decoration:none;">${w.previewHtml}</a>
           <div class="work-card-head">
             <span class="work-aspect-tag">${esc(w.aspect)} · ${esc(w.platform)}</span>
             <span class="work-format-tag">${esc(w.format)}</span>
@@ -2681,11 +3026,11 @@ function renderLandingHtml(
         </div>
         <div class="work-foot">
           <div class="work-badge">
-            <span class="pulse-dot"></span>
+            <span class="pulse-dot" style="flex-shrink:0;"></span>
             <span>${esc(w.badge)}</span>
           </div>
           <a href="${playgroundLink}" class="work-btn">
-            <span>在工坊打开做同款</span>
+            <span>做同款</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
@@ -2797,7 +3142,7 @@ function renderLandingHtml(
     </div>
   </section>
 
-  <!-- BENTO GRID SHOWCASE (THE 4-STAGE CREATIVE FLYWHEEL) -->
+  <!-- SYMMETRICAL 2x2 FLYWHEEL + PRIVACY VAULT -->
   <section id="flywheel" class="section-block">
     <div class="container">
       <div class="section-head">
@@ -2806,6 +3151,7 @@ function renderLandingHtml(
         <p>${esc(copy.flywheelSub)}</p>
       </div>
       <div class="bento-grid">${bentoHtml}</div>
+      ${vaultBannerHtml}
     </div>
   </section>
 
@@ -2815,10 +3161,13 @@ function renderLandingHtml(
       <div class="section-head">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
           <span class="eyebrow" style="margin:0;">WEEKLY TREND RADAR · 2026 第 47 周</span>
-          <span class="stage-foot-badge" style="background:rgba(16,185,129,0.12);padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:11px;">📅 每周一 08:00 定期更新</span>
+          <span class="stage-foot-badge" style="background:rgba(16,185,129,0.12);padding:3px 9px;border-radius:5px;font-family:var(--mono);font-size:11px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>每周一 08:00 自动更新</span>
+          </span>
         </div>
         <h2>全网创作灵感雷达 · 前沿风向与开放 API</h2>
-        <p>每周一自动聚合 𝕏 (Twitter) 硅谷前沿推文、知乎热榜、Hacker News 与 36Kr 实时风向。零鉴权开放静态 API，无论在桌面端、Web 工坊还是第三方智能体中，均可一键开箱创作。</p>
+        <p>每周一自动聚合 Polymarket 预测赔率、Reddit 深度社区、𝕏 (Twitter) 硅谷前沿、Hacker News 与 GitHub Trending 实时风向。零鉴权开放静态 API，无论在桌面端、Web 工坊还是第三方智能体中，均可一键开箱创作。</p>
       </div>
 
       <div class="radar-api-banner">
@@ -2843,16 +3192,29 @@ function renderLandingHtml(
 
       <!-- Filters & Chips -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;" id="landing-radar-filters">
-        <button type="button" class="stage-tab active" data-filter-radar="all">全部热点 (16)</button>
-        <button type="button" class="stage-tab" data-filter-radar="x">𝕏 硅谷前沿</button>
-        <button type="button" class="stage-tab" data-filter-radar="ai-tech">AI &amp; 科技突破</button>
-        <button type="button" class="stage-tab" data-filter-radar="creative">创作者经济</button>
-        <button type="button" class="stage-tab" data-filter-radar="social">深度社交热榜</button>
+        <button type="button" class="filter-chip active" data-filter-radar="all">全部热点 (${radarItems.length})</button>
+        ${radarXCount > 0 ? `<button type="button" class="filter-chip" data-filter-radar="x">𝕏 硅谷前沿 (${radarXCount})</button>` : ''}
+        ${radarCatCounts['ai-tech'] ? `<button type="button" class="filter-chip" data-filter-radar="ai-tech">AI &amp; 科技 (${radarCatCounts['ai-tech']})</button>` : ''}
+        ${radarCatCounts['prediction'] ? `<button type="button" class="filter-chip" data-filter-radar="prediction">预测市场 (${radarCatCounts['prediction']})</button>` : ''}
+        ${radarCatCounts['real-discussion'] ? `<button type="button" class="filter-chip" data-filter-radar="real-discussion">硬核社区 (${radarCatCounts['real-discussion']})</button>` : ''}
+        ${radarCatCounts['creative'] ? `<button type="button" class="filter-chip" data-filter-radar="creative">创作者经济 (${radarCatCounts['creative']})</button>` : ''}
+        ${radarCatCounts['dev'] ? `<button type="button" class="filter-chip" data-filter-radar="dev">开源与工程 (${radarCatCounts['dev']})</button>` : ''}
+        ${radarCatCounts['social'] ? `<button type="button" class="filter-chip" data-filter-radar="social">深度热榜 (${radarCatCounts['social']})</button>` : ''}
       </div>
 
       <div class="radar-grid" id="landing-radar-grid">
         ${radarCardsHtml}
       </div>
+      ${
+        radarItems.length > INITIAL_VISIBLE_RADAR
+          ? `<div class="section-expand-wrap" id="radar-expand-wrap">
+        <button type="button" class="btn-expand-more" id="btn-expand-radar" data-expanded="false" data-total="${radarItems.length}" data-initial="${INITIAL_VISIBLE_RADAR}">
+          <span>展开全部 ${radarItems.length} 条实时热点</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>`
+          : ''
+      }
     </div>
   </section>
 
@@ -2874,7 +3236,7 @@ function renderLandingHtml(
           </div>
           <div class="terminal-title">aimake-terminal — zsh (100% local-first)</div>
           <button type="button" class="btn-copy-cmd" id="btn-copy-terminal" data-copy="${esc(firstScenario.cmd)}">
-            <span id="copy-icon">📋</span>
+            <svg id="copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span id="copy-text">Copy Command</span>
           </button>
         </div>
@@ -2911,21 +3273,32 @@ function renderLandingHtml(
       </div>
 
       <!-- Filters & Search -->
-      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:24px;">
-        <input id="site-market-search" type="search" placeholder="搜索 36 套设计系统 / 平台 / 语种 (Search templates)..." style="flex:1;min-width:240px;background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:9px;padding:11px 16px;font-size:14px;outline:none;" />
-        <div style="display:flex;gap:6px;flex-wrap:wrap;" id="site-market-filters">
-          <button type="button" class="stage-tab active" data-filter-cat="all">全部 (All 36)</button>
-          <button type="button" class="stage-tab" data-filter-cat="xiaohongshu">小红书 3:4</button>
-          <button type="button" class="stage-tab" data-filter-cat="wechat">微信公众号</button>
-          <button type="button" class="stage-tab" data-filter-cat="linkedin">LinkedIn 4:5</button>
-          <button type="button" class="stage-tab" data-filter-cat="ppt">PPT 16:9</button>
-          <button type="button" class="stage-tab" data-filter-cat="x-japan">日本図解 JA</button>
-          <button type="button" class="stage-tab" data-filter-cat="instagram-kr">韩国 카드뉴스</button>
-          <button type="button" class="stage-tab" data-filter-cat="video">短视频 9:16</button>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:22px;">
+        <input id="site-market-search" type="search" placeholder="搜索 ${templates.length} 套设计系统 / 平台 / 语种 (Search templates)..." style="flex:1;min-width:240px;background:var(--surface);color:var(--ink);border:1px solid var(--border-strong);border-radius:9px;padding:10px 15px;font-size:13.5px;outline:none;" />
+        <div style="display:flex;gap:7px;flex-wrap:wrap;" id="site-market-filters">
+          <button type="button" class="filter-chip active" data-filter-cat="all">全部 (${templates.length})</button>
+          ${tplCategoryCounts['xiaohongshu'] ? `<button type="button" class="filter-chip" data-filter-cat="xiaohongshu">小红书 3:4 (${tplCategoryCounts['xiaohongshu']})</button>` : ''}
+          ${tplCategoryCounts['presentation'] ? `<button type="button" class="filter-chip" data-filter-cat="presentation">PPT 16:9 (${tplCategoryCounts['presentation']})</button>` : ''}
+          ${tplCategoryCounts['wechat'] ? `<button type="button" class="filter-chip" data-filter-cat="wechat">微信公众号 (${tplCategoryCounts['wechat']})</button>` : ''}
+          ${tplCategoryCounts['linkedin'] ? `<button type="button" class="filter-chip" data-filter-cat="linkedin">LinkedIn 4:5 (${tplCategoryCounts['linkedin']})</button>` : ''}
+          ${tplCategoryCounts['short-video'] ? `<button type="button" class="filter-chip" data-filter-cat="short-video">短视频 9:16 (${tplCategoryCounts['short-video']})</button>` : ''}
+          ${tplCategoryCounts['zukai'] ? `<button type="button" class="filter-chip" data-filter-cat="zukai">日本図解 (${tplCategoryCounts['zukai']})</button>` : ''}
+          ${tplCategoryCounts['cardnews'] ? `<button type="button" class="filter-chip" data-filter-cat="cardnews">韩国卡片 (${tplCategoryCounts['cardnews']})</button>` : ''}
+          ${tplCategoryCounts['education'] ? `<button type="button" class="filter-chip" data-filter-cat="education">教学知识 (${tplCategoryCounts['education']})</button>` : ''}
         </div>
       </div>
 
       <div class="grid" id="site-market-grid">${cardsHtml}</div>
+      ${
+        templates.length > INITIAL_VISIBLE_TEMPLATES
+          ? `<div class="section-expand-wrap" id="templates-expand-wrap">
+        <button type="button" class="btn-expand-more" id="btn-expand-templates" data-expanded="false" data-total="${templates.length}" data-initial="${INITIAL_VISIBLE_TEMPLATES}">
+          <span>展开全部 ${templates.length} 套设计系统 (剩余 ${templates.length - INITIAL_VISIBLE_TEMPLATES} 套)</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>`
+          : ''
+      }
 
       <div style="margin-top:46px;">
         <div class="eyebrow" style="margin-bottom:12px;">VERSIONED INDUSTRY PACKS (SHA-256 VERIFIED)</div>
@@ -3084,7 +3457,7 @@ function renderLandingHtml(
         document.body.removeChild(input);
       }
 
-      // Hero quick CLI copy
+      // Hero quick CLI copy & Industry Pack command boxes
       var heroQuickCli = document.getElementById('hero-quick-cli');
       if (heroQuickCli) {
         heroQuickCli.addEventListener('click', function () {
@@ -3092,9 +3465,15 @@ function renderLandingHtml(
           copyToClipboard(cmd, '${esc(copy.cliCopyNotice)}: ' + cmd);
         });
       }
+      document.querySelectorAll('.pack-cmd-box[data-copy]').forEach(function (box) {
+        box.addEventListener('click', function () {
+          var cmd = box.getAttribute('data-copy') || '';
+          if (cmd) copyToClipboard(cmd, '${esc(copy.cliCopyNotice)}: ' + cmd);
+        });
+      });
 
-      // Hero stage iframe tab switcher
-      var tabs = document.querySelectorAll('.stage-tab');
+      // Hero stage iframe tab switcher (STRICTLY scoped to .stage-tabs)
+      var tabs = document.querySelectorAll('.stage-tabs .stage-tab');
       var frame = document.getElementById('hero-stage-frame');
       tabs.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -3147,21 +3526,40 @@ function renderLandingHtml(
         });
       }
 
-      // Template Marketplace search & category filter
+      // Template Marketplace search, category filter & expand/collapse
       var searchEl = document.getElementById('site-market-search');
-      var filterBtns = document.querySelectorAll('[data-filter-cat]');
+      var filterBtns = document.querySelectorAll('#site-market-filters [data-filter-cat]');
       var cards = document.querySelectorAll('[data-market-card]');
+      var btnExpandTpl = document.getElementById('btn-expand-templates');
+      var tplExpandWrap = document.getElementById('templates-expand-wrap');
       var activeCat = 'all';
+      var tplExpanded = false;
 
       function applyMarketFilter() {
         var q = searchEl ? searchEl.value.trim().toLowerCase() : '';
+        var isFiltering = activeCat !== 'all' || q.length > 0;
         cards.forEach(function (card) {
           var cat = card.getAttribute('data-cat') || '';
           var hay = card.getAttribute('data-search') || '';
           var okCat = activeCat === 'all' || cat === activeCat;
           var okQ = !q || hay.indexOf(q) !== -1;
-          card.style.display = okCat && okQ ? 'flex' : 'none';
+          var isExtra = card.getAttribute('data-extra-tpl') === 'true';
+          if (okCat && okQ) {
+            card.style.display = 'flex';
+            if (isExtra) {
+              if (isFiltering || tplExpanded) {
+                card.classList.remove('is-collapsed-extra');
+              } else {
+                card.classList.add('is-collapsed-extra');
+              }
+            }
+          } else {
+            card.style.display = 'none';
+          }
         });
+        if (tplExpandWrap) {
+          tplExpandWrap.style.display = isFiltering ? 'none' : 'flex';
+        }
       }
 
       if (searchEl) searchEl.addEventListener('input', applyMarketFilter);
@@ -3173,26 +3571,88 @@ function renderLandingHtml(
           applyMarketFilter();
         });
       });
+      if (btnExpandTpl) {
+        btnExpandTpl.addEventListener('click', function () {
+          tplExpanded = !tplExpanded;
+          var total = btnExpandTpl.getAttribute('data-total') || '36';
+          var initial = parseInt(btnExpandTpl.getAttribute('data-initial') || '9', 10);
+          var rem = Math.max(0, parseInt(total, 10) - initial);
+          btnExpandTpl.setAttribute('data-expanded', String(tplExpanded));
+          var labelSpan = btnExpandTpl.querySelector('span');
+          var iconSvg = btnExpandTpl.querySelector('svg');
+          if (labelSpan) {
+            labelSpan.textContent = tplExpanded
+              ? '收起部分设计系统 (保留精选 ' + initial + ' 套)'
+              : '展开全部 ' + total + ' 套设计系统 (剩余 ' + rem + ' 套)';
+          }
+          if (iconSvg) iconSvg.style.transform = tplExpanded ? 'rotate(180deg)' : '';
+          applyMarketFilter();
+        });
+      }
 
-      // Radar category filter
+      // Radar category filter & expand/collapse
       var radarChips = document.querySelectorAll('#landing-radar-filters [data-filter-radar]');
       var radarCards = document.querySelectorAll('#landing-radar-grid .radar-card');
+      var btnExpandRadar = document.getElementById('btn-expand-radar');
+      var radarExpandWrap = document.getElementById('radar-expand-wrap');
+      var activeRadarFilter = 'all';
+      var radarExpanded = false;
+
+      function applyRadarFilter() {
+        var isFiltering = activeRadarFilter !== 'all';
+        radarCards.forEach(function (card) {
+          var matches = false;
+          if (activeRadarFilter === 'all') {
+            matches = true;
+          } else if (activeRadarFilter === 'x') {
+            matches = card.getAttribute('data-radar-source') === 'x';
+          } else {
+            matches = card.getAttribute('data-radar-cat') === activeRadarFilter;
+          }
+          var isExtra = card.getAttribute('data-extra-radar') === 'true';
+          if (matches) {
+            card.style.display = 'flex';
+            if (isExtra) {
+              if (isFiltering || radarExpanded) {
+                card.classList.remove('is-collapsed-extra');
+              } else {
+                card.classList.add('is-collapsed-extra');
+              }
+            }
+          } else {
+            card.style.display = 'none';
+          }
+        });
+        if (radarExpandWrap) {
+          radarExpandWrap.style.display = isFiltering ? 'none' : 'flex';
+        }
+      }
+
       radarChips.forEach(function (chip) {
         chip.addEventListener('click', function () {
           radarChips.forEach(function (c) { c.classList.remove('active'); });
           chip.classList.add('active');
-          var filter = chip.getAttribute('data-filter-radar');
-          radarCards.forEach(function (card) {
-            if (filter === 'all') {
-              card.style.display = 'flex';
-            } else if (filter === 'x') {
-              card.style.display = card.getAttribute('data-radar-source') === 'x' ? 'flex' : 'none';
-            } else {
-              card.style.display = card.getAttribute('data-radar-cat') === filter ? 'flex' : 'none';
-            }
-          });
+          activeRadarFilter = chip.getAttribute('data-filter-radar') || 'all';
+          applyRadarFilter();
         });
       });
+      if (btnExpandRadar) {
+        btnExpandRadar.addEventListener('click', function () {
+          radarExpanded = !radarExpanded;
+          var total = btnExpandRadar.getAttribute('data-total') || '14';
+          var initial = btnExpandRadar.getAttribute('data-initial') || '6';
+          btnExpandRadar.setAttribute('data-expanded', String(radarExpanded));
+          var labelSpan = btnExpandRadar.querySelector('span');
+          var iconSvg = btnExpandRadar.querySelector('svg');
+          if (labelSpan) {
+            labelSpan.textContent = radarExpanded
+              ? '收起实时热点 (仅看精选 ' + initial + ' 条)'
+              : '展开全部 ' + total + ' 条实时热点';
+          }
+          if (iconSvg) iconSvg.style.transform = radarExpanded ? 'rotate(180deg)' : '';
+          applyRadarFilter();
+        });
+      }
     })();
   </script>
 </body>
@@ -3284,6 +3744,7 @@ export async function buildStaticSite(outDir: string): Promise<{
       const { html: previewDoc } = await compileDeckToHtml(sampleDeck, { editable: false });
       await fs.writeFile(path.join(tplSlugDir, 'preview.html'), previewDoc, 'utf8');
 
+      const detailCliCmd = `aimake remix ${tpl.id} --deck my.deck.md`;
       const seoPage = `<!DOCTYPE html>
 <html lang="${copy.htmlLang}">
 <head>
@@ -3296,11 +3757,37 @@ export async function buildStaticSite(outDir: string): Promise<{
   <link rel="canonical" href="https://aimake.cc/${lang}/templates/${tpl.id}/" />
   ${langs.map((l) => `<link rel="alternate" hreflang="${UI_COPY[l].htmlLang}" href="https://aimake.cc/${l}/templates/${tpl.id}/" />`).join('\n  ')}
   <style>${sharedSiteCss()}
-    .detail-layout { display: grid; grid-template-columns: 1fr 360px; gap: 28px; padding: 36px 0 72px; }
-    @media (max-width: 900px) { .detail-layout { grid-template-columns: 1fr; } }
-    .preview-box { background: #07090e; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; height: 680px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-    .preview-box iframe { width: 100%; height: 100%; border: none; }
-    .info-panel { background: var(--surface); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 14px; padding: 26px; height: fit-content; box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .detail-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 28px; padding: 36px 0 72px; }
+    .detail-layout > * { min-width: 0; max-width: 100%; }
+    @media (max-width: 900px) {
+      .detail-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 20px 0 48px; }
+      .preview-box { height: 460px; }
+    }
+    .preview-box { background: #07090e; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; height: 680px; box-shadow: 0 20px 50px rgba(0,0,0,0.45); width: 100%; }
+    .preview-box iframe { width: 100%; height: 100%; border: none; display: block; }
+    .info-panel { background: var(--surface); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 14px; padding: 24px; height: fit-content; box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%; }
+    .detail-cli-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 0;
+      background: var(--bg);
+      padding: 9px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--code-ink);
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      transition: border-color 0.15s ease;
+    }
+    .detail-cli-row:hover { border-color: var(--cobalt); }
+    .detail-cli-code { min-width: 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+    .detail-cli-code::-webkit-scrollbar { display: none; }
+    .detail-formats { display: flex; flex-wrap: wrap; gap: 6px; }
   </style>
 </head>
 <body>
@@ -3311,30 +3798,57 @@ export async function buildStaticSite(outDir: string): Promise<{
     </div>
     <aside class="info-panel">
       <div class="eyebrow">#${esc(tpl.id)} · ${esc(tpl.aspect)}</div>
-      <h1 style="font-size:24px;margin:10px 0 12px;font-weight:700;">${esc(tpl.name[lang])}</h1>
-      <p style="color:var(--muted);font-size:14px;line-height:1.65;">${esc(tpl.description[lang])}</p>
+      <h1 style="font-size:23px;margin:10px 0 12px;font-weight:700;line-height:1.3;">${esc(tpl.name[lang])}</h1>
+      <p style="color:var(--muted);font-size:14px;line-height:1.65;margin:0;">${esc(tpl.description[lang])}</p>
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${esc(copy.specLabel)}</div>
-        <div style="font-family:var(--mono);font-size:13px;color:#93c5fd;">${tpl.width} × ${tpl.height}px (${esc(tpl.aspect)})</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">${esc(copy.specLabel)}</div>
+        <div style="font-family:var(--mono);font-size:13px;font-weight:600;color:var(--code-ink);">${tpl.width} × ${tpl.height}px (${esc(tpl.aspect)})</div>
       </div>
       <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);">
         <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${esc(copy.deliverablesLabel)}</div>
-        <div class="formats">
+        <div class="detail-formats">
           ${tpl.supportedFormats.map((f) => `<span class="fmt-tag">${esc(f.toUpperCase())}</span>`).join('')}
         </div>
       </div>
-      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);font-size:13px;">
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);font-size:13px;">
         <span style="color:var(--muted);">${esc(copy.designerLabel)}:</span>
         <strong> ${esc(tpl.contributor.name)}</strong>
         <span style="color:var(--muted);font-family:var(--mono);font-size:11px;"> · v${esc(tpl.version)}</span>
       </div>
-      <div style="margin-top:18px;display:flex;flex-direction:column;gap:8px;">
-        <a class="btn-primary" style="width:100%;justify-content:center;" href="aimake://remix?template=${esc(tpl.id)}">一键做同款（Aimake 桌面端打开） →</a>
-        <pre style="margin:0;background:var(--bg);padding:10px;border-radius:8px;border:1px solid var(--border);overflow-x:auto;font-family:var(--mono);font-size:11.5px;color:#93c5fd;">aimake remix ${esc(tpl.id)} --deck my.deck.md</pre>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:9px;">
+        <a class="btn-primary" style="width:100%;justify-content:center;" href="/playground/?template=${esc(tpl.id)}">在在线工坊做同款 →</a>
+        <a class="btn-secondary" style="width:100%;justify-content:center;" href="aimake://remix?template=${esc(tpl.id)}">在 Aimake 桌面端打开</a>
+        <button type="button" class="detail-cli-row" id="detail-cli-copy" data-copy="${esc(detailCliCmd)}" title="Click to copy CLI command">
+          <span class="detail-cli-code">${esc(detailCliCmd)}</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
         <a class="btn-secondary" style="width:100%;justify-content:center;" href="/${lang}/#templates">← ${esc(copy.navTemplates)}</a>
       </div>
     </aside>
   </main>
+  <div id="site-toast"></div>
+  <script>
+    (function () {
+      var btn = document.getElementById('detail-cli-copy');
+      var toast = document.getElementById('site-toast');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var cmd = btn.getAttribute('data-copy') || '';
+        if (!cmd) return;
+        var done = function () {
+          if (!toast) return;
+          toast.textContent = '${esc(copy.cliCopyNotice)}: ' + cmd;
+          toast.classList.add('show');
+          setTimeout(function () { toast.classList.remove('show'); }, 2200);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(cmd).then(done).catch(done);
+        } else {
+          done();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>`;
 
