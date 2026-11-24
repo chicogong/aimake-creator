@@ -189,6 +189,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     func applicationWillTerminate(_ notification: Notification) {
         webView?.configuration.userContentController.removeScriptMessageHandler(forName: "aimakeNative")
+        webView?.configuration.userContentController.removeScriptMessageHandler(forName: "aimake")
         terminateStudioChildProcess()
     }
 
@@ -219,6 +220,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let fileMenuItem = NSMenuItem(title: "File", action: nil, keyEquivalent: "")
         let fileMenu = NSMenu(title: "File")
         let quickClipItem = NSMenuItem(title: "Quick Clip to Wiki", action: #selector(triggerQuickClipMenu(_:)), keyEquivalent: "k")
+        quickClipItem.keyEquivalentModifierMask = [.command, .shift]
         quickClipItem.target = self
         fileMenu.addItem(quickClipItem)
         let reloadItem = NSMenuItem(title: "Reload Studio", action: #selector(reloadStudioWebView(_:)), keyEquivalent: "r")
@@ -229,29 +231,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         fileMenuItem.submenu = fileMenu
         mainMenu.addItem(fileMenuItem)
 
-        // 3. View menu (Wiki ⌘1, Canvas ⌘2, Media ⌘3, AI/OpenCode ⌘4)
+        // 3. View menu (2.0 Calm Studio 4-Step Loop: Intake ⌘1, Author ⌘2, Stage ⌘3, Deliver ⌘4)
         let viewMenuItem = NSMenuItem(title: "View", action: nil, keyEquivalent: "")
         let viewMenu = NSMenu(title: "View")
 
-        let wikiItem = NSMenuItem(title: "Wiki", action: #selector(switchPaneWiki(_:)), keyEquivalent: "1")
-        wikiItem.keyEquivalentModifierMask = [.command]
-        wikiItem.target = self
-        viewMenu.addItem(wikiItem)
+        let intakeItem = NSMenuItem(title: "Intake (素材摄入)", action: #selector(switchStepIntake(_:)), keyEquivalent: "1")
+        intakeItem.keyEquivalentModifierMask = [.command]
+        intakeItem.target = self
+        viewMenu.addItem(intakeItem)
 
-        let canvasItem = NSMenuItem(title: "Canvas", action: #selector(switchPaneCanvas(_:)), keyEquivalent: "2")
-        canvasItem.keyEquivalentModifierMask = [.command]
-        canvasItem.target = self
-        viewMenu.addItem(canvasItem)
+        let authorItem = NSMenuItem(title: "Author (灵感创作)", action: #selector(switchStepAuthor(_:)), keyEquivalent: "2")
+        authorItem.keyEquivalentModifierMask = [.command]
+        authorItem.target = self
+        viewMenu.addItem(authorItem)
 
-        let mediaItem = NSMenuItem(title: "Media", action: #selector(switchPaneMedia(_:)), keyEquivalent: "3")
-        mediaItem.keyEquivalentModifierMask = [.command]
-        mediaItem.target = self
-        viewMenu.addItem(mediaItem)
+        let stageItem = NSMenuItem(title: "Stage (编排舞台)", action: #selector(switchStepStage(_:)), keyEquivalent: "3")
+        stageItem.keyEquivalentModifierMask = [.command]
+        stageItem.target = self
+        viewMenu.addItem(stageItem)
 
-        let aiItem = NSMenuItem(title: "AI/OpenCode", action: #selector(switchPaneAI(_:)), keyEquivalent: "4")
-        aiItem.keyEquivalentModifierMask = [.command]
-        aiItem.target = self
-        viewMenu.addItem(aiItem)
+        let deliverItem = NSMenuItem(title: "Deliver (导出交付)", action: #selector(switchStepDeliver(_:)), keyEquivalent: "4")
+        deliverItem.keyEquivalentModifierMask = [.command]
+        deliverItem.target = self
+        viewMenu.addItem(deliverItem)
 
         viewMenu.addItem(.separator())
         let fullScreenItem = NSMenuItem(
@@ -273,6 +275,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             ("Export Vector PDF", "D", #selector(exportPDF(_:))),
             ("Export Editable PPTX", "X", #selector(exportPPTX(_:))),
             ("Export 60fps MP4", "M", #selector(exportMP4(_:))),
+            ("Export CapCut Draft", "J", #selector(exportCapCut(_:))),
             ("Copy WeChat Inline HTML", "C", #selector(exportWeChat(_:))),
         ]
         for (title, key, sel) in exportFormats {
@@ -384,6 +387,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         )
         contentController.addUserScript(userScript)
         contentController.add(self, name: "aimakeNative")
+        contentController.add(self, name: "aimake")
 
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
@@ -871,6 +875,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         dispatchDeepLink("aimake://pane/radar")
     }
 
+    @objc private func switchStepIntake(_ sender: Any?) {
+        dispatchDeepLink("aimake://step/intake")
+    }
+
+    @objc private func switchStepAuthor(_ sender: Any?) {
+        dispatchDeepLink("aimake://step/author")
+    }
+
+    @objc private func switchStepStage(_ sender: Any?) {
+        dispatchDeepLink("aimake://step/stage")
+    }
+
+    @objc private func switchStepDeliver(_ sender: Any?) {
+        dispatchDeepLink("aimake://step/deliver")
+    }
+
     @objc private func switchPaneWiki(_ sender: Any?) {
         dispatchDeepLink("aimake://pane/wiki")
     }
@@ -903,6 +923,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         dispatchDeepLink("aimake://export/mp4")
     }
 
+    @objc private func exportCapCut(_ sender: Any?) {
+        dispatchDeepLink("aimake://export/capcut")
+    }
+
     @objc private func exportWeChat(_ sender: Any?) {
         dispatchDeepLink("aimake://export/wechat")
     }
@@ -918,16 +942,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let js = """
         (function(u) {
           window.__aimakeLastDeepLink = u;
+          if (typeof window.__aimakeHandleDeepLink === "function") {
+            try { window.__aimakeHandleDeepLink(u); } catch (e) {}
+          }
           window.dispatchEvent(new CustomEvent("aimake:deeplink", { detail: { url: u } }));
         })(\(encodedUrl));
         """
         webView.evaluateJavaScript(js, completionHandler: nil)
     }
 
-    // MARK: - WKScriptMessageHandler ("aimakeNative")
+    // MARK: - WKScriptMessageHandler ("aimakeNative" & "aimake")
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard message.name == "aimakeNative" else { return }
+        guard message.name == "aimakeNative" || message.name == "aimake" else { return }
 
         let parsedDict: [String: Any]
         if let dict = message.body as? [String: Any] {
@@ -1146,6 +1173,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                     "cancelled": false,
                     "path": url.path,
                 ])
+                let pathLiteral = jsonLiteralString(url.path)
+                let pickedFolderJs = """
+                if (typeof window.__aimakePickedFolder === "function") {
+                  window.__aimakePickedFolder(\(pathLiteral));
+                }
+                """
+                self.webView.evaluateJavaScript(pickedFolderJs, completionHandler: nil)
             } else {
                 self.replyToWeb(id: requestId, payload: [
                     "ok": true,

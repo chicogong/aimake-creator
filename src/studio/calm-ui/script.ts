@@ -100,10 +100,13 @@ export const CALM_STUDIO_SCRIPT = `
       root.setAttribute('data-theme', state.appearance);
     }
     try {
-      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.aimake) {
-        window.webkit.messageHandlers.aimake.postMessage({
+      if (typeof window.__aimakeInvokeNative === 'function') {
+        window.__aimakeInvokeNative('setAppearance', { mode: state.appearance });
+      } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.aimakeNative) {
+        window.webkit.messageHandlers.aimakeNative.postMessage({
           action: 'setAppearance',
           mode: state.appearance,
+          payload: { mode: state.appearance },
         });
       }
     } catch (_) {}
@@ -1897,8 +1900,24 @@ export const CALM_STUDIO_SCRIPT = `
   function triggerNativeFolderPicker(targetInputId) {
     state.pickFolderTarget = targetInputId;
     try {
-      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.aimake) {
-        window.webkit.messageHandlers.aimake.postMessage({ action: 'pickFolder', target: targetInputId });
+      if (typeof window.__aimakeInvokeNative === 'function') {
+        window.__aimakeInvokeNative('pickFolder', { target: targetInputId }).then((res) => {
+          if (res && res.path) {
+            const target = $(targetInputId);
+            if (target) target.value = res.path;
+            if (typeof window.__aimakePickedFolder === 'function') {
+              window.__aimakePickedFolder(res.path);
+            }
+          }
+        });
+        return;
+      }
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.aimakeNative) {
+        window.webkit.messageHandlers.aimakeNative.postMessage({
+          action: 'pickFolder',
+          target: targetInputId,
+          payload: { target: targetInputId },
+        });
         return;
       }
     } catch (_) {}
@@ -2410,13 +2429,49 @@ export const CALM_STUDIO_SCRIPT = `
     if (rawUrl.indexOf('remix') >= 0 || rawUrl.indexOf('market') >= 0) {
       switchGalleryTab('templates');
       openDrawer('drawer-gallery', 'stage');
-    } else if (rawUrl.indexOf('clip') >= 0 || rawUrl.indexOf('intake') >= 0) {
+    } else if (
+      rawUrl.indexOf('intake') >= 0 ||
+      rawUrl.indexOf('clip') >= 0 ||
+      rawUrl.indexOf('step/intake') >= 0
+    ) {
       openPolishTab('intake');
       openDrawer('drawer-polish', 'intake');
-    } else if (rawUrl.indexOf('export') >= 0) {
+    } else if (
+      rawUrl.indexOf('author') >= 0 ||
+      rawUrl.indexOf('step/author') >= 0 ||
+      rawUrl.indexOf('pane/ai') >= 0
+    ) {
+      setActiveLoopStep('author');
+      toggleChatPanel(true);
+    } else if (
+      rawUrl.indexOf('stage') >= 0 ||
+      rawUrl.indexOf('step/stage') >= 0 ||
+      rawUrl.indexOf('pane/canvas') >= 0
+    ) {
+      closeAllDrawers();
+      closeAllPopovers();
+      setActiveLoopStep('stage');
+    } else if (
+      rawUrl.indexOf('deliver') >= 0 ||
+      rawUrl.indexOf('step/deliver') >= 0 ||
+      rawUrl.indexOf('export') >= 0 ||
+      rawUrl.indexOf('pane/media') >= 0
+    ) {
       openDrawer('drawer-export', 'deliver');
+      if (rawUrl.indexOf('capcut') >= 0) {
+        checkCapCutStatus();
+      }
+    } else if (rawUrl.indexOf('wiki') >= 0) {
+      openPolishTab('wiki');
+      openDrawer('drawer-polish', 'intake');
     }
   };
+
+  window.addEventListener('aimake:deeplink', (ev) => {
+    if (ev && ev.detail && ev.detail.url && typeof window.__aimakeHandleDeepLink === 'function') {
+      window.__aimakeHandleDeepLink(ev.detail.url);
+    }
+  });
 
   // Boot
   applyAppearance(state.appearance);

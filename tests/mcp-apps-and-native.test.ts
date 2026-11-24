@@ -421,4 +421,54 @@ describe('macOS Native Shell (AimakeApp.swift) System Appearance & Workspace Bri
     expect(scriptSource).toContain('renderAimakeMasterIconPng');
     expect(scriptSource).toContain('squirclePath');
   });
+
+  it('unifies WKScriptMessageHandler channel, releases Cmd+K for command palette, and aligns 2.0 View & Export menus', async () => {
+    const swiftPath = path.resolve(process.cwd(), 'desktop', 'macos', 'AimakeApp.swift');
+    const swiftSource = await fs.readFile(swiftPath, 'utf8');
+
+    // Message handler registration & reception supports aimakeNative (and fallback aimake)
+    expect(swiftSource).toContain('contentController.add(self, name: "aimakeNative")');
+    expect(swiftSource).toContain('contentController.add(self, name: "aimake")');
+    expect(swiftSource).toContain('guard message.name == "aimakeNative" || message.name == "aimake" else { return }');
+
+    // Quick Clip shortcut uses Shift+Cmd+K to release Cmd+K for Studio Command Palette
+    expect(swiftSource).toMatch(/quickClipItem\.keyEquivalentModifierMask\s*=\s*\[\.command,\s*\.shift\]/);
+
+    // View menu aligns with 2.0 Calm Studio 4-step loop
+    expect(swiftSource).toContain('Intake (素材摄入)');
+    expect(swiftSource).toContain('Author (灵感创作)');
+    expect(swiftSource).toContain('Stage (编排舞台)');
+    expect(swiftSource).toContain('Deliver (导出交付)');
+    expect(swiftSource).toContain('switchStepIntake');
+    expect(swiftSource).toContain('switchStepAuthor');
+    expect(swiftSource).toContain('switchStepStage');
+    expect(swiftSource).toContain('switchStepDeliver');
+
+    // Export menu includes CapCut draft export
+    expect(swiftSource).toContain('Export CapCut Draft');
+    expect(swiftSource).toContain('exportCapCut');
+    expect(swiftSource).toContain('aimake://export/capcut');
+
+    // Folder picking calls window.__aimakePickedFolder
+    expect(swiftSource).toContain('window.__aimakePickedFolder');
+
+    // Frontend script.ts bridge invocation contract
+    const scriptPath = path.resolve(process.cwd(), 'src', 'studio', 'calm-ui', 'script.ts');
+    const scriptSource = await fs.readFile(scriptPath, 'utf8');
+
+    // Must invoke __aimakeInvokeNative or aimakeNative for setAppearance & pickFolder
+    expect(scriptSource).toContain('__aimakeInvokeNative');
+    expect(scriptSource).toContain('aimakeNative');
+    expect(scriptSource).toContain("action: 'setAppearance'");
+    expect(scriptSource).toContain("action: 'pickFolder'");
+    expect(scriptSource).toContain('aimake:deeplink');
+    expect(scriptSource).toContain('__aimakeHandleDeepLink');
+    expect(scriptSource).toContain('step/intake');
+    expect(scriptSource).toContain('step/author');
+    expect(scriptSource).toContain('step/stage');
+    expect(scriptSource).toContain('step/deliver');
+
+    // Verify messageHandlers.aimake is completely replaced by aimakeNative / __aimakeInvokeNative
+    expect(scriptSource).not.toMatch(/messageHandlers\.aimake\b/);
+  });
 });
