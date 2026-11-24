@@ -866,13 +866,44 @@ export async function buildWebPlaygroundHtml(
     .drawer-card.active {
       border-color: var(--brand); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.28);
     }
-    .drawer-swatch {
-      height: 68px; border-radius: 6px; padding: 8px 10px; position: relative; overflow: hidden;
-      border: 1px solid rgba(127, 127, 127, 0.18);
+    .drawer-thumb-box {
+      position: relative; height: 96px; border-radius: 8px; overflow: hidden;
+      border: 1px solid rgba(127, 127, 127, 0.2);
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface-elev);
+    }
+    .drawer-thumb-img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top center;
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1); display: block;
+    }
+    .drawer-card:hover .drawer-thumb-img {
+      transform: scale(1.05);
+    }
+    .drawer-swatch-fallback {
+      width: 100%; height: 100%; padding: 8px 10px; position: relative; overflow: hidden;
       display: flex; flex-direction: column; justify-content: space-between;
     }
     .drawer-swatch-bar {
       position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .drawer-palette-strip {
+      position: absolute; bottom: 6px; right: 6px;
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 2px 4px; border-radius: 999px;
+      background: rgba(10, 12, 18, 0.72);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      z-index: 2;
+    }
+    .palette-swatch-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.3); flex-shrink: 0;
+    }
+    .drawer-swatch {
+      height: 68px; border-radius: 6px; padding: 8px 10px; position: relative; overflow: hidden;
+      border: 1px solid rgba(127, 127, 127, 0.18);
+      display: flex; flex-direction: column; justify-content: space-between;
     }
     .drawer-swatch-title {
       height: 7px; width: 68%; border-radius: 3px; opacity: 0.88;
@@ -1788,13 +1819,20 @@ export async function buildWebPlaygroundHtml(
         '});' +
         '<\\/script>';
 
-      const fullHtml = '<!DOCTYPE html><html><head><meta charset="utf-8"/><style>' +
+      const fullHtml = '<!DOCTYPE html><html' + (parsed.fm.theme ? ' data-theme="' + parsed.fm.theme + '"' : '') + '><head><meta charset="utf-8"/><style>' +
         tpl.css +
         '\\nhtml { width:100%; height:100%; margin:0; padding:0; }\\n' +
         'body { width:100%; margin:0; padding:' + (viewMode === 'single' ? '0' : '24px 0 48px') + '; min-height:100vh; height:' + (viewMode === 'single' ? '100vh' : 'auto') + '; background:' + frameBg + ' !important; display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:' + (viewMode === 'single' ? 'center' : 'flex-start') + ' !important; box-sizing:border-box; overflow:' + (viewMode === 'single' ? 'hidden' : 'auto') + '; }\\n' +
         '#aimake-deck-root { display:flex !important; flex-direction:column !important; gap:40px !important; align-items:center !important; }\\n' +
         '.aimake-slide { width:' + dim.w + 'px !important; height:' + dim.h + 'px !important; flex-shrink:0; }\\n' +
         '.hljs-keyword { color:#93c5fd; font-weight:600; } .hljs-string { color:#86efac; } .hljs-comment { color:#64748b; font-style:italic; } .hljs-number { color:#fda4af; }\\n' +
+        '/* Metric KPI cards nowrap, fluid clamp, and balance formatting */\\n' +
+        '.metrics-grid, .aimake-metrics-grid { display:grid !important; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)) !important; gap:16px !important; }\\n' +
+        '.metric-card { min-width:0 !important; overflow:hidden !important; }\\n' +
+        '.metric-label { white-space:nowrap !important; text-wrap:balance !important; word-break:keep-all !important; overflow:hidden !important; text-overflow:ellipsis !important; }\\n' +
+        '.metric-val { white-space:nowrap !important; flex-wrap:nowrap !important; display:flex !important; align-items:baseline !important; gap:8px !important; font-size:clamp(22px, 3.2vw, 44px) !important; font-variant-numeric:tabular-nums !important; }\\n' +
+        '.metric-val > span { white-space:nowrap !important; }\\n' +
+        '.metric-delta { white-space:nowrap !important; font-size:clamp(12px, 1.2vw, 18px) !important; flex-shrink:0 !important; }\\n' +
         '@media print { @page { size: landscape; margin: 10mm; } body { background:#fff !important; padding:0 !important; height:auto !important; overflow:visible !important; } #aimake-deck-root { zoom: 0.5 !important; } .aimake-slide { display:flex !important; break-after:page; page-break-after:always; box-shadow:none !important; } }\\n' +
         '</style></head><body><div id="aimake-deck-root">' + slidesHtml + '</div>' + stageScript + '</body></html>';
 
@@ -2372,16 +2410,16 @@ export async function buildWebPlaygroundHtml(
         const desc = t.description?.zh || t.description?.en || '';
         const pal = t.palette || { bg: '#121216', surface: '#1c1e26', ink: '#f4f4f6', accent: '#6366f1' };
         return '<button type="button" class="drawer-card' + (isCur ? ' active' : '') + '" onclick="applyTemplateFromDrawer(\\'' + t.id + '\\')">' +
-          '<div class="drawer-swatch" style="background:' + esc(pal.bg) + ';">' +
-            '<div class="drawer-swatch-bar" style="background:' + esc(pal.accent) + ';"></div>' +
-            '<div>' +
-              '<div class="drawer-swatch-title" style="background:' + esc(pal.ink) + ';"></div>' +
-              '<div class="drawer-swatch-sub" style="background:' + esc(pal.ink) + ';"></div>' +
+          '<div class="drawer-thumb-box" style="background:' + esc(pal.bg) + ';">' +
+            '<img class="drawer-thumb-img" src="../templates/' + esc(t.id) + '/preview.png" loading="lazy" alt="' + esc(zhName) + '" onerror="this.style.display=\\'none\\';this.nextElementSibling.style.display=\\'flex\\';" />' +
+            '<div class="drawer-swatch-fallback" style="display:none;background:' + esc(pal.bg) + ';">' +
+              '<div class="drawer-swatch-bar" style="background:' + esc(pal.accent) + ';"></div>' +
+              '<div style="margin-top:auto;"><div class="drawer-swatch-title" style="height:6px;width:70%;border-radius:2px;opacity:0.6;background:' + esc(pal.ink) + ';"></div><div class="drawer-swatch-sub" style="height:4px;width:46%;border-radius:2px;opacity:0.35;margin-top:4px;background:' + esc(pal.ink) + ';"></div></div>' +
             '</div>' +
-            '<div class="drawer-swatch-tiles">' +
-              '<div class="drawer-swatch-tile" style="background:' + esc(pal.accent) + ';opacity:0.9;"></div>' +
-              '<div class="drawer-swatch-tile" style="background:' + esc(pal.surface) + ';"></div>' +
-              '<div class="drawer-swatch-tile" style="background:' + esc(pal.surface) + ';"></div>' +
+            '<div class="drawer-palette-strip" title="主题三阶色板：' + esc(pal.bg) + ' · ' + esc(pal.surface) + ' · ' + esc(pal.accent) + '">' +
+              '<span class="palette-swatch-dot" style="background:' + esc(pal.bg) + ';" title="底色: ' + esc(pal.bg) + '"></span>' +
+              '<span class="palette-swatch-dot" style="background:' + esc(pal.surface) + ';" title="表面: ' + esc(pal.surface) + '"></span>' +
+              '<span class="palette-swatch-dot" style="background:' + esc(pal.accent) + ';" title="强调: ' + esc(pal.accent) + '"></span>' +
             '</div>' +
           '</div>' +
           '<div class="drawer-card-top">' +

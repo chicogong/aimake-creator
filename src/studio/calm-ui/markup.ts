@@ -161,11 +161,11 @@ export const CALM_STUDIO_MARKUP = `
       <div class="stage-status-bar" id="stage-status-bar" aria-label="画板状态">
         <div class="status-item status-deck-info" title="当前作品">
           <span class="status-indicator-dot pulse"></span>
-          <span class="status-label" id="status-deck-name">作品加载中</span>
+          <span class="status-label" id="status-deck-name">当前作品</span>
         </div>
         <div class="status-divider"></div>
         <div class="status-item status-aspect-badge" id="status-aspect-badge" title="当前画幅比例">
-          <span>📐</span>
+          <svg class="ic ic-sm" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="9" rx="2"/></svg>
           <span id="status-aspect-val">16:9</span>
         </div>
         <div class="status-divider"></div>
@@ -178,6 +178,43 @@ export const CALM_STUDIO_MARKUP = `
           <span class="status-privacy-text">Zero-Cloud 隐私留存</span>
         </div>
       </div>
+      <script>
+        (function() {
+          function syncStatusCapsule() {
+            var aspectLabel = document.getElementById('active-aspect-label');
+            var statusAspect = document.getElementById('status-aspect-val');
+            if (aspectLabel && statusAspect && aspectLabel.textContent && statusAspect.textContent !== aspectLabel.textContent) {
+              statusAspect.textContent = aspectLabel.textContent;
+            }
+            var chatBadge = document.getElementById('chat-active-slide-badge');
+            var statusSlide = document.getElementById('status-slide-text');
+            if (chatBadge && statusSlide && chatBadge.textContent) {
+              var m = chatBadge.textContent.match(/(\d+)\s*\/\s*(\d+)/);
+              if (m) {
+                statusSlide.textContent = '第 ' + m[1] + ' / ' + m[2] + ' 页';
+              }
+            }
+            var statusDeck = document.getElementById('status-deck-name');
+            if (statusDeck && (statusDeck.textContent === '作品加载中' || statusDeck.textContent === '当前作品')) {
+              var activeDeck = document.querySelector('.deck-item.active .deck-name, .deck-item.active');
+              if (activeDeck && activeDeck.textContent) {
+                statusDeck.textContent = activeDeck.textContent.trim();
+              }
+            }
+          }
+          if (typeof MutationObserver !== 'undefined') {
+            var obs = new MutationObserver(syncStatusCapsule);
+            if (document.body) {
+              obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+            } else {
+              window.addEventListener('DOMContentLoaded', function() {
+                obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+                syncStatusCapsule();
+              });
+            }
+          }
+        })();
+      </script>
 
       <div class="live-sync-pill" id="live-sync-banner">
         <span class="live-dot pulse"></span>
@@ -188,8 +225,9 @@ export const CALM_STUDIO_MARKUP = `
         <iframe id="preview-frame" title="Aimake 实时视觉舞台"></iframe>
       </div>
 
-      <!-- Floating Bottom Filmstrip & Tactile Dock -->
+      <!-- Floating Bottom Filmstrip & Tactile Dock (Linear / Figma Restrained 5-6 Controls) -->
       <div class="stage-dock" role="toolbar" aria-label="舞台快捷栏">
+        <!-- 1. Filmstrip navigation pill -->
         <div class="slide-nav-group">
           <button class="dock-icon-btn" id="btn-prev-slide" title="上一页 (← / PageUp)">
             ${lucideIcon('chevronLeft', 'ic ic-sm')}
@@ -213,33 +251,40 @@ export const CALM_STUDIO_MARKUP = `
           </div>
         </div>
         <div class="dock-divider"></div>
-        <button class="dock-chip dock-chip-wechat" id="btn-quick-copy-wechat" title="一键复制微信公众号富文本，直粘后台">
-          ${lucideIcon('copy', 'ic ic-sm')}
-          <span>复制公众号</span>
-        </button>
+        <!-- 2. Aspect ratio control -->
         <button class="dock-chip" id="btn-dock-aspect" title="切换画幅比例（16:9, 9:16, 3:4, 1:1, 4:5）">
           <span id="active-aspect-label">16:9</span>
           ${lucideIcon('chevronDown', 'ic ic-sm')}
         </button>
+        <!-- 3. Style template control -->
         <button class="dock-chip" id="btn-dock-style" title="切换 36 套视觉风格或一键做同款">
           <span id="active-style-label">瑞士网格</span>
           ${lucideIcon('chevronDown', 'ic ic-sm')}
         </button>
-        <button class="dock-chip dock-chip-muted" id="btn-dock-locale" title="切换作品排版语言">
-          <span id="active-locale-label">中文</span>
-          ${lucideIcon('chevronDown', 'ic ic-sm')}
-        </button>
         <div class="dock-divider"></div>
-        <button class="dock-chip" id="btn-toggle-chat" title="展开/收起 AI 对话创作副驾驶 (⌘J)">
-          <span class="live-dot" style="margin-right:3px;"></span>
-          <span>AI 对话</span>
-        </button>
+        <!-- 4. Zoom mode -->
         <button class="dock-chip dock-chip-muted" id="btn-dock-zoom" title="切换自适应缩放 / 100% 原比例">自适应</button>
+        <!-- 5. Fullscreen presentation -->
         <button class="dock-icon-btn" id="btn-dock-fullscreen" title="全屏演示 (F)">
           ${lucideIcon('maximize')}
         </button>
-        <button class="dock-chip dock-chip-muted" id="btn-open-polish" title="去 AI 味精修、素材入库与源码编辑">微调</button>
-        <button class="dock-chip dock-chip-muted" id="btn-open-cmdk" title="打开命令面板 (⌘K)">⌘K</button>
+        <!-- Secondary actions preserved in DOM for event listeners and shortcuts -->
+        <div class="dock-actions-secondary" style="display:none;" aria-hidden="true">
+          <button class="dock-chip dock-chip-wechat" id="btn-quick-copy-wechat" title="一键复制微信公众号富文本，直粘后台">
+            ${lucideIcon('copy', 'ic ic-sm')}
+            <span>复制公众号</span>
+          </button>
+          <button class="dock-chip dock-chip-muted" id="btn-dock-locale" title="切换作品排版语言">
+            <span id="active-locale-label">中文</span>
+            ${lucideIcon('chevronDown', 'ic ic-sm')}
+          </button>
+          <button class="dock-chip" id="btn-toggle-chat" title="展开/收起 AI 对话创作副驾驶 (⌘J)">
+            <span class="live-dot" style="margin-right:3px;"></span>
+            <span>AI 对话</span>
+          </button>
+          <button class="dock-chip dock-chip-muted" id="btn-open-polish" title="去 AI 味精修、素材入库与源码编辑">微调</button>
+          <button class="dock-chip dock-chip-muted" id="btn-open-cmdk" title="打开命令面板 (⌘K)">⌘K</button>
+        </div>
       </div>
     </main>
 

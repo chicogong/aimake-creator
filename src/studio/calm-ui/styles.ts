@@ -679,9 +679,21 @@ export const CALM_STUDIO_CSS = `
     font-weight: 600;
     color: var(--ink);
     background: var(--surface-hover);
-    padding: 2px 6px;
+    padding: 2px 7px;
     border-radius: 6px;
     font-size: 10.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1;
+  }
+  .status-aspect-badge .ic {
+    width: 12px;
+    height: 12px;
+    color: var(--ink-secondary);
+  }
+  .dock-actions-secondary {
+    display: none !important;
   }
   .status-slide-counter {
     font-family: var(--font-mono);
