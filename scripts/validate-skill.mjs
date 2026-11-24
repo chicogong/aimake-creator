@@ -26,9 +26,11 @@ async function main() {
   if (wbMeta.id !== 'aimake') throw new Error('Invalid WorkBuddy connector-meta.json');
 
   const tplRoot = path.join(root, 'templates');
-  const dirs = await fs.readdir(tplRoot);
+  const entries = await fs.readdir(tplRoot, { withFileTypes: true });
   let count = 0;
-  for (const d of dirs) {
+  for (const entry of entries) {
+    if (!entry.isDirectory() || entry.name.startsWith('.')) continue;
+    const d = entry.name;
     const mp = path.join(tplRoot, d, 'manifest.json');
     const hp = path.join(tplRoot, d, 'template.html');
     const manifest = JSON.parse(await fs.readFile(mp, 'utf8'));
