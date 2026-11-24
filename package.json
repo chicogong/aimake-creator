@@ -57,6 +57,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:smoke": "node scripts/smoke-test.mjs",
     "test:e2e": "playwright test --reporter=list",
     "test:opencode": "node scripts/verify-opencode-e2e.mjs",
     "site:build": "tsx src/cli.ts site build --out dist-site",
@@ -64,7 +65,7 @@
     "audit:skills": "tsx scripts/audit-skills.ts",
     "audit:secrets": "node scripts/audit-secrets.mjs",
     "pack:check": "node scripts/prepare-npm.mjs",
-    "verify": "pnpm typecheck && pnpm test && pnpm build && pnpm validate:skill && pnpm audit:skills && pnpm audit:secrets && pnpm pack:check && pnpm site:build && pnpm desktop:build && pnpm test:e2e"
+    "verify": "pnpm typecheck && pnpm build && pnpm test:smoke && pnpm test && pnpm validate:skill && pnpm audit:skills && pnpm audit:secrets && pnpm pack:check && pnpm site:build && pnpm desktop:build && pnpm test:e2e"
   },
   "dependencies": {
     "@clack/prompts": "^1.9.0",

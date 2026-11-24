@@ -40,6 +40,9 @@ jobs:
       - name: Production bundle build
         run: pnpm build
 
+      - name: Fast Smoke Test Preflight
+        run: pnpm test:smoke
+
       - name: Skill & Template contract audit
         run: pnpm validate:skill && pnpm audit:skills
 
