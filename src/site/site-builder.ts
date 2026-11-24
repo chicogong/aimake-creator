@@ -1063,35 +1063,134 @@ function sharedSiteCss(): string {
       transition: background 0.15s, border-color 0.15s !important;
     }
     .nav-pill-highlight:hover { background: rgba(59, 130, 246, 0.22); border-color: var(--cobalt); color: #fff !important; }
-    .lang-switch { display: flex; gap: 4px; font-family: var(--mono); font-size: 11px; }
-    .lang-switch a {
-      padding: 4px 8px;
-      border-radius: 5px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      transition: all 0.15s;
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .lang-switch a:hover { color: var(--ink); border-color: var(--border-strong); }
-    .lang-switch a.active { border-color: var(--cobalt); color: #fff; background: rgba(59, 130, 246, 0.2); }
     .theme-toggle-btn {
       background: var(--surface);
       border: 1px solid var(--border);
-      color: var(--ink);
-      border-radius: 6px;
-      width: 28px;
-      height: 28px;
+      color: var(--muted);
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 13.5px;
       padding: 0;
-      transition: all 0.15s;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
     }
     .theme-toggle-btn:hover {
-      border-color: var(--cobalt);
+      border-color: var(--border-strong);
+      color: var(--ink);
       background: var(--surface-elevated);
-      transform: scale(1.06);
+    }
+    .theme-toggle-btn svg {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .theme-toggle-btn:hover svg {
+      transform: rotate(15deg);
+    }
+    .theme-toggle-btn .icon-moon { display: none; }
+    .theme-toggle-btn .icon-sun { display: block; }
+    [data-theme="light"] .theme-toggle-btn .icon-sun { display: none; }
+    [data-theme="light"] .theme-toggle-btn .icon-moon { display: block; }
+
+    /* Language Switcher Dropdown */
+    .lang-dropdown {
+      position: relative;
+    }
+    .lang-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 0 10px;
+      height: 32px;
+      font-size: 12.5px;
+      font-family: var(--sans);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      line-height: 1;
+    }
+    .lang-trigger:hover,
+    .lang-dropdown:hover .lang-trigger,
+    .lang-dropdown:focus-within .lang-trigger {
+      border-color: var(--border-strong);
+      color: var(--ink);
+      background: var(--surface-elevated);
+    }
+    .lang-chevron {
+      transition: transform 0.18s ease;
+      opacity: 0.6;
+    }
+    .lang-dropdown:hover .lang-chevron,
+    .lang-dropdown:focus-within .lang-chevron {
+      transform: rotate(180deg);
+      opacity: 1;
+    }
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 136px;
+      background: rgba(12, 16, 24, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 5px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-4px) scale(0.98);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      z-index: 100;
+    }
+    [data-theme="light"] .lang-menu {
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+    }
+    .lang-dropdown:hover .lang-menu,
+    .lang-dropdown:focus-within .lang-menu {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+    .lang-menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-family: var(--sans);
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.12s ease;
+    }
+    .lang-menu-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ink);
+    }
+    [data-theme="light"] .lang-menu-item:hover {
+      background: rgba(15, 23, 42, 0.05);
+    }
+    .lang-menu-item.active {
+      color: #fff;
+      font-weight: 600;
+      background: rgba(105, 81, 255, 0.16);
+    }
+    [data-theme="light"] .lang-menu-item.active {
+      color: var(--cobalt);
+      background: rgba(82, 54, 243, 0.1);
     }
 
     /* Hero */
@@ -1765,14 +1864,24 @@ function toggleAimakeTheme() {
   document.documentElement.setAttribute('data-theme', next);
   document.documentElement.style.colorScheme = next;
   try { localStorage.setItem('aimake-theme', next); } catch(e) {}
-  var btn = document.getElementById('theme-toggle-btn');
-  if (btn) btn.textContent = next === 'dark' ? '🌓' : '☀️';
 }
 </script>`;
 }
 
 function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
   const copy = UI_COPY[lang];
+  const langNames: Record<SiteLang, string> = {
+    zh: '简体中文',
+    en: 'English',
+    ja: '日本語',
+    ko: '한국어',
+  };
+  const currentLangLabel: Record<SiteLang, string> = {
+    zh: '中文',
+    en: 'EN',
+    ja: '日本語',
+    ko: '한국어',
+  };
   const langs: SiteLang[] = ['zh', 'en', 'ja', 'ko'];
   return `
   <nav class="topbar">
@@ -1785,35 +1894,58 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
         <span class="logo-sub">爱创工坊 · Local-First Multimodal Studio</span>
       </div>
       <div class="nav-links">
-        <a href="/playground/" class="nav-pill-highlight">🚀 ${esc(copy.navPlayground)}</a>
-        <a href="https://github.com/chicogong/aimake-creator/releases/tag/v2.0.0" target="_blank" rel="noopener">🍏 macOS</a>
-        <a href="/${lang}/#radar">🔥 ${esc(copy.navRadar)}</a>
+        <a href="/playground/" class="nav-pill-highlight">${esc(copy.navPlayground)}</a>
+        <a href="https://github.com/chicogong/aimake-creator/releases/tag/v2.0.0" target="_blank" rel="noopener">macOS</a>
+        <a href="/${lang}/#radar">${esc(copy.navRadar)}</a>
         <a href="/${lang}/#flywheel">${esc(copy.navFlywheel)}</a>
         <a href="/${lang}/#templates">${esc(copy.navTemplates)}</a>
         <a href="/${lang}/#cli">${esc(copy.navCli)}</a>
-        <a href="/${lang}/#ecosystem">🏛️ ${esc(copy.navEcosystem)}</a>
+        <a href="/${lang}/#ecosystem">${esc(copy.navEcosystem)}</a>
       </div>
       <div class="nav-actions">
-        <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleAimakeTheme()" aria-label="Toggle dark/light theme" title="切换浅色 / 深色模式">🌓</button>
-        <div class="lang-switch" aria-label="Language switcher">
-          ${langs
-            .map(
-              (l) =>
-                `<a href="/${l}/${activeSuffix}" class="${l === lang ? 'active' : ''}">${l.toUpperCase()}</a>`
-            )
-            .join('')}
+        <div class="lang-dropdown">
+          <button type="button" class="lang-trigger" id="lang-trigger-btn" aria-haspopup="true" aria-expanded="false" aria-label="Select language">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"></path>
+            </svg>
+            <span>${currentLangLabel[lang]}</span>
+            <svg class="lang-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div class="lang-menu" role="menu">
+            ${langs
+              .map(
+                (l) => `
+              <a href="/${l}/${activeSuffix}" class="lang-menu-item ${l === lang ? 'active' : ''}" role="menuitem">
+                <span>${langNames[l]}</span>
+                ${l === lang ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>` : ''}
+              </a>`
+              )
+              .join('')}
+          </div>
         </div>
+        <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleAimakeTheme()" aria-label="Toggle color theme" title="切换浅色 / 深色模式">
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
       </div>
     </div>
     <div class="mobile-nav-strip">
       <div class="container mobile-nav-scroll">
-        <a href="/playground/" class="mobile-nav-pill-highlight">🚀 ${esc(copy.navPlayground)}</a>
-        <a href="https://github.com/chicogong/aimake-creator/releases/tag/v2.0.0" target="_blank" rel="noopener">🍏 macOS</a>
-        <a href="/${lang}/#radar">🔥 ${esc(copy.navRadar)}</a>
+        <a href="/playground/" class="mobile-nav-pill-highlight">${esc(copy.navPlayground)}</a>
+        <a href="https://github.com/chicogong/aimake-creator/releases/tag/v2.0.0" target="_blank" rel="noopener">macOS</a>
+        <a href="/${lang}/#radar">${esc(copy.navRadar)}</a>
         <a href="/${lang}/#flywheel">${esc(copy.navFlywheel)}</a>
         <a href="/${lang}/#templates">${esc(copy.navTemplates)}</a>
         <a href="/${lang}/#cli">${esc(copy.navCli)}</a>
-        <a href="/${lang}/#ecosystem">🏛️ ${esc(copy.navEcosystem)}</a>
+        <a href="/${lang}/#ecosystem">${esc(copy.navEcosystem)}</a>
       </div>
     </div>
   </nav>`;
