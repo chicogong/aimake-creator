@@ -7,8 +7,9 @@ on:
     types: [opened, closed, reopened]
 
 permissions:
-  issues: read
-  pull-requests: read
+  issues: write
+  pull-requests: write
+  repository-projects: write
 
 jobs:
   add-to-project:
