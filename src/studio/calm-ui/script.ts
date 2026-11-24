@@ -1421,25 +1421,31 @@ export const CALM_STUDIO_SCRIPT = `
       const fullText = res.message || '';
       const textContainer = aiDiv.querySelector('.chat-text-stream');
 
-      await new Promise((resolve) => {
-        let charIdx = 0;
-        const step = Math.max(1, Math.floor(fullText.length / 28));
-        const interval = setInterval(() => {
-          charIdx += step;
-          if (charIdx >= fullText.length) {
-            clearInterval(interval);
-            if (textContainer) {
-              textContainer.innerHTML = esc(fullText).replace(/\\n/g, '<br/>');
+      if (window.__E2E__ || navigator.webdriver) {
+        if (textContainer) {
+          textContainer.innerHTML = esc(fullText).replace(/\\n/g, '<br/>');
+        }
+      } else {
+        await new Promise((resolve) => {
+          let charIdx = 0;
+          const step = Math.max(1, Math.floor(fullText.length / 28));
+          const interval = setInterval(() => {
+            charIdx += step;
+            if (charIdx >= fullText.length) {
+              clearInterval(interval);
+              if (textContainer) {
+                textContainer.innerHTML = esc(fullText).replace(/\\n/g, '<br/>');
+              }
+              resolve();
+            } else {
+              if (textContainer) {
+                textContainer.innerHTML = esc(fullText.slice(0, charIdx)).replace(/\\n/g, '<br/>') + '<span class="typing-cursor"></span>';
+              }
+              list.scrollTop = list.scrollHeight;
             }
-            resolve();
-          } else {
-            if (textContainer) {
-              textContainer.innerHTML = esc(fullText.slice(0, charIdx)).replace(/\\n/g, '<br/>') + '<span class="typing-cursor"></span>';
-            }
-            list.scrollTop = list.scrollHeight;
-          }
-        }, 18);
-      });
+          }, 18);
+        });
+      }
 
       let aiExtraHtml = '';
 

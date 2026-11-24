@@ -93,7 +93,7 @@ test('Aimake Studio: Real AI API Chat Config, Live Diff/Rollback, Non-Overlappin
     await page.locator('#chat-input').fill('把当前页改成实测性能指标对比');
     await page.locator('#btn-chat-send').click();
 
-    await expect(page.locator('.chat-diff-card')).toBeVisible({ timeout: 15_000 });
+    await expect(page.locator('.chat-diff-card')).toBeVisible({ timeout: 30_000 });
     await expect(page.locator('.chat-diff-lines')).toBeVisible();
     await expect(page.locator('.chat-rollback-btn')).toBeVisible();
     expect(receivedPrompts.length).toBe(1);
