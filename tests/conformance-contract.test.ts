@@ -472,6 +472,13 @@ describe('T-08 Conformance Suite: CLI-Hub --json Pure Formatting & Semantic Exit
   let sampleDeckPath: string;
 
   beforeAll(async () => {
+    // Ensure dist/cli.js exists before testing compiled CLI binaries
+    try {
+      await fs.access(CLI_PATH);
+    } catch {
+      await execFileAsync('pnpm', ['build'], { cwd: REPO_ROOT, timeout: 45000 });
+    }
+
     tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-cli-conformance-'));
     sampleDeckPath = path.join(tmpDir, 'sample.deck.md');
     await fs.writeFile(

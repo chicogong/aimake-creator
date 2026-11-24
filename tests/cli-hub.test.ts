@@ -44,6 +44,13 @@ describe('T-07 / Issue #16: CLI-Hub & Agent-Native Standardization (HKUDS/CLI-An
   let sampleDeckPath: string;
 
   beforeAll(async () => {
+    // Ensure dist/cli.js exists before testing compiled CLI binaries
+    try {
+      await fs.access(CLI_PATH);
+    } catch {
+      await execFileAsync('pnpm', ['build'], { cwd: REPO_ROOT, timeout: 45000 });
+    }
+
     tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-cli-hub-test-'));
     sampleDeckPath = path.join(tmpDir, 'test-sample.deck.md');
     const sampleContent = `---

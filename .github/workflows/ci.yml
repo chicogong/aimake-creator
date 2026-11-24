@@ -34,11 +34,11 @@ jobs:
       - name: Static typecheck
         run: pnpm typecheck
 
-      - name: Vitest test suites
-        run: pnpm test
-
       - name: Production bundle build
         run: pnpm build
+
+      - name: Vitest test suites
+        run: pnpm test
 
       - name: Fast Smoke Test Preflight
         run: pnpm test:smoke
