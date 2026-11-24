@@ -264,7 +264,14 @@ export const CALM_STUDIO_MARKUP = `
         <div class="dock-divider"></div>
         <!-- 4. Zoom mode -->
         <button class="dock-chip dock-chip-muted" id="btn-dock-zoom" title="切换自适应缩放 / 100% 原比例">自适应</button>
-        <!-- 5. Fullscreen presentation -->
+        <!-- 5. AI Copilot Chat toggle -->
+        <button class="dock-chip" id="btn-toggle-chat" title="展开/收起 AI 对话创作副驾驶 (⌘J)">
+          <span class="live-dot" style="margin-right:3px;"></span>
+          <span>AI 对话</span>
+        </button>
+        <!-- 6. Command palette -->
+        <button class="dock-chip dock-chip-muted" id="btn-open-cmdk" title="打开命令面板 (⌘K)">⌘K</button>
+        <!-- 7. Fullscreen presentation -->
         <button class="dock-icon-btn" id="btn-dock-fullscreen" title="全屏演示 (F)">
           ${lucideIcon('maximize')}
         </button>
@@ -278,12 +285,7 @@ export const CALM_STUDIO_MARKUP = `
             <span id="active-locale-label">中文</span>
             ${lucideIcon('chevronDown', 'ic ic-sm')}
           </button>
-          <button class="dock-chip" id="btn-toggle-chat" title="展开/收起 AI 对话创作副驾驶 (⌘J)">
-            <span class="live-dot" style="margin-right:3px;"></span>
-            <span>AI 对话</span>
-          </button>
           <button class="dock-chip dock-chip-muted" id="btn-open-polish" title="去 AI 味精修、素材入库与源码编辑">微调</button>
-          <button class="dock-chip dock-chip-muted" id="btn-open-cmdk" title="打开命令面板 (⌘K)">⌘K</button>
         </div>
       </div>
     </main>

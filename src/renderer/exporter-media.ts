@@ -504,6 +504,20 @@ export async function exportDeckToMp4(
         stdinBroken = true;
       }
     });
+    // Register close/error listener immediately before piping frames to avoid
+    // missing early 'close' events (e.g. when -shortest completes before totalFrames).
+    const ffClosePromise = new Promise<void>((resolve, reject) => {
+      ffProc.once('close', (code) => {
+        if (code === 0) resolve();
+        else
+          reject(
+            new Error(
+              `FFmpeg exited with code ${code} [encoder: ${encoderConfig.encoder}]: ${stderrLog.slice(-500)}`
+            )
+          );
+      });
+      ffProc.once('error', reject);
+    });
 
     const entranceFrames = Math.ceil(Math.max(1, fps * 0.35));
     const settledSlideCache = new Map<number, Buffer>();
@@ -591,13 +605,7 @@ export async function exportDeckToMp4(
     if (!ffProc.stdin.destroyed) {
       ffProc.stdin.end();
     }
-    await new Promise<void>((resolve, reject) => {
-      ffProc.on('close', (code) => {
-        if (code === 0) resolve();
-        else reject(new Error(`FFmpeg exited with code ${code} [encoder: ${encoderConfig.encoder}]: ${stderrLog.slice(-500)}`));
-      });
-      ffProc.on('error', reject);
-    });
+    await ffClosePromise;
 
     return outFile;
   } finally {

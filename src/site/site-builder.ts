@@ -1919,7 +1919,7 @@ function sharedSiteCss(): string {
     .tpl-thumb-box {
       display: block;
       position: relative;
-      height: 112px;
+      height: 128px;
       border-radius: 10px;
       overflow: hidden;
       margin-bottom: 14px;
@@ -1929,7 +1929,7 @@ function sharedSiteCss(): string {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: top center;
+      object-position: center 18%;
       display: block;
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -2480,12 +2480,24 @@ function sharedSiteCss(): string {
       .cta-row > * { width: 100%; justify-content: center; text-align: center; }
       .radar-api-banner { flex-direction: column; align-items: stretch; gap: 14px; }
     }
+    .grid > *, .radar-grid > *, .pillars-grid > *, .family-grid > *, .works-grid > *, .bento-grid > * {
+      min-width: 0;
+      max-width: 100%;
+    }
+    .pack-cmd-box > span {
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .pack-cmd-box > span::-webkit-scrollbar { display: none; }
     @media (max-width: 640px) {
       .container { padding: 0 16px; }
-      .grid { grid-template-columns: 1fr; }
-      .radar-grid { grid-template-columns: 1fr; }
-      .pillars-grid { grid-template-columns: 1fr; }
-      .family-grid { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: minmax(0, 1fr); }
+      .radar-grid { grid-template-columns: minmax(0, 1fr); }
+      .pillars-grid { grid-template-columns: minmax(0, 1fr); }
+      .family-grid { grid-template-columns: minmax(0, 1fr); }
+      .works-grid { grid-template-columns: minmax(0, 1fr); }
+      .bento-grid { grid-template-columns: minmax(0, 1fr); }
       .stage-viewport { height: 350px; }
     }
 
@@ -2748,11 +2760,16 @@ function renderLandingHtml(
       const playgroundLink = `/playground/?template=${encodeURIComponent(item.suggestedTemplate || 'apple-bento-launch')}&title=${encodeURIComponent(item.title)}`;
       const cleanHotness = stripDecorEmoji(item.hotness || '高关注');
       const isExtra = idx >= INITIAL_VISIBLE_RADAR;
+      const sourceDisplay = isX
+        ? item.source.trim().startsWith('X')
+          ? `𝕏${item.source.trim().slice(1)}`
+          : `𝕏 ${item.source}`
+        : item.source;
       return `
       <div class="radar-card${isExtra ? ' is-collapsed-extra' : ''}"${isExtra ? ' data-extra-radar="true"' : ''} data-radar-cat="${esc(item.category || 'ai-tech')}" data-radar-source="${isX ? 'x' : 'other'}">
         <div>
           <div class="radar-card-head" style="margin-bottom:10px;">
-            <span class="radar-source-tag ${isX ? 'x-tag' : ''}">${isX ? '𝕏 ' : ''}${esc(item.source)}</span>
+            <span class="radar-source-tag ${isX ? 'x-tag' : ''}">${esc(sourceDisplay)}</span>
             <span class="radar-hotness">${esc(cleanHotness)}</span>
           </div>
           <h4 class="radar-title">${esc(item.title)}</h4>

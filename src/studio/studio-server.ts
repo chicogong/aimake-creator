@@ -2144,6 +2144,9 @@ export async function startStudioServer(
       await removeRuntimeDiscoveryFile(workspaceDir);
       await new Promise<void>((resolve, reject) => {
         server.close((err) => (err ? reject(err) : resolve()));
+        if (typeof server.closeAllConnections === 'function') {
+          server.closeAllConnections();
+        }
       });
     },
   };

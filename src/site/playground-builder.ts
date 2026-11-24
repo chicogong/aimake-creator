@@ -849,16 +849,16 @@ export async function buildWebPlaygroundHtml(
     }
     .drawer-grid {
       flex: 1; overflow-y: auto; padding: 14px;
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
-      align-content: start;
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
+      align-content: start; align-items: stretch;
     }
     @media (max-width: 480px) {
-      .drawer-grid { grid-template-columns: 1fr; }
+      .drawer-grid { grid-template-columns: minmax(0, 1fr); }
     }
     .drawer-card {
       background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
       padding: 10px; display: flex; flex-direction: column; gap: 8px; cursor: pointer;
-      transition: all 0.15s ease; text-align: left;
+      transition: all 0.15s ease; text-align: left; min-width: 0; width: 100%;
     }
     .drawer-card:hover {
       border-color: var(--border-strong); background: var(--surface-elev); transform: translateY(-1px);
@@ -867,13 +867,13 @@ export async function buildWebPlaygroundHtml(
       border-color: var(--brand); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.28);
     }
     .drawer-thumb-box {
-      position: relative; height: 96px; border-radius: 8px; overflow: hidden;
+      position: relative; width: 100%; height: 104px; flex-shrink: 0; border-radius: 8px; overflow: hidden;
       border: 1px solid rgba(127, 127, 127, 0.2);
       display: flex; align-items: center; justify-content: center;
       background: var(--surface-elev);
     }
     .drawer-thumb-img {
-      width: 100%; height: 100%; object-fit: cover; object-position: top center;
+      width: 100%; height: 100%; object-fit: cover; object-position: center 18%;
       transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1); display: block;
     }
     .drawer-card:hover .drawer-thumb-img {
@@ -918,10 +918,10 @@ export async function buildWebPlaygroundHtml(
       flex: 1; height: 22px; border-radius: 4px; border: 1px solid rgba(127, 127, 127, 0.22);
     }
     .drawer-card-top {
-      display: flex; align-items: center; justify-content: space-between; gap: 6px;
+      display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; width: 100%;
     }
     .drawer-card-title {
-      font-size: 12px; font-weight: 600; color: var(--ink);
+      font-size: 12px; font-weight: 600; color: var(--ink); min-width: 0; flex: 1;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .drawer-card-aspect {
@@ -929,7 +929,7 @@ export async function buildWebPlaygroundHtml(
       background: rgba(127, 127, 127, 0.14); color: var(--ink-muted); font-weight: 600; flex-shrink: 0;
     }
     .drawer-card-desc {
-      font-size: 11px; color: var(--ink-muted); line-height: 1.4;
+      font-size: 11px; color: var(--ink-muted); line-height: 1.4; min-width: 0; width: 100%;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
 
