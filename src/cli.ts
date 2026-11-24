@@ -87,8 +87,35 @@ const REPO_ROOT = __dirname.endsWith('dist')
   ? path.resolve(__dirname, '..')
   : path.resolve(__dirname, '..');
 
-function printResult(data: unknown, asJson?: boolean, humanSummary?: string): void {
-  if (asJson) {
+export const EXIT_CODES = {
+  SUCCESS: 0,
+  GENERAL_ERROR: 1,
+  INVALID_ARGUMENTS: 2,
+  ENV_OR_AUTH_ERROR: 3,
+  NOT_FOUND: 4,
+} as const;
+
+export type ExitCode = (typeof EXIT_CODES)[keyof typeof EXIT_CODES];
+
+export class CliError extends Error {
+  readonly exitCode: ExitCode;
+  readonly details?: unknown;
+
+  constructor(message: string, exitCode: ExitCode = EXIT_CODES.GENERAL_ERROR, details?: unknown) {
+    super(message);
+    this.name = 'CliError';
+    this.exitCode = exitCode;
+    this.details = details;
+  }
+}
+
+export function isJsonRequested(opts?: { json?: boolean }): boolean {
+  return Boolean(opts?.json || program.opts()?.json || process.argv.includes('--json'));
+}
+
+export function printResult(data: unknown, asJson?: boolean, humanSummary?: string): void {
+  const isJson = isJsonRequested(typeof asJson === 'boolean' ? { json: asJson } : undefined);
+  if (isJson) {
     process.stdout.write(`${JSON.stringify(data, null, 2)}\n`);
   } else if (humanSummary) {
     process.stdout.write(`${humanSummary}\n`);
@@ -97,11 +124,98 @@ function printResult(data: unknown, asJson?: boolean, humanSummary?: string): vo
   }
 }
 
+export function handleCliError(err: unknown): void {
+  const asJson = isJsonRequested();
+  let message = 'An unexpected error occurred';
+  let exitCode: ExitCode = EXIT_CODES.GENERAL_ERROR;
+  let details: unknown = undefined;
+
+  if (err instanceof CliError) {
+    message = err.message;
+    exitCode = err.exitCode;
+    details = err.details;
+  } else if (err instanceof Error) {
+    message = err.message;
+    const anyErr = err as any;
+    if (anyErr.code === 'ENOENT') {
+      exitCode = EXIT_CODES.NOT_FOUND;
+    } else if (
+      anyErr.code === 'commander.missingArgument' ||
+      anyErr.code === 'commander.missingMandatoryOptionValue' ||
+      anyErr.code === 'commander.invalidOptionArgument' ||
+      anyErr.code === 'commander.unknownOption' ||
+      anyErr.code === 'commander.unknownCommand' ||
+      anyErr.code === 'INVALID_ARGUMENTS'
+    ) {
+      exitCode = EXIT_CODES.INVALID_ARGUMENTS;
+    } else if (
+      anyErr.code === 'ENV_OR_AUTH_ERROR' ||
+      anyErr.code === 'PROVIDER_CALL_FAILED' ||
+      anyErr.code === 'EACCES' ||
+      anyErr.code === 'EPERM'
+    ) {
+      exitCode = EXIT_CODES.ENV_OR_AUTH_ERROR;
+    }
+  } else {
+    message = String(err);
+  }
+
+  if (asJson) {
+    const payload: { ok: false; error: string; code: number; details?: unknown } = {
+      ok: false,
+      error: message,
+      code: exitCode,
+    };
+    if (details !== undefined) {
+      payload.details = details;
+    }
+    process.stdout.write(`${JSON.stringify(payload, null, 2)}\n`);
+  } else {
+    const isCommanderErr =
+      err instanceof Error &&
+      typeof (err as any).code === 'string' &&
+      (err as any).code.startsWith('commander.');
+    if (!isCommanderErr) {
+      process.stderr.write(`${pc.red(`Error: ${message}`)}\n`);
+    }
+  }
+
+  process.exit(exitCode);
+}
+
 const program = new Command();
 program
   .name('aimake')
   .description('Aimake — Local-first multimodal content creation, Marketplace & Karpathy LLM Wiki studio')
-  .version('2.0.0');
+  .version('2.0.0')
+  .option('--json', 'Emit machine-readable JSON');
+
+program.configureOutput({
+  writeErr: (str) => {
+    if (!process.argv.includes('--json')) {
+      process.stderr.write(str);
+    }
+  },
+  writeOut: (str) => {
+    process.stdout.write(str);
+  },
+});
+
+program.exitOverride((err) => {
+  if (err.code === 'commander.helpDisplayed' || err.code === 'commander.version') {
+    process.exit(EXIT_CODES.SUCCESS);
+  }
+  if (process.argv.includes('--json')) {
+    const payload = {
+      ok: false,
+      error: err.message.trim(),
+      code: EXIT_CODES.INVALID_ARGUMENTS,
+    };
+    process.stdout.write(`${JSON.stringify(payload, null, 2)}\n`);
+    process.exit(EXIT_CODES.INVALID_ARGUMENTS);
+  }
+  throw err;
+});
 
 program
   .command('doctor')
@@ -188,6 +302,7 @@ program
 // ---- Marketplace commands ----
 const marketCmd = program
   .command('market')
+  .alias('marketplace')
   .description('Browse, search, and install versioned built-in templates & industry template packs');
 
 marketCmd
@@ -423,11 +538,15 @@ wikiCmd
   .description('Audit Wiki token budget (<=3000 tokens), @lwc/core graph links, and persona sizes')
   .option('--json', 'Emit machine-readable JSON')
   .action(async (vaultDir: string, opts: { json?: boolean }) => {
-    await rebuildWikiIndex(path.resolve(vaultDir));
-    const report = await lintWiki(path.resolve(vaultDir));
+    const abs = path.resolve(vaultDir);
+    if (!fsSync.existsSync(abs)) {
+      throw new CliError(`Vault directory not found: ${abs}`, EXIT_CODES.NOT_FOUND);
+    }
+    await rebuildWikiIndex(abs);
+    const report = await lintWiki(abs);
     const summary = `Wiki Lint: ${report.valid ? 'PASS' : 'FAIL'} | index=${report.indexTokens}/${report.indexBudget} tokens | pages=${report.totalWikiPages} | brokenLinks=${report.brokenLinks.length}`;
     printResult(report, opts.json, summary);
-    if (!report.valid) process.exitCode = 1;
+    if (!report.valid) process.exitCode = EXIT_CODES.GENERAL_ERROR;
   });
 
 wikiCmd
@@ -621,6 +740,7 @@ async function handleDeckCreate(
 
 deckCmd
   .command('create [topicOrPrompt]')
+  .alias('new')
   .description('Conversationally create a new multimodal .deck.md from a natural language topic or recipe')
   .option('-w, --workspace <dir>', 'Target workspace directory')
   .option('-o, --output <outDeck>', 'Output .deck.md path')
@@ -654,6 +774,9 @@ deckCmd
       }
     ) => {
       const absDeck = path.resolve(deckPath);
+      if (!fsSync.existsSync(absDeck)) {
+        throw new CliError(`Deck file not found: ${absDeck}`, EXIT_CODES.NOT_FOUND);
+      }
       if (opts.revert) {
         const rollbackRes = await rollbackChatSnapshot(absDeck);
         if (rollbackRes.success && rollbackRes.restoredDeck) {
@@ -798,6 +921,9 @@ program
         json?: boolean;
       }
     ) => {
+      if (opts.minAuthenticity && (isNaN(Number(opts.minAuthenticity)) || Number(opts.minAuthenticity) < 0 || Number(opts.minAuthenticity) > 100)) {
+        throw new CliError('Invalid min-authenticity score: must be a number between 0 and 100', EXIT_CODES.INVALID_ARGUMENTS);
+      }
       const items = await runTrendRadar({
         category: opts.category,
         sources: opts.sources.split(',').map((s) => s.trim()) as any,
@@ -818,11 +944,14 @@ program
             items.find((it) => it.id === idOrIndex || it.url === idOrIndex) ||
             CURATED_TREND_FIXTURES.find((it) => it.id === idOrIndex || it.url === idOrIndex);
         }
+        if (idOrIndex && !targetItem) {
+          throw new CliError(`No matching radar items found for id or index: "${idOrIndex}"`, EXIT_CODES.NOT_FOUND);
+        }
         if (!targetItem) {
           targetItem = items[0];
         }
         if (!targetItem) {
-          throw new Error('No radar items available to generate deck from.');
+          throw new CliError('No radar items available to generate deck from.', EXIT_CODES.NOT_FOUND);
         }
 
         const { deckMarkdown, template, aspectRatio, title } = generateDeckFromRadarItem(targetItem, {
@@ -838,6 +967,7 @@ program
 
         const rel = path.relative(process.cwd(), outPath);
         const result = {
+          ok: true,
           generated: true,
           title,
           source: targetItem.source,
@@ -859,7 +989,7 @@ program
         ].join('\n');
 
         printResult(result, opts.json, human);
-        process.exit(0);
+        process.exit(EXIT_CODES.SUCCESS);
       }
 
       const human = [
@@ -878,12 +1008,13 @@ program
       ].join('\n');
 
       printResult(items, opts.json, human);
-      process.exit(0);
+      process.exit(EXIT_CODES.SUCCESS);
     }
   );
 
 program
   .command('render <deckPath>')
+  .alias('export')
   .description('Compile a .deck.md storyboard into PNG cards, WeChat HTML, PDF, Editable PPTX, MP4, or CapCut draft')
   .requiredOption('-f, --format <fmt>', 'Output format: png | wechat | pdf | pptx | mp4 | html | capcut')
   .option('-o, --output <target>', 'Output directory (for png/capcut) or output file path (defaults to same folder as deck)')
@@ -914,6 +1045,22 @@ program
       }
     ) => {
       const absDeck = path.resolve(deckPath);
+      if (!fsSync.existsSync(absDeck)) {
+        throw new CliError(`Deck file not found: ${absDeck}`, EXIT_CODES.NOT_FOUND);
+      }
+      const validFormats: ExportFormat[] = ['png', 'wechat', 'pdf', 'pptx', 'mp4', 'html', 'capcut'];
+      if (!validFormats.includes(opts.format)) {
+        throw new CliError(
+          `Invalid format "${opts.format}". Supported formats: ${validFormats.join(', ')}`,
+          EXIT_CODES.INVALID_ARGUMENTS
+        );
+      }
+      if (opts.narrate && !['offline-fixture', 'tencent-tccli'].includes(opts.narrate)) {
+        throw new CliError(
+          `Invalid narrate provider "${opts.narrate}". Supported: offline-fixture, tencent-tccli`,
+          EXIT_CODES.INVALID_ARGUMENTS
+        );
+      }
       const raw = await fs.readFile(absDeck, 'utf8');
       const doc = parseDeckMarkdown(raw, absDeck);
       if (opts.template) doc.frontmatter.template = opts.template;
@@ -966,7 +1113,14 @@ program
       }
 
       printResult(
-        { ok: true, format: opts.format, template: doc.frontmatter.template, artifacts, compoundedPath },
+        {
+          ok: true,
+          format: opts.format,
+          template: doc.frontmatter.template,
+          artifacts,
+          compoundedPath,
+          ...(opts.format === 'capcut' ? { draftDir: outAbs } : {}),
+        },
         opts.json,
         `Rendered ${artifacts.length} ${opts.format.toUpperCase()} artifact(s) -> ${artifacts.join(', ')}`
       );
@@ -981,10 +1135,11 @@ program
   .option('--vault <dir>', 'Wiki vault directory')
   .option('--demo', 'Launch on the built-in showcase deck')
   .option('--no-open', 'Do not attempt to open a browser automatically')
+  .option('--json', 'Emit machine-readable JSON')
   .action(
     async (
       deckPath: string | undefined,
-      opts: { port: string; workspace?: string; vault?: string; demo?: boolean }
+      opts: { port: string; workspace?: string; vault?: string; demo?: boolean; json?: boolean }
     ) => {
       let resolvedWorkspace = opts.workspace ? path.resolve(opts.workspace) : undefined;
       let resolvedDeck = deckPath ? path.resolve(deckPath) : undefined;
@@ -1008,9 +1163,37 @@ program
         workspaceDir: resolvedWorkspace,
         vaultDir: opts.vault ? path.resolve(opts.vault) : undefined,
       });
-      process.stdout.write(`Aimake Studio listening on ${handle.url}\nPress Ctrl+C to stop.\n`);
+      printResult(
+        {
+          ok: true,
+          url: handle.url,
+          port: handle.port,
+          deckPath: resolvedDeck,
+          workspaceDir: resolvedWorkspace,
+        },
+        opts.json,
+        `Aimake Studio listening on ${handle.url}\nPress Ctrl+C to stop.`
+      );
     }
   );
+
+program
+  .command('status [dir]')
+  .alias('st')
+  .description('Inspect workspace pipeline status and preset skill state (defaults to current directory)')
+  .option('--json', 'Emit machine-readable JSON')
+  .action(async (dir?: string, opts?: { json?: boolean }) => {
+    const targetDir = path.resolve(dir || '.');
+    if (!fsSync.existsSync(targetDir)) {
+      throw new CliError(`Workspace directory not found: ${targetDir}`, EXIT_CODES.NOT_FOUND);
+    }
+    const summary = await readWorkspaceState(targetDir);
+    printResult(
+      { ok: true, ...summary },
+      opts?.json,
+      `Workspace "${summary.config.name}" · stage=${summary.pipeline.currentStage} · sources=${summary.sources.length} · decks=${summary.decks.length} · exports=${summary.exports.length} · skills=${summary.skillsStatus.totalPresetSkills} (zeroSymlinks=${summary.skillsStatus.zeroSymlinks})`
+    );
+  });
 
 const workspaceCmd = program
   .command('workspace')
@@ -1057,11 +1240,15 @@ workspaceCmd
   );
 
 workspaceCmd
-  .command('status <dir>')
+  .command('status [dir]')
   .description('Inspect end-to-end closed-loop pipeline progress and preset skill status of a workspace')
   .option('--json', 'Emit machine-readable JSON')
-  .action(async (dir: string, opts: { json?: boolean }) => {
-    const summary = await readWorkspaceState(path.resolve(dir));
+  .action(async (dir: string | undefined, opts: { json?: boolean }) => {
+    const targetDir = path.resolve(dir || '.');
+    if (!fsSync.existsSync(targetDir)) {
+      throw new CliError(`Workspace directory not found: ${targetDir}`, EXIT_CODES.NOT_FOUND);
+    }
+    const summary = await readWorkspaceState(targetDir);
     printResult(
       { ok: true, ...summary },
       opts.json,
@@ -1141,7 +1328,8 @@ program
   .command('desktop [deckPath]')
   .description('Launch native macOS Aimake.app Desktop Workbench')
   .option('--workspace <dir>', 'Workspace directory')
-  .action(async (deckPath: string | undefined, opts: { workspace?: string }) => {
+  .option('--json', 'Emit machine-readable JSON')
+  .action(async (deckPath: string | undefined, opts: { workspace?: string; json?: boolean }) => {
     const appBin = path.join(REPO_ROOT, 'dist-desktop', 'Aimake.app', 'Contents', 'MacOS', 'Aimake');
     const cliPath = path.join(REPO_ROOT, 'dist', 'cli.js');
     const targetDeck = path.resolve(deckPath || path.join(REPO_ROOT, 'examples', 'zh-creator-flywheel.deck.md'));
@@ -1152,7 +1340,11 @@ program
       { stdio: 'inherit', detached: true }
     );
     child.unref();
-    process.stdout.write(`Launched Aimake Desktop (${appBin}) for ${targetDeck}\n`);
+    printResult(
+      { ok: true, appBin, targetDeck, workspaceDir },
+      opts.json,
+      `Launched Aimake Desktop (${appBin}) for ${targetDeck}`
+    );
   });
 
 program
@@ -1167,6 +1359,9 @@ program
       opts: { mockDeck?: boolean; output?: string; json?: boolean }
     ) => {
       const abs = path.resolve(targetFile);
+      if (!fsSync.existsSync(abs)) {
+        throw new CliError(`Target file not found: ${abs}`, EXIT_CODES.NOT_FOUND);
+      }
       let content = await fs.readFile(abs, 'utf8');
       if (opts.mockDeck && abs.endsWith('.md')) {
         const parsed = parseDeckMarkdown(content, abs);
@@ -1179,6 +1374,7 @@ program
       }
       printResult(
         {
+          ok: true,
           clean: report.clean,
           redactedCount: report.redactedCount,
           findings: report.findings,
@@ -1377,11 +1573,12 @@ flywheelStage: "distill"
 
 program
   .command('create [topicOrPrompt]')
+  .alias('new')
   .description('Stage ③ [创作 Create]: Conversationally create a new multimodal .deck.md from a natural language topic or brief')
   .option('-w, --workspace <dir>', 'Target workspace directory')
   .option('-o, --output <outDeck>', 'Output .deck.md path')
   .option('-t, --template <id>', 'Template ID', 'xhs-swiss-grid')
-  .option('-a, --aspect <ratio>', 'Aspect ratio (16:9, 3:4, 1:1, 9:16)', '3:4')
+  .option('-a, --aspect <ratio>', 'Aspect ratio (16:9, 3:4, 1:1, 9:16, 4:5)', '3:4')
   .option('-l, --locale <loc>', 'Target locale (zh-CN, en, ja, ko)', 'zh-CN')
   .option('--recipe <recipeId>', 'Recipe ID (quote-extract, bento-style, presentation-outline, bilingual-translate, xhs-viral, apple-bento-ppt)')
   .option('-b, --backend <backend>', 'AI backend (auto, offline, api, cli:<id>)', 'auto')
@@ -1664,14 +1861,24 @@ program
     await startStdioAcpServer(opts);
   });
 
-if (process.argv.length <= 2 && process.stdin.isTTY && process.stdout.isTTY) {
-  runInteractiveWizard().catch((err) => {
-    console.error(err instanceof Error ? err.message : String(err));
-    process.exit(1);
-  });
-} else {
-  program.parseAsync(process.argv).catch((err) => {
-    console.error(err instanceof Error ? err.message : String(err));
-    process.exit(1);
-  });
+function isDirectCliInvocation(): boolean {
+  if (!process.argv[1]) return false;
+  if (process.env.VITEST && !process.env.AIMAKE_CLI_DIRECT_RUN) {
+    return false;
+  }
+  try {
+    const scriptPath = fsSync.realpathSync(fileURLToPath(import.meta.url));
+    const binPath = fsSync.realpathSync(path.resolve(process.argv[1]));
+    return scriptPath === binPath;
+  } catch {
+    return false;
+  }
+}
+
+if (isDirectCliInvocation()) {
+  if (process.argv.length <= 2 && process.stdin.isTTY && process.stdout.isTTY) {
+    runInteractiveWizard().catch(handleCliError);
+  } else {
+    program.parseAsync(process.argv).catch(handleCliError);
+  }
 }
