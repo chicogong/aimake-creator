@@ -7,7 +7,6 @@
 > 2. `mvanhorn/last30days-skill`（社区第一手热度与事实调研 Agent Skill）
 > 3. `zhouxiaoka/autoclip`（长视频高光切片与内容重塑桌面工坊）
 > 4. `HKUDS/CLI-Anything`（香港大学全软件 Agent-Native 化框架与 CLI-Hub）
-> 5. 运维诊断流水线一键巡检指令逻辑深度解析
 
 ---
 
@@ -64,47 +63,7 @@
 
 ---
 
-## 三、 运维诊断流水线一键巡检指令逻辑解析
-
-针对提供的一键式巡检脚本：
-
-```bash
-test "$(hostname -s)" = VM-204-87-centos && {
-  clear; date +%F_%T;
-  d=/var/tmp/roc-20261124-recovery-zybo70;
-  cd /data/webdocs/data.vmp.webdev.com && grep -n "childNumber =" app/modules/roc/commands/UpdateAppHistoryDataTaskHandlerAcceleratorCommand.php;
-  LC_ALL=C grep -ahoF 's:15:"ad_or_cost_diff";' "$d"/history_*.ser | wc -l;
-  cd /data/webdocs/data.vmp.webdev.com && timeout 25s /usr/local/qqwebsrv/php/bin/php -d display_errors=0 -d memory_limit=512M -r '
-    define('\''ROOT_DIR'\'',getcwd());
-    define('\''APP_NAME'\'','\''vmp'\'');
-    require ROOT_DIR.'\''/bootstrap/bootstrap.php'\'';
-    require APP_DIR.'\''/helpers/global.php'\'';
-    Mod::createConsoleApplication($appConfig);
-    $a=Mod::app();
-    $m=roc_mongodb();
-    $c=TableNameService::VIDEO_INFO_CACHE_TABLE_NAME;
-    foreach(array('\''2026-11-22'\'','\''2026-11-23'\'') as $d)
-      echo $d.'\'' '\''.$m->count($c,array('\''date'\''=>$d,'\''lastitem'\''=>'\''1'\'')).PHP_EOL;
-    $db=$a->roc_db;
-    foreach($db->createCommand("SELECT status,COUNT(*) n FROM t_task_handler_subtask WHERE belonged_task_handler='\''UpdateAppHistoryDataTaskHandler'\'' AND batch_id='\''2026-11-24 15:59:12'\'' GROUP BY status")->queryAll() as $v)
-      echo '\''3051 '\''.implode('\'' '\'',$v).PHP_EOL;
-    echo '\''completion='\''.json_encode($db->createCommand("SELECT task_id FROM t_roc_task_state WHERE imp_date='\''20261123'\'' AND task_id IN ('\''UpdateAppDailyDataJobHandler'\'','\''t_roc_videoinfocache_to_tdw_start'\'','\''t_roc_videoinfocache_to_tdw_end'\'','\''TDWROCVideoInfoCacheJobHandler'\'')")->queryColumn()).PHP_EOL;
-  ';
-}
-```
-
-### 1. 指令设计意图与执行链路拆解
-这是一条严密的**生产环境数据恢复与异步批处理状态对齐校验脚本**：
-1. **安全宿主门禁**：`test "$(hostname -s)" = VM-204-87-centos` 确保指令仅在目标指定机器执行，避免误伤其他节点；
-2. **多进程并发配置核验**：通过 `grep -n "childNumber =" ...` 检查 PHP 加速命令中的子进程并发数设置；
-3. **序列化数据差异总量盘点**：利用 `LC_ALL=C grep -ahoF 's:15:"ad_or_cost_diff";' ... | wc -l` 高性能统计本地落盘历史恢复文件中广告与消耗差异记录条数；
-4. **MongoDB 视频底表缓存核验**：通过 PHP CLI 脚本直连 MongoDB，统计 `2026-11-22` 与 `2026-11-23` 两天内末条有效缓存记录（`lastitem=1`）总量；
-5. **MySQL 批处理子任务进度监控**：按状态分组统计批次 `2026-11-24 15:59:12` 中 `UpdateAppHistoryDataTaskHandler` 的子任务执行状态分布；
-6. **TDW 数仓链路任务终态确认**：核对任务状态表 `t_roc_task_state` 中分区 `20261123` 的 4 大关键离线数仓作业是否全部进入完成状态。
-
----
-
-## 四、 协同落地路线图
+## 三、 协同落地路线图
 
 1. **[素材摄入层]** 结合 `Ghost-Downloader-3` 的嗅探与 RPC 架构，增强 Aimake 对复杂防盗链媒体流的抓取鲁棒性；
 2. **[热度感知层]** 借鉴 `last30days-skill` 的多源真金白银与社区互动评分体系，赋能 Aimake 灵感雷达；

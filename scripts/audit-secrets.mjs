@@ -26,7 +26,11 @@ const IGNORE_DIRS = new Set([
 const FORBIDDEN = [
   {
     label: 'API Secret Key',
-    re: /\b(?:sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{24,}|AKID[a-zA-Z0-9]{20,})\b/,
+    re: /\b(?:sk-[a-zA-Z0-9]{20,}|sk-ant-[a-zA-Z0-9_-]{20,}|ghp_[a-zA-Z0-9]{24,}|gho_[a-zA-Z0-9]{24,}|github_pat_[a-zA-Z0-9_]{20,}|AKIA[0-9A-Z]{16}|AKID[a-zA-Z0-9]{20,})\b/,
+  },
+  {
+    label: 'Internal Hostname or Infrastructure Path',
+    re: /\bVM-\d+-\d+-[a-z0-9-]+\b|\/data\/webdocs\/|\/usr\/local\/qqwebsrv\/|\.webdev\.com\b/,
   },
   {
     label: 'Personal macOS/Linux home directory path',

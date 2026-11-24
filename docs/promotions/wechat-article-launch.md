@@ -3,7 +3,7 @@
 > **作者**：Chico Gong · Aimake Labs  
 > **开源地址**：[https://github.com/chicogong/aimake-creator](https://github.com/chicogong/aimake-creator)  
 > **官网与在线工坊**：[https://aimake.cc](https://aimake.cc)  
-> **开源协议**：Apache-2.0 · 100% Local-First & Zero-Cloud Telemetry  
+> **开源协议**：MIT · 100% Local-First & Zero-Cloud Telemetry  
 
 ---
 

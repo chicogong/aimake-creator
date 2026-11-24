@@ -1,59 +1,40 @@
-# Aimake 2.0 — Closed-Source Product & Architecture Roadmap
+# Aimake 2.x — Open-Source Product & Architecture Roadmap
 
-With **Aimake 1.0** delivering the **Proprietary Zero-Backend Local Core** (`Karpathy LLM Wiki` + `4-Locale Style DNA` + `16+ AI Host Skill & MCP` + `12 Commercial Parametric Templates` + `One-Deck-to-5-Deliverables` + `Local WYSIWYG Studio` + `Live aimake.cc Flagship Site & universe.aimake.cc Cutover`), **Aimake 2.0** evolves along the **Obsidian / Raycast / Screen Studio** paradigm: **closed-source precision engineering paired with 100% local-first Markdown data ownership**.
-
----
-
-## Pillar 1: Signed Native Tauri 2.0 Desktop App (`Aimake.app` · ~15MB)
-
-Package the proprietary Aimake compiler and Studio into signed cross-platform native installers (`macOS Apple-Notarized Universal .dmg`, `Windows Signed .msi`, distributed via `aimake.cc` + `tauri-plugin-updater` without exposing TypeScript source code):
-
-1. **Menu Bar Trend & Thought Catcher**:
-   - System tray widget with global shortcut (`Option + Space`) to clip active browser URLs, screenshots, or voice memos straight into local `raw/` and surface high-signal `aimake radar` alerts.
-2. **Multi-Account Native Draft Pusher (Human-in-the-Loop Safe Distribution)**:
-   - Persistent isolated WebView / Chrome profile sessions reusing the user's residential login state for **Xiaohongshu, WeChat Official Account / Greenbook, Douyin, WeChat Channels, LinkedIn, X, Note.com, and Instagram**—auto-filling exported PNGs/MP4s/inline HTML into platform draft boxes while strictly requiring a human click on final **Publish** (never bypassing platform CAPTCHAs or anti-bot gates).
-3. **Deep Link Protocol (`aimake://`) & Drag-and-Drop Canvas**:
-   - Jump directly from any MCP App chat preview (`ui://aimake/preview`) into the local slide editor; drag local charts and screenshots straight onto `[data-editable]` slots.
+**Aimake Studio (`aimake.cc`)** is an **MIT-licensed, local-first multimodal Creative OS** for solopreneurs, developers, and AI agents. Starting from `v2.0.0` (36 parametric templates across 4 locales, Karpathy LLM Wiki core, 1-to-5 native deliverables, Calm Studio local server, CLI + MCP server, and macOS `Aimake.app` wrapper), the 2.x roadmap aligns strictly with our four active GitHub Milestones on [`chicogong/aimake-creator`](https://github.com/chicogong/aimake-creator/milestones) and **Project #3**.
 
 ---
 
-## Pillar 2: On-Device Multimodal Synthesis Pack (Voice Cloning & Image Slots)
+## Strategic Architectural Principles
 
-Keep cloud APIs optional by unlocking hardware-accelerated local generation with zero per-minute platform markup:
-
-1. **Apple Silicon Zero-Shot Voice Cloning (`mlx-audio` Managed Pack)**:
-   - One-click managed runtime for M1–M5 Macs running **`Kokoro-82M`** (instant narration) and **`Qwen3-TTS` / `CosyVoice`** (3–5s reference audio local voice cloning) + **`mlx-whisper`** word-level subtitle alignment, plus optional BYOK connectors (`Tencent Cloud TTS via tccli`, `ElevenLabs`, `OpenAI Audio`).
-   - Automatic terminology pronunciation remapping (`glossary.yaml`) + FFmpeg sidechain BGM ducking (`-22dB` during speech) and `-16 LUFS` loudness normalization.
-2. **Declarative Visual Generation Slots (`data-aimake-gen`)**:
-   - Native resolution of `![prompt](gen://...)` image/video slots in `.deck.md` via pluggable local/BYOK providers (**Ollama / ComfyUI local**, **OpenRouter**, **Flux**, **Seedream / Kling**), caching content-addressed assets in `.aimake/cache/`.
+1. **100% Local-First Sovereignty**: All `.deck.md` decks, Knowledge Vault files (`sources/`, `wiki/`, `briefs/`, `exports/`), and rendered assets live strictly on the creator's device with zero cloud lock-in and zero telemetry.
+2. **Protocol-First Interoperability**: Every core capability exposes clean contracts across CLI (`--json`), MCP (`stdio` + SEP-1865 `ui://`), and ACP (Agent Client Protocol) so Zed, JetBrains, Cursor, Claude Code, Codex, and OpenCode act as native authoring brains.
+3. **Deterministic Layout & Media Compilation**: Deterministic CSS grid layout, editable OOXML `.pptx`, pure inline WeChat HTML, hardware-accelerated H.264 MP4, and CapCut / JianYing `draft_content.json` multi-track timelines run predictably offline.
+4. **Typed, Modular & Automated Quality**: Strictly typed modular UI/engine layers replace giant template strings, backed by Playwright E2E, Vitest conformance suites, secret/privacy audits, and automated GitHub Kanban tracking.
 
 ---
 
-## Pillar 3: Interactive MCP Apps (`SEP-1865`) & Enterprise Knowledge Bridges
+## Milestone Sequence (Synchronized with GitHub Milestones)
 
-1. **Bidirectional In-Chat Canvas (`@modelcontextprotocol/ext-apps`)**:
-   - Upgrade `ui://aimake/preview` into an interactive JSON-RPC `postMessage` widget inside **Codex Desktop, Claude Desktop, WorkBuddy, and Cursor**, supporting instant template switching, aspect-ratio toggling, and slide scrubbing directly in chat.
-2. **Incremental Workspace Connectors (Feishu / Notion / Obsidian / Google Drive)**:
-   - Sync designated Feishu weekly-report folders (`lark-openapi-mcp`), Notion pages, Obsidian vaults, or Google Drive directories into `raw/` with a **Local Enterprise Redaction Linter** (`pr-sanitizer` v2) that flags internal codenames, employee IDs, and confidential metrics *before* external content compilation.
-
----
-
-## Pillar 4: Zero-Backend Commercial Licensing & Curated Design Store (`aimake.cc`)
-
-1. **Ed25519 Offline License Verification (`Zero Auth Server Cost`)**:
-   - Maintain **$0/month backend infrastructure** using offline-verifiable cryptographic license keys (`Polar.sh` / `LemonSqueezy` / WeChat Pay static fulfillment):
-     - **Starter (Free Trial)**: Core `.deck.md` workflow, local Markdown Wiki, standard PNG/PDF preview.
-     - **Aimake Pro (Solopreneur Annual / Buy-Once Pass)**: Unlocks all 12+ Pro Global Design Systems, 100% Inline-CSS WeChat Export, Native Editable `.pptx` Engine, 60fps MP4 Video Compiler, 4-Locale Style DNA Extractor, and 16+ AI Host Skill/MCP Bridge.
-     - **Aimake Team / Enterprise**: Custom corporate design token compiler, pre-flight confidential data redaction policies, and internal desensitized template bundle sharing (`aimake share`).
-2. **Official Curated Template Packs**:
-   - Deliver signed, versioned industry template packs (Executive Strategy, Developer Release Notes, Bilingual Educator Cards, Creator Reels) installable directly into `~/.aimake/templates/` via licensed `aimake` desktop/CLI updates.
+| Milestone | Due Date | Core Focus | Key Tracked Issues & Exit Criteria |
+| :--- | :--- | :--- | :--- |
+| **`v2.0.1`** | `2026-12-08` | **Urgent Fixes & Security Hardening** | Repair Swift ↔ WebView `aimakeNative` bridge & `⌘K` shortcut collision; add `Origin` / `Sec-Fetch-Site` CSRF guards to loopback server; expand `audit-secrets.mjs`; fix dynamic radar label (`W47` hardcoded removal); normalize audio loudness toward `-14 LUFS`. |
+| **`v2.1.0`** | `2026-12-31` | **Core Stabilization, CapCut Complete, ACP & CLI-Hub** | Complete CapCut exporter with rendered slide PNGs & local path rewriting (#10); fix audio-paced timeline drift (#13); ship ACP adapter (#9); add ACP/SSE/CapCut conformance tests (#12); standardize CLI `--json` for `CLI-Hub` (#16). |
+| **`v2.2.0`** | `2027-01-31` | **On-Device Voice, AutoClip Intake, Engagement Radar & Persona Hub** | Integrate Apple Silicon `mlx-audio` / `Qwen3-TTS` voice cloning (#3); bridge `autoclip-mcp` for long-video repurposing intake (#14); upgrade Trend Radar with multi-source engagement weights inspired by `last30days-skill` (#15); ship Local Vault & Persona DNA Hub (#11). |
+| **`v2.3.0`** | `2027-03-15` | **Modular Studio UI, Tauri 2 Desktop & CDP Publisher** | Replace 2k+ LOC raw JS string UI with typed modular Vite/TS Calm Studio build (4-locale Studio i18n, undo/redo, slide reorder, async job progress); bundle portable runtime and migrate toward cross-platform signed/notarized Tauri 2 desktop (#5); ship headless Chrome CDP multi-platform draft publisher (#4) & community template hub (#2). |
 
 ---
 
-## 2.0 Milestone Sequence
+## Subsystem Investment Map
 
-| Release | Target Focus | Acceptance Gate |
-| :--- | :--- | :--- |
-| **`v1.5`** | Interactive MCP Apps (`SEP-1865`) widget + Incremental Feishu/Obsidian connectors + Pro Ed25519 offline license verifier | Bidirectional in-chat preview in Codex/Claude + offline license activation `< 5ms` |
-| **`v2.0-beta`** | **Signed Tauri 2.0 Native Desktop App** (Menu bar radar + drag-drop WYSIWYG + human-in-the-loop social draft filler) | Apple-notarized macOS `.dmg` & signed Windows `.msi` `< 20MB` (requires local `rustup` toolchain) |
-| **`v2.0-GA`** | **On-Device Voice Cloning (`mlx-audio` Qwen3-TTS)** + `gen://` Image Slots + Enterprise Redaction Pack | End-to-end offline voice-cloned 60fps reel on Apple Silicon with `$0` cloud API spend |
+1. **Intake & Radar (`src/intake/`, `src/radar/`)**:
+   - Multi-source engagement scoring (Reddit/HN/Polymarket/X/YouTube transcript insights) + AutoClip MCP video highlight extraction + optional `aria2` RPC downloader bridge for protected streams.
+2. **Knowledge Vault & Persona (`src/wiki/`, `src/workspace/`)**:
+   - Bounded Karpathy LLM Wiki (`<= 3,000 tokens` index) with `cite:` line provenance + 4-locale Style DNA & anti-slop humanizer (`<= 800 tokens` persona profiles).
+3. **Calm Studio & Native Desktop (`src/studio/`, `desktop/`)**:
+   - Typed modular frontend, bidirectional Canvas ↔ Markdown live sync, Excalidraw spatial sketch embed, and cross-platform native desktop shell with auto-updater and notarization.
+4. **Media & Timeline Engine (`src/renderer/`, `src/speech/`)**:
+   - Total-duration-reconciled frame pacing, font/image settle barriers before PNG capture, VideoToolbox / NVENC hardware encoding detection, `-14 LUFS` audio normalization, and production-grade 6-track CapCut `draft_content.json` export.
+5. **Agent Protocol Stack (`src/mcp/`, `src/cli.ts`, ACP)**:
+   - Unified JSON-RPC schema spanning MCP tools, SEP-1865 `ui://aimake/preview`, ACP bidirectional IDE sessions, and CLI-Hub `SKILL.md` packaging.
+
+For concrete file-level audit findings, code metrics, and open-source benchmark references, see [`PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md`](./PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md).

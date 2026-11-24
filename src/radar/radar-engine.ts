@@ -845,42 +845,45 @@ export async function runTrendRadar(options: RadarQueryOptions = {}): Promise<Ra
     process.env.AIMAKE_DAILYHOT_API ||
     'https://dailyhot.imsyy.top';
 
-  for (const src of sources) {
-    try {
-      if (src === 'x') {
-        const xItems = CURATED_TREND_FIXTURES.filter((f) => f.source === 'X / Twitter' || f.sourceKind === 'x');
-        collected.push(...xItems);
-      } else if (src === 'polymarket') {
-        const poly = await fetchPolymarketPredictions(limit, timeoutMs);
-        collected.push(...poly);
-      } else if (src === 'reddit') {
-        const red = await fetchRedditDiscussions(limit, timeoutMs);
-        collected.push(...red);
-      } else if (src === 'hackernews') {
-        const hn = await fetchHackerNewsTop(limit, timeoutMs);
-        collected.push(...hn);
-      } else if (src === 'github') {
-        const gh = await fetchGitHubHotRepos(limit, timeoutMs);
-        collected.push(...gh);
-      } else if (src === 'dailyhot') {
-        const [zhihu, kr36] = await Promise.all([
-          fetchDailyHotEndpoint(`${apiBase}/zhihu?limit=5`, '知乎热榜', 'social', 5, timeoutMs),
-          fetchDailyHotEndpoint(`${apiBase}/36kr?limit=5`, '36Kr 科技', 'ai-tech', 5, timeoutMs),
-        ]);
-        collected.push(...zhihu, ...kr36);
-      } else if (src === 'rss' && options.rssUrls) {
-        for (const feedUrl of options.rssUrls) {
-          const res = await fetchWithTimeout(feedUrl, timeoutMs);
-          if (res.ok) {
-            const xml = await res.text();
-            collected.push(...parseRssXml(xml, new URL(feedUrl).hostname));
+  // Fetch all requested sources concurrently so overall latency is bounded by timeoutMs
+  await Promise.allSettled(
+    sources.map(async (src) => {
+      try {
+        if (src === 'x') {
+          const xItems = CURATED_TREND_FIXTURES.filter((f) => f.source === 'X / Twitter' || f.sourceKind === 'x');
+          collected.push(...xItems);
+        } else if (src === 'polymarket') {
+          const poly = await fetchPolymarketPredictions(limit, timeoutMs);
+          collected.push(...poly);
+        } else if (src === 'reddit') {
+          const red = await fetchRedditDiscussions(limit, timeoutMs);
+          collected.push(...red);
+        } else if (src === 'hackernews') {
+          const hn = await fetchHackerNewsTop(limit, timeoutMs);
+          collected.push(...hn);
+        } else if (src === 'github') {
+          const gh = await fetchGitHubHotRepos(limit, timeoutMs);
+          collected.push(...gh);
+        } else if (src === 'dailyhot') {
+          const [zhihu, kr36] = await Promise.all([
+            fetchDailyHotEndpoint(`${apiBase}/zhihu?limit=5`, '知乎热榜', 'social', 5, timeoutMs),
+            fetchDailyHotEndpoint(`${apiBase}/36kr?limit=5`, '36Kr 科技', 'ai-tech', 5, timeoutMs),
+          ]);
+          collected.push(...zhihu, ...kr36);
+        } else if (src === 'rss' && options.rssUrls) {
+          for (const feedUrl of options.rssUrls) {
+            const res = await fetchWithTimeout(feedUrl, timeoutMs);
+            if (res.ok) {
+              const xml = await res.text();
+              collected.push(...parseRssXml(xml, new URL(feedUrl).hostname));
+            }
           }
         }
+      } catch {
+        // Gracefully continue
       }
-    } catch {
-      // Gracefully continue
-    }
-  }
+    })
+  );
 
   // Always merge with curated fixtures so users always have rich inspiration
   const seenIds = new Set(collected.map((c) => c.id));
