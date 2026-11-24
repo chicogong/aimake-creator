@@ -2301,6 +2301,7 @@ function renderLandingHtml(
   const multimodalWorks = [
     {
       id: 'work-xhs',
+      sampleKey: 'deepseek',
       aspect: '3:4',
       format: '3x Retina PNG',
       platform: '小红书视觉图文',
@@ -2313,6 +2314,7 @@ function renderLandingHtml(
     },
     {
       id: 'work-pptx',
+      sampleKey: 'agent',
       aspect: '16:9',
       format: '原生 OOXML .pptx',
       platform: '微软商业演示',
@@ -2325,6 +2327,7 @@ function renderLandingHtml(
     },
     {
       id: 'work-wechat',
+      sampleKey: 'token',
       aspect: '自适应流式',
       format: '100% 内联富文本',
       platform: '微信公众号长文',
@@ -2337,6 +2340,7 @@ function renderLandingHtml(
     },
     {
       id: 'work-video',
+      sampleKey: 'podcast',
       aspect: '9:16',
       format: '60fps MP4 / 剪映草稿',
       platform: '移动短视频播客',
@@ -2349,6 +2353,7 @@ function renderLandingHtml(
     },
     {
       id: 'work-linkedin',
+      sampleKey: 'mcp',
       aspect: '4:5',
       format: 'Retina PNG / PDF',
       platform: '领英高管专栏',
@@ -2361,6 +2366,7 @@ function renderLandingHtml(
     },
     {
       id: 'work-poster',
+      sampleKey: 'embodied',
       aspect: '1:1',
       format: '矢量 SVG / PDF',
       platform: '极简科技海报',
@@ -2375,7 +2381,7 @@ function renderLandingHtml(
 
   const worksCardsHtml = multimodalWorks
     .map((w) => {
-      const playgroundLink = `/playground/?template=${encodeURIComponent(w.tplId)}&title=${encodeURIComponent(w.title)}`;
+      const playgroundLink = `/playground/?sample=${encodeURIComponent(w.sampleKey)}&template=${encodeURIComponent(w.tplId)}&title=${encodeURIComponent(w.title)}`;
       return `
       <div class="work-card">
         <div>

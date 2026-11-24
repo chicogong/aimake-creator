@@ -15,6 +15,52 @@ export interface PlaygroundBundleData {
 }
 
 const STARTER_SAMPLES: Record<string, string> = {
+  deepseek: `---
+title: DeepSeek-R1 纯本地部署与知识蒸馏实战全景
+template: xhs-swiss-grid
+locale: zh-CN
+aspect: 3:4
+author: Aimake Studio
+handle: "@aimake.cc"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: DEEPSEEK R1 2026 -->
+# 为什么 2026 年超级个体必须掌握本地大模型蒸馏？
+## 零云端依赖 · 数据资产 100% 留存本机 · 毫秒级极速响应
+
+\`\`\`metric
+- 本地蒸馏压缩比: 92% (671B -> 14B/32B 端侧可跑)
+- 单次调用延迟: < 120ms (Apple Silicon M4 Max 原生加速)
+- 隐私外泄风险: 0% (全程离线运行 · 绝对可控)
+\`\`\`
+
+- **告别算力盲目攀比**：通过 Ollama / vLLM 在本地运行 DeepSeek-R1 量化蒸馏版，推理成本降低 98%。
+- **私有知识精准注入**：单份 Markdown 笔记即可一键蒸馏为个人高频句式与 Style DNA。
+
+---
+
+<!-- scene: compare | layout: comparison | eyebrow: ARCHITECTURE -->
+# 纯云端 API vs 纯本地模型蒸馏工作流
+
+\`\`\`compare
+云端商业 API :: 按 Token 持续扣费 | 敏感业务与原稿面临云端审计风险 | 网络抖动偶发超时
+本地蒸馏内核 :: 一次配置永久免费调用 | 100% 数据在本地沙盒隔离 | 断网环境下毫秒级响应
+\`\`\`
+
+---
+
+<!-- scene: code | layout: code | eyebrow: ONE COMMAND -->
+# 终端一行命令启动本地推理编译
+
+\`\`\`bash
+# 启动本地 DeepSeek-R1 蒸馏引擎
+ollama run deepseek-r1:14b
+
+# 一键将研究笔记编译为小红书 3:4 视觉图文
+aimake render deepseek-note.deck.md -t xhs-swiss-grid -o output/
+\`\`\`
+`,
+
   agent: `---
 title: 2026 AI Agent 架构演进：从单体模型到端到端闭环
 template: apple-bento-launch
@@ -57,11 +103,12 @@ aimake new my-launch --template apple-bento-launch
 aimake render deck.md -f pptx -o launch.pptx
 \`\`\`
 `,
-  creator: `---
+
+  token: `---
 title: 跑完超 1000 亿 Token 后：超级个体的纯本地创作飞轮
-template: xhs-swiss-grid
+template: apple-dark-keynote
 locale: zh-CN
-aspect: 3:4
+aspect: 16:9
 author: Chico Gong
 handle: "@chicogong"
 ---
@@ -76,6 +123,9 @@ handle: "@chicogong"
 - 一稿多出介质: 5 种 (图文+长文+PPT+视频)
 \`\`\`
 
+- **知识蒸馏与复利累加**：灵感不再随聊天窗口关闭而蒸发，Markdown 知识库成为自主生长的个人资产。
+- **微信排版零折腾**：一键生成纯净内联 CSS，无需借助任何第三方编辑器，杜绝防盗链与格式错乱。
+
 ---
 
 <!-- scene: matrix | layout: comparison | eyebrow: CREATOR WORKFLOW -->
@@ -86,38 +136,106 @@ handle: "@chicogong"
 超级个体飞轮 :: 统一在 Aimake 工作区沉淀笔记 | 确定性排版内核秒级编译 | 资产回流形成知识图谱
 \`\`\`
 `,
-  launch: `---
-title: Aimake 2.2 全新发布：本地优先的多模态创作工作台
-template: apple-dark-keynote
+
+  podcast: `---
+title: 午夜播客 · 告别 AI 废话的四语种 Style DNA
+template: video-cinema-talk
 locale: zh-CN
-aspect: 16:9
-author: Aimake Team
+aspect: 9:16
+author: Aimake Studio
+handle: "@aimake.cc"
+fps: 30
+secondsPerSlide: 5
 ---
 
-<!-- scene: keynote | layout: quote | eyebrow: PRODUCT LAUNCH -->
-# 为超级个体与高产团队打造的终极创作底座
-## 零后端依赖 · 16+ AI 助手兼容 · 一稿五出
+<!-- scene: hook-cover | layout: metrics | eyebrow: VIDEO AS CODE 2026 -->
+# 为什么 2026 年视频创作者必须告别“黑盒式盲盒生成”？
+## 突破生成即定型瓶颈 · 拥抱剪映 / CapCut 6 轨白盒化二次创作自由
 
-> 真正的效率，是让每一次深度思考都自带多模态传播力。 — Aimake Manifesto
+\`\`\`metric
+- 6 轨标准时间轴: 100% (背景 · 画面 · 花字 · 字幕 · 旁白 · BGM)
+- 时间标尺精度: 1 微秒 (Microsecond Timebase 严丝合缝)
+- 二次剪辑自由度: 无损可调 (非编工程白盒交付，自由重构)
+\`\`\`
+
+- **痛点从来不是无法生成，而是生成后无法局部修改**：错一个错别字只能重新消耗算力生成整个 MP4。
+- **Aimake 确定性白盒交付**：声明式 Markdown 脚本秒级编译为剪映与 CapCut 原生 6 轨工程文件。
+
+::: speech
+做短视频的创作者们，你是否也被传统 AI 视频工具折磨过？一次生成一个固定 MP4，错了一个错别字只能消耗算力重来。2026 年，我们需要真正的 Video as Code——用纯文本写脚本，一键编译出剪映与 CapCut 的原生多轨工程文件。
+:::
+
+---
+
+<!-- scene: six-tracks | layout: comparison | eyebrow: 工业级时间轴体系 -->
+# 工业级视听时间轴：标准 6 轨音画对齐矩阵
+
+\`\`\`compare
+传统黑盒视频 :: 视频音画混缩为单一轨道 | 字幕烧录在像素内无法修改 | 音量配乐无法独立混音
+Aimake 6轨工程 :: 视觉与音频独立分层 | 词级时间戳矢量字幕 | 智能 Ducking 旁白音效动态避让
+\`\`\`
+
+::: speech
+来看看这套标准的 6 轨时间轴架构：底板轨承载 4K 高清卡片，画中画轨放置局部特写与演示动画；上方是醒目的技术要点花字轨和词级对齐的字幕轨；下方则是纯净的旁白人声轨与智能降鸭的背景音乐轨。
+:::
 `,
-  poster: `---
-title: 物理世界大模型与具身智能突破
+
+  mcp: `---
+title: Anthropic MCP 协议与开放外脑架构白皮书
+template: linkedin-exec-carousel
+locale: zh-CN
+aspect: 4:5
+author: Chico Gong
+handle: "@chicogong"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: MCP PROTOCOL 2026 -->
+# 为什么 Model Context Protocol 是连接 AI 与本地资产的终极接口？
+## 从封闭孤岛到开放互联 · 打造真正属于自己的数字大脑
+
+\`\`\`metric
+- 互联数据源: 48+ 本地工具与知识库
+- 协议延迟: < 5ms (本地进程间通信 IPC)
+- 权限控制: 100% 颗粒化本地授权
+\`\`\`
+
+- **消除上下文碎片**：统一通过标准化 JSON-RPC 接口暴露本地文件、Git 仓库与排版引擎。
+- **保护核心数据主权**：所有交互均在本地沙箱完成验证，无敏感信息泄露至第三方云端。
+
+---
+
+<!-- scene: comp | layout: comparison | eyebrow: ENTERPRISE ARCHITECTURE -->
+# 传统插件体系 vs 标准 MCP 协议
+
+\`\`\`compare
+传统专属插件 :: 各家 LLM 生态各自为政 | 无法跨模型迁移 | 调试运维成本居高不下
+Anthropic MCP :: 开放标准一套代码多端适配 | 兼容 Claude、OpenCode 与 Codex | 原生可组合与热插拔
+\`\`\`
+`,
+
+  embodied: `---
+title: 具身智能的世界模型演进：空间感知与动作决策
 template: poster-risograph
 locale: zh-CN
 aspect: 1:1
 author: Chico Gong
+handle: "@chicogong"
 ---
 
 <!-- scene: physical | layout: metrics | eyebrow: ROBOTICS 2026 -->
-# 具身智能的世界模型演进
+# 物理世界大模型与具身智能突破
 ## 空间感知、触觉反馈与动作决策统一编译
 
 \`\`\`metric
-- 推理帧率: 120 FPS
-- 控制精度: 0.1 mm
-- 零样本泛化: 94.2%
+- 推理帧率: 120 FPS (实时闭环控制)
+- 控制精度: 0.1 mm (亚毫米级灵巧操作)
+- 零样本泛化: 94.2% (跨实体机器人架构)
 \`\`\`
+
+- **统一世界表征**：从像素空间到连续物理动作轨迹的端到端可微分预测。
+- **模拟到现实零间隙**：基于高保真物理仿真器完成百亿步强化学习训练。
 `,
+
   architecture: `---
 title: Aimake v1.0 多端编译引擎架构
 template: ppt-linear-dark
@@ -151,7 +269,26 @@ const converted = importExternalMarkdownDeck(rawMarpOrSlidevMarkdown);
 const html = await compileDeckToHtml(converted.markdown, { template: 'ppt-linear-dark' });
 \`\`\`
 `,
+
+  launch: `---
+title: Aimake 2.2 全新发布：本地优先的多模态创作工作台
+template: apple-dark-keynote
+locale: zh-CN
+aspect: 16:9
+author: Aimake Team
+---
+
+<!-- scene: keynote | layout: quote | eyebrow: PRODUCT LAUNCH -->
+# 为超级个体与高产团队打造的终极创作底座
+## 零后端依赖 · 16+ AI 助手兼容 · 一稿五出
+
+> 真正的效率，是让每一次深度思考都自带多模态传播力。 — Aimake Manifesto
+`,
 };
+
+// Aliases for backwards compatibility
+STARTER_SAMPLES.creator = STARTER_SAMPLES.token;
+STARTER_SAMPLES.poster = STARTER_SAMPLES.embodied;
 
 export async function buildWebPlaygroundHtml(
   templates: MarketplaceTemplateEntry[],
@@ -198,6 +335,16 @@ export async function buildWebPlaygroundHtml(
   <title>Aimake 在线工坊 · 零安装交互式体验 (Live Web Playground)</title>
   <meta name="description" content="无需下载安装，在浏览器中直接体验 Aimake（爱创）36 套高颜值设计系统与多模态编译排版。写 Markdown，实时编译幻灯片，一键复制微信公众号富文本或导出作品。" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='113' fill='%2317152D'/%3E%3Cg%3E%3Cpath fill='%23745DFF' d='M117 121 L258 79 Q293 69 286 103 L231 370 Q226 394 205 394 H117 Q93 394 93 370 V148 Q93 130 117 121 Z'/%3E%3Crect fill='%23FFCB49' x='304' y='98' width='156' height='156' rx='28'/%3E%3Cpath fill='%23B7AAFF' d='M292 273 H346 Q364 273 360 296 L345 379 Q342 395 321 395 H276 Q258 395 263 377 L281 295 Q285 273 292 273 Z'/%3E%3Cpath fill='%23FF6B74' d='M460 282 V368 Q460 395 432 395 H361 Q358 395 359 384 C367 316 399 286 448 282 Z'/%3E%3C/g%3E%3C/svg%3E" />
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('aimake-theme');
+        var theme = saved || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      } catch(e) {}
+    })();
+  </script>
   <style>
     :root {
       --bg: #0c0c0e;
@@ -216,6 +363,21 @@ export async function buildWebPlaygroundHtml(
       --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', sans-serif;
       --font-mono: 'SF Mono', Menlo, Consolas, monospace;
     }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --sidebar: #ffffff;
+      --surface: #f1f5f9;
+      --surface-elev: #ffffff;
+      --border: rgba(0, 0, 0, 0.09);
+      --border-strong: rgba(0, 0, 0, 0.18);
+      --ink: #0f172a;
+      --ink-muted: #64748b;
+      --accent: #0f172a;
+      --accent-hover: #1e293b;
+      --accent-ink: #ffffff;
+    }
+
     * { box-sizing: border-box; }
     html, body {
       margin: 0; padding: 0; height: 100%;
@@ -238,16 +400,29 @@ export async function buildWebPlaygroundHtml(
       padding: 0 12px;
       z-index: 20;
     }
+    [data-theme="light"] header.pg-topbar {
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
     .pg-brand-wrap {
       display: flex; align-items: center; gap: 8px; flex-shrink: 0;
     }
     .pg-brand {
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 7px;
       text-decoration: none; color: var(--ink);
       white-space: nowrap; flex-shrink: 0;
     }
     .pg-brand strong {
       font-size: 13.5px; letter-spacing: -0.02em; white-space: nowrap;
+    }
+    .pg-back-home {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 6px;
+      color: var(--ink-muted); text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .pg-back-home:hover {
+      background: var(--surface); color: var(--ink);
     }
     .pg-badge {
       font-size: 10px; padding: 2px 7px; border-radius: 999px;
@@ -256,6 +431,11 @@ export async function buildWebPlaygroundHtml(
       color: var(--ink-muted); font-weight: 600;
       letter-spacing: 0.02em;
       white-space: nowrap; flex-shrink: 0;
+    }
+    [data-theme="light"] .pg-badge {
+      background: rgba(0, 0, 0, 0.05);
+      border-color: rgba(0, 0, 0, 0.1);
+      color: #475569;
     }
     .pg-controls {
       display: flex; align-items: center; gap: 6px;
@@ -272,9 +452,15 @@ export async function buildWebPlaygroundHtml(
       background: var(--surface); color: var(--ink);
       border: 1px solid var(--border); border-radius: 6px;
       height: 32px; padding: 0 10px; font-size: 11.5px; outline: none;
-      max-width: 156px; min-width: 90px;
+      max-width: 170px; min-width: 90px;
       white-space: nowrap; text-overflow: ellipsis;
       transition: border-color 0.15s ease;
+    }
+    [data-theme="light"] .pg-select,
+    [data-theme="light"] .pg-btn {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid rgba(0, 0, 0, 0.12);
     }
     .pg-select:hover, .pg-select:focus { border-color: var(--border-strong); }
     .pg-btn {
@@ -287,6 +473,7 @@ export async function buildWebPlaygroundHtml(
       box-sizing: border-box;
     }
     .pg-btn:hover { background: var(--surface-elev); border-color: var(--border-strong); color: var(--ink); }
+    [data-theme="light"] .pg-btn:hover { background: #f8fafc; border-color: rgba(0,0,0,0.22); }
     .pg-btn-primary {
       background: #745dff; color: #ffffff;
       border-color: #745dff; font-weight: 600;
@@ -295,13 +482,61 @@ export async function buildWebPlaygroundHtml(
     .pg-btn-primary:hover {
       background: #6046f8; border-color: #6046f8; color: #ffffff;
     }
+    [data-theme="light"] .pg-btn-primary {
+      background: #4f46e5; color: #ffffff; border-color: #4f46e5;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+    }
+
+    .pg-theme-btn {
+      width: 32px; height: 32px; padding: 0;
+    }
+    .pg-theme-btn svg { width: 14px; height: 14px; }
+    .pg-theme-btn .icon-moon { display: none; }
+    .pg-theme-btn .icon-sun { display: block; }
+    [data-theme="light"] .pg-theme-btn .icon-sun { display: none; }
+    [data-theme="light"] .pg-theme-btn .icon-moon { display: block; }
+
+    /* Mobile segmented mode switch (visible only on <= 820px) */
+    .pg-mobile-nav {
+      display: none;
+      height: 36px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 10px;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      z-index: 15;
+    }
+    .pg-mobile-tab-btn {
+      flex: 1; height: 26px;
+      border-radius: 6px; border: 1px solid transparent;
+      background: transparent; color: var(--ink-muted);
+      font-size: 11.5px; font-weight: 500; cursor: pointer;
+    }
+    .pg-mobile-tab-btn.active {
+      background: var(--surface-elev); color: var(--ink); font-weight: 600;
+      border-color: var(--border);
+    }
 
     .pg-body {
-      display: grid; grid-template-columns: 410px 1fr;
+      display: grid; grid-template-columns: 430px 1fr;
       height: calc(100% - 50px);
     }
-    @media (max-width: 900px) {
-      .pg-body { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+    @media (max-width: 820px) {
+      .pg-mobile-nav { display: flex; }
+      .pg-body {
+        display: block;
+        height: calc(100% - 86px);
+        position: relative;
+      }
+      .editor-pane, .stage-pane {
+        width: 100% !important; height: 100% !important;
+      }
+      .pg-body[data-mobile-view="edit"] .stage-pane { display: none !important; }
+      .pg-body[data-mobile-view="edit"] .editor-pane { display: flex !important; }
+      .pg-body[data-mobile-view="preview"] .editor-pane { display: none !important; }
+      .pg-body[data-mobile-view="preview"] .stage-pane { display: flex !important; }
     }
 
     /* Left Pane: Dual-Mode Editor */
@@ -311,11 +546,20 @@ export async function buildWebPlaygroundHtml(
       display: flex; flex-direction: column;
       height: 100%; min-width: 0;
     }
+    [data-theme="light"] .editor-pane {
+      background: #ffffff;
+      border-right: 1px solid rgba(0, 0, 0, 0.08);
+    }
     .editor-tabs-bar {
       height: 38px; padding: 0 12px;
       display: flex; align-items: center; justify-content: space-between;
       gap: 8px;
       border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    [data-theme="light"] .editor-tabs-bar {
+      background: #f8fafc;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
     .editor-segmented {
       display: inline-flex; padding: 2px; gap: 2px;
@@ -337,6 +581,11 @@ export async function buildWebPlaygroundHtml(
       gap: 6px;
       border-bottom: 1px solid var(--border);
       font-size: 11px; color: var(--ink-muted);
+      background: var(--sidebar);
+    }
+    [data-theme="light"] .editor-head {
+      background: #ffffff;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
     .editor-head > span { white-space: nowrap; flex-shrink: 0; }
     .snippet-chips {
@@ -358,6 +607,9 @@ export async function buildWebPlaygroundHtml(
       color: #e4e4e7; border: none; outline: none;
       padding: 14px; font-family: var(--font-mono); font-size: 12.5px;
       line-height: 1.65; resize: none;
+    }
+    [data-theme="light"] #md-input {
+      color: #0f172a;
     }
     #card-editor-pane {
       flex: 1; overflow-y: auto; padding: 12px 14px;
@@ -407,6 +659,11 @@ export async function buildWebPlaygroundHtml(
       display: flex; align-items: center; justify-content: space-between;
       border-top: 1px solid var(--border);
       font-size: 11px; color: var(--ink-muted);
+      background: var(--surface);
+    }
+    [data-theme="light"] .editor-footer {
+      background: #f8fafc;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
     }
 
     /* Right Pane: Optical Darkroom Stage */
@@ -421,6 +678,13 @@ export async function buildWebPlaygroundHtml(
       position: relative; overflow: hidden;
       padding: 18px 20px 64px;
     }
+    [data-theme="light"] .stage-pane {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(0, 0, 0, 0.03), transparent 62%),
+        radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        #e2e8f0;
+      background-size: 100% 100%, 22px 22px, auto;
+    }
     .stage-viewport {
       width: 100%; height: 100%;
       display: flex; align-items: center; justify-content: center;
@@ -431,6 +695,11 @@ export async function buildWebPlaygroundHtml(
       border-radius: 12px;
       background: #0c0c0e;
       box-shadow: 0 24px 56px rgba(0,0,0,0.58);
+    }
+    [data-theme="light"] #preview-frame {
+      background: #ffffff;
+      border-color: rgba(0,0,0,0.12);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.12);
     }
     .pg-stage-dock {
       position: absolute;
@@ -449,6 +718,11 @@ export async function buildWebPlaygroundHtml(
       z-index: 25;
       box-shadow: 0 10px 28px rgba(0, 0, 0, 0.52);
     }
+    [data-theme="light"] .pg-stage-dock {
+      background: rgba(255, 255, 255, 0.94);
+      border-color: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    }
     .pg-dock-btn {
       height: 26px;
       padding: 0 9px;
@@ -465,6 +739,7 @@ export async function buildWebPlaygroundHtml(
       gap: 4px;
     }
     .pg-dock-btn:hover { background: rgba(255, 255, 255, 0.1); }
+    [data-theme="light"] .pg-dock-btn:hover { background: rgba(0, 0, 0, 0.06); }
     .pg-slide-indicator {
       font-family: var(--font-mono);
       font-size: 11.5px;
@@ -510,6 +785,10 @@ export async function buildWebPlaygroundHtml(
       box-shadow: 0 1px 4px rgba(0,0,0,0.4);
       transform: scale(1.05);
     }
+    [data-theme="light"] .pg-slide-pill.active {
+      background: #0f172a;
+      color: #ffffff;
+    }
     .pg-quick-actions {
       display: inline-flex;
       align-items: center;
@@ -517,6 +796,9 @@ export async function buildWebPlaygroundHtml(
       background: rgba(255, 255, 255, 0.06);
       padding: 1px 2px;
       border-radius: 999px;
+    }
+    [data-theme="light"] .pg-quick-actions {
+      background: rgba(0, 0, 0, 0.05);
     }
     .pg-dock-icon-btn {
       width: 24px;
@@ -539,14 +821,6 @@ export async function buildWebPlaygroundHtml(
       background: rgba(217, 78, 40, 0.25) !important;
       color: #f87171 !important;
     }
-    .pg-btn-success {
-      background: #10b981 !important;
-      color: #ffffff !important;
-      border-color: #10b981 !important;
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.45) !important;
-      transform: scale(1.02);
-      transition: all 0.18s ease !important;
-    }
     .spin {
       animation: spin 0.8s linear infinite;
     }
@@ -562,12 +836,85 @@ export async function buildWebPlaygroundHtml(
       z-index: 10001;
     }
 
+    /* Template Visual Gallery Drawer */
+    .drawer-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+      z-index: 9000; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+    }
+    .drawer-backdrop.show { opacity: 1; pointer-events: auto; }
+    .template-drawer {
+      position: fixed; top: 0; right: -500px; width: 460px; max-width: 92vw; height: 100%;
+      background: var(--sidebar); border-left: 1px solid var(--border);
+      box-shadow: -10px 0 35px rgba(0,0,0,0.5); z-index: 9001;
+      display: flex; flex-direction: column; transition: right 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .template-drawer.show { right: 0; }
+    .drawer-header {
+      height: 50px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .drawer-header h3 { margin: 0; font-size: 13.5px; font-weight: 600; color: var(--ink); }
+    .drawer-close {
+      background: transparent; border: none; color: var(--ink-muted); font-size: 18px; cursor: pointer; padding: 4px;
+      border-radius: 6px;
+    }
+    .drawer-close:hover { color: var(--ink); background: var(--surface); }
+    .drawer-filter-bar {
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 8px; background: var(--surface);
+    }
+    .drawer-search {
+      width: 100%; height: 32px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0 10px; color: var(--ink); font-size: 12px; outline: none;
+    }
+    .drawer-pills {
+      display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none;
+    }
+    .drawer-pill {
+      height: 24px; padding: 0 9px; font-size: 11px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--surface-elev); color: var(--ink-muted);
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    }
+    .drawer-pill.active {
+      background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 600;
+    }
+    .drawer-grid {
+      flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .drawer-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px; display: flex; flex-direction: column; gap: 6px; cursor: pointer;
+      transition: all 0.15s ease; text-align: left;
+    }
+    .drawer-card:hover {
+      border-color: var(--border-strong); background: var(--surface-elev); transform: translateY(-1px);
+    }
+    .drawer-card.active {
+      border-color: #745dff; box-shadow: 0 0 0 2px rgba(116, 93, 255, 0.25);
+    }
+    .drawer-card-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    }
+    .drawer-card-title {
+      font-size: 13px; font-weight: 600; color: var(--ink);
+    }
+    .drawer-card-aspect {
+      font-size: 10px; font-family: var(--font-mono); padding: 2px 6px; border-radius: 4px;
+      background: rgba(255,255,255,0.08); color: var(--ink-muted); font-weight: 600;
+    }
+    [data-theme="light"] .drawer-card-aspect {
+      background: rgba(0,0,0,0.06); color: #475569;
+    }
+    .drawer-card-desc {
+      font-size: 11.5px; color: var(--ink-muted); line-height: 1.45;
+    }
+
     /* Toast */
     #toast {
       position: fixed; top: 60px; left: 50%;
       transform: translateX(-50%) translateY(-8px);
       background: var(--surface-elev); color: var(--ink);
-      border: 1px solid rgba(255,255,255,0.18); border-radius: 999px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
       padding: 8px 16px; font-size: 12px; font-weight: 550;
       box-shadow: 0 10px 25px rgba(0,0,0,0.52);
       opacity: 0; transition: all 0.2s ease; pointer-events: none; z-index: 10002;
@@ -579,8 +926,11 @@ export async function buildWebPlaygroundHtml(
 <body>
   <header class="pg-topbar">
     <div class="pg-brand-wrap">
-      <a href="/" class="pg-brand">
-        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" style="flex-shrink:0;">
+      <a href="/" class="pg-back-home" title="返回官网首页" aria-label="返回官网首页">
+        ${lucideIcon('chevronLeft')}
+      </a>
+      <a href="/" class="pg-brand" title="返回官网首页">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="none" style="flex-shrink:0;">
           <rect width="32" height="32" rx="8" fill="#18181D" stroke="rgba(255,255,255,0.14)"></rect>
           <path d="M13 6 4 24 20 27Z" fill="#F5F4F0"></path>
           <path d="M14.5 5.65 21 4 28 25 21.4 26.65Z" fill="#D94E28"></path>
@@ -592,12 +942,21 @@ export async function buildWebPlaygroundHtml(
 
     <div class="pg-controls">
       <select class="pg-select" id="sample-select" title="载入示范原稿">
-        <option value="agent">2026 AI Agent 架构 (16:9)</option>
-        <option value="architecture">Aimake 架构 Mermaid 流程图 (16:9)</option>
-        <option value="creator">千亿 Token 创作飞轮 (3:4)</option>
-        <option value="launch">苹果便当盒发布会 (16:9)</option>
-        <option value="poster">孔版印刷海报 (1:1)</option>
+        <optgroup label="🔥 2026 前沿时事实战爆款">
+          <option value="deepseek">DeepSeek-R1 本地蒸馏 (3:4)</option>
+          <option value="agent">2026 AI Agent 端到端闭环 (16:9)</option>
+          <option value="token">超级个体千亿飞轮 (微信长文)</option>
+          <option value="podcast">午夜播客 6轨视听 (9:16视频)</option>
+          <option value="mcp">Anthropic MCP 协议白皮书 (4:5)</option>
+          <option value="embodied">具身智能世界模型 (1:1海报)</option>
+        </optgroup>
+        <optgroup label="💎 经典多模态排版示范">
+          <option value="architecture">Aimake 架构 Mermaid 流程图 (16:9)</option>
+          <option value="launch">苹果便当盒 Keynote 发布会 (16:9)</option>
+        </optgroup>
       </select>
+
+      <button class="pg-btn" id="btn-reset-sample" title="重置当前示范原稿">${lucideIcon('rotateCcw')} 重置</button>
 
       <select class="pg-select" id="template-select" title="切换 36 套设计模板">
         ${templates
@@ -607,6 +966,8 @@ export async function buildWebPlaygroundHtml(
           )
           .join('')}
       </select>
+
+      <button class="pg-btn" id="btn-open-templates" title="打开 36 套设计模板视觉抽屉">${lucideIcon('layoutGrid')} 模板库</button>
 
       <select class="pg-select" id="aspect-select" style="max-width:110px;" title="强制指定画幅比例">
         <option value="auto">画幅: 跟随模板</option>
@@ -628,10 +989,23 @@ export async function buildWebPlaygroundHtml(
       <button class="pg-btn" id="btn-print-pdf" title="打印 / 另存为 PDF 演示文稿">${lucideIcon('printer')} PDF</button>
       <button class="pg-btn" id="btn-download-md" title="下载 .deck.md 原稿">${lucideIcon('download')} 下载</button>
       <button class="pg-btn" id="btn-fullscreen" title="全屏演示 (F)">${lucideIcon('maximize')} 全屏</button>
+
+      <span class="pg-control-sep"></span>
+
+      <button type="button" id="theme-toggle-btn" class="pg-btn pg-theme-btn" onclick="togglePlaygroundTheme()" aria-label="切换浅色 / 深色模式" title="切换浅色 / 深色模式">
+        <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
     </div>
   </header>
 
-  <main class="pg-body">
+  <!-- Mobile Segmented View Navigation (<= 820px) -->
+  <div class="pg-mobile-nav" id="pg-mobile-nav">
+    <button class="pg-mobile-tab-btn active" id="btn-mob-edit" onclick="setMobileView('edit')">代码编辑 (Markdown)</button>
+    <button class="pg-mobile-tab-btn" id="btn-mob-preview" onclick="setMobileView('preview')">视觉舞台 (实时渲染)</button>
+  </div>
+
+  <main class="pg-body" id="pg-body" data-mobile-view="edit">
     <!-- Left Dual-Mode Editor Pane -->
     <section class="editor-pane">
       <div class="editor-tabs-bar">
@@ -699,18 +1073,39 @@ export async function buildWebPlaygroundHtml(
         <button class="pg-dock-btn" id="pg-prev-slide" title="上一页 (← / PageUp)">${lucideIcon('chevronLeft')} 上一页</button>
         <div class="pg-slide-pills" id="pg-slide-pills"></div>
         <span class="pg-slide-indicator" id="pg-slide-indicator">01 / 01</span>
-        <button class="pg-dock-btn" id="pg-next-slide" title="下一页 (→ / Space / PageDown)">下一页 ${lucideIcon('chevronRight')}</button>
-        <span style="width:1px;height:14px;background:rgba(255,255,255,0.16);"></span>
-        <div class="pg-quick-actions" role="group" aria-label="页面增删复制">
-          <button class="pg-dock-icon-btn" id="pg-add-slide" title="在当前页后新增一页 (+)">${lucideIcon('plus')}</button>
+        <button class="pg-dock-btn" id="pg-next-slide" title="下一页 (→ / PageDown / 空格)">下一页 ${lucideIcon('chevronRight')}</button>
+        <span class="pg-control-sep"></span>
+        <div class="pg-quick-actions">
+          <button class="pg-dock-icon-btn" id="pg-add-slide" title="在末尾新增一页">${lucideIcon('plus')}</button>
           <button class="pg-dock-icon-btn" id="pg-dup-slide" title="复制当前页">${lucideIcon('copy')}</button>
           <button class="pg-dock-icon-btn pg-dock-icon-btn-danger" id="pg-del-slide" title="删除当前页">${lucideIcon('trash')}</button>
         </div>
-        <span style="width:1px;height:14px;background:rgba(255,255,255,0.16);"></span>
+        <span class="pg-control-sep"></span>
         <button class="pg-dock-btn" id="pg-view-mode" title="切换单页聚焦 / 全部平铺">${lucideIcon('layoutGrid')} 单页视图</button>
       </div>
     </section>
   </main>
+
+  <!-- Template Visual Drawer -->
+  <div id="template-drawer-backdrop" class="drawer-backdrop" onclick="closeTemplateDrawer()"></div>
+  <aside id="template-drawer" class="template-drawer" aria-label="设计系统与模板库">
+    <div class="drawer-header">
+      <h3>36 套设计模板库</h3>
+      <button class="drawer-close" onclick="closeTemplateDrawer()" aria-label="关闭">✕</button>
+    </div>
+    <div class="drawer-filter-bar">
+      <input type="search" id="drawer-search" class="drawer-search" placeholder="搜索模板名称、风格或比例..." oninput="filterTemplates()" />
+      <div class="drawer-pills" id="drawer-pills">
+        <button class="drawer-pill active" data-cat="all" onclick="filterCategory('all')">全部 (36)</button>
+        <button class="drawer-pill" data-cat="16:9" onclick="filterCategory('16:9')">16:9 商业演示</button>
+        <button class="drawer-pill" data-cat="3:4" onclick="filterCategory('3:4')">3:4 小红书</button>
+        <button class="drawer-pill" data-cat="9:16" onclick="filterCategory('9:16')">9:16 动效视频</button>
+        <button class="drawer-pill" data-cat="4:5" onclick="filterCategory('4:5')">4:5 专栏长图</button>
+        <button class="drawer-pill" data-cat="1:1" onclick="filterCategory('1:1')">1:1 极简海报</button>
+      </div>
+    </div>
+    <div class="drawer-grid" id="drawer-grid"></div>
+  </aside>
 
   <div id="toast"></div>
 
@@ -726,6 +1121,7 @@ export async function buildWebPlaygroundHtml(
     const elFrame = document.getElementById('preview-frame');
     const elCharCount = document.getElementById('char-count');
     const elToast = document.getElementById('toast');
+    const elBody = document.getElementById('pg-body');
 
     function showToast(msg) {
       elToast.textContent = msg;
@@ -733,12 +1129,99 @@ export async function buildWebPlaygroundHtml(
       setTimeout(() => elToast.classList.remove('show'), 2400);
     }
 
-    // Load initial content from localStorage or sample
-    let saved = null;
-    try {
-      saved = localStorage.getItem('aimake_playground_md');
-    } catch (_) {}
-    elInput.value = (saved && saved.trim()) || SAMPLES.agent;
+    // Theme Switcher
+    function initPlaygroundTheme() {
+      let saved = null;
+      try { saved = localStorage.getItem('aimake-theme'); } catch(_) {}
+      const theme = saved || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      updateThemeIcon(theme);
+    }
+    function updateThemeIcon(theme) {
+      const btn = document.getElementById('theme-toggle-btn');
+      if (!btn) return;
+      const sun = btn.querySelector('.icon-sun');
+      const moon = btn.querySelector('.icon-moon');
+      if (theme === 'light') {
+        if (sun) sun.style.display = 'none';
+        if (moon) moon.style.display = 'block';
+      } else {
+        if (sun) sun.style.display = 'block';
+        if (moon) moon.style.display = 'none';
+      }
+    }
+    function togglePlaygroundTheme() {
+      const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = cur === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('aimake-theme', next); } catch(_) {}
+      updateThemeIcon(next);
+      scheduleCompile();
+      showToast(next === 'light' ? '已切换至浅色模式' : '已切换至深色模式');
+    }
+    window.togglePlaygroundTheme = togglePlaygroundTheme;
+    initPlaygroundTheme();
+
+    // Mobile View Switcher
+    function setMobileView(view) {
+      elBody.setAttribute('data-mobile-view', view);
+      document.getElementById('btn-mob-edit').classList.toggle('active', view === 'edit');
+      document.getElementById('btn-mob-preview').classList.toggle('active', view === 'preview');
+    }
+    window.setMobileView = setMobileView;
+
+    // URL Query Parameter Handling (?sample=...&template=...&title=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramSample = urlParams.get('sample') || urlParams.get('work');
+    const paramTemplate = urlParams.get('template');
+    const paramTitle = urlParams.get('title');
+
+    let initialMarkdown = '';
+    if (paramSample && SAMPLES[paramSample]) {
+      initialMarkdown = SAMPLES[paramSample];
+      if (elSample) elSample.value = paramSample;
+    } else if (paramTemplate || paramTitle) {
+      // Find template match
+      let matchedKey = 'agent';
+      for (const [k, sText] of Object.entries(SAMPLES)) {
+        if (paramTemplate && sText.includes('template: ' + paramTemplate)) {
+          matchedKey = k;
+          break;
+        }
+      }
+      initialMarkdown = SAMPLES[matchedKey];
+      if (paramTemplate) {
+        initialMarkdown = initialMarkdown.replace(/^template:.*$/m, 'template: ' + paramTemplate);
+        if (elTemplate) elTemplate.value = paramTemplate;
+      }
+      if (paramTitle) {
+        initialMarkdown = initialMarkdown.replace(/^title:.*$/m, 'title: ' + paramTitle);
+        initialMarkdown = initialMarkdown.replace(/^# .*$/m, '# ' + paramTitle);
+      }
+      if (elSample) elSample.value = matchedKey;
+    } else {
+      let saved = null;
+      try {
+        saved = localStorage.getItem('aimake_playground_md');
+      } catch (_) {}
+      initialMarkdown = (saved && saved.trim()) || SAMPLES.agent;
+    }
+    elInput.value = initialMarkdown;
+
+    // Reset Sample Button
+    const btnReset = document.getElementById('btn-reset-sample');
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        const curSampleKey = elSample.value || 'agent';
+        if (SAMPLES[curSampleKey]) {
+          elInput.value = SAMPLES[curSampleKey];
+          try { localStorage.setItem('aimake_playground_md', elInput.value); } catch(_) {}
+          currentSlideIdx = 0;
+          compileNow();
+          showToast('已重置当前示范原稿');
+        }
+      });
+    }
 
     let currentSlideIdx = 0;
     let viewMode = 'single'; // 'single' | 'all'
@@ -866,6 +1349,7 @@ export async function buildWebPlaygroundHtml(
           }
         }
 
+        // Process headings & regular bullets
         for (const line of plainLines) {
           const trim = line.trim();
           if (!trim) continue;
@@ -873,19 +1357,17 @@ export async function buildWebPlaygroundHtml(
             if (!title) title = trim.slice(2).trim();
           } else if (trim.startsWith('## ')) {
             if (!subtitle) subtitle = trim.slice(3).trim();
+          } else if (trim.startsWith('> ')) {
+            if (!quote) quote = trim.slice(2).trim();
           } else if (trim.startsWith('- ') || trim.startsWith('* ')) {
             bullets.push(trim.slice(2).trim());
-          } else if (trim.startsWith('> ')) {
-            quote = { text: trim.slice(2).trim() };
-            extraChunks.push(trim);
           }
         }
 
         return {
-          index: idx,
-          eyebrow,
-          commentRaw: commentMatch ? commentMatch[0] : '',
-          title: title || ('第 ' + (idx + 1) + ' 页'),
+          raw,
+          eyebrow: eyebrow || 'SCENE ' + String(idx + 1).padStart(2, '0'),
+          title: title || fm.title || 'Slide ' + (idx + 1),
           subtitle,
           bullets,
           metrics,
@@ -893,364 +1375,115 @@ export async function buildWebPlaygroundHtml(
           diagram,
           code,
           quote,
-          rawExtra: extraChunks.join('\\n\\n').trim()
+          extra: extraChunks.join('\\n\\n')
         };
       });
 
-      return { frontmatter: fm, slides, rawSlides };
+      return { fm, slides, rawSlides };
     }
 
-    function parseClientNodeToken(tok) {
-      const t = String(tok || '').trim();
-      const roundPill = t.match(/^([A-Za-z0-9_-]+)\\(\\[([^\\]]+)\\]\\)$/);
-      if (roundPill) return { id: roundPill[1], label: roundPill[2].trim(), shape: 'round' };
-      const paren = t.match(/^([A-Za-z0-9_-]+)\\(([^)]+)\\)$/);
-      if (paren) return { id: paren[1], label: paren[2].trim(), shape: 'round' };
-      const brace = t.match(/^([A-Za-z0-9_-]+)\\{([^}]+)\\}$/);
-      if (brace) return { id: brace[1], label: brace[2].trim(), shape: 'diamond' };
-      const bracket = t.match(/^([A-Za-z0-9_-]+)\\[([^\\]]+)\\]$/);
-      if (bracket) return { id: bracket[1], label: bracket[2].trim(), shape: 'rect' };
-      const bare = t.match(/^([A-Za-z0-9_-]+)/);
-      const id = bare ? bare[1] : t.replace(/\\W+/g, '_') || 'node';
-      return { id, label: t, shape: 'rect' };
+    // Client-side HTML Deck renderer
+    function escapeHtml(s) {
+      return String(s || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
     }
 
-    function renderClientMermaidSvg(rawCode) {
-      const code = String(rawCode || '').trim();
-      const lines = code.split(/[\\n;]+/).map(l => l.trim()).filter(Boolean);
-      const isLR = /\\b(LR|RL)\\b/i.test(lines[0] || '');
-      const nodes = new Map();
-      const edges = [];
-
-      const upsert = (spec) => {
-        if (!spec || !spec.id) return;
-        const prev = nodes.get(spec.id);
-        if (!prev || (prev.label === prev.id && spec.label !== spec.id)) {
-          nodes.set(spec.id, spec);
-        }
-      };
-
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        if (i === 0 && /^(flowchart|graph)\\b/i.test(line)) continue;
-        if (/^(subgraph|end|classDef|style|linkStyle)\\b/i.test(line)) continue;
-
-        const mEdge = line.match(/^(.+?)\\s*(?:--\\s*([^->]+?)\\s*-->|-->\\|([^|]+)\\||-->|-.->|==>)\\s*(.+)$/);
-        if (mEdge) {
-          const from = parseClientNodeToken(mEdge[1]);
-          const label = (mEdge[2] || mEdge[3] || '').trim();
-          const to = parseClientNodeToken(mEdge[4]);
-          upsert(from);
-          upsert(to);
-          edges.push({ from: from.id, to: to.id, label });
-        } else if (/^([A-Za-z0-9_-]+)[\\[({]/.test(line)) {
-          upsert(parseClientNodeToken(line));
-        }
-      }
-
-      if (nodes.size === 0) {
-        const previewLines = lines.slice(0, 5);
-        const h = Math.max(110, 44 + previewLines.length * 22);
-        const body = previewLines.map((l, idx) =>
-          '<text x="24" y="' + (48 + idx * 22) + '" fill="#cbd5e1" font-family="monospace" font-size="12">' + esc(l) + '</text>'
-        ).join('');
-        return '<svg class="aimake-mermaid-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 ' + h + '" style="width:100%;max-height:230px;height:auto;display:block;border-radius:10px;background:#0f172a;border:1px solid rgba(148,163,184,0.22);margin:10px 0;">' +
-          '<text x="24" y="24" fill="#94a3b8" font-family="sans-serif" font-size="11" font-weight="700">MERMAID DIAGRAM</text>' + body + '</svg>';
-      }
-
-      const ids = Array.from(nodes.keys());
-      const depth = new Map(ids.map(id => [id, 0]));
-      for (let pass = 0; pass < ids.length; pass++) {
-        for (const e of edges) {
-          const next = (depth.get(e.from) || 0) + 1;
-          if (next > (depth.get(e.to) || 0)) depth.set(e.to, Math.min(next, ids.length));
-        }
-      }
-
-      const layers = new Map();
-      for (const id of ids) {
-        const d = depth.get(id) || 0;
-        if (!layers.has(d)) layers.set(d, []);
-        layers.get(d).push(nodes.get(id));
-      }
-
-      const layerKeys = Array.from(layers.keys()).sort((a, b) => a - b);
-      const maxPerLayer = Math.max(1, ...layerKeys.map(k => layers.get(k).length));
-      const nodeW = 148;
-      const nodeH = 44;
-      const gapX = 56;
-      const gapY = 44;
-      const pad = 24;
-
-      const svgW = isLR
-        ? Math.max(520, pad * 2 + layerKeys.length * nodeW + Math.max(0, layerKeys.length - 1) * gapX)
-        : Math.max(520, pad * 2 + maxPerLayer * nodeW + Math.max(0, maxPerLayer - 1) * gapX);
-      const svgH = isLR
-        ? Math.max(180, pad * 2 + maxPerLayer * nodeH + Math.max(0, maxPerLayer - 1) * gapY)
-        : Math.max(200, pad * 2 + layerKeys.length * nodeH + Math.max(0, layerKeys.length - 1) * gapY);
-
-      const pos = new Map();
-      layerKeys.forEach((lk, lIdx) => {
-        const group = layers.get(lk);
-        group.forEach((n, i) => {
-          if (isLR) {
-            const totalH = group.length * nodeH + (group.length - 1) * gapY;
-            const startY = (svgH - totalH) / 2;
-            pos.set(n.id, { x: pad + lIdx * (nodeW + gapX), y: startY + i * (nodeH + gapY) });
-          } else {
-            const totalW = group.length * nodeW + (group.length - 1) * gapX;
-            const startX = (svgW - totalW) / 2;
-            pos.set(n.id, { x: startX + i * (nodeW + gapX), y: pad + lIdx * (nodeH + gapY) });
-          }
-        });
-      });
-
-      let edgeSvg = '';
-      for (const e of edges) {
-        const a = pos.get(e.from);
-        const b = pos.get(e.to);
-        if (!a || !b) continue;
-        const x1 = isLR ? a.x + nodeW : a.x + nodeW / 2;
-        const y1 = isLR ? a.y + nodeH / 2 : a.y + nodeH;
-        const x2 = isLR ? b.x - 4 : b.x + nodeW / 2;
-        const y2 = isLR ? b.y + nodeH / 2 : b.y - 4;
-        const cx = (x1 + x2) / 2;
-        const cy = (y1 + y2) / 2;
-        const dPath = isLR
-          ? 'M ' + x1 + ' ' + y1 + ' C ' + cx + ' ' + y1 + ', ' + cx + ' ' + y2 + ', ' + x2 + ' ' + y2
-          : 'M ' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + cy + ', ' + x2 + ' ' + cy + ', ' + x2 + ' ' + y2;
-        edgeSvg += '<path d="' + dPath + '" fill="none" stroke="rgba(148,163,184,0.72)" stroke-width="1.6" marker-end="url(#pg-mermaid-arrow)"/>';
-        if (e.label) {
-          edgeSvg += '<rect x="' + (cx - 34) + '" y="' + (cy - 10) + '" width="68" height="18" rx="5" fill="#1e293b" stroke="rgba(148,163,184,0.35)"/>' +
-            '<text x="' + cx + '" y="' + (cy + 3) + '" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-size="10.5">' + esc(e.label.slice(0, 12)) + '</text>';
-        }
-      }
-
-      let nodeSvg = '';
-      for (const n of nodes.values()) {
-        const p = pos.get(n.id);
-        if (!p) continue;
-        const label = esc(n.label.length > 18 ? n.label.slice(0, 17) + '…' : n.label);
-        if (n.shape === 'diamond') {
-          const mx = p.x + nodeW / 2;
-          const my = p.y + nodeH / 2;
-          nodeSvg += '<polygon points="' + mx + ',' + p.y + ' ' + (p.x + nodeW) + ',' + my + ' ' + mx + ',' + (p.y + nodeH) + ' ' + p.x + ',' + my + '" fill="rgba(217,78,40,0.16)" stroke="#f97316" stroke-width="1.5"/>';
-        } else {
-          const rx = n.shape === 'round' ? '22' : '8';
-          nodeSvg += '<rect x="' + p.x + '" y="' + p.y + '" width="' + nodeW + '" height="' + nodeH + '" rx="' + rx + '" fill="#1e293b" stroke="rgba(245,244,240,0.35)" stroke-width="1.4"/>';
-        }
-        nodeSvg += '<text x="' + (p.x + nodeW / 2) + '" y="' + (p.y + nodeH / 2 + 4) + '" text-anchor="middle" fill="#f8fafc" font-family="sans-serif" font-size="11.5" font-weight="600">' + label + '</text>';
-      }
-
-      return '<svg class="aimake-mermaid-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + svgW + ' ' + svgH + '" style="width:100%;max-height:230px;height:auto;display:block;border-radius:10px;background:#0f172a;border:1px solid rgba(148,163,184,0.22);margin:10px 0;">' +
-        '<defs><marker id="pg-mermaid-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="#94a3b8"/></marker></defs>' +
-        edgeSvg + nodeSvg + '</svg>';
-    }
-
-    function highlightClientCode(rawCode) {
-      const tokenRe = /(\\/\\/.*$|#.*$|"(?:\\\\.|[^"])*"|'(?:\\\\.|[^'])*'|\\b(?:import|from|export|const|let|var|function|async|await|return|if|else|type|interface|class|new|npx|pnpm|aimake)\\b|\\b\\d+(?:\\.\\d+)?\\b)/gm;
-      let out = '';
-      let last = 0;
-      let m;
-      while ((m = tokenRe.exec(rawCode)) !== null) {
-        if (m.index > last) out += esc(rawCode.slice(last, m.index));
-        const tok = m[0];
-        let cls = 'hljs-keyword';
-        if (tok.startsWith('//') || tok.startsWith('#')) cls = 'hljs-comment';
-        else if (tok.startsWith('"') || tok.startsWith("'")) cls = 'hljs-string';
-        else if (/^\\d/.test(tok)) cls = 'hljs-number';
-        out += '<span class="' + cls + '">' + esc(tok) + '</span>';
-        last = tokenRe.lastIndex;
-      }
-      if (last < rawCode.length) out += esc(rawCode.slice(last));
-      return out;
-    }
-
-    function renderSlideHtml(slide, idx) {
-      let blocksHtml = '';
-
-      if (slide.diagram) {
-        blocksHtml += '<div class="aimake-diagram-box">' + renderClientMermaidSvg(slide.diagram.code) + '</div>';
-      }
+    function renderClientSlideHtml(slide, idx, total, tpl, aspect) {
+      let contentHtml = '';
 
       if (slide.metrics && slide.metrics.length > 0) {
-        blocksHtml += '<div class="aimake-metrics-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin:12px 0;">' +
+        contentHtml += '<div class="aimake-metrics-grid" style="display:grid;grid-template-columns:repeat(' + Math.min(3, slide.metrics.length) + ', 1fr);gap:16px;margin:18px 0;">' +
           slide.metrics.map(m =>
-            '<div class="aimake-metric-card" style="padding:12px 14px;background:rgba(125,135,160,0.08);border:1px solid rgba(125,135,160,0.18);border-radius:10px;">' +
-            '<div class="aimake-metric-label" style="font-size:11.5px;opacity:0.75;margin-bottom:3px;">' + esc(m.label) + '</div>' +
-            '<div class="aimake-metric-value" style="font-size:22px;font-weight:750;letter-spacing:-0.4px;">' + esc(m.value) + '</div>' +
-            (m.delta ? '<div class="aimake-metric-delta" style="font-size:11px;color:#10b981;margin-top:3px;">' + esc(m.delta) + '</div>' : '') +
+            '<div class="aimake-metric-card" style="padding:16px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);">' +
+              '<div class="aimake-metric-lbl" style="font-size:12px;opacity:0.75;margin-bottom:6px;">' + escapeHtml(m.label) + '</div>' +
+              '<div class="aimake-metric-val" style="font-size:28px;font-weight:700;letter-spacing:-0.03em;">' + escapeHtml(m.value) + '</div>' +
+              (m.delta ? '<div style="font-size:11px;color:#10b981;margin-top:4px;">' + escapeHtml(m.delta) + '</div>' : '') +
             '</div>'
           ).join('') +
-          '</div>';
+        '</div>';
       }
 
       if (slide.comparison) {
-        blocksHtml += '<div class="aimake-compare-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0;">' +
-          '<div style="padding:16px;background:rgba(125,135,160,0.06);border:1px solid rgba(125,135,160,0.15);border-radius:10px;">' +
-          '<h4 style="margin:0 0 8px;font-size:13.5px;opacity:0.8;">' + esc(slide.comparison.leftTitle) + '</h4>' +
-          '<ul style="margin:0;padding-left:18px;line-height:1.55;font-size:13px;">' + slide.comparison.leftItems.map(it => '<li>' + esc(it) + '</li>').join('') + '</ul>' +
+        contentHtml += '<div class="aimake-compare-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;">' +
+          '<div style="padding:16px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);">' +
+            '<div style="font-size:13px;font-weight:600;margin-bottom:10px;opacity:0.75;">' + escapeHtml(slide.comparison.leftTitle) + '</div>' +
+            '<ul style="margin:0;padding-left:18px;font-size:12.5px;line-height:1.6;">' +
+              slide.comparison.leftItems.map(it => '<li>' + escapeHtml(it) + '</li>').join('') +
+            '</ul>' +
           '</div>' +
-          '<div style="padding:16px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.3);border-radius:10px;">' +
-          '<h4 style="margin:0 0 8px;font-size:13.5px;color:#3b82f6;">' + esc(slide.comparison.rightTitle) + '</h4>' +
-          '<ul style="margin:0;padding-left:18px;line-height:1.55;font-size:13px;">' + slide.comparison.rightItems.map(it => '<li>' + esc(it) + '</li>').join('') + '</ul>' +
+          '<div style="padding:16px;border-radius:10px;background:rgba(116,93,255,0.12);border:1px solid rgba(116,93,255,0.3);">' +
+            '<div style="font-size:13px;font-weight:600;margin-bottom:10px;color:#a5b4fc;">' + escapeHtml(slide.comparison.rightTitle) + '</div>' +
+            '<ul style="margin:0;padding-left:18px;font-size:12.5px;line-height:1.6;">' +
+              slide.comparison.rightItems.map(it => '<li>' + escapeHtml(it) + '</li>').join('') +
+            '</ul>' +
           '</div>' +
-          '</div>';
+        '</div>';
+      }
+
+      if (slide.diagram && slide.diagram.engine === 'mermaid') {
+        contentHtml += '<div class="aimake-mermaid-wrap" style="margin:16px 0;padding:16px;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid rgba(255,255,255,0.08);text-align:center;">' +
+          '<svg class="aimake-mermaid-svg" viewBox="0 0 600 120" style="width:100%;max-width:540px;height:auto;margin:0 auto;display:block;">' +
+            '<rect width="600" height="120" rx="8" fill="#121215"/>' +
+            '<rect x="20" y="35" width="130" height="50" rx="6" fill="#745dff"/>' +
+            '<text x="85" y="66" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="middle" font-weight="600">Markdown 原稿</text>' +
+            '<path d="M150 60 L220 60" stroke="#9898a6" stroke-width="2" marker-end="url(#arr)"/>' +
+            '<polygon points="280,35 340,60 280,85 220,60" fill="#222229" stroke="#745dff" stroke-width="1.5"/>' +
+            '<text x="280" y="65" fill="#f4f4f6" font-size="11" font-family="sans-serif" text-anchor="middle">AST 编译</text>' +
+            '<path d="M340 60 L410 60" stroke="#9898a6" stroke-width="2"/>' +
+            '<rect x="410" y="35" width="170" height="50" rx="6" fill="#18181d" stroke="rgba(255,255,255,0.14)"/>' +
+            '<text x="495" y="66" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="middle" font-weight="600">多模态交付介质</text>' +
+          '</svg>' +
+        '</div>';
       }
 
       if (slide.code) {
-        blocksHtml += '<pre class="aimake-code-pre" style="background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-family:monospace;font-size:12px;overflow-x:auto;margin:12px 0;border:1px solid rgba(148,163,184,0.2);"><code>' + highlightClientCode(slide.code.code) + '</code></pre>';
+        contentHtml += '<div class="aimake-code-wrap" style="margin:16px 0;border-radius:8px;overflow:hidden;background:#18181d;border:1px solid rgba(255,255,255,0.1);">' +
+          '<div style="padding:6px 12px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.08);font-size:11px;font-family:monospace;color:#9898a6;">' + escapeHtml(slide.code.lang) + '</div>' +
+          '<pre style="margin:0;padding:12px;font-family:monospace;font-size:12px;line-height:1.55;color:#e4e4e7;overflow-x:auto;"><code>' + escapeHtml(slide.code.code) + '</code></pre>' +
+        '</div>';
       }
 
       if (slide.quote) {
-        blocksHtml += '<blockquote style="margin:14px 0;padding:12px 16px;border-left:3px solid var(--accent, #3b82f6);background:rgba(125,135,160,0.07);font-style:italic;font-size:14px;line-height:1.6;">' + esc(slide.quote.text) + '</blockquote>';
+        contentHtml += '<blockquote style="margin:20px 0;padding:14px 20px;border-left:3px solid #745dff;background:rgba(116,93,255,0.08);font-size:15px;font-style:italic;line-height:1.6;border-radius:0 8px 8px 0;">' +
+          escapeHtml(slide.quote) +
+        '</blockquote>';
       }
 
-      const bulletsHtml = slide.bullets && slide.bullets.length > 0
-        ? '<ul class="aimake-bullets" style="margin:12px 0;padding-left:20px;line-height:1.7;font-size:14px;">' + slide.bullets.map(b => '<li>' + esc(b) + '</li>').join('') + '</ul>'
-        : '';
+      if (slide.bullets && slide.bullets.length > 0) {
+        contentHtml += '<ul class="aimake-bullets" style="margin:16px 0;padding-left:22px;font-size:14px;line-height:1.8;">' +
+          slide.bullets.map(b => '<li>' + escapeHtml(b).replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>') + '</li>').join('') +
+        '</ul>';
+      }
 
-      const hideStyle = viewMode === 'single' && idx !== currentSlideIdx ? 'display:none !important;' : '';
+      const slidePageNum = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
 
-      return '<div class="aimake-slide" id="slide-' + idx + '" style="' + hideStyle + '">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;opacity:0.72;font-size:11px;font-family:monospace;">' +
-        '<span>' + esc(slide.eyebrow || '') + '</span>' +
-        '<span>' + String(idx + 1).padStart(2, '0') + ' / ' + String(totalSlides).padStart(2, '0') + '</span>' +
+      return '<div class="aimake-slide" id="slide-' + idx + '" data-slide="' + idx + '" style="position:relative;">' +
+        '<div class="aimake-slide-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">' +
+          '<span class="aimake-eyebrow" style="font-size:11px;letter-spacing:0.08em;font-weight:700;opacity:0.7;text-transform:uppercase;">' + escapeHtml(slide.eyebrow) + '</span>' +
+          '<span class="aimake-slide-num" style="font-family:monospace;font-size:11px;opacity:0.5;">' + slidePageNum + '</span>' +
         '</div>' +
-        '<div style="flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;">' +
-        '<h1 class="aimake-title" style="margin:0 0 6px;font-size:25px;font-weight:750;line-height:1.22;letter-spacing:-0.4px;">' + esc(slide.title) + '</h1>' +
-        (slide.subtitle ? '<h2 class="aimake-subtitle" style="margin:0 0 10px;font-size:14.5px;font-weight:450;opacity:0.82;line-height:1.45;">' + esc(slide.subtitle) + '</h2>' : '') +
-        bulletsHtml +
-        blocksHtml +
+        '<div class="aimake-slide-body">' +
+          '<h1 class="aimake-title" style="margin:0 0 8px 0;font-size:26px;letter-spacing:-0.02em;line-height:1.25;font-weight:700;">' + escapeHtml(slide.title) + '</h1>' +
+          (slide.subtitle ? '<h2 class="aimake-subtitle" style="margin:0 0 16px 0;font-size:14.5px;font-weight:400;opacity:0.8;line-height:1.45;">' + escapeHtml(slide.subtitle) + '</h2>' : '') +
+          contentHtml +
         '</div>' +
-        '</div>';
+        '<div class="aimake-slide-footer" style="margin-top:auto;padding-top:14px;display:flex;align-items:center;justify-content:space-between;font-size:10.5px;opacity:0.45;border-top:1px solid rgba(255,255,255,0.06);">' +
+          '<span>Aimake 爱创工坊 · Local-First OS</span>' +
+          '<span>#' + escapeHtml(tpl.id) + '</span>' +
+        '</div>' +
+      '</div>';
     }
 
-    function esc(s) {
-      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-
-    function updateSlideVisibilityInFrame() {
-      try {
-        const frameDoc = elFrame.contentDocument || (elFrame.contentWindow && elFrame.contentWindow.document);
-        if (frameDoc) {
-          const nodes = frameDoc.querySelectorAll('.aimake-slide');
-          nodes.forEach((node, idx) => {
-            if (viewMode === 'all') {
-              node.style.removeProperty('display');
-            } else {
-              node.style.setProperty('display', idx === currentSlideIdx ? 'flex' : 'none', 'important');
-            }
-          });
-        }
-      } catch (_) {}
-      const ind = document.getElementById('pg-slide-indicator');
-      if (ind) {
-        ind.textContent = String(currentSlideIdx + 1).padStart(2, '0') + ' / ' + String(Math.max(1, totalSlides)).padStart(2, '0');
-      }
-      renderCardSlidePills();
-      renderPgSlidePills();
-      syncCardFormFromMarkdown();
-    }
-
-    const elPgPills = document.getElementById('pg-slide-pills');
-    function renderPgSlidePills() {
-      if (!elPgPills) return;
-      elPgPills.innerHTML = Array.from({ length: Math.max(1, totalSlides) }, (_, idx) =>
-        '<button type="button" class="pg-slide-pill' + (idx === currentSlideIdx ? ' active' : '') + '" data-pg-slide="' + idx + '" title="第 ' + (idx + 1) + ' 页">' +
-        String(idx + 1).padStart(2, '0') + '</button>'
-      ).join('');
-      elPgPills.querySelectorAll('[data-pg-slide]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          currentSlideIdx = Number(btn.getAttribute('data-pg-slide')) || 0;
-          updateSlideVisibilityInFrame();
-        });
-      });
-      const activePill = elPgPills.querySelector('.pg-slide-pill.active');
-      if (activePill && typeof activePill.scrollIntoView === 'function') {
-        activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
-    }
-
-    let compileTimer = null;
-    let isApplyingFromCard = false;
+    let compileTimeout = null;
     function scheduleCompile() {
-      clearTimeout(compileTimer);
-      compileTimer = setTimeout(compileNow, 120);
+      if (compileTimeout) clearTimeout(compileTimeout);
+      compileTimeout = setTimeout(compileNow, 120);
     }
 
-    const elCardEyebrow = document.getElementById('card-eyebrow');
-    const elCardTitle = document.getElementById('card-title');
-    const elCardSubtitle = document.getElementById('card-subtitle');
-    const elCardBullets = document.getElementById('card-bullets');
-    const elCardExtra = document.getElementById('card-extra');
-    const elCardPills = document.getElementById('card-slide-pills');
-
-    function renderCardSlidePills() {
-      if (!elCardPills) return;
-      elCardPills.innerHTML = Array.from({ length: Math.max(1, totalSlides) }, (_, idx) =>
-        '<button type="button" class="card-pill' + (idx === currentSlideIdx ? ' active' : '') + '" data-card-slide="' + idx + '">' +
-        String(idx + 1).padStart(2, '0') + '</button>'
-      ).join('');
-      elCardPills.querySelectorAll('[data-card-slide]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          currentSlideIdx = Number(btn.getAttribute('data-card-slide')) || 0;
-          updateSlideVisibilityInFrame();
-        });
-      });
-    }
-
-    function syncCardFormFromMarkdown() {
-      const parsed = parseClientMarkdown(elInput.value);
-      const slide = parsed.slides[currentSlideIdx] || parsed.slides[0];
-      if (!slide) return;
-      if (document.activeElement !== elCardEyebrow) elCardEyebrow.value = slide.eyebrow || '';
-      if (document.activeElement !== elCardTitle) elCardTitle.value = slide.title || '';
-      if (document.activeElement !== elCardSubtitle) elCardSubtitle.value = slide.subtitle || '';
-      if (document.activeElement !== elCardBullets) elCardBullets.value = (slide.bullets || []).join('\\n');
-      if (document.activeElement !== elCardExtra) elCardExtra.value = slide.rawExtra || '';
-    }
-
-    function applyCardFormToMarkdown() {
-      const raw = elInput.value;
-      const fmMatch = raw.match(/^(---\\n[\\s\\S]*?\\n---\\n?)([\\s\\S]*)$/);
-      const fmHeader = fmMatch ? fmMatch[1] : '';
-      const parsed = parseClientMarkdown(raw);
-      const slidesArr = parsed.rawSlides.slice();
-      while (slidesArr.length <= currentSlideIdx) {
-        slidesArr.push('# 第 ' + (slidesArr.length + 1) + ' 页');
-      }
-      const prevSlide = parsed.slides[currentSlideIdx] || {};
-      const eyebrow = elCardEyebrow.value.trim();
-      let commentLine = prevSlide.commentRaw || '';
-      if (commentLine) {
-        const inner = commentLine.replace(/^<!--\\s*|\\s*-->$/g, '');
-        const parts = inner.split('|').map(p => p.trim()).filter(Boolean).filter(p => !/^eyebrow\\s*:/i.test(p));
-        if (eyebrow) parts.push('eyebrow: ' + eyebrow);
-        commentLine = parts.length ? '<!-- ' + parts.join(' | ') + ' -->' : '';
-      } else if (eyebrow) {
-        commentLine = '<!-- scene: card-' + (currentSlideIdx + 1) + ' | layout: default | eyebrow: ' + eyebrow + ' -->';
-      }
-      const lines = [];
-      if (commentLine) lines.push(commentLine.trim());
-      lines.push('# ' + (elCardTitle.value.trim() || ('第 ' + (currentSlideIdx + 1) + ' 页')));
-      if (elCardSubtitle.value.trim()) lines.push('## ' + elCardSubtitle.value.trim());
-      const bulletLines = elCardBullets.value
-        .split('\\n')
-        .map(s => s.trim())
-        .filter(Boolean)
-        .map(s => (s.startsWith('- ') || s.startsWith('* ') ? s : '- ' + s));
-      if (bulletLines.length) lines.push('', ...bulletLines);
-      const extraText = elCardExtra.value.trim();
-      if (extraText) lines.push('', extraText);
-
-      slidesArr[currentSlideIdx] = lines.join('\\n');
-      const nextMd = (fmHeader ? fmHeader.trimEnd() + '\\n\\n' : '') + slidesArr.join('\\n\\n---\\n\\n') + '\\n';
-      elInput.value = nextMd;
-      isApplyingFromCard = true;
-      compileNow();
-      isApplyingFromCard = false;
-    }
+    let isApplyingFromCard = false;
 
     function compileNow() {
       const raw = elInput.value;
@@ -1260,18 +1493,26 @@ export async function buildWebPlaygroundHtml(
 
       const parsed = parseClientMarkdown(raw);
       totalSlides = Math.max(1, parsed.slides.length);
-      if (currentSlideIdx >= totalSlides) currentSlideIdx = totalSlides - 1;
+      currentSlideIdx = Math.max(0, Math.min(totalSlides - 1, currentSlideIdx));
 
-      let tplId = parsed.frontmatter.template || elTemplate.value || 'apple-bento-launch';
-      let tpl = TEMPLATE_MAP.get(tplId) || TEMPLATE_MAP.get('apple-bento-launch') || TEMPLATES_DATA[0];
+      // Resolve template
+      let tplId = parsed.fm.template || 'apple-bento-launch';
+      if (!TEMPLATE_MAP.has(tplId)) tplId = 'apple-bento-launch';
+      const tpl = TEMPLATE_MAP.get(tplId);
 
-      if (elTemplate.value !== tpl.id) {
-        elTemplate.value = tpl.id;
+      // Resolve aspect
+      let aspect = elAspect.value === 'auto' ? (parsed.fm.aspect || tpl.aspect || '16:9') : elAspect.value;
+      if (!['16:9', '3:4', '9:16', '1:1', '4:5'].includes(aspect)) aspect = '16:9';
+
+      // Keep dropdown in sync
+      if (elTemplate.value !== tplId) {
+        elTemplate.value = tplId;
       }
 
-      let aspect = elAspect.value === 'auto' ? (parsed.frontmatter.aspect || tpl.aspect || '16:9') : elAspect.value;
-
-      const slidesHtml = parsed.slides.map((s, idx) => renderSlideHtml(s, idx)).join('');
+      // Generate HTML for each slide
+      const slidesHtml = parsed.slides
+        .map((s, idx) => renderClientSlideHtml(s, idx, totalSlides, tpl, aspect))
+        .join('');
 
       const aspectRatios = {
         '16:9': '16 / 9',
@@ -1306,13 +1547,17 @@ export async function buildWebPlaygroundHtml(
         '});' +
         '<\\/script>';
 
+      const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const frameBg = curTheme === 'light' ? '#f8fafc' : '#0c0c0e';
+
       const fullHtml = '<!DOCTYPE html><html><head><meta charset="utf-8"/><style>' +
         tpl.css +
-        '\\nhtml { width:100%; height:100%; margin:0; padding:0; }\\n' +
-        'body { width:100%; margin:0; padding:18px 24px 56px; min-height:100vh; background:#0c0c0e !important; display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:' + (viewMode === 'single' ? 'center' : 'flex-start') + ' !important; box-sizing:border-box; }\\n' +
+        '\\nhtml { width:100%; height:100%; margin:0; padding:0; overflow-x:hidden; }\\n' +
+        'body { width:100%; margin:0; padding:18px 24px 56px; min-height:100vh; background:' + frameBg + ' !important; display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:' + (viewMode === 'single' ? 'center' : 'flex-start') + ' !important; box-sizing:border-box; }\\n' +
         '#aimake-deck-root { width:100% !important; max-width:' + slideMaxW + ' !important; display:flex !important; flex-direction:column !important; gap:24px !important; align-items:stretch !important; }\\n' +
         '.aimake-slide { width:100% !important; height:auto !important; min-height:0 !important; max-height:calc(100vh - 120px) !important; aspect-ratio:' + cssRatio + ' !important; padding:28px 36px !important; box-sizing:border-box !important; display:flex; flex-direction:column; justify-content:space-between; border-radius:12px !important; overflow:hidden !important; box-shadow:0 14px 40px rgba(0,0,0,0.42) !important; }\\n' +
         '.hljs-keyword { color:#93c5fd; font-weight:600; } .hljs-string { color:#86efac; } .hljs-comment { color:#64748b; font-style:italic; } .hljs-number { color:#fda4af; }\\n' +
+        '@media (max-width: 600px) { body { padding:12px !important; } .aimake-slide { padding:16px 20px !important; } .aimake-title { font-size:20px !important; } .aimake-subtitle { font-size:13px !important; } .aimake-metric-val { font-size:20px !important; } }\\n' +
         '@media print { @page { size: landscape; margin: 10mm; } body { background: #fff !important; padding: 0 !important; } .aimake-slide { display: flex !important; break-after: page; page-break-after: always; box-shadow: none !important; margin: 0 auto 12mm !important; } }\\n' +
         '</style></head><body><div id="aimake-deck-root">' + slidesHtml + '</div>' + navScript + '</body></html>';
 
@@ -1348,24 +1593,173 @@ export async function buildWebPlaygroundHtml(
       tabCardBtn.setAttribute('aria-selected', 'true');
       tabSourceBtn.classList.remove('active');
       tabSourceBtn.setAttribute('aria-selected', 'false');
-      cardEditorPane.classList.remove('hidden');
       sourceEditorWrap.classList.add('hidden');
-      renderCardSlidePills();
+      cardEditorPane.classList.remove('hidden');
       syncCardFormFromMarkdown();
     });
 
-    [elCardEyebrow, elCardTitle, elCardSubtitle, elCardBullets, elCardExtra].forEach(el => {
-      el.addEventListener('input', applyCardFormToMarkdown);
+    function syncCardFormFromMarkdown() {
+      const parsed = parseClientMarkdown(elInput.value);
+      const slide = parsed.slides[currentSlideIdx] || parsed.slides[0];
+      if (!slide) return;
+      document.getElementById('card-eyebrow').value = slide.eyebrow || '';
+      document.getElementById('card-title').value = slide.title || '';
+      document.getElementById('card-subtitle').value = slide.subtitle || '';
+      document.getElementById('card-bullets').value = (slide.bullets || []).map(b => '- ' + b).join('\\n');
+      document.getElementById('card-extra').value = slide.extra || '';
+    }
+
+    function applyCardFormToMarkdown() {
+      isApplyingFromCard = true;
+      try {
+        const raw = elInput.value;
+        const fmMatch = raw.match(/^(---\\n[\\s\\S]*?\\n---\\n?)([\\s\\S]*)$/);
+        const fmHeader = fmMatch ? fmMatch[1] : '';
+        const parsed = parseClientMarkdown(raw);
+        const targetIdx = currentSlideIdx;
+
+        const eye = document.getElementById('card-eyebrow').value.trim();
+        const tit = document.getElementById('card-title').value.trim();
+        const sub = document.getElementById('card-subtitle').value.trim();
+        const bul = document.getElementById('card-bullets').value.trim();
+        const ext = document.getElementById('card-extra').value.trim();
+
+        let reconstructed = '';
+        if (eye) reconstructed += '<!-- scene: card-' + (targetIdx + 1) + ' | eyebrow: ' + eye + ' -->\\n';
+        if (tit) reconstructed += '# ' + tit + '\\n';
+        if (sub) reconstructed += '## ' + sub + '\\n\\n';
+        if (ext) reconstructed += ext + '\\n\\n';
+        if (bul) reconstructed += bul + '\\n';
+
+        const updatedSlides = parsed.rawSlides.map((s, idx) => (idx === targetIdx ? reconstructed.trim() : s));
+        if (targetIdx >= updatedSlides.length) {
+          updatedSlides.push(reconstructed.trim());
+        }
+
+        elInput.value = (fmHeader ? fmHeader.trim() + '\\n\\n' : '') + updatedSlides.join('\\n\\n---\\n\\n');
+        scheduleCompile();
+      } finally {
+        setTimeout(() => { isApplyingFromCard = false; }, 200);
+      }
+    }
+
+    for (const id of ['card-eyebrow', 'card-title', 'card-subtitle', 'card-bullets', 'card-extra']) {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', applyCardFormToMarkdown);
+    }
+
+    const btnCardAdd = document.getElementById('btn-card-add-slide');
+    if (btnCardAdd) {
+      btnCardAdd.addEventListener('click', () => {
+        const newSlide = '\\n\\n---\\n\\n<!-- scene: card-new | eyebrow: NEW SCENE -->\\n# 新增卡片标题\\n## 简短阐述核心论点\\n\\n- 要点一：事实与数据支撑\\n- 要点二：落地执行建议\\n';
+        elInput.value = elInput.value.trimEnd() + newSlide;
+        scheduleCompile();
+        setTimeout(() => {
+          currentSlideIdx = Math.max(0, totalSlides - 1);
+          renderCardSlidePills();
+          syncCardFormFromMarkdown();
+          updateSlideVisibilityInFrame();
+        }, 150);
+        showToast('已新增卡片，可直接填写表单');
+      });
+    }
+
+    function renderCardSlidePills() {
+      const wrap = document.getElementById('card-slide-pills');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      for (let i = 0; i < totalSlides; i++) {
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = 'card-pill' + (i === currentSlideIdx ? ' active' : '');
+        pill.textContent = 'P' + (i + 1);
+        pill.addEventListener('click', () => {
+          currentSlideIdx = i;
+          renderCardSlidePills();
+          syncCardFormFromMarkdown();
+          updateSlideVisibilityInFrame();
+        });
+        wrap.appendChild(pill);
+      }
+    }
+
+    function renderPgSlidePills() {
+      const wrap = document.getElementById('pg-slide-pills');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      for (let i = 0; i < totalSlides; i++) {
+        const pill = document.createElement('button');
+        pill.className = 'pg-slide-pill' + (i === currentSlideIdx ? ' active' : '');
+        pill.textContent = String(i + 1).padStart(2, '0');
+        pill.title = '跳转至第 ' + (i + 1) + ' 页';
+        pill.addEventListener('click', () => {
+          currentSlideIdx = i;
+          updateSlideVisibilityInFrame();
+        });
+        wrap.appendChild(pill);
+      }
+    }
+
+    function updateSlideVisibilityInFrame() {
+      const ind = document.getElementById('pg-slide-indicator');
+      if (ind) {
+        ind.textContent = String(currentSlideIdx + 1).padStart(2, '0') + ' / ' + String(totalSlides).padStart(2, '0');
+      }
+      renderPgSlidePills();
+      renderCardSlidePills();
+      try {
+        const frameDoc = elFrame.contentDocument || elFrame.contentWindow.document;
+        if (!frameDoc) return;
+        const slides = frameDoc.querySelectorAll('.aimake-slide');
+        slides.forEach((sl, idx) => {
+          if (viewMode === 'all') {
+            sl.style.display = 'flex';
+          } else {
+            sl.style.display = idx === currentSlideIdx ? 'flex' : 'none';
+          }
+        });
+        if (viewMode === 'all' && slides[currentSlideIdx]) {
+          slides[currentSlideIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      } catch (_) {}
+    }
+
+    // Input events
+    elInput.addEventListener('input', scheduleCompile);
+
+    // Sample Select
+    elSample.addEventListener('change', () => {
+      const key = elSample.value;
+      if (SAMPLES[key]) {
+        elInput.value = SAMPLES[key];
+        currentSlideIdx = 0;
+        compileNow();
+        showToast('已切换至《' + elSample.selectedOptions[0].text + '》');
+      }
     });
 
-    document.getElementById('btn-card-add-slide').addEventListener('click', () => {
-      const nextNum = totalSlides + 1;
-      elInput.value = elInput.value.trimEnd() + '\\n\\n---\\n\\n<!-- scene: card-' + nextNum + ' | layout: bullets -->\\n# 新增第 ' + nextNum + ' 页标题\\n## 补充你的核心观点\\n\\n- 要点一\\n- 要点二\\n';
-      currentSlideIdx = nextNum - 1;
+    // Template Select
+    elTemplate.addEventListener('change', () => {
+      const newTplId = elTemplate.value;
+      let raw = elInput.value;
+      if (/^---\\n[\\s\\S]*?template:\\s*[^\\n]+\\n[\\s\\S]*?---/.test(raw)) {
+        raw = raw.replace(/^template:\\s*[^\\n]+/m, 'template: ' + newTplId);
+      } else if (raw.startsWith('---\\n')) {
+        raw = raw.replace('---\\n', '---\\ntemplate: ' + newTplId + '\\n');
+      } else {
+        raw = '---\\ntemplate: ' + newTplId + '\\n---\\n\\n' + raw;
+      }
+      elInput.value = raw;
       compileNow();
-      showToast('已新增第 ' + nextNum + ' 页');
+      showToast('已应用设计模板: ' + newTplId);
     });
 
+    // Aspect Select
+    elAspect.addEventListener('change', () => {
+      compileNow();
+    });
+
+    // Bottom pagination controls
     document.getElementById('pg-prev-slide').addEventListener('click', () => {
       currentSlideIdx = Math.max(0, currentSlideIdx - 1);
       updateSlideVisibilityInFrame();
@@ -1374,43 +1768,17 @@ export async function buildWebPlaygroundHtml(
       currentSlideIdx = Math.min(Math.max(0, totalSlides - 1), currentSlideIdx + 1);
       updateSlideVisibilityInFrame();
     });
-    const VIEW_ICON_HTML = '${lucideIcon('layoutGrid')}';
-    document.getElementById('pg-view-mode').addEventListener('click', () => {
+
+    const btnViewMode = document.getElementById('pg-view-mode');
+    btnViewMode.addEventListener('click', () => {
       viewMode = viewMode === 'single' ? 'all' : 'single';
-      document.getElementById('pg-view-mode').innerHTML = VIEW_ICON_HTML + (viewMode === 'single' ? ' 单页视图' : ' 全部平铺');
+      btnViewMode.innerHTML = viewMode === 'all'
+        ? '${lucideIcon('layers')} 平铺视图'
+        : '${lucideIcon('layoutGrid')} 单页视图';
       compileNow();
     });
 
-    elInput.addEventListener('input', scheduleCompile);
-
-    elSample.addEventListener('change', () => {
-      const key = elSample.value;
-      if (SAMPLES[key]) {
-        currentSlideIdx = 0;
-        elInput.value = SAMPLES[key];
-        scheduleCompile();
-        showToast('已载入示范原稿：' + elSample.options[elSample.selectedIndex].text);
-      }
-    });
-
-    elTemplate.addEventListener('change', () => {
-      const tplId = elTemplate.value;
-      if (/^template:\\s*.*$/m.test(elInput.value)) {
-        elInput.value = elInput.value.replace(/^template:\\s*.*$/m, 'template: ' + tplId);
-      } else if (elInput.value.startsWith('---')) {
-        elInput.value = elInput.value.replace(/^---\\n/, '---\\ntemplate: ' + tplId + '\\n');
-      } else {
-        elInput.value = '---\\ntemplate: ' + tplId + '\\n---\\n\\n' + elInput.value;
-      }
-      scheduleCompile();
-      showToast('已切换至模板：' + tplId);
-    });
-
-    elAspect.addEventListener('change', () => {
-      scheduleCompile();
-    });
-
-    // Snippet Chips
+    // Snippet Inserters
     document.querySelectorAll('[data-insert]').forEach(btn => {
       btn.addEventListener('click', () => {
         const type = btn.getAttribute('data-insert');
@@ -1429,6 +1797,7 @@ export async function buildWebPlaygroundHtml(
         } else if (type === 'slide') {
           snippet = '\\n---\\n\\n<!-- scene: new-section | layout: bullets -->\\n# 新增幻灯片标题\\n## 补充你的副标题观点\\n\\n- 第一条核心要点\\n- 第二条真实数据支撑\\n';
         }
+
         const hasCursor = document.activeElement === elInput && typeof elInput.selectionStart === 'number' && elInput.selectionStart > 0 && elInput.selectionStart < elInput.value.length;
         if (type !== 'slide' && !hasCursor) {
           const fmMatch = elInput.value.match(/^(---\\n[\\s\\S]*?\\n---\\n?)([\\s\\S]*)$/);
@@ -1448,54 +1817,56 @@ export async function buildWebPlaygroundHtml(
         }
         compileNow();
         elInput.focus();
+        showToast('已插入 ' + btn.textContent + ' 模块');
       });
     });
 
-    // Humanizer
-    const BANNED_AI_WORDS = [
-      ['总而言之，', ''], ['总而言之', '归根结底'],
-      ['不仅如此，', '更进一步，'], ['毫无疑问，', ''],
-      ['毫无疑问', '显然'], ['颠覆性创新', '关键突破'],
-      ['赋能', '驱动'], ['底层逻辑', '核心机制'],
-      ['抓手', '切入点']
-    ];
-    document.getElementById('btn-humanize').addEventListener('click', () => {
+    // Humanize Filter
+    const btnHumanize = document.getElementById('btn-humanize');
+    btnHumanize.addEventListener('click', () => {
       let text = elInput.value;
+      const replacements = [
+        [/毫无疑问/g, '数据表明'],
+        [/颠覆性创新/g, '关键突破'],
+        [/底层逻辑/g, '核心机制'],
+        [/赋能/g, '助力'],
+        [/闭环/g, '端到端流程'],
+        [/打法/g, '策略方法'],
+        [/抓手/g, '实施要点'],
+        [/组合拳/g, '协同方案']
+      ];
       let count = 0;
-      for (const [w, rep] of BANNED_AI_WORDS) {
-        if (text.includes(w)) {
-          text = text.split(w).join(rep);
-          count++;
+      for (const [re, rep] of replacements) {
+        const matches = text.match(re);
+        if (matches) {
+          count += matches.length;
+          text = text.replace(re, rep);
         }
       }
       elInput.value = text;
       scheduleCompile();
-      showToast('去 AI 味完成！清洗了 ' + count + ' 处套路化词汇');
+      showToast(count > 0 ? '已清洗 ' + count + ' 处套话！' : '原稿纯度很高，未检测到套话');
     });
 
-    function setBtnFeedback(btn, tempText, tempIcon) {
-      if (!btn) return;
-      const originalHtml = btn.innerHTML;
+    function setBtnFeedback(btn, text, iconHtml) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = (iconHtml || '') + ' ' + text;
       btn.classList.add('pg-btn-success');
-      btn.innerHTML = (tempIcon || '') + ' ' + tempText;
-      btn.disabled = true;
       setTimeout(() => {
+        btn.innerHTML = orig;
         btn.classList.remove('pg-btn-success');
-        btn.innerHTML = originalHtml;
-        btn.disabled = false;
-      }, 2000);
+      }, 2200);
     }
 
-    // Export Current Slide PNG (Client foreignObject SVG -> Canvas)
+    // Export PNG
     const btnExportPng = document.getElementById('btn-export-png');
-    btnExportPng.addEventListener('click', () => {
+    btnExportPng.addEventListener('click', async () => {
       const origHtml = btnExportPng.innerHTML;
-      btnExportPng.innerHTML = '${lucideIcon('loader', 'ic spin')} 导图中...';
+      btnExportPng.innerHTML = '${lucideIcon('loader', 'ic spin')} 导出中...';
       btnExportPng.disabled = true;
-      showToast('正在生成当前页高清 PNG 图片…');
       try {
-        const frameDoc = elFrame.contentDocument || (elFrame.contentWindow && elFrame.contentWindow.document);
-        if (!frameDoc) throw new Error('画布尚未初始化');
+        const frameDoc = elFrame.contentDocument || elFrame.contentWindow.document;
+        if (!frameDoc) throw new Error('无法读取画布 DOM');
         const slideEl = frameDoc.getElementById('slide-' + currentSlideIdx) || frameDoc.querySelector('.aimake-slide');
         if (!slideEl) throw new Error('找不到当前页面');
         const rect = slideEl.getBoundingClientRect();
@@ -1556,7 +1927,7 @@ export async function buildWebPlaygroundHtml(
       }
     });
 
-    // Copy WeChat HTML (all slides even in single-slide focus view)
+    // Copy WeChat HTML
     const btnCopyWechat = document.getElementById('btn-copy-wechat');
     btnCopyWechat.addEventListener('click', async () => {
       const origHtml = btnCopyWechat.innerHTML;
@@ -1723,6 +2094,90 @@ export async function buildWebPlaygroundHtml(
         updateSlideVisibilityInFrame();
       }
     });
+
+    // Template Visual Gallery Drawer Logic
+    const drawerBackdrop = document.getElementById('template-drawer-backdrop');
+    const drawer = document.getElementById('template-drawer');
+    const drawerGrid = document.getElementById('drawer-grid');
+
+    let activeDrawerCategory = 'all';
+
+    function openTemplateDrawer() {
+      drawerBackdrop.classList.add('show');
+      drawer.classList.add('show');
+      renderTemplateCards();
+    }
+    function closeTemplateDrawer() {
+      drawerBackdrop.classList.remove('show');
+      drawer.classList.remove('show');
+    }
+    window.openTemplateDrawer = openTemplateDrawer;
+    window.closeTemplateDrawer = closeTemplateDrawer;
+
+    document.getElementById('btn-open-templates').addEventListener('click', openTemplateDrawer);
+
+    function filterCategory(cat) {
+      activeDrawerCategory = cat;
+      document.querySelectorAll('#drawer-pills .drawer-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.cat === cat);
+      });
+      renderTemplateCards();
+    }
+    window.filterCategory = filterCategory;
+
+    function filterTemplates() {
+      renderTemplateCards();
+    }
+    window.filterTemplates = filterTemplates;
+
+    function renderTemplateCards() {
+      const searchVal = (document.getElementById('drawer-search').value || '').toLowerCase().trim();
+      const currentSelectedTpl = elTemplate.value;
+
+      const filtered = TEMPLATES_DATA.filter(t => {
+        if (activeDrawerCategory !== 'all' && t.aspect !== activeDrawerCategory) {
+          return false;
+        }
+        if (searchVal) {
+          const matchName = (t.name.zh || '') + ' ' + (t.name.en || '') + ' ' + t.id;
+          const matchDesc = (t.description?.zh || '') + ' ' + (t.description?.en || '');
+          if (!matchName.toLowerCase().includes(searchVal) && !matchDesc.toLowerCase().includes(searchVal)) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+      drawerGrid.innerHTML = filtered.map(t => {
+        const isCur = t.id === currentSelectedTpl;
+        const zhName = t.name.zh || t.id;
+        const desc = t.description?.zh || t.description?.en || '';
+        return '<button type="button" class="drawer-card' + (isCur ? ' active' : '') + '" onclick="applyTemplateFromDrawer(\\'' + t.id + '\\')">' +
+          '<div class="drawer-card-top">' +
+            '<span class="drawer-card-title">' + escapeHtml(zhName) + '</span>' +
+            '<span class="drawer-card-aspect">' + escapeHtml(t.aspect) + '</span>' +
+          '</div>' +
+          '<div class="drawer-card-desc">' + escapeHtml(desc) + '</div>' +
+        '</button>';
+      }).join('');
+    }
+
+    function applyTemplateFromDrawer(tplId) {
+      elTemplate.value = tplId;
+      let raw = elInput.value;
+      if (/^---\\n[\\s\\S]*?template:\\s*[^\\n]+\\n[\\s\\S]*?---/.test(raw)) {
+        raw = raw.replace(/^template:\\s*[^\\n]+/m, 'template: ' + tplId);
+      } else if (raw.startsWith('---\\n')) {
+        raw = raw.replace('---\\n', '---\\ntemplate: ' + tplId + '\\n');
+      } else {
+        raw = '---\\ntemplate: ' + tplId + '\\n---\\n\\n' + raw;
+      }
+      elInput.value = raw;
+      compileNow();
+      closeTemplateDrawer();
+      showToast('已应用设计模板: ' + tplId);
+    }
+    window.applyTemplateFromDrawer = applyTemplateFromDrawer;
 
     // First compile
     compileNow();
