@@ -13,7 +13,8 @@ It adopts best practices from high-velocity developer tooling and production ope
 | **Issues** | Feature proposals, bug reports, template RFCs, tasks | [GitHub Issues](https://github.com/chicogong/aimake-creator/issues) |
 | **Project Board** | Automated Kanban (Todo → In Progress → In Review → Done) | [Aimake Studio 看板 (Project #3)](https://github.com/users/chicogong/projects/3) |
 | **Pull Requests** | Code review, automated quality gate, delivery tracking | [Pull Requests](https://github.com/chicogong/aimake-creator/pulls) |
-| **Milestones** | Version roadmap & release tracking (`v2.0.0`, `v2.1.0`) | [Milestones](https://github.com/chicogong/aimake-creator/milestones) |
+| **Milestones** | Version roadmap & tracking (`v2.0.1`, `v2.1.0`, `v2.2.0`, `v2.3.0`) | [Milestones](https://github.com/chicogong/aimake-creator/milestones) |
+| **Backlog TODO** | Agent-claimable task registry with files, contracts & tests | [`docs/BACKLOG_AND_AGENT_TASKS.md`](../BACKLOG_AND_AGENT_TASKS.md) |
 | **Discussions** | Design systems RFC, showcase sharing, Q&A | [Discussions](https://github.com/chicogong/aimake-creator/discussions) |
 
 ---
@@ -34,13 +35,16 @@ When reporting issues or proposing enhancements, use the structured templates in
 Labels are categorized into four standard dimensions:
 
 1. **Subsystem / Area (`area: <name>`)**:
-   - `area: intake`: Material ingestion, web scrapers (X/Twitter, WeChat, CSV, SRT)
+   - `area: intake`: Material ingestion, web scrapers (X/Twitter, WeChat, CSV, SRT, AutoClip, Radar)
    - `area: distill`: Knowledge distillation, persona, wiki generation
    - `area: create`: Calm Studio canvas, composer, storyboard compiler
-   - `area: publish`: Omni-channel exporters (PNG, PPTX, PDF, HTML, MP4, WeChat MP)
+   - `area: publish`: Omni-channel exporters (PNG, PPTX, PDF, HTML, WeChat MP CDP)
+   - `area: video`: Video synthesis, FFmpeg loudness, timeline sync & CapCut drafts
    - `area: templates`: 36 design templates, CSS tokens, layout systems
-   - `area: mcp`: Model Context Protocol server & AI agent tools
-   - `area: desktop`: macOS Swift native app wrapper & DMG packaging
+   - `area: mcp`: Model Context Protocol server, ACP IDE bridge & AI agent tools
+   - `area: desktop`: macOS Swift native app wrapper, runtime bundling & Tauri 2 desktop
+   - `area: site`: Official `aimake.cc` 4-language showcase site & live web playground
+   - `area: security`: Loopback CSRF guard, secret scanning & privacy auditing
    - `area: ci-cd`: GitHub Actions workflows & automated release pipelines
 2. **Priority (`priority: <level>`)**:
    - `priority: p0-urgent`: Critical blocker, regression, or security leak
@@ -161,30 +165,37 @@ All contributions must adhere to the **Local-First Contract**:
 
 ---
 
-## 6. GitHub CLI (`gh`) Cheat Sheet
+## 6. Automated Issue Submission (`pnpm issue:create`) & CLI Cheat Sheet
 
-For contributors preferring the command line:
+Use the bundled automation helper (`scripts/issue-submit.mjs`) to create properly labeled, milestone-bound issues that automatically link to **GitHub Project #3**:
+
+```bash
+pnpm issue:create \
+  --type <feature|bug|test|rfc|security|architecture> \
+  --area <intake,distill,create,publish,video,templates,mcp,desktop,site,security,ci-cd> \
+  --priority <p0|p1|p2> \
+  --milestone "v2.0.1 Urgent Fixes & Security Hardening" \
+  --title "Short descriptive title" \
+  --body "Markdown summary & acceptance criteria"
+```
+
+For multi-agent parallel work and claimable backlog specs, read [`docs/BACKLOG_AND_AGENT_TASKS.md`](../BACKLOG_AND_AGENT_TASKS.md) before branching.
+
+For contributors preferring direct `gh` CLI commands:
 
 ```bash
 # 1. List active issues on Project Board
 gh issue list --repo chicogong/aimake-creator
 
-# 2. Create a new Feature Issue and assign to self
-gh issue create \
-  --repo chicogong/aimake-creator \
-  --title "feat(publisher): support Zhihu column markdown export" \
-  --label "enhancement,area: publish" \
-  --assignee "@me"
-
-# 3. Open a Pull Request linking the issue
+# 2. Open a Pull Request linking the issue
 gh pr create \
   --repo chicogong/aimake-creator \
   --title "feat(publisher): add Zhihu column exporter" \
   --body "Closes #15"
 
-# 4. View Project #3 Kanban Board items
+# 3. View Project #3 Kanban Board items
 gh project item-list 3 --owner chicogong
 
-# 5. Merge PR with squash merge and delete feature branch
+# 4. Merge PR with squash merge and delete feature branch
 gh pr merge <pr-number> --squash --delete-branch
 ```

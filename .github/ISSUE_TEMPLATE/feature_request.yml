@@ -18,10 +18,13 @@ body:
         - "area: distill (Wiki, persona, knowledge extraction)"
         - "area: create (Composer, Calm Studio canvas, live preview)"
         - "area: publish (Omni-channel exporters, social platforms)"
+        - "area: video (Video synthesis, FFmpeg loudness, CapCut drafts)"
         - "area: templates (New design systems, aspect ratios)"
         - "area: mcp (Model Context Protocol, agent tools)"
         - "area: desktop (macOS native desktop experience)"
-        - "area: infra (CI/CD, developer ergonomics)"
+        - "area: site (Official aimake.cc site & live web playground)"
+        - "area: security (Loopback CSRF guard, secret & privacy auditing)"
+        - "area: ci-cd (GitHub Actions, workflows, automation)"
     validations:
       required: true
 

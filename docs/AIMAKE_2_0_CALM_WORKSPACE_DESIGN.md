@@ -1,5 +1,8 @@
 # Aimake 2.0 深度 Review 与重设计蓝图：端到端创作闭环平台（工作区实体预设 Skill + 冷静视觉舞台）
 
+> [!NOTE]
+> **关联权威设计代币规范**：四端统一的视觉色彩、字号与组件设计语言已固化至 [`docs/design/UI_DESIGN_SYSTEM.md`](./design/UI_DESIGN_SYSTEM.md)（本蓝图聚焦 Calm Studio 信息架构与工作区预设 Skill 体系）。
+
 > [!IMPORTANT]
 > 本文档是对当前 Aimake 1.0 桌面端与产品形态的**诚实复盘与 v2 重构设计方案**。核心升级为两大支柱：
 > 1. **端到端一路闭环（End-to-End Creator Pipeline）**：在一个工作区内跑通 **「① 收集素材与沉淀知识 → ② 唤起最强 AI 协同创作 → ③ 沉浸视觉舞台微调与一键同款 → ④ 多模态成品交付与资产回流」** 全链路，不再东拼西凑工具；
@@ -23,7 +26,7 @@
 flowchart LR
   S1["① 素材与知识沉淀\n拖入 PDF/网页/笔记\n内置 markitdown 范式入库"]
   S2["② 外脑 AI 协同创作\nOpenCode · WorkBuddy · Codex\nAGY · Claude Code 读取工作区预设 Skill"]
-  S3["③ 视觉舞台与一键同款\nfs.watch + SSE 实时热更新\n点字微调 · 22套模板画廊换肤"]
+  S3["③ 视觉舞台与一键同款\nfs.watch + SSE 实时热更新\n点字微调 · 36套模板画廊换肤"]
   S4["④ 多模态成品交付\n一键输出 高清图 / 公众号HTML\nPDF / 可编辑PPTX / 60fps口播MP4"]
   S5["⑤ 成品归档与资产复利\n自动沉淀至 exports/ 与 wiki/\n成为下一轮创作的同款与素材"]
 
@@ -212,7 +215,7 @@ sequenceDiagram
 | **[GitHub Spec Kit (`github/spec-kit`)](https://github.com/github/spec-kit)** | **文件夹即状态机（Artifact-Driven Pipeline）**：把阶段产物固化进 `.specify/`，让 AI 每步有明确前置文档与输出契约 | 把内容创作闭环固化为 **`sources/ → wiki/ → briefs/ → decks/ → exports/`** 五段文件夹状态机；AI 一进工作区就知道当前做到哪一步、缺什么文件。 |
 | **[Superpowers (`obra/superpowers`)](https://github.com/obra/superpowers)** | **小颗粒流程纪律 + 门禁校验（Verification Gates）**：拆解为“先策划、再执行、再自检”的原子 Skill | 拆出独立的 **`aimake-brief-architect`（先定纲）** 与 **`aimake-humanizer`（去 AI 味 + 排版防溢出门禁）**，强制把低质量初稿挡在交付之前。 |
 | **[BMAD-METHOD (`bmad-code-org/BMAD-METHOD`)](https://github.com/bmad-code-org/BMAD-METHOD)** | **按场景一键注入工作区预设包**：针对不同业务场景预配好角色分工、交接规范与工作流 | 新建工作区时可选 **4 大场景预设**（`自媒体爆款增长` / `高管战略 PPT` / `产品发布全案` / `课程教研备课`），自动注入对应品牌规范与模板组合。 |
-| **[agentskills.io / skills.sh](https://agentskills.io)** | **三层渐进式披露（`SKILL.md` + `scripts/` + `references/`）**：启动只载入几十 Token 摘要，触发时再读全文与模板速查表 | 7 个预设 Skill 全部遵循 `agentskills.io` 规范，每个 Skill 保持极简 `frontmatter + 执行步骤 + 门禁检查表`，并将 22 套模板语法放进按需读取的 `references/templates.md`，极大节省 AI 上下文 Token。 |
+| **[agentskills.io / skills.sh](https://agentskills.io)** | **三层渐进式披露（`SKILL.md` + `scripts/` + `references/`）**：启动只载入几十 Token 摘要，触发时再读全文与模板速查表 | 7 个预设 Skill 全部遵循 `agentskills.io` 规范，每个 Skill 保持极简 `frontmatter + 执行步骤 + 门禁检查表`，并将 36 套模板语法放进按需读取的 `references/templates.md`，极大节省 AI 上下文 Token。 |
 
 ### 2. 工作区默认预设的 7 大闭环 Skill 详设
 
@@ -223,7 +226,7 @@ sequenceDiagram
 | **0** | **`aimake-workspace-pilot`** | **闭环总控路由**（当用户说“基于这些资料做一套小红书/PPT/短视频”时自动唤醒） | 扫描工作区 `sources/` `wiki/` `briefs/` `decks/` → 按需串联 1→6 号 Skill | 不跳步、不瞎编；清楚告知用户当前处于闭环哪一环。 |
 | **1** | **`aimake-intake`** | **全格式素材入库**（借鉴 `markitdown` + `baoyu-skills`） | 读取 `sources/` 内 PDF/DOCX/网页/长帖/笔记 → 输出标准化 Markdown + 来源元信息 | 保留原始数字、日期与来源 URL，不丢失关键事实。 |
 | **2** | **`aimake-wiki-synth`** | **知识卡片沉淀与溯源**（借鉴 `llm-wiki`） | 读取 `sources/*.md` → 提炼观点/数据/案例写入 `wiki/*.md` 并更新轻量 `wiki/index.md` | 每条核心数据必须保留可溯源坐标（`cite: wiki/...#Lxx`）。 |
-| **3** | **`aimake-brief-architect`** | **爆款结构与分镜策划**（借鉴 `superpowers` 先定纲纪律） | 读取 `wiki/index.md` + `brand-kit.json` → 输出 `briefs/<slug>.brief.md` | 锁定目标平台、受众痛点、封面钩子、总页数与首选风格（从 22 套模板择优）。 |
+| **3** | **`aimake-brief-architect`** | **爆款结构与分镜策划**（借鉴 `superpowers` 先定纲纪律） | 读取 `wiki/index.md` + `brand-kit.json` → 输出 `briefs/<slug>.brief.md` | 锁定目标平台、受众痛点、封面钩子、总页数与首选风格（从 36 套模板择优）。 |
 | **4** | **`aimake-deck-composer`** | **分镜编排与一键同款**（借鉴 `Slidev` / `Presenton`） | 读取 `briefs/` 或已有 `.deck.md` → 编译/重构为 `decks/<slug>.deck.md` 并调用 MCP 刷新舞台 | 严格遵守 Aimake YAML 1.2 frontmatter 与版式语法；支持跨平台跨风格「一键做同款」。 |
 | **5** | **`aimake-humanizer`** | **四语种去 AI 味与视觉密度质检**（借鉴 `blader/humanizer`） | 审校 `decks/<slug>.deck.md` → 精修写回并生成自检摘要 | 清除“总而言之/值得注意的是/不仅…而且…”等中英日韩 AI 腔；校验每页字数防溢出。 |
 | **6** | **`aimake-deliver-narrator`** | **口播编排、五维交付与资产回流** | 读取定稿 `.deck.md` → 补充口播旁白、调用 Aimake 导出至 `exports/`，摘要回写 `wiki/published.md` | 验证成品生成成功，并自动归档至工作区完成复利闭环。 |
@@ -239,7 +242,7 @@ sequenceDiagram
 
 ## 七、下一轮重构实施路线图（R1 → R4）
 
-确认后我们将按以下 4 个阶段稳健推进，**保留 1.0 已验证的全部底层能力（5 种导出、22 套模板、知识库、语音视频引擎、CLI、MCP）零回退**：
+确认后我们将按以下 4 个阶段稳健推进，**保留 1.0 已验证的全部底层能力（5 种导出、36 套模板、知识库、语音视频引擎、CLI、MCP）零回退**：
 
 ### R1 · 端到端工作区引擎 + 7 大实体预设 Skill + 实时热更新闭环
 - 新增 `src/workspace/workspace-manager.ts`：多工作区创建（含 4 大场景预设）、打开、切换、最近列表、标准状态机目录初始化（`sources/` · `wiki/` · `briefs/` · `decks/` · `exports/` · `.aimake/`）及 `.aimake/skill-manifest.json` 哈希指纹管理。

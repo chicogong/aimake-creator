@@ -36,6 +36,7 @@ Closes #
   - [ ] Print / Document (`aimake render -f pdf`)
   - [ ] WeChat Article (`aimake render -f wechat-html`)
   - [ ] Dynamic Video (`aimake render -f mp4`)
+  - [ ] CapCut / 剪映 Draft (`aimake render -f capcut`)
 - [ ] **Dual Theme Check**: Validated across both `:root[data-theme="dark"]` and `:root[data-theme="light"]`.
 - [ ] **Backward Compatibility**: Existing `.deck.md` files continue to parse and render correctly.
 
@@ -47,6 +48,7 @@ Closes #
 - [ ] `pnpm test` passes cleanly (Vitest suites)
 - [ ] `pnpm test:e2e` passes (Playwright E2E suites)
 - [ ] `pnpm audit:secrets` passes with 0 leaked credentials or personal home paths
+- [ ] Public docs & UI copy verified for zero internal leaks and affirmative phrasing
 - [ ] `pnpm verify` passes all release preflight checks
 
 ---

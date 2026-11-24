@@ -1,26 +1,82 @@
 'area: templates':
-  - 'templates/**'
-  - 'src/templates/**'
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'templates/**'
+          - 'src/templates/**'
+          - 'scripts/build-templates.mjs'
 
 'area: intake':
-  - 'src/intake/**'
-  - 'examples/sources/**'
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/intake/**'
+          - 'src/radar/**'
+          - 'examples/sources/**'
 
 'area: distill':
-  - 'src/wiki/**'
-  - 'src/persona/**'
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/wiki/**'
+          - 'src/workspace/**'
 
 'area: create':
-  - 'src/composer/**'
-  - 'src/studio/**'
-  - 'examples/*.deck.md'
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/studio/**'
+          - 'src/renderer/deck-parser.ts'
+          - 'src/renderer/html-compiler.ts'
+          - 'examples/*.deck.md'
 
 'area: publish':
-  - 'src/publisher/**'
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/publisher/**'
+          - 'src/renderer/exporter-pptx.ts'
+          - 'src/renderer/wechat-inliner.ts'
+
+'area: video':
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/renderer/exporter-media.ts'
+          - 'src/renderer/capcut-draft-builder.ts'
+          - 'src/speech/**'
 
 'area: mcp':
-  - 'src/mcp/**'
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/mcp/**'
+          - 'src/cli.ts'
+          - 'skills/**'
+          - 'integrations/**'
+
+'area: desktop':
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'desktop/**'
+          - 'src/desktop/**'
+          - 'scripts/build-macos-*.mjs'
+
+'area: site':
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/site/**'
+          - 'assets/brand/**'
+
+'area: security':
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/sanitizer/**'
+          - 'scripts/audit-secrets.mjs'
+
+'area: ci-cd':
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/**'
+          - 'scripts/smoke-test.mjs'
+          - 'scripts/validate-skill.mjs'
+          - 'scripts/prepare-npm.mjs'
 
 'documentation':
-  - '**/*.md'
-  - 'docs/**'
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - 'docs/**'
