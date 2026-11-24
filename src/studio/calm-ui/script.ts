@@ -30,6 +30,8 @@ export const CALM_STUDIO_SCRIPT = `
     terminals: [],
     recipes: [],
     trending: [],
+    radar: [],
+    radarCategory: 'all',
     market: { templates: [], packs: [], installedIds: [] },
     media: [],
     galleryTab: 'templates',
@@ -475,10 +477,54 @@ export const CALM_STUDIO_SCRIPT = `
     document.querySelectorAll('#gallery-mode-tabs .seg-tab').forEach((b) => {
       b.classList.toggle('active', b.getAttribute('data-gallery-tab') === tabName);
     });
-    ['templates', 'trending', 'packs'].forEach((t) => {
+    ['templates', 'trending', 'packs', 'radar'].forEach((t) => {
       const panel = $('gallery-panel-' + t);
       if (panel) panel.style.display = t === tabName ? 'block' : 'none';
     });
+    if (tabName === 'radar') {
+      fetchAndRenderRadar(state.radarCategory || 'all');
+    }
+  }
+
+  async function fetchAndRenderRadar(category) {
+    const cat = category || 'all';
+    state.radarCategory = cat;
+    const grid = $('gallery-radar-grid');
+    if (!grid) return;
+    if (!state.radar || state.radar.length === 0 || cat !== 'all') {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--ink-secondary);"><span class="live-dot" style="display:inline-block;margin-right:8px;"></span>正在连接灵感雷达，聚合全网最新热点…</div>';
+      try {
+        const res = await apiJson('/api/radar?category=' + encodeURIComponent(cat) + '&limit=16');
+        state.radar = res.items || [];
+      } catch (err) {
+        // Fallback gracefully
+      }
+    }
+    const items = (state.radar || []).filter((it) => cat === 'all' || (it.category || 'ai-tech') === cat);
+    const badge = $('radar-total-badge');
+    if (badge) badge.textContent = String(items.length);
+
+    if (items.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--ink-muted);">暂无匹配热点素材</div>';
+      return;
+    }
+
+    grid.innerHTML = items.map((it) => {
+      return (
+        '<div class="radar-card" data-radar-id="' + esc(it.id) + '">' +
+        '<div class="radar-card-head">' +
+        '<span class="radar-badge-source">' + esc(it.source) + '</span>' +
+        '<span class="radar-badge-hot">🔥 ' + esc(it.hotness || 'HOT') + '</span>' +
+        '</div>' +
+        '<h4 class="radar-title">' + esc(it.title) + '</h4>' +
+        '<p class="radar-summary">' + esc(it.summary || '') + '</p>' +
+        '<div class="radar-card-foot">' +
+        '<span class="radar-template-tag">建议: ' + esc(it.suggestedTemplate || 'apple-bento-launch') + ' (' + esc(it.suggestedAspectRatio || '3:4') + ')</span>' +
+        '<button class="btn-radar-make" data-radar-make="' + esc(it.id) + '">⚡ 一键制作</button>' +
+        '</div>' +
+        '</div>'
+      );
+    }).join('');
   }
 
   function renderGallery() {
@@ -747,6 +793,7 @@ export const CALM_STUDIO_SCRIPT = `
   // Command Palette (⌘K)
   function getCommands() {
     return [
+      { label: '打开实时灵感雷达（全网热点 · 一键制作）', kbd: 'RADAR', run: () => { switchGalleryTab('radar'); openDrawer('drawer-gallery', 'stage'); } },
       { label: '浏览 36 套视觉风格画廊 · 一键做同款', kbd: 'G', run: () => { switchGalleryTab('templates'); openDrawer('drawer-gallery', 'stage'); } },
       { label: '打开 2026 时事热点示范成品（4 套）', kbd: 'HOT', run: () => { switchGalleryTab('trending'); openDrawer('drawer-gallery', 'stage'); } },
       { label: '在 AI 工具中创作（选择终端或桌面工具）', kbd: 'A', run: () => togglePopover('popover-ai') },
@@ -921,6 +968,13 @@ export const CALM_STUDIO_SCRIPT = `
     btnPopChat.addEventListener('click', () => {
       closeAllPopovers();
       toggleChatPanel(true);
+    });
+  }
+  const btnRadar = $('btn-open-radar');
+  if (btnRadar) {
+    btnRadar.addEventListener('click', () => {
+      switchGalleryTab('radar');
+      openDrawer('drawer-gallery', 'stage');
     });
   }
   $('btn-open-gallery').addEventListener('click', () => {
@@ -2042,6 +2096,47 @@ export const CALM_STUDIO_SCRIPT = `
       }
     }
   });
+
+  const radarGrid = $('gallery-radar-grid');
+  if (radarGrid) {
+    radarGrid.addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-radar-make]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-radar-make');
+      const origText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = '生成中…';
+      try {
+        const res = await apiJson('/api/radar/make', {
+          method: 'POST',
+          body: JSON.stringify({ id }),
+        });
+        state.activeSlideIndex = 0;
+        await refreshState(true);
+        await refreshWorkspaceAndEcosystem();
+        closeAllDrawers();
+        showToast('已基于「' + (res.title || '热点素材') + '」生成作品，即刻开始微调与导出');
+      } catch (err) {
+        showToast('一键生成失败：' + (err.message || '网络异常'));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = origText;
+      }
+    });
+  }
+
+  const radarChips = $('radar-category-chips');
+  if (radarChips) {
+    radarChips.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-radar-cat]');
+      if (!btn) return;
+      const cat = btn.getAttribute('data-radar-cat') || 'all';
+      document.querySelectorAll('#radar-category-chips .filter-chip').forEach((b) => {
+        b.classList.toggle('active', b === btn);
+      });
+      fetchAndRenderRadar(cat);
+    });
+  }
 
   $('gallery-template-grid').addEventListener('click', async (e) => {
     const remixBtn = e.target.closest('[data-remix-template]');

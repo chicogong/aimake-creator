@@ -103,4 +103,29 @@ describe('Multi-Platform Universal Intake & Scrapers', () => {
     expect(res.metrics?.length).toBeGreaterThan(0);
     expect(res.markdown).toContain('DeepSeek-R1');
   });
+
+  it('runs Aimake Trend Radar and generates production .deck.md with smart templates', async () => {
+    const { runTrendRadar, inferSuggestedTemplate, generateDeckFromRadarItem, CURATED_TREND_FIXTURES } =
+      await import('../src/radar/radar-engine.js');
+
+    // 1. Template recommendation inference
+    expect(inferSuggestedTemplate('DeepSeek-R1 Benchmark vs o1').template).toBe('apple-bento-launch');
+    expect(inferSuggestedTemplate('Nature Research Paper on Quantum Diffusion').template).toBe('ppt-tech-architecture');
+    expect(inferSuggestedTemplate('深度复盘：超级个体如何利用开源大模型').template).toBe('xhs-paper-editorial');
+
+    // 2. Trend radar querying (with resilient fixtures fallback)
+    const items = await runTrendRadar({ limit: 6, timeoutMs: 1000 });
+    expect(items.length).toBeGreaterThanOrEqual(4);
+    expect(items[0]).toHaveProperty('title');
+    expect(items[0]).toHaveProperty('source');
+    expect(items[0]).toHaveProperty('suggestedTemplate');
+
+    // 3. 1-Click Deck generation
+    const sampleItem = CURATED_TREND_FIXTURES[0];
+    const generated = generateDeckFromRadarItem(sampleItem);
+    expect(generated.deckMarkdown).toContain('---');
+    expect(generated.deckMarkdown).toContain('apple-bento-launch');
+    expect(generated.deckMarkdown).toContain(sampleItem.title);
+    expect(generated.deckMarkdown).toContain('::: speech');
+  });
 });

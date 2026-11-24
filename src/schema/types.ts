@@ -164,6 +164,11 @@ export interface RadarItem {
   publishedAt: string;
   summary?: string;
   score?: number;
+  category?: 'ai-tech' | 'social' | 'creative' | 'dev' | string;
+  suggestedTemplate?: string;
+  suggestedAspectRatio?: '3:4' | '16:9' | '4:5' | '9:16' | string;
+  author?: string;
+  hotness?: string;
 }
 
 export interface SanitizeReport {

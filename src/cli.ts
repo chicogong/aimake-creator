@@ -29,9 +29,13 @@ import {
   initWikiVault,
   lintWiki,
   rebuildWikiIndex,
+  slugify,
   verifyDeckCitationsAgainstVault,
 } from './wiki/wiki-engine.js';
-import { runTrendRadar } from './radar/radar-engine.js';
+import {
+  generateDeckFromRadarItem,
+  runTrendRadar,
+} from './radar/radar-engine.js';
 import {
   anonymizeDeckToSyntheticMock,
   sanitizeContentForPR,
@@ -762,31 +766,110 @@ personaCmd
   });
 
 program
-  .command('radar')
-  .description('Fetch live global tech & creator trends (Hacker News, GitHub Trending, RSS)')
-  .option('--sources <list>', 'Comma-separated sources (hackernews,github,rss)', 'hackernews,github')
+  .command('radar [idOrIndex]')
+  .description('Live trending materials radar & 1-click deck generation (Hacker News, GitHub, DailyHot, X)')
+  .option('-c, --category <cat>', 'Filter category (all, ai-tech, social, creative, dev)', 'all')
+  .option('--sources <list>', 'Comma-separated sources (hackernews,github,dailyhot,rss)', 'hackernews,github,dailyhot')
   .option('--rss <urls>', 'Comma-separated RSS/Atom feed URLs')
   .option('--keywords <words>', 'Comma-separated filter keywords')
   .option('--limit <n>', 'Max items', '10')
+  .option('-m, --make', 'Generate deck from the specified item')
+  .option('-t, --template <name>', 'Override design template (e.g. apple-bento-launch)')
+  .option('-a, --aspect <ratio>', 'Target aspect ratio (3:4, 16:9, 4:5, 9:16)', '3:4')
+  .option('-o, --out <path>', 'Output path for generated .deck.md')
   .option('--json', 'Emit machine-readable JSON')
   .action(
-    async (opts: {
-      sources: string;
-      rss?: string;
-      keywords?: string;
-      limit: string;
-      json?: boolean;
-    }) => {
+    async (
+      idOrIndex: string | undefined,
+      opts: {
+        category?: 'all' | 'ai-tech' | 'social' | 'creative' | 'dev';
+        sources: string;
+        rss?: string;
+        keywords?: string;
+        limit: string;
+        make?: boolean;
+        template?: string;
+        aspect?: string;
+        out?: string;
+        json?: boolean;
+      }
+    ) => {
       const items = await runTrendRadar({
-        sources: opts.sources.split(',').map((s) => s.trim()) as Array<'hackernews' | 'github' | 'rss'>,
+        category: opts.category,
+        sources: opts.sources.split(',').map((s) => s.trim()) as Array<'hackernews' | 'github' | 'dailyhot' | 'rss'>,
         rssUrls: opts.rss ? opts.rss.split(',').map((s) => s.trim()) : undefined,
         keywords: opts.keywords ? opts.keywords.split(',').map((s) => s.trim()) : undefined,
         limit: Number(opts.limit) || 10,
       });
-      const human = items
-        .map((it, i) => `${i + 1}. [${it.source}] ${it.title}\n   ${it.url}`)
-        .join('\n');
-      printResult(items, opts.json, human || 'No matching radar items found.');
+
+      // If user passed an ID or 1-based index to generate:
+      if (idOrIndex || opts.make) {
+        let targetItem: any;
+        if (idOrIndex && /^\d+$/.test(idOrIndex)) {
+          const idx = parseInt(idOrIndex, 10) - 1;
+          targetItem = items[idx];
+        } else if (idOrIndex) {
+          targetItem = items.find((it) => it.id === idOrIndex || it.url === idOrIndex);
+        }
+        if (!targetItem) {
+          targetItem = items[0];
+        }
+        if (!targetItem) {
+          throw new Error('No radar items available to generate deck from.');
+        }
+
+        const { deckMarkdown, template, aspectRatio, title } = generateDeckFromRadarItem(targetItem, {
+          template: opts.template,
+          aspectRatio: opts.aspect as '3:4' | '16:9' | undefined,
+        });
+
+        const slug = slugify(title).slice(0, 36) || 'radar-deck';
+        const defaultOut = path.join(process.cwd(), `${slug}.deck.md`);
+        const outPath = path.resolve(process.cwd(), opts.out || defaultOut);
+        await fs.mkdir(path.dirname(outPath), { recursive: true });
+        await fs.writeFile(outPath, deckMarkdown, 'utf8');
+
+        const rel = path.relative(process.cwd(), outPath);
+        const result = {
+          generated: true,
+          title,
+          source: targetItem.source,
+          url: targetItem.url,
+          template,
+          aspectRatio,
+          path: rel,
+        };
+
+        const human = [
+          `⚡ [Aimake Radar] Generated deck from [${targetItem.source}]: ${title}`,
+          `   File: ${rel}`,
+          `   Template: ${template} (${aspectRatio})`,
+          ``,
+          `👉 Next steps:`,
+          `   aimake studio ${rel}         # Open in Calm Studio Canvas`,
+          `   aimake render ${rel} -f png   # Export 3x retina social image cards`,
+          `   aimake render ${rel} -f pptx  # Export editable Keynote/PowerPoint`,
+        ].join('\n');
+
+        printResult(result, opts.json, human);
+        return;
+      }
+
+      const human = [
+        `🔥 Aimake Radar · 实时热点与创作灵感 (${items.length} 条):`,
+        ``,
+        ...items.map((it, i) => {
+          const hot = it.hotness ? ` (${it.hotness})` : '';
+          const tpl = it.suggestedTemplate ? ` [建议模板: ${it.suggestedTemplate}]` : '';
+          return `${i + 1}. [${it.source}] ${it.title}${hot}${tpl}\n   URL: ${it.url}\n   Summary: ${(it.summary || '').slice(0, 75)}...`;
+        }),
+        ``,
+        `💡 极速生成作品:`,
+        `   aimake radar 1                # 一键将第 1 条热点生成为 .deck.md`,
+        `   aimake radar <id> -t apple-bento-launch # 指定模板生成`,
+      ].join('\n');
+
+      printResult(items, opts.json, human);
     }
   );
 

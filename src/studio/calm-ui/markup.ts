@@ -48,6 +48,11 @@ export const CALM_STUDIO_MARKUP = `
         ${lucideIcon('chevronDown', 'ic ic-sm')}
       </button>
 
+      <button class="btn btn-radar-trigger" id="btn-open-radar" title="浏览全网实时热点（X/Twitter、GitHub Trending、知乎、36Kr），一键生成作品">
+        ${lucideIcon('flame')}
+        <span>灵感雷达</span>
+      </button>
+
       <button class="btn" id="btn-open-gallery" title="浏览 36 套高颜值视觉风格与 2026 时事范例，一键做同款">
         ${lucideIcon('layoutGrid')}
         <span>风格与同款</span>
@@ -386,6 +391,7 @@ export const CALM_STUDIO_MARKUP = `
       <div class="segmented-tabs" id="gallery-mode-tabs">
         <button class="seg-tab active" data-gallery-tab="templates">全部风格（<span id="gallery-total-badge">36</span>）</button>
         <button class="seg-tab" data-gallery-tab="trending">2026 时事热点成品（<span id="trending-total-badge">4</span>）</button>
+        <button class="seg-tab" data-gallery-tab="radar">🔥 实时灵感雷达（<span id="radar-total-badge">6</span>）</button>
         <button class="seg-tab" data-gallery-tab="packs">行业风格套件（<span id="packs-total-badge">7</span>）</button>
       </div>
 
@@ -419,6 +425,23 @@ export const CALM_STUDIO_MARKUP = `
       <!-- Tab 3: 7 Industry Packs -->
       <div id="gallery-panel-packs" style="display:none;">
         <div class="pack-strip" id="gallery-pack-strip"></div>
+      </div>
+
+      <!-- Tab 4: Live Inspiration Radar (实时灵感雷达) -->
+      <div id="gallery-panel-radar" style="display:none;">
+        <p style="margin:0 0 14px;font-size:12.5px;color:var(--ink-secondary);line-height:1.55;">
+          聚合全球 X/Twitter、GitHub Trending、知乎、36Kr 实时热点事实。点击卡片右下角<strong>「⚡ 一键制作」</strong>，系统自动匹配最佳模板并在 1 秒内生成完整文稿。
+        </p>
+        <div class="filter-bar" style="margin-bottom:14px;">
+          <div class="chip-row" id="radar-category-chips">
+            <button class="filter-chip active" data-radar-cat="all">全部热点</button>
+            <button class="filter-chip" data-radar-cat="ai-tech">AI & 科技</button>
+            <button class="filter-chip" data-radar-cat="social">社交热榜</button>
+            <button class="filter-chip" data-radar-cat="creative">创作者经济</button>
+            <button class="filter-chip" data-radar-cat="dev">开发者开源</button>
+          </div>
+        </div>
+        <div class="radar-grid" id="gallery-radar-grid"></div>
       </div>
     </div>
   </section>

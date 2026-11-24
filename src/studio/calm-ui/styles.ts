@@ -1290,6 +1290,105 @@ export const CALM_STUDIO_CSS = `
     flex: 1;
   }
 
+  /* Radar Inspiration Grid & Cards */
+  .radar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 14px;
+  }
+  .radar-card {
+    border-radius: 13px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.18s cubic-bezier(0.2, 0.85, 0.25, 1), box-shadow 0.18s ease, border-color 0.15s ease;
+  }
+  .radar-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+  }
+  .radar-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .radar-badge-source {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .radar-badge-hot {
+    font-size: 11px;
+    color: #ea580c;
+    font-weight: 650;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .radar-title {
+    font-size: 13.5px;
+    font-weight: 650;
+    line-height: 1.45;
+    color: var(--ink);
+    margin: 0;
+  }
+  .radar-summary {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--ink-secondary);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .radar-card-foot {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .radar-template-tag {
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+  }
+  .btn-radar-make {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 650;
+    border-radius: 7px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .btn-radar-make:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+  .btn-radar-trigger {
+    background: var(--accent-soft) !important;
+    color: var(--accent) !important;
+    border-color: var(--accent) !important;
+    font-weight: 650;
+  }
+
   /* Form / Inspector Cards */
   .section-block {
     padding: 14px;

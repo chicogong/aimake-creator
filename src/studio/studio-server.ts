@@ -45,6 +45,11 @@ import {
   synthesizeDeckSpeech,
 } from '../speech/index.js';
 import {
+  CURATED_TREND_FIXTURES,
+  generateDeckFromRadarItem,
+  runTrendRadar,
+} from '../radar/radar-engine.js';
+import {
   detectOpenCodeStatus,
   runOpenCodeTask,
 } from '../desktop/opencode-bridge.js';
@@ -905,6 +910,66 @@ export async function startStudioServer(
           mode: 'import',
           rel: toRelPosix(workspaceDir, destPath),
           title: entry.title || itemId,
+        });
+        return;
+      }
+
+      // =======================================================================
+      // AIMAKE RADAR API: REAL-TIME TRENDS & 1-CLICK DECK CREATION
+      // =======================================================================
+      if (req.method === 'GET' && url.pathname === '/api/radar') {
+        const category = url.searchParams.get('category') || 'all';
+        const limit = Number(url.searchParams.get('limit')) || 12;
+        try {
+          const items = await runTrendRadar({
+            category: category as 'all' | 'ai-tech' | 'social' | 'creative' | 'dev',
+            limit,
+          });
+          sendJson(res, 200, { ok: true, items });
+        } catch {
+          sendJson(res, 200, { ok: true, items: CURATED_TREND_FIXTURES.slice(0, limit) });
+        }
+        return;
+      }
+
+      if (req.method === 'POST' && url.pathname === '/api/radar/make') {
+        const body = await readJsonBody(req);
+        const itemId = String(body.id || '').trim();
+        const customTemplate = body.template ? String(body.template).trim() : undefined;
+        const customAspect = body.aspectRatio ? String(body.aspectRatio).trim() : undefined;
+
+        const items = await runTrendRadar({ limit: 50 });
+        const targetItem = items.find((it) => it.id === itemId) || items[0] || CURATED_TREND_FIXTURES[0];
+
+        const { deckMarkdown, template, aspectRatio, title } = generateDeckFromRadarItem(targetItem, {
+          template: customTemplate,
+          aspectRatio: customAspect as '3:4' | '16:9' | undefined,
+        });
+
+        const slug = slugify(title).slice(0, 36) || `radar-${Date.now().toString(36).slice(-4)}`;
+        const decksDir = path.join(workspaceDir, 'decks');
+        await fs.mkdir(decksDir, { recursive: true });
+        const targetPath = await resolveContainedWriteTarget(decksDir, `${slug}.deck.md`);
+        await fs.writeFile(targetPath, deckMarkdown, 'utf8');
+
+        absDeckPath = targetPath;
+        setupWatchers();
+        await writeRuntimeDiscoveryFile();
+
+        broadcastSse({
+          type: 'stage-focus',
+          rel: toRelPosix(workspaceDir, absDeckPath),
+          slideIndex: 0,
+          message: `已基于「${title.slice(0, 18)}」一键生成作品`,
+          ts: Date.now(),
+        });
+
+        sendJson(res, 200, {
+          ok: true,
+          rel: toRelPosix(workspaceDir, absDeckPath),
+          title,
+          template,
+          aspectRatio,
         });
         return;
       }
