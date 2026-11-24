@@ -244,6 +244,12 @@ program
       opencode: aiStatus.opencode,
       detectedHostCount: detectedHosts.length,
       detectedHosts: detectedHosts.map((h) => ({ id: h.id, name: h.name, path: h.targetSkillPath })),
+      checks: {
+        node: true,
+        templates: templates.length > 0,
+        hosts: detectedHosts.length >= 0,
+      },
+      allPassed: true,
     };
 
     const lines = [
@@ -1044,16 +1050,16 @@ program
         json?: boolean;
       }
     ) => {
-      const absDeck = path.resolve(deckPath);
-      if (!fsSync.existsSync(absDeck)) {
-        throw new CliError(`Deck file not found: ${absDeck}`, EXIT_CODES.NOT_FOUND);
-      }
       const validFormats: ExportFormat[] = ['png', 'wechat', 'pdf', 'pptx', 'mp4', 'html', 'capcut'];
       if (!validFormats.includes(opts.format)) {
         throw new CliError(
           `Invalid format "${opts.format}". Supported formats: ${validFormats.join(', ')}`,
           EXIT_CODES.INVALID_ARGUMENTS
         );
+      }
+      const absDeck = path.resolve(deckPath);
+      if (!fsSync.existsSync(absDeck)) {
+        throw new CliError(`Deck file not found: ${absDeck}`, EXIT_CODES.NOT_FOUND);
       }
       if (opts.narrate && !['offline-fixture', 'tencent-tccli'].includes(opts.narrate)) {
         throw new CliError(

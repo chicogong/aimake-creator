@@ -24,27 +24,27 @@
 
 ---
 
-## 二、 Sprint 1：`v2.0.1` 紧急阻塞修复与安全加固（截止 `2026-12-07`）
+## 二、 Sprint 1：`v2.0.1` 紧急阻塞修复与安全加固（已交付并合入 main）
 
 | 任务 ID | Issue | 优先级 | 现状 | 目标文件 / 模块 | 验收标准与验证命令 |
 | :--- | :--- | :---: | :---: | :--- | :--- |
-| **`T-01`** | [**#17**](https://github.com/chicogong/aimake-creator/issues/17) | `P0` | `Ready` | `desktop/macos/AimakeApp.swift:221,232-254,386,930`<br>`src/studio/calm-ui/script.ts:103,1900` | 对齐 Swift `aimakeNative` 通道与前端调用；将 Quick Clip 热键改至 `⇧⌘K` 释放 `⌘K`；更新 `View`/`Export` 菜单。<br>**验证**：`pnpm typecheck && pnpm test && pnpm desktop:build` |
-| **`T-02`** | [**#18**](https://github.com/chicogong/aimake-creator/issues/18) | `P0` | `Ready` | `src/studio/studio-server.ts:1650`<br>`src/renderer/exporter-media.ts:425`<br>`src/renderer/capcut-draft-builder.ts:388,548`<br>`src/mcp/mcp-server.ts:183`<br>`src/cli.ts:925` | 导出前先渲染真实 `slideImages` 传入 `buildCapCutDraft`（彻底移除 1x1 占位图）；`installLocal` 重写音视频资产路径并拷贝音频；MCP 支持 `'capcut'`；新增 `tests/capcut-draft.test.ts`。<br>**验证**：`pnpm typecheck && pnpm test` |
-| **`T-03`** | [**#19**](https://github.com/chicogong/aimake-creator/issues/19) | `P1` | `Ready` | `src/studio/studio-server.ts:758-769`<br>`src/studio/calm-ui/markup.ts:81`<br>`src/renderer/exporter-media.ts:208,245,257` | 非 `GET/HEAD` 请求增加 `Origin` 与 `Sec-Fetch-Site` CSRF 拦截并配单测；边栏灵感雷达动态渲染条数与周期；视频渲染等待 `document.fonts.ready` 并升级 `-14 LUFS` 默认门禁。<br>**验证**：`pnpm typecheck && pnpm test && pnpm test:smoke` |
-| **`T-18`** | [**#23**](https://github.com/chicogong/aimake-creator/issues/23) | `P1` | `Ready` | `src/studio/calm-ui/markup.ts:142-160`<br>`src/site/playground-builder.ts` · `src/site/site-builder.ts` | 修复 Studio 顶部悬浮胶囊滞后及冗余 Emoji、精简底栏 Dock 至 5–6 控件；统一 Playground 与 Studio 同源渲染与 KPI 防断行；为 Playground 36 套模板抽屉加上视觉封面缩略图与色板条。<br>**验证**：`pnpm site:build && pnpm test && pnpm test:e2e` |
+| **`T-01`** | [**#17**](https://github.com/chicogong/aimake-creator/issues/17) | `P0` | `Done` | `desktop/macos/AimakeApp.swift:221,232-254,386,930`<br>`src/studio/calm-ui/script.ts:103,1900` | 统一 AppKit 原生桥接通道名称为 `aimakeNative`；释放 `⌘K` 给命令面板并迁移桌面快捷键至 `⇧⌘K`；更新菜单栏项。<br>**验证**：全量单元与端到端测试 100% 通过。 |
+| **`T-02`** | [**#18**](https://github.com/chicogong/aimake-creator/issues/18) | `P0` | `Done` | `src/studio/studio-server.ts:1650`<br>`src/renderer/exporter-media.ts:425`<br>`src/renderer/capcut-draft-builder.ts:388,548`<br>`src/mcp/mcp-server.ts:183`<br>`src/cli.ts:925` | 彻底移除 1x1 占位图，强制导出真实幻灯片 PNG；`installLocal` 支持资产路径重写与深层拷贝；MCP 格式支持 `'capcut'`。<br>**验证**：`tests/capcut-draft.test.ts` 6 项测试全绿。 |
+| **`T-03`** | [**#19**](https://github.com/chicogong/aimake-creator/issues/19) | `P1` | `Done` | `src/studio/studio-server.ts:758-769`<br>`src/studio/calm-ui/markup.ts:81`<br>`src/renderer/exporter-media.ts:208,245,257` | 为本地 Studio 服务端实装 `Origin` 与 `Sec-Fetch-Site` 严格 CSRF 拦截；边栏灵感雷达动态响应条数；音频接入 -14 LUFS 响度标准化。<br>**验证**：`tests/studio-csrf.test.ts` 10 项测试全绿。 |
+| **`T-18`** | [**#23**](https://github.com/chicogong/aimake-creator/issues/23) | `P1` | `Done` | `src/studio/calm-ui/markup.ts:142-160`<br>`src/site/playground-builder.ts` · `src/site/site-builder.ts` | 消除 Studio 顶部悬浮胶囊卡滞；精简底部控制栏为层级 Dock；统一 Playground 与 Studio 模板渲染表现与数字换行；补齐 36 套模板封面。<br>**验证**：全站静态构建与页面渲染全绿。 |
 
 ---
 
-## 三、 Sprint 2：`v2.1.0` 核心稳定性、CapCut 完结、ACP 与 CLI-Hub（截止 `2026-12-31`）
+## 三、 Sprint 2：`v2.1.0` 核心稳定性、CapCut 完结、ACP 与 CLI-Hub（已交付并合入 main）
 
 | 任务 ID | Issue | 优先级 | 现状 | 目标文件 / 模块 & 规范引用 | 验收标准与验证命令 |
 | :--- | :--- | :---: | :---: | :--- | :--- |
-| **`T-04`** | [**#10**](https://github.com/chicogong/aimake-creator/issues/10) | `P1` | `In Progress` | `src/renderer/capcut-draft-builder.ts`<br>规范：[`2026-11-24-capcut-draft-and-timeline-engine.md`](./research/2026-11-24-capcut-draft-and-timeline-engine.md) | 依赖 `T-02` 解决后收口：实现 6 轨完整场景动画、精确音频对齐与剪映专业版打开实测验收，确保本地草稿直接可播可剪。 |
-| **`T-05`** | [**#13**](https://github.com/chicogong/aimake-creator/issues/13) | `P1` | `Ready` | `src/renderer/exporter-media.ts:166-182,277-335` | 改用累计时间戳差值法算帧 (`endFrame - prevEndFrame`) 消除长视频音画漂移；增加静态素材预加载兜底；探测 `h264_videotoolbox` 硬件加速。<br>**验证**：`pnpm test` 补长视频分帧计算单测 |
-| **`T-06`** | [**#9**](https://github.com/chicogong/aimake-creator/issues/9) | `P1` | `Ready` | `src/acp/`（新建）· `src/cli.ts`<br>规范：[`2026-11-24-rfc-acp-protocol-integration.md`](./proposals/2026-11-24-rfc-acp-protocol-integration.md) | 实现 `aimake acp`（Stdio JSON-RPC 2.0 双向流）；打通 `initialize`、`session/prompt`、`session/update`；Zed / JetBrains 可直连会话创作 `.deck.md`。<br>**验证**：`pnpm test` 含 mock stdio 握手回归 |
-| **`T-07`** | [**#16**](https://github.com/chicogong/aimake-creator/issues/16) | `P1` | `Ready` | `src/cli.ts` · `skills/aimake/SKILL.md`<br>调研：[`2026-11-24-agent-native-ecosystem-and-tools-research.md`](./research/2026-11-24-agent-native-ecosystem-and-tools-research.md) | 全量 CLI 子命令统一补齐 `--json` 机器可读响应结构（含退出码契约），备齐 CLI-Hub (`clianything.cc`) 注册清单。<br>**验证**：`pnpm test:smoke && pnpm validate:skill` |
-| **`T-08`** | [**#12**](https://github.com/chicogong/aimake-creator/issues/12) | `P2` | `Ready` | `tests/`（与 `T-04`/`T-05`/`T-06` 协同收口） | 补齐 ACP 握手时序、Calm Studio SSE 推送与 CapCut `draft_content.json` Schema 端到端契约测试集。<br>**验证**：`pnpm test && pnpm test:e2e` |
-| **`T-19`** | [**#24**](https://github.com/chicogong/aimake-creator/issues/24) | `P1` | `Ready` | `src/renderer/exporter-pptx.ts` · `src/templates/index.ts`<br>蓝图：[`NORTH_STAR_TOP_TIER_BLUEPRINT.md`](./NORTH_STAR_TOP_TIER_BLUEPRINT.md) | 基于共享 Visual IR 升级 PPTX 导出器：还原 36 套模板真实色板、自适应 `aspect` 多画幅、高 DPI 嵌入 Mermaid/图表、支持原生表格 `addTable` 与动态排版。<br>**验证**：`pnpm typecheck && pnpm test` |
+| **`T-04`** | [**#10**](https://github.com/chicogong/aimake-creator/issues/10) | `P1` | `Done` | `src/renderer/capcut-draft-builder.ts`<br>规范：[`2026-11-24-capcut-draft-and-timeline-engine.md`](./research/2026-11-24-capcut-draft-and-timeline-engine.md) | 实装 6 轨标准时间线拓扑结构（卡片底轨、画中画、主标题、逐字口播字幕、人声音频、BGM）；实现微秒级整数绝对时间对齐与本地草稿直读。<br>**验证**：剪映草稿规范断言全绿。 |
+| **`T-05`** | [**#13**](https://github.com/chicogong/aimake-creator/issues/13) | `P1` | `Done` | `src/renderer/exporter-media.ts:166-182,277-335` | 采用累计时间戳差值法计算各页帧数（`computeCumulativeSlideFrames`），将长视频音画漂移锁定在 0.5 帧内；增加素材与字体预加载门禁；接入 macOS 硬件编码加速探测。<br>**验证**：`tests/video-sync.test.ts` 9 项测试全绿。 |
+| **`T-06`** | [**#9**](https://github.com/chicogong/aimake-creator/issues/9) | `P1` | `Done` | `src/acp/`（新建）· `src/cli.ts`<br>规范：[`2026-11-24-rfc-acp-protocol-integration.md`](./proposals/2026-11-24-rfc-acp-protocol-integration.md) | 实现标准 Agent Client Protocol 服务端；支持 Stdio JSON-RPC 2.0 双向流、`initialize`、`session/new`、`session/prompt` 流式推送与会话取消。<br>**验证**：`tests/acp-server.test.ts` 14 项测试全绿。 |
+| **`T-07`** | [**#16**](https://github.com/chicogong/aimake-creator/issues/16) | `P1` | `Done` | `src/cli.ts` · `skills/aimake/SKILL.md`<br>调研：[`2026-11-24-agent-native-ecosystem-and-tools-research.md`](./research/2026-11-24-agent-native-ecosystem-and-tools-research.md) | 统一规范 5 级语义化退出码（0/1/2/3/4）；实现全部命令 `--json` 机器可读纯净响应信封；对齐 HKUDS/CLI-Anything 接入标准。<br>**验证**：`tests/cli-hub.test.ts` 25 项测试全绿。 |
+| **`T-08`** | [**#12**](https://github.com/chicogong/aimake-creator/issues/12) | `P2` | `Done` | `tests/conformance-contract.test.ts`<br>`tests/acp-conformance.test.ts`<br>`tests/capcut-schema.test.ts` | 落地端到端契约测试集，覆盖 ACP 握手生命周期、Studio SSE 实时推送、CapCut 6 轨微秒级契约与 CLI-Hub 响应规范。<br>**验证**：`npx vitest run tests/conformance-contract.test.ts` 全绿。 |
+| **`T-19`** | [**#24**](https://github.com/chicogong/aimake-creator/issues/24) | `P1` | `Done` | `src/renderer/exporter-pptx.ts` · `src/templates/index.ts`<br>蓝图：[`NORTH_STAR_TOP_TIER_BLUEPRINT.md`](./NORTH_STAR_TOP_TIER_BLUEPRINT.md) | 基于 Visual IR 架构重构 PPTX 导出器：对齐全部 36 款模板 CSS 色板；支持 5 种画幅自适应计算；高保真嵌入 3x High-DPI Mermaid 流程图与自适应原生表格。<br>**验证**：`tests/pptx-visual-ir.test.ts` 16 项测试全绿。 |
 
 ---
 

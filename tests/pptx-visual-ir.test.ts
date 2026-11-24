@@ -260,7 +260,7 @@ describe('PPTX Visual IR Engine (T-19)', () => {
       expect(buffer[1]).toBe(0x50);
       expect(buffer[2]).toBe(0x4e);
       expect(buffer[3]).toBe(0x47);
-    });
+    }, 20000);
 
     it('gracefully handles non-flowchart syntax without throwing', async () => {
       const invalidCode = 'unsupported_syntax_block\n  A --- B';

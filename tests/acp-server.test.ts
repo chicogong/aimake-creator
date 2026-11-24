@@ -447,7 +447,10 @@ describe('Agent Client Protocol (ACP) Server 2.0 (RFC-2026-001)', () => {
           params: { clientInfo: { name: 'cursor-agent' } },
         }) + '\n'
       );
-      await new Promise((r) => setTimeout(r, 50));
+      const deadline = Date.now() + 2000;
+      while (receivedLines.length < 3 && Date.now() < deadline) {
+        await new Promise((r) => setTimeout(r, 20));
+      }
 
       expect(receivedLines).toHaveLength(3);
       expect(receivedLines[2].id).toBe(71);
