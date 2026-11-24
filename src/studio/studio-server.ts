@@ -17,7 +17,7 @@ import {
 } from '../renderer/deck-parser.js';
 import { compileDeckToHtml, listTemplates } from '../renderer/html-compiler.js';
 import { renderWeChatInlineHtml } from '../renderer/wechat-inliner.js';
-import { exportDeckBundle } from '../renderer/exporter-media.js';
+import { exportDeckBundle, exportDeckToPngs } from '../renderer/exporter-media.js';
 import {
   compoundOutputToWiki,
   ingestSource,
@@ -160,10 +160,34 @@ function sendJson(res: http.ServerResponse, statusCode: number, payload: unknown
   res.end(JSON.stringify(payload));
 }
 
-function isAllowedHostHeader(hostHeader: string | undefined, port: number): boolean {
+export function isAllowedHostHeader(hostHeader: string | undefined, port: number): boolean {
   if (!hostHeader) return false;
   const normalized = hostHeader.trim().toLowerCase();
   return normalized === `127.0.0.1:${port}` || normalized === `localhost:${port}`;
+}
+
+export function isAllowedOriginHeader(originHeader: string | undefined, port: number): boolean {
+  if (!originHeader) return true;
+  try {
+    const parsed = new URL(originHeader.trim());
+    const hostWithPort = parsed.host.toLowerCase();
+    const expected1 = `127.0.0.1:${port}`;
+    const expected2 = `localhost:${port}`;
+    return (
+      (parsed.protocol === 'http:' || parsed.protocol === 'https:') &&
+      (hostWithPort === expected1 || hostWithPort === expected2)
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function getCurrentWeekString(d = new Date()): string {
+  const target = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  target.setUTCDate(target.getUTCDate() + 4 - (target.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(target.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil(((target.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  return `W${weekNo}`;
 }
 
 async function readJsonBody(req: http.IncomingMessage): Promise<Record<string, unknown>> {
@@ -765,6 +789,25 @@ export async function startStudioServer(
         return;
       }
 
+      // 2. Anti-CSRF: Validate Sec-Fetch-Site and Origin for non-GET/HEAD mutating requests
+      if (req.method !== 'GET' && req.method !== 'HEAD') {
+        const secFetchSite = Array.isArray(req.headers['sec-fetch-site'])
+          ? req.headers['sec-fetch-site'][0]
+          : req.headers['sec-fetch-site'];
+        if (secFetchSite && secFetchSite.trim().toLowerCase() === 'cross-site') {
+          sendJson(res, 403, { error: 'Cross-site requests forbidden (Sec-Fetch-Site)' });
+          return;
+        }
+
+        const origin = Array.isArray(req.headers.origin)
+          ? req.headers.origin[0]
+          : req.headers.origin;
+        if (origin && !isAllowedOriginHeader(origin, actualPort)) {
+          sendJson(res, 403, { error: 'Cross-site or invalid Origin forbidden' });
+          return;
+        }
+      }
+
       const url = new URL(req.url || '/', `http://127.0.0.1:${actualPort}`);
 
       // =======================================================================
@@ -979,14 +1022,16 @@ export async function startStudioServer(
       if (req.method === 'GET' && url.pathname === '/api/radar') {
         const category = url.searchParams.get('category') || 'all';
         const limit = Number(url.searchParams.get('limit')) || 12;
+        const week = getCurrentWeekString();
         try {
           const items = await runTrendRadar({
             category,
             limit,
           });
-          sendJson(res, 200, { ok: true, items });
+          sendJson(res, 200, { ok: true, week, count: items.length, items });
         } catch {
-          sendJson(res, 200, { ok: true, items: CURATED_TREND_FIXTURES.slice(0, limit) });
+          const items = CURATED_TREND_FIXTURES.slice(0, limit);
+          sendJson(res, 200, { ok: true, week, count: items.length, items });
         }
         return;
       }
@@ -1646,14 +1691,21 @@ export async function startStudioServer(
 
         if (format === 'capcut') {
           const capcutOutDir = path.join(exportBase, 'capcut-draft');
+          const pngOutDir = path.join(exportBase, 'capcut-slides');
+          const slideImages = await exportDeckToPngs(deck, pngOutDir);
           const installLocal = Boolean(body.installLocal);
           const result = await buildCapCutDraft(deck, {
             outputDir: capcutOutDir,
             installLocal,
             fps,
+            slideImages,
           });
           const localPaths = detectLocalDraftDirectories();
           const appName = localPaths.jianying ? '剪映专业版' : localPaths.capcut ? 'CapCut Desktop' : '剪映 / CapCut';
+          const artifacts = [result.contentPath, result.metaPath, result.coverPath];
+          if (result.localDraftPath) {
+            artifacts.push(result.localDraftPath);
+          }
           sendJson(res, 200, {
             ok: true,
             format: 'capcut',
@@ -1662,7 +1714,7 @@ export async function startStudioServer(
             localDraftPath: result.localDraftPath,
             appName,
             durationMs: result.durationMs,
-            artifacts: [result.contentPath, result.metaPath, result.coverPath],
+            artifacts,
           });
           return;
         }
