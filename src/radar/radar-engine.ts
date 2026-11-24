@@ -128,7 +128,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     url: 'https://x.com/sama/status/1881000000000000000',
     publishedAt: new Date(Date.now() - 5400 * 1000).toISOString(),
     summary:
-      '未来的个人生产力核心不再是云端简单问答，而是拥有本地文件系统读写、确定性排版、音视频渲染与端侧私有执行能力的超级协同副驾驶。',
+      '未来的个人生产力核心，是拥有本地文件系统读写、确定性排版、音视频渲染与端侧私有执行能力的超级协同副驾驶。',
     score: 14200,
     hotness: '🔥 14.2k Likes · @sama',
     suggestedTemplate: 'apple-bento-launch',

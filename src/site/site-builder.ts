@@ -60,13 +60,13 @@ interface TerminalScenario {
 interface LangCopy {
   htmlLang: string;
   deckLocale: SupportedLocale;
+  siteTitle: string;
   navPlayground: string;
   navFlywheel: string;
   navRadar: string;
   navTemplates: string;
   navCli: string;
-  navStudio: string;
-  navUniverse: string;
+  navEcosystem: string;
   heroTag: string;
   heroTitle: string;
   heroSub: string;
@@ -97,17 +97,17 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
   zh: {
     htmlLang: 'zh-CN',
     deckLocale: 'zh-CN',
+    siteTitle: 'Aimake Studio（爱创工坊）· 纯本地多模态创作工作室与 CLI | 1 份 Markdown 直出 5 种商业介质',
     navPlayground: '在线工坊',
     navFlywheel: '创作飞轮',
     navRadar: '灵感雷达',
     navTemplates: '36 套设计模板',
     navCli: '终端 & MCP',
-    navStudio: '爱创工坊 Studio',
-    navUniverse: '爱创星球 Universe',
-    heroTag: 'LOCAL-FIRST · 零后端隐私架构 · 兼容 16+ AI 助手',
-    heroTitle: '把每一次深度思考，编译成五种专业介质的复利资产',
+    navEcosystem: '技术架构',
+    heroTag: 'AIMAKE STUDIO · 100% 纯本地优先 · 零数据上云',
+    heroTitle: '一份 Markdown 原稿，直出 5 种专业交付格式',
     heroSub:
-      'Aimake（爱创）将本地 Karpathy LLM Wiki 知识库、四语种个人风格基因（Style DNA）与确定性排版编译核融为一体。写好一份 .deck.md 原稿，同步直出小红书 3x 高清套图、微信公众号 100% 内联富文本、矢量 PDF、原生可编辑 .pptx 与 60fps 动画短视频。',
+      'Aimake Studio（爱创工坊）面向超级个体创作者与独立开发者。写好一份 .deck.md 原稿，100% 纯本地极速直出小红书 3x 高清套图、微信公众号 100% 内联富文本、矢量 PDF、微软原生可编辑 PPTX 与 60fps 动效短视频。内置 36 套商业级参数化设计模板，零云端依赖，离线可用。',
     primaryCta: '🚀 网页版在线体验 (免安装)',
     secondaryCta: '浏览 36 套设计系统与同款',
     quickInstall: 'npm i -g aimake-studio',
@@ -249,8 +249,8 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     ],
     galleryHeading: '模板市场 · 36 套系统预置模板与 7 大行业包',
     gallerySub: '按语种、平台与视觉风格实时筛选，支持版本化安装与「一键做同款」无损迁移排版',
-    familyHeading: 'Aimake 爱创产品家族',
-    familySub: '面向个人创作者、音视频制作人与家庭跨学科探索的独立本地优先产品线',
+    familyHeading: 'Aimake 技术架构与工具链矩阵',
+    familySub: '面向超级个体的全套本地优先创作工坊、无头渲染引擎与 Agent 协议栈',
     designerLabel: '设计维护',
     specLabel: '画布规格与导出介质',
     deliverablesLabel: '支持原生导出',
@@ -259,17 +259,17 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
   en: {
     htmlLang: 'en',
     deckLocale: 'en',
+    siteTitle: 'Aimake Studio — Local-First Multimodal Creator Studio & CLI | 1 Markdown Source to 5 Formats',
     navPlayground: 'Web Playground',
     navFlywheel: 'Flywheel',
     navRadar: 'Trend Radar',
     navTemplates: '36 Design Systems',
     navCli: 'CLI & MCP',
-    navStudio: 'Aimake Studio',
-    navUniverse: 'Aimake Universe',
-    heroTag: 'LOCAL-FIRST · ZERO-BACKEND PRIVACY · WORKS WITH 16+ AI AGENTS',
-    heroTitle: 'Compile raw notes into five publication-grade deliverables',
+    navEcosystem: 'Ecosystem',
+    heroTag: 'AIMAKE STUDIO · 100% LOCAL-FIRST · ZERO-CLOUD PRIVACY',
+    heroTitle: 'One Markdown Source → Five Native Publication Formats',
     heroSub:
-      'Aimake unites a compounding Karpathy LLM Wiki, a 4-locale anti-slop Style DNA engine, and a deterministic layout compiler. Author one plain-Markdown .deck.md storyboard and output 3x Retina social cards, inline newsletter HTML, vector PDF carousels, native editable PowerPoint (.pptx), and 60fps MP4 reels.',
+      'Aimake Studio empowers creators and developers with a local-first multimodal workspace. Author one .deck.md storyboard, compile Retina 3x PNG cards, WeChat inline-CSS HTML, vector PDF carousels, native editable PowerPoint PPTX, and 60fps MP4 video with synchronized subtitles. 36 built-in design systems, 100% private and offline-ready.',
     primaryCta: '🚀 Try Live Web Playground (No Install)',
     secondaryCta: 'Explore 36 Design Systems',
     quickInstall: 'npm i -g aimake-studio',
@@ -411,8 +411,8 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     ],
     galleryHeading: 'Template Marketplace · 36 Built-in Design Systems & 7 Packs',
     gallerySub: 'Filter by market, aspect ratio, or visual style — install versioned packs or launch One-Click Remix',
-    familyHeading: 'The Aimake Product Family',
-    familySub: 'Independent local-first tools for creators, audio-visual producers, and curious families',
+    familyHeading: 'Aimake Technical Architecture & Toolchain',
+    familySub: 'Local-first visual studio, interactive CLI, headless media runtime, and native IDE agent protocols',
     designerLabel: 'Crafted by',
     specLabel: 'Canvas & Output Specs',
     deliverablesLabel: 'Native Deliverables',
@@ -421,17 +421,17 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
   ja: {
     htmlLang: 'ja',
     deckLocale: 'ja',
+    siteTitle: 'Aimake Studio（アイメイク）· ローカルファースト マルチモーダル制作スタジオ & CLI | 1原稿から5形式',
     navPlayground: 'Web プレイグラウンド',
     navFlywheel: '制作フライホイール',
     navRadar: 'トレンドレーダー',
     navTemplates: '36 種デザインシステム',
     navCli: 'CLI & MCP',
-    navStudio: 'Aimake Studio',
-    navUniverse: 'Aimake Universe',
-    heroTag: 'ローカルファースト · サーバー不要 · 16以上のAIエージェント対応',
-    heroTitle: '日々の知見を、5つのプロ品質メディアへ一括コンパイル',
+    navEcosystem: 'エコシステム',
+    heroTag: 'AIMAKE STUDIO · 100% ローカルファースト · ゼロクラウド',
+    heroTitle: '1つのMarkdown原稿から、5つのプロ品質メディアへ一括出力',
     heroSub:
-      'Aimakeは、知識が複利で増えるKarpathy式LLM Wiki、AI臭さを消す文体DNAエンジン、厳格な日本語禁則処理（line-break: strict）を備えたマルチモーダル制作スタジオです。1つの .deck.md 原稿からXの「図解」・Note用HTML・LinkedIn PDF・編集可能なPPTX・60fps動画を同時出力します。',
+      'Aimake Studio（アイメイク・スタジオ）は、単一の .deck.md から、高解像度画像、Webリッチテキスト、ベクターPDF、編集可能なPPTX、60fps動画を100%ローカルで同時生成するクリエイタースタジオです。36種類のデザインシステムを標準搭載、オフライン完全対応。',
     primaryCta: '🚀 Web版を今すぐ体験（インストール不要）',
     secondaryCta: '36種類のデザインシステムを見る',
     quickInstall: 'npm i -g aimake-studio',
@@ -565,8 +565,8 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     ],
     galleryHeading: '36種類の多言語パラメトリック・テンプレート',
     gallerySub: 'X（旧Twitter）図解、LinkedInスライド、経営報告PPTX、ショート動画まで網羅',
-    familyHeading: 'Aimake 製品ファミリー',
-    familySub: 'クリエイターと家族の学びを支えるローカルファースト製品群',
+    familyHeading: 'Aimake 技術アーキテクチャ & ツールチェーン',
+    familySub: 'ローカルファーストのビジュアルスタジオ、ヘッドレスメディアエンジン、ネイティブAgentプロトコル群',
     designerLabel: 'デザイン',
     specLabel: 'キャンバス仕様',
     deliverablesLabel: '対応出力フォーマット',
@@ -575,17 +575,17 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
   ko: {
     htmlLang: 'ko',
     deckLocale: 'ko',
+    siteTitle: 'Aimake Studio (아이메이크) · 로컬 퍼스트 멀티모달 창작 스튜디오 & CLI | 1 원고 5 포맷 직출',
     navPlayground: '웹 플레이그라운드',
     navFlywheel: '플라이휠',
     navRadar: '트렌드 레이더',
     navTemplates: '36 종 디자인 시스템',
     navCli: 'CLI & MCP',
-    navStudio: 'Aimake Studio',
-    navUniverse: 'Aimake Universe',
-    heroTag: '로컬 퍼스트 · 무서버 프라이버시 · 16개 이상 AI 에이전트 연동',
-    heroTitle: '로컬 노트 한 편을 5가지 전문가급 콘텐츠로 동시 컴파일',
+    navEcosystem: '에코시스템',
+    heroTag: 'AIMAKE STUDIO · 100% 로컬 퍼스트 · 제로 클라우드',
+    heroTitle: '하나의 Markdown 원고로 5가지 전문가급 포맷 동시 직출',
     heroSub:
-      'Aimake는 Karpathy 방식의 로컬 LLM 위키, AI 특유의 번역투를 제거하는 스타일 DNA 엔진, 그리고 Pretendard 단어 단위 줄바꿈(keep-all)이 적용된 멀티모달 제작 스튜디오입니다. 하나의 .deck.md 원고로 인스타그램 카드뉴스, 뉴스레터 HTML, 링크드인 PDF, 편집 가능한 네이티브 PPTX, 60fps 숏폼 영상을 완성하세요.',
+      'Aimake Studio(아이메이크 스튜디오)는 하나의 .deck.md 원고로부터 초고해상도 카드뉴스, 웹 리치 텍스트, 벡터 PDF, 편집 가능한 PPTX 및 60fps 모션 비디오를 100% 로컬에서 즉시 생성합니다. 36종의 파라메트릭 디자인 시스템 내장, 오프라인 완벽 지원.',
     primaryCta: '🚀 웹 플레이그라운드 체험하기 (설치 불필요)',
     secondaryCta: '36가지 글로벌 템플릿 보기',
     quickInstall: 'npm i -g aimake-studio',
@@ -719,59 +719,14 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     ],
     galleryHeading: '36가지 파라미터 디자인 템플릿 시스템',
     gallerySub: '인스타그램 카드뉴스, 링크드인 캐러셀, 임원 보고용 PPTX, 숏폼 릴스 완벽 대응',
-    familyHeading: 'Aimake 제품 패밀리',
-    familySub: '크리에이터와 가족 학습을 위한 로컬 퍼스트 제품 라인업',
+    familyHeading: 'Aimake 기술 아키텍처 & 툴체인',
+    familySub: '로컬 퍼스트 비주얼 스튜디오, 헤드리스 미디어 런타임 및 네이티브 Agent 프로토콜',
     designerLabel: '디자인',
     specLabel: '캔버스 규격',
     deliverablesLabel: '네이티브 출력 포맷',
     footerLine: 'Aimake.cc · 로컬 퍼스트 멀티모달 제작 & LLM 위키 스튜디오 · All Rights Reserved',
   },
 };
-
-const PLANET_MATRIX = [
-  {
-    id: 'brain',
-    nameCn: '脑力星球',
-    nameEn: 'Brain Planet',
-    href: 'https://kids.aimake.cc',
-    desc: '每天 10 分钟，点亮专注、记忆、观察、反应与基础逻辑五维星图。',
-  },
-  {
-    id: 'math',
-    nameCn: '数学星球',
-    nameEn: 'Math Planet',
-    href: 'https://math.aimake.cc',
-    desc: '游戏化空间逻辑与数感训练，把抽象数学变成看得见、玩得懂的直觉。',
-  },
-  {
-    id: 'create',
-    nameCn: '任务工坊',
-    nameEn: 'Create Planet',
-    href: 'https://create.aimake.cc',
-    desc: '面向家长与老师的亲子任务、识字闪卡与魔法绘本一键排版打印工坊。',
-  },
-  {
-    id: 'word',
-    nameCn: '单词星球',
-    nameEn: 'Word Planet',
-    href: 'https://word.aimake.cc',
-    desc: '词根词族几何拆解词典，看懂英语构词逻辑而非机械死记硬背。',
-  },
-  {
-    id: 'code',
-    nameCn: '编程星球',
-    nameEn: 'Code Planet',
-    href: 'https://code.aimake.cc',
-    desc: '积木式互动小游戏创作，在游戏中建立顺序、条件、循环与调试思维。',
-  },
-  {
-    id: 'ai',
-    nameCn: 'AI 素养星球',
-    nameEn: 'AI Planet',
-    href: 'https://ai.aimake.cc',
-    desc: '100% 儿童安全沙盒，学会识别 AI 幻觉、保护个人隐私与负责任提问。',
-  },
-] as const;
 
 function createSampleDeckForTemplate(tpl: TemplateManifest, lang: SiteLang): DeckDocument {
   const locale = UI_COPY[lang].deckLocale;
@@ -889,6 +844,7 @@ function verificationMetaTags(): string {
     `<meta name="yandex-verification" content="${GSC_VERIFICATION.yandex}" />`,
     `<meta name="baidu-site-verification" content="${GSC_VERIFICATION.baidu}" />`,
     `<meta name="msvalidate.01" content="${GSC_VERIFICATION.bing}" />`,
+    `<meta name="color-scheme" content="dark light" />`,
     `<link rel="icon" href="/brand/icons/favicon.ico" sizes="any" />`,
     `<link rel="icon" href="/brand/icons/icon-192.png" sizes="192x192" type="image/png" />`,
     `<link rel="icon" href="/brand/icon-192.png" sizes="192x192" type="image/png" />`,
@@ -1034,7 +990,18 @@ function sharedSiteCss(): string {
       border-color: var(--cobalt);
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      background-color: #07090e;
+      color-scheme: dark light;
+    }
+    html[data-theme="light"] {
+      background-color: #f8fafc;
+    }
+    body.is-loading * {
+      transition: none !important;
+      animation: none !important;
+    }
     body {
       margin: 0;
       background-color: var(--bg);
@@ -1159,11 +1126,11 @@ function sharedSiteCss(): string {
       border-radius: 50%;
       background: var(--emerald);
       box-shadow: 0 0 8px var(--emerald);
-      animation: pulseGlow 2s infinite;
+      animation: pulseGlow 2.5s ease-in-out infinite;
     }
     @keyframes pulseGlow {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.45; transform: scale(0.85); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
     }
     .hero h1 {
       font-size: clamp(32px, 4.2vw, 54px);
@@ -1503,7 +1470,7 @@ function sharedSiteCss(): string {
     }
 
     /* Template Cards & Gallery */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 20px; }
     .tpl-card {
       background: var(--surface);
       backdrop-filter: blur(20px);
@@ -1542,7 +1509,7 @@ function sharedSiteCss(): string {
     .fmt-tag { font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: #cbd5e1; }
 
     /* Industry Packs */
-    .pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; }
+    .pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)); gap: 18px; }
     .pillar-card {
       background: var(--surface);
       backdrop-filter: blur(16px);
@@ -1557,7 +1524,7 @@ function sharedSiteCss(): string {
     .pillar-card p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.6; }
 
     /* Family */
-    .family-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .family-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px; }
     .family-card {
       background: linear-gradient(180deg, var(--surface), rgba(12, 16, 24, 0.9));
       backdrop-filter: blur(20px);
@@ -1602,11 +1569,10 @@ function sharedSiteCss(): string {
     }
     .radar-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
       gap: 18px;
       margin-top: 20px;
     }
-    @media (max-width: 640px) { .radar-grid { grid-template-columns: 1fr; } }
     .radar-card {
       background: var(--surface);
       backdrop-filter: blur(20px);
@@ -1680,6 +1646,77 @@ function sharedSiteCss(): string {
       flex-wrap: wrap;
     }
 
+    /* Mobile Nav Strip */
+    .mobile-nav-strip {
+      display: none;
+      border-top: 1px solid var(--border);
+      background: rgba(7, 9, 14, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    [data-theme="light"] .mobile-nav-strip {
+      background: rgba(255, 255, 255, 0.95);
+    }
+    .mobile-nav-scroll {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 8px 16px;
+      white-space: nowrap;
+    }
+    .mobile-nav-scroll::-webkit-scrollbar { display: none; }
+    .mobile-nav-scroll a {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 4px 8px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      transition: color 0.15s;
+    }
+    .mobile-nav-scroll a:hover {
+      color: var(--ink);
+    }
+    .mobile-nav-pill-highlight {
+      color: #93c5fd !important;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      font-weight: 600;
+    }
+
+    /* Responsive Overhaul */
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .mobile-nav-strip { display: block; }
+      .logo-sub { display: none; }
+      .hero { padding: 40px 0 32px; }
+      .hero h1 { font-size: clamp(26px, 6.2vw, 38px); line-height: 1.22; }
+      .stage-mac-dots { display: none; }
+      .stage-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+      }
+      .stage-tabs::-webkit-scrollbar { display: none; }
+      .stage-tab { flex-shrink: 0; }
+      .stage-viewport { height: 400px; }
+      .stage-foot { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .cta-row { flex-direction: column; align-items: stretch; }
+      .cta-row > * { width: 100%; justify-content: center; text-align: center; }
+      .radar-api-banner { flex-direction: column; align-items: stretch; gap: 14px; }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .grid { grid-template-columns: 1fr; }
+      .radar-grid { grid-template-columns: 1fr; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .family-grid { grid-template-columns: 1fr; }
+      .stage-viewport { height: 350px; }
+    }
+
     /* Toast */
     #site-toast {
       position: fixed;
@@ -1717,18 +1754,19 @@ function themeHeadScript(): string {
 (function() {
   try {
     var saved = localStorage.getItem('aimake-theme');
-    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var theme = saved || (prefersDark ? 'dark' : 'light');
+    var theme = saved || 'dark';
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.colorScheme = theme;
   } catch(e) {}
 })();
 function toggleAimakeTheme() {
   var cur = document.documentElement.getAttribute('data-theme') || 'dark';
   var next = cur === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
+  document.documentElement.style.colorScheme = next;
   try { localStorage.setItem('aimake-theme', next); } catch(e) {}
   var btn = document.getElementById('theme-toggle-btn');
-  if (btn) btn.textContent = next === 'dark' ? '🌙' : '☀️';
+  if (btn) btn.textContent = next === 'dark' ? '🌓' : '☀️';
 }
 </script>`;
 }
@@ -1739,7 +1777,7 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
   return `
   <nav class="topbar">
     <div class="container nav-inner">
-      <div style="display:flex;align-items:center;gap:12px;">
+      <div class="nav-brand-group">
         <a class="logo" href="/${lang}/">
           <img src="/brand/logos/symbol-color.svg" width="28" height="28" style="vertical-align:middle;display:inline-block;border-radius:6px;" alt="Aimake Studio Logo" />
           <span>Aimake Studio</span>
@@ -1753,10 +1791,9 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
         <a href="/${lang}/#flywheel">${esc(copy.navFlywheel)}</a>
         <a href="/${lang}/#templates">${esc(copy.navTemplates)}</a>
         <a href="/${lang}/#cli">${esc(copy.navCli)}</a>
-        <a href="https://studio.aimake.cc" target="_blank" rel="noopener">${esc(copy.navStudio)} ↗</a>
-        <a href="/universe/">${esc(copy.navUniverse)}</a>
+        <a href="/${lang}/#ecosystem">🏛️ ${esc(copy.navEcosystem)}</a>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div class="nav-actions">
         <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleAimakeTheme()" aria-label="Toggle dark/light theme" title="切换浅色 / 深色模式">🌓</button>
         <div class="lang-switch" aria-label="Language switcher">
           ${langs
@@ -1766,6 +1803,17 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
             )
             .join('')}
         </div>
+      </div>
+    </div>
+    <div class="mobile-nav-strip">
+      <div class="container mobile-nav-scroll">
+        <a href="/playground/" class="mobile-nav-pill-highlight">🚀 ${esc(copy.navPlayground)}</a>
+        <a href="https://github.com/chicogong/aimake-creator/releases/tag/v2.0.0" target="_blank" rel="noopener">🍏 macOS</a>
+        <a href="/${lang}/#radar">🔥 ${esc(copy.navRadar)}</a>
+        <a href="/${lang}/#flywheel">${esc(copy.navFlywheel)}</a>
+        <a href="/${lang}/#templates">${esc(copy.navTemplates)}</a>
+        <a href="/${lang}/#cli">${esc(copy.navCli)}</a>
+        <a href="/${lang}/#ecosystem">🏛️ ${esc(copy.navEcosystem)}</a>
       </div>
     </div>
   </nav>`;
@@ -1901,21 +1949,21 @@ function renderLandingHtml(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${esc(copy.heroTitle)} | Aimake 爱创</title>
+  <title>${esc(copy.siteTitle)}</title>
   <meta name="description" content="${esc(copy.heroSub)}" />
   ${verificationMetaTags()}
   ${themeHeadScript()}
   <link rel="canonical" href="${canonicalUrl}" />
   <link rel="alternate" hreflang="x-default" href="https://aimake.cc/" />
   ${langs.map((l) => `<link rel="alternate" hreflang="${UI_COPY[l].htmlLang}" href="https://aimake.cc/${l}/" />`).join('\n  ')}
-  <meta property="og:title" content="${esc(copy.heroTitle)} | Aimake" />
+  <meta property="og:title" content="${esc(copy.siteTitle)}" />
   <meta property="og:description" content="${esc(copy.heroSub)}" />
   <meta property="og:url" content="${canonicalUrl}" />
   <meta property="og:site_name" content="Aimake" />
   <meta property="og:type" content="website" />
   <style>${sharedSiteCss()}</style>
 </head>
-<body>
+<body class="is-loading">
   ${renderTopNav(lang)}
 
   <!-- HERO -->
@@ -1964,7 +2012,7 @@ function renderLandingHtml(
           </div>
         </div>
         <div class="stage-viewport">
-          <iframe id="hero-stage-frame" src="/${lang}/templates/${stagePresets[0].tplId}/preview.html" title="Aimake live template preview" loading="eager"></iframe>
+          <iframe id="hero-stage-frame" src="/${lang}/templates/${stagePresets[0].tplId}/preview.html" title="Aimake live template preview" loading="eager" style="background-color:#07090e;transition:opacity 0.15s ease;" allowtransparency="true"></iframe>
         </div>
         <div class="stage-foot">
           <span>${esc(copy.stageCaption)}</span>
@@ -2142,14 +2190,11 @@ function renderLandingHtml(
 
         <div class="family-card">
           <div>
-            <span class="family-badge">FAMILY LEARNING · universe.aimake.cc</span>
-            <h3 style="margin:12px 0 8px;font-size:20px;">Aimake Universe · 爱创星球矩阵</h3>
-            <p style="margin:0;color:var(--muted);font-size:14px;">零广告、免登录、100% 本地优先的儿童跨学科探索生态，涵盖脑力、数学、任务工坊、单词、编程与 AI 素养六大独立星球。</p>
+            <span class="family-badge">AGENT PROTOCOLS · ACP & MCP</span>
+            <h3 style="margin:12px 0 8px;font-size:20px;">Aimake Agent Protocols · 原生 IDE 协议栈</h3>
+            <p style="margin:0;color:var(--muted);font-size:14px;">全面支持 Agent Client Protocol (ACP) 与 Model Context Protocol (MCP)。无缝挂载至 Zed、Cursor、Claude Code 与 JetBrains，实现双向流式原稿生成与确定性资产渲染。</p>
           </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <a class="btn-secondary" style="width:fit-content;" href="/universe/">进入星球矩阵导航 →</a>
-            <a class="btn-secondary" style="width:fit-content;" href="https://universe.aimake.cc">universe.aimake.cc ↗</a>
-          </div>
+          <a class="btn-secondary" style="width:fit-content;" href="https://github.com/chicogong/aimake-creator" target="_blank" rel="noopener">探索 Agent 协议规范 ↗</a>
         </div>
       </div>
     </div>
@@ -2164,8 +2209,8 @@ function renderLandingHtml(
         <a href="/en/">English</a>
         <a href="/ja/">日本語</a>
         <a href="/ko/">한국어</a>
-        <a href="https://github.com/chicogong/aimake-studio">Aimake Engine</a>
-        <a href="/universe/">爱创星球</a>
+        <a href="https://github.com/chicogong/aimake-creator" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/chicogong/aimake-studio" target="_blank" rel="noopener">Aimake Engine</a>
       </div>
     </div>
   </footer>
@@ -2175,6 +2220,10 @@ function renderLandingHtml(
 
   <script>
     (function () {
+      requestAnimationFrame(function () {
+        document.body.classList.remove('is-loading');
+      });
+
       // Toast notification helper
       var toastEl = document.getElementById('site-toast');
       var toastTimer = null;
@@ -2230,7 +2279,11 @@ function renderLandingHtml(
           btn.classList.add('active');
           var nextSrc = btn.getAttribute('data-src');
           if (nextSrc && frame && frame.getAttribute('src') !== nextSrc) {
+            frame.style.opacity = '0.6';
             frame.setAttribute('src', nextSrc);
+            frame.onload = function () {
+              frame.style.opacity = '1';
+            };
           }
         });
       });
@@ -2323,108 +2376,6 @@ function renderLandingHtml(
 </html>`;
 }
 
-function renderUniverseBridgeHtml(): string {
-  const planetCards = PLANET_MATRIX.map(
-    (p) => `
-      <a class="tpl-card" href="${p.href}" target="_blank" rel="noopener">
-        <div>
-          <div class="meta-row">
-            <span>${esc(p.nameEn.toUpperCase())}</span>
-            <span class="aspect-badge aspect-4-5">LIVE · ${esc(p.href.replace('https://', ''))}</span>
-          </div>
-          <h3>${esc(p.nameCn)}</h3>
-          <p>${esc(p.desc)}</p>
-        </div>
-        <div class="formats">
-          <span class="fmt-tag">NO ADS</span>
-          <span class="fmt-tag">NO LOGIN</span>
-          <span class="fmt-tag">LOCAL-FIRST</span>
-        </div>
-      </a>`
-  ).join('\n');
-
-  return `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aimake Universe 爱创星球矩阵 | Aimake 爱创</title>
-  <meta name="description" content="纯净、零广告、免登录、本地优先的儿童跨学科探索生态：脑力、数学、任务工坊、单词、编程与 AI 素养六大星球。" />
-  ${verificationMetaTags()}
-  ${themeHeadScript()}
-  <link rel="canonical" href="https://universe.aimake.cc/" />
-  <style>${sharedSiteCss()}</style>
-</head>
-<body>
-  ${renderTopNav('zh')}
-  <header class="hero">
-    <div class="container">
-      <div class="hero-badge-pill">
-        <span class="pulse-dot"></span>
-        <span>AIMAKE UNIVERSE · 家庭与儿童跨学科探索生态</span>
-      </div>
-      <h1>爱创星球矩阵已独立迁至 universe.aimake.cc</h1>
-      <p class="lead">Aimake 主站（aimake.cc）现已升级为多模态创作与知识复利旗舰平台；面向孩子与家庭的「爱创星球」六大互动星球保持 100% 独立运行、零广告、免登录，可直接从下方一键进入。</p>
-      <div class="cta-row">
-        <a class="btn-primary" href="https://create.aimake.cc">开始一次亲子任务（create.aimake.cc） →</a>
-        <a class="btn-secondary" href="https://universe.aimake.cc">打开爱创星球门户（universe.aimake.cc） ↗</a>
-        <a class="btn-secondary" href="/dashboard/">家长学习回看</a>
-      </div>
-    </div>
-  </header>
-  <section class="section-block">
-    <div class="container">
-      <div class="section-head">
-        <div class="eyebrow">6 LIVE PLANETS</div>
-        <h2>六大核心探索星球直达入口</h2>
-        <p>每颗星球均独立部署在专属二级域名，数据默认保存在本机浏览器中。</p>
-      </div>
-      <div class="grid">${planetCards}</div>
-    </div>
-  </section>
-  <footer>
-    <div class="container footer-inner">
-      <div>Aimake Universe 爱创星球 · No Ads · No Login · Local-First</div>
-      <div class="footer-links">
-        <a href="/">返回 Aimake Studio 旗舰主站</a>
-        <a href="https://github.com/chicogong/aimake-studio">Aimake Engine 核心引擎</a>
-      </div>
-    </div>
-  </footer>
-</body>
-</html>`;
-}
-
-function renderDashboardBridgeHtml(): string {
-  return `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>家长学习回看迁移指引 | Aimake Universe 爱创星球</title>
-  ${verificationMetaTags()}
-  ${themeHeadScript()}
-  <link rel="canonical" href="https://universe.aimake.cc/dashboard" />
-  <style>${sharedSiteCss()}</style>
-</head>
-<body>
-  ${renderTopNav('zh')}
-  <main class="section-block">
-    <div class="container" style="max-width:760px;">
-      <div class="eyebrow">PARENT DASHBOARD · 爱创星球</div>
-      <h1 style="font-size:32px;margin:12px 0 16px;">家长回看已随爱创星球迁至独立子站</h1>
-      <p style="color:var(--muted);margin-bottom:24px;">为了将创作者工作台（aimake.cc）与家庭学习空间彻底解耦，家长学习记录回看现由爱创星球独立门户承载，数据仍保存在您当前浏览器的本地存储中。</p>
-      <div class="cta-row">
-        <a class="btn-primary" id="universe-dash-link" href="https://universe.aimake.cc/dashboard">前往 universe.aimake.cc/dashboard →</a>
-        <a class="btn-secondary" href="https://aimake-home.vercel.app/dashboard">备用直达入口 ↗</a>
-        <a class="btn-secondary" href="/universe/">查看六大星球</a>
-      </div>
-    </div>
-  </main>
-</body>
-</html>`;
-}
-
 export async function buildStaticSite(outDir: string): Promise<{
   pagesWritten: number;
   sitemapUrlCount: number;
@@ -2456,7 +2407,6 @@ export async function buildStaticSite(outDir: string): Promise<{
 
   const urls: string[] = [
     'https://aimake.cc/',
-    'https://aimake.cc/universe/',
     'https://aimake.cc/playground/',
     'https://aimake.cc/studio/',
   ];
@@ -2521,7 +2471,7 @@ export async function buildStaticSite(outDir: string): Promise<{
   ${renderTopNav(lang, `templates/${tpl.id}/`)}
   <main class="container detail-layout">
     <div class="preview-box">
-      <iframe src="./preview.html" title="${esc(tpl.name[lang])}"></iframe>
+      <iframe src="./preview.html" title="${esc(tpl.name[lang])}" style="background-color:#07090e;" allowtransparency="true"></iframe>
     </div>
     <aside class="info-panel">
       <div class="eyebrow">#${esc(tpl.id)} · ${esc(tpl.aspect)}</div>
@@ -2557,15 +2507,6 @@ export async function buildStaticSite(outDir: string): Promise<{
       pagesWritten += 2;
     }
   }
-
-  // Write legacy continuity routes: /universe/ and /dashboard/
-  await fs.mkdir(path.join(outDir, 'universe'), { recursive: true });
-  await fs.writeFile(path.join(outDir, 'universe', 'index.html'), renderUniverseBridgeHtml(), 'utf8');
-  pagesWritten++;
-
-  await fs.mkdir(path.join(outDir, 'dashboard'), { recursive: true });
-  await fs.writeFile(path.join(outDir, 'dashboard', 'index.html'), renderDashboardBridgeHtml(), 'utf8');
-  pagesWritten++;
 
   // Generate public static remote radar API (https://aimake.cc/api/radar.json)
   const apiDir = path.join(outDir, 'api');

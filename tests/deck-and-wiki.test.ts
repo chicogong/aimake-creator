@@ -236,24 +236,26 @@ describe('Universal Host Symlink Installer, MCP Server & Static Site Builder', (
     expect(resList.result.resources[0].uri).toBe('ui://aimake/preview');
   });
 
-  it('builds 4-language static Programmatic SEO showcase site & closed-source continuity routes cleanly', async () => {
+  it('builds 4-language static Programmatic SEO showcase site cleanly', async () => {
     const tmpSite = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-site-'));
     try {
       const stats = await buildStaticSite(tmpSite);
-      // 4 langs * (1 index + 36 * 2 template pages) + 1 root + universe + dashboard = 295 HTML files
-      expect(stats.pagesWritten).toBeGreaterThanOrEqual(295);
-      expect(stats.sitemapUrlCount).toBeGreaterThanOrEqual(150);
+      // 4 langs * (1 index + 36 * 2 template pages) + 1 root + playground + studio = 295 HTML files
+      expect(stats.pagesWritten).toBeGreaterThanOrEqual(293);
+      expect(stats.sitemapUrlCount).toBeGreaterThanOrEqual(148);
       const rootHtml = await fs.readFile(path.join(tmpSite, 'index.html'), 'utf8');
       expect(rootHtml).toContain('uJ83um8k9_iom9DdkHRY_hTQwZE2QDjupfhvXQTyHGE');
       expect(rootHtml).toContain('codeva-dNFmwA2bNN');
       expect(rootHtml).toContain('pack-solopreneur-cn');
       expect(rootHtml).toContain('aimake://remix');
+      expect(rootHtml).toContain('#ecosystem');
+      expect(rootHtml).toContain('Agent Client Protocol');
       expect(rootHtml).not.toContain('Apache-2.0');
       expect(rootHtml).not.toContain('Open-Source');
+      expect(rootHtml).not.toContain('爱创星球');
 
-      const universeHtml = await fs.readFile(path.join(tmpSite, 'universe', 'index.html'), 'utf8');
-      expect(universeHtml).toContain('kids.aimake.cc');
-      expect(universeHtml).toContain('universe.aimake.cc');
+      const playgroundHtml = await fs.readFile(path.join(tmpSite, 'playground', 'index.html'), 'utf8');
+      expect(playgroundHtml).toContain('Aimake 爱创工坊');
 
       const jaZukai = await fs.readFile(
         path.join(tmpSite, 'ja', 'templates', 'x-zukai-quad', 'index.html'),
