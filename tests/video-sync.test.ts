@@ -13,7 +13,7 @@ describe('T-05 / Issue #13: Video-Audio Sync & Timeline Drift Mitigation', () =>
   });
 
   describe('computeCumulativeSlideFrames (Cumulative Timestamp Difference Anchoring)', () => {
-    it('achieves zero cumulative drift (<= 0.5 frame) across 25 non-uniform slide durations', () => {
+    it('achieves zero cumulative drift (<= 0.5 frame) across 25 non-uniform slide durations at 30fps', () => {
       const fps = 30;
       // 25 slides with non-uniform speech durations in milliseconds (totaling ~67.5 seconds)
       const nonUniformDurationsMs = [
@@ -54,9 +54,79 @@ describe('T-05 / Issue #13: Video-Audio Sync & Timeline Drift Mitigation', () =>
       for (const ms of nonUniformDurationsMs) {
         naiveTotalFrames += Math.round((ms / 1000) * fps);
       }
-      // Naive rounding would accumulate truncation/rounding bias over 25 slides
       const idealFramesFloat = (totalAudioMs / 1000) * fps;
       expect(Math.abs(totalFrames - idealFramesFloat)).toBeLessThanOrEqual(0.5);
+    });
+
+    it('validates 20+ slides deck at 60fps has total frames and audio duration alignment error <= 1 frame', () => {
+      const fps = 60;
+      // 24 slides with realistic, fractional millisecond TTS audio lengths
+      const longDeckAudioDurationsMs = [
+        2145.4, 3892.1, 1720.6, 4510.9, 2834.3, 1945.7, 5120.2, 3410.8,
+        2290.5, 4180.1, 3050.4, 2670.8, 1890.2, 3740.6, 4920.3, 2310.5,
+        1980.7, 3620.1, 2790.4, 4450.8, 2210.3, 3180.6, 2840.2, 3910.5,
+      ];
+
+      expect(longDeckAudioDurationsMs.length).toBeGreaterThanOrEqual(20);
+
+      const plan = computeCumulativeSlideFrames(
+        longDeckAudioDurationsMs.length,
+        fps,
+        { slideDurationsMs: longDeckAudioDurationsMs }
+      );
+
+      expect(plan.perSlideFrames).toHaveLength(longDeckAudioDurationsMs.length);
+      expect(plan.slideFrameOffsets).toHaveLength(longDeckAudioDurationsMs.length);
+
+      const totalAudioMs = longDeckAudioDurationsMs.reduce((a, b) => a + b, 0);
+      const idealTotalFrames = (totalAudioMs * fps) / 1000;
+
+      // 1. Total frame alignment error must be strictly <= 1 frame (specifically <= 0.5 frame)
+      const frameError = Math.abs(plan.totalFrames - idealTotalFrames);
+      expect(frameError).toBeLessThanOrEqual(0.5);
+      expect(frameError).toBeLessThanOrEqual(1.0);
+
+      // 2. Alignment drift in milliseconds must be <= 1 frame duration (16.67ms at 60fps)
+      const oneFrameMs = 1000 / fps; // 16.667ms
+      const videoDurationMs = (plan.totalFrames / fps) * 1000;
+      const durationDiffMs = Math.abs(videoDurationMs - totalAudioMs);
+      expect(durationDiffMs).toBeLessThanOrEqual(oneFrameMs * 0.5 + 0.001);
+      expect(durationDiffMs).toBeLessThanOrEqual(15.0); // Conforms to Issue #13 < 15ms target!
+
+      // 3. Every intermediate slide boundary must also stay anchored within <= 0.5 frame
+      let runningAudioMs = 0;
+      for (let i = 0; i < longDeckAudioDurationsMs.length; i++) {
+        expect(plan.slideFrameOffsets[i]).toBe(Math.round((runningAudioMs * fps) / 1000));
+        runningAudioMs += longDeckAudioDurationsMs[i];
+        const currentEndFrame = plan.slideFrameOffsets[i] + plan.perSlideFrames[i];
+        const expectedEndFrame = Math.round((runningAudioMs * fps) / 1000);
+        expect(currentEndFrame).toBe(expectedEndFrame);
+      }
+    });
+
+    it('maintains microsecond-level precision and prevents multi-frame cumulative drift', () => {
+      // Create a 30-slide deck where each slide has a duration that ends in .500 frame to test rounding bias
+      const fps = 30;
+      const slideCount = 30;
+      // 2550 ms at 30 fps = 76.5 frames. Naive per-slide Math.round(76.5) = 77 frames (+0.5 frame per slide).
+      // Over 30 slides, naive accumulation produces 30 * 77 = 2310 frames (+15 frames = +500ms audio drift!).
+      const biasedDurationsMs = Array(slideCount).fill(2550);
+
+      const plan = computeCumulativeSlideFrames(slideCount, fps, {
+        slideDurationsMs: biasedDurationsMs,
+      });
+
+      const totalAudioMs = slideCount * 2550; // 76500 ms
+      const expectedTotalFrames = (totalAudioMs * fps) / 1000; // Exactly 2295 frames!
+
+      // Cumulative anchoring stays perfectly on 2295 frames!
+      expect(plan.totalFrames).toBe(expectedTotalFrames);
+      expect(Math.abs(plan.totalFrames - expectedTotalFrames)).toBe(0);
+
+      // Naive unanchored calculation would have suffered 15 frames of cumulative drift
+      const naiveTotal = biasedDurationsMs.reduce((acc, ms) => acc + Math.round((ms / 1000) * fps), 0);
+      expect(naiveTotal).toBe(2310);
+      expect(naiveTotal - plan.totalFrames).toBe(15); // Demonstrates 15-frame drift eliminated!
     });
 
     it('handles uniform default secondsPerSlide cleanly', () => {
@@ -117,6 +187,14 @@ describe('T-05 / Issue #13: Video-Audio Sync & Timeline Drift Mitigation', () =>
       // Verify cached instance returns identical config
       const cached = await resolveOptimalVideoEncoder(ffmpegBin);
       expect(cached).toBe(config);
+    });
+
+    it('gracefully falls back to libx264 if h264_videotoolbox is unavailable or probe fails', async () => {
+      // Pass a non-existent binary or failing probe to ensure fallback to libx264
+      const fallbackConfig = await resolveOptimalVideoEncoder('invalid_probe_binary', 'h264_videotoolbox');
+      expect(fallbackConfig.encoder).toBe('libx264');
+      expect(fallbackConfig.args).toContain('libx264');
+      expect(fallbackConfig.args).toContain('ultrafast');
     });
   });
 });
