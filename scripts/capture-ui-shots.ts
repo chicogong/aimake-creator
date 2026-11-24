@@ -35,10 +35,17 @@ async function main() {
 
     // 2. Studio Export Drawer
     await page.locator('#btn-open-export').click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(600);
     const studioExportShot = path.join(outDir, `studio-export-${phase}.png`);
     await page.screenshot({ path: studioExportShot, fullPage: false });
     console.log(`Studio export shot captured: ${studioExportShot}`);
+
+    // 2b. Studio Radar Inspiration Drawer
+    await page.locator('#btn-open-radar').click();
+    await page.waitForTimeout(600);
+    const studioRadarShot = path.join(outDir, `studio-radar-${phase}.png`);
+    await page.screenshot({ path: studioRadarShot, fullPage: false });
+    console.log(`Studio radar shot captured: ${studioRadarShot}`);
 
     // 3. Web Playground
     const playgroundPage = await context.newPage();

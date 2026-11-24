@@ -54,6 +54,10 @@ import {
   runOpenCodeTask,
 } from '../desktop/opencode-bridge.js';
 import {
+  buildCapCutDraft,
+  detectLocalDraftDirectories,
+} from '../renderer/capcut-draft-builder.js';
+import {
   ALL_TASK_RECIPES,
   BEGINNER_TASK_RECIPES,
   COPILOT_TASK_RECIPES,
@@ -977,7 +981,7 @@ export async function startStudioServer(
         const limit = Number(url.searchParams.get('limit')) || 12;
         try {
           const items = await runTrendRadar({
-            category: category as 'all' | 'ai-tech' | 'social' | 'creative' | 'dev',
+            category,
             limit,
           });
           sendJson(res, 200, { ok: true, items });
@@ -1605,6 +1609,23 @@ export async function startStudioServer(
         return;
       }
 
+      if (req.method === 'GET' && url.pathname === '/api/export/capcut-status') {
+        const localPaths = detectLocalDraftDirectories();
+        const hasJianying = Boolean(localPaths.jianying && fsSync.existsSync(localPaths.jianying));
+        const hasCapcut = Boolean(localPaths.capcut && fsSync.existsSync(localPaths.capcut));
+        const installed = hasJianying || hasCapcut;
+        const appType = hasJianying ? 'jianying' : hasCapcut ? 'capcut' : 'none';
+        const appName = hasJianying ? '剪映专业版' : hasCapcut ? 'CapCut Desktop' : '未检测到剪映/CapCut';
+        sendJson(res, 200, {
+          ok: true,
+          installed,
+          appType,
+          appName,
+          draftRoot: localPaths.preferred || null,
+        });
+        return;
+      }
+
       if (req.method === 'POST' && url.pathname === '/api/export') {
         const body = await readJsonBody(req);
         const format = String(body.format || 'png') as
@@ -1613,7 +1634,8 @@ export async function startStudioServer(
           | 'pptx'
           | 'mp4'
           | 'wechat'
-          | 'html';
+          | 'html'
+          | 'capcut';
         const rawMarkdown = await fs.readFile(absDeckPath, 'utf8');
         const deck = parseDeckMarkdown(rawMarkdown, absDeckPath);
         const fps = typeof body.fps === 'number' && Number.isFinite(body.fps) ? body.fps : undefined;
@@ -1621,6 +1643,29 @@ export async function startStudioServer(
           typeof body.secondsPerSlide === 'number' && Number.isFinite(body.secondsPerSlide)
             ? body.secondsPerSlide
             : undefined;
+
+        if (format === 'capcut') {
+          const capcutOutDir = path.join(exportBase, 'capcut-draft');
+          const installLocal = Boolean(body.installLocal);
+          const result = await buildCapCutDraft(deck, {
+            outputDir: capcutOutDir,
+            installLocal,
+            fps,
+          });
+          const localPaths = detectLocalDraftDirectories();
+          const appName = localPaths.jianying ? '剪映专业版' : localPaths.capcut ? 'CapCut Desktop' : '剪映 / CapCut';
+          sendJson(res, 200, {
+            ok: true,
+            format: 'capcut',
+            draftDir: result.draftDir,
+            installedLocal: result.installedLocal,
+            localDraftPath: result.localDraftPath,
+            appName,
+            durationMs: result.durationMs,
+            artifacts: [result.contentPath, result.metaPath, result.coverPath],
+          });
+          return;
+        }
 
         if (format === 'mp4' && body.narrate === 'offline-fixture') {
           const speechRunDir = path.join(exportBase, 'speech', `run-${Date.now()}`);

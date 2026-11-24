@@ -9,6 +9,7 @@ import type { DeckDocument } from '../schema/types.js';
 import { compileDeckToHtml } from './html-compiler.js';
 import { renderWeChatInlineHtml } from './wechat-inliner.js';
 import { exportDeckToPptx } from './exporter-pptx.js';
+import { buildCapCutDraft } from './capcut-draft-builder.js';
 
 const execFileAsync = promisify(execFile);
 const require = createRequire(import.meta.url);
@@ -371,7 +372,7 @@ export async function exportDeckToMp4(
 
 export async function exportDeckBundle(
   doc: DeckDocument,
-  format: 'png' | 'wechat' | 'pdf' | 'pptx' | 'mp4' | 'html',
+  format: 'png' | 'wechat' | 'pdf' | 'pptx' | 'mp4' | 'html' | 'capcut',
   outTarget: string,
   options?: {
     fps?: number;
@@ -380,6 +381,8 @@ export async function exportDeckBundle(
     audioTrackPath?: string;
     subtitlesSrtPath?: string;
     customTemplatesDir?: string;
+    installLocal?: boolean;
+    targetApp?: 'capcut' | 'jianying' | 'auto';
   }
 ): Promise<string[]> {
   if (format === 'wechat') {
@@ -418,6 +421,21 @@ export async function exportDeckBundle(
         customTemplatesDir: options?.customTemplatesDir,
       }),
     ];
+  }
+  if (format === 'capcut') {
+    const res = await buildCapCutDraft(doc, {
+      outputDir: outTarget,
+      installLocal: options?.installLocal,
+      targetApp: options?.targetApp,
+      audioTrackPath: options?.audioTrackPath,
+      slideDurationsMs: options?.slideDurationsMs,
+      fps: options?.fps,
+    });
+    const paths = [res.contentPath, res.metaPath, res.coverPath];
+    if (res.localDraftPath) {
+      paths.push(res.localDraftPath);
+    }
+    return paths;
   }
   throw new Error(`Unsupported format: ${format}`);
 }

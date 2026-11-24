@@ -128,4 +128,37 @@ describe('Multi-Platform Universal Intake & Scrapers', () => {
     expect(generated.deckMarkdown).toContain(sampleItem.title);
     expect(generated.deckMarkdown).toContain('::: speech');
   });
+
+  it('calculates anti-SEO authenticity weight scores and filters real-world human signals', async () => {
+    const { calcAuthenticityScore, filterRadarItems, CURATED_TREND_FIXTURES } =
+      await import('../src/radar/radar-engine.js');
+
+    // 1. Anti-SEO penalties for clickbait/SEO fluff
+    const clickbaitScore = calcAuthenticityScore({
+      sourceKind: 'rss',
+      title: 'Top 10 Ultimate Guide to Game Changer AI Tools',
+      summary: 'You won\'t believe this cheat sheet guaranteed to 10x your life',
+    });
+
+    // 2. High authenticity for verified Reddit human discussion with empirical technical keywords
+    const authenticScore = calcAuthenticityScore({
+      sourceKind: 'reddit',
+      redditComments: 450,
+      title: 'Benchmark and architecture post-mortem on offline weights',
+      summary: 'DeepSeek reproducible latency evaluation with zero cloud dependency',
+    });
+
+    expect(authenticScore).toBeGreaterThan(clickbaitScore);
+    expect(authenticScore).toBeGreaterThanOrEqual(90);
+    expect(clickbaitScore).toBeLessThan(50);
+
+    // 3. Category filtering for real-discussion and prediction
+    const discussionItems = filterRadarItems(CURATED_TREND_FIXTURES, [], 'real-discussion');
+    expect(discussionItems.length).toBeGreaterThanOrEqual(1);
+    expect(discussionItems.some((it) => it.sourceKind === 'reddit' || (it.redditComments ?? 0) > 0)).toBe(true);
+
+    const predictionItems = filterRadarItems(CURATED_TREND_FIXTURES, [], 'prediction');
+    expect(predictionItems.length).toBeGreaterThanOrEqual(1);
+    expect(predictionItems.some((it) => it.sourceKind === 'polymarket' || it.polymarketOdds !== undefined)).toBe(true);
+  });
 });

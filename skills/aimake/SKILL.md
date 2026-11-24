@@ -1,80 +1,242 @@
 ---
 name: aimake
-description: Local-first multimodal content creation & Karpathy LLM Wiki skill. Use whenever the user wants to capture breaking news/URLs/docs into their personal Wiki, extract or apply personal writing Style DNA, or convert notes/weekly reports/ideas into Xiaohongshu 3:4 cards, WeChat inline rich articles, LinkedIn 4:5 PDF carousels, Japanese X Zukai diagrams, Korean Instagram Card News, native editable PowerPoint (.pptx), or 60fps short videos.
+description: Local-first multimodal content creation, Karpathy LLM Wiki, and CapCut video timeline engine skill conforming to HKUDS/CLI-Anything CLI-Hub specifications. Use whenever the host agent wants to discover live trends (Polymarket, Reddit, HN, GitHub), intake research into a grounded Wiki, generate design-grade .deck.md storyboards across 36 parametric templates, or export to 6 native formats (CapCut video draft, PNG cards, WeChat inline HTML, PDF, editable PPTX, MP4).
+cli-hub:
+  spec_version: "1.0.0"
+  standard: "HKUDS/CLI-Anything"
+  binary: "aimake"
+  version: "2.1.0"
+  license: "Apache-2.0"
+  runtime: "node>=18"
+  flags:
+    machine_readable: "--json"
+    zero_backend: true
+    offline_capable: true
 ---
 
-# Aimake — Multimodal Creator & LLM Wiki Studio
+# Aimake — Multimodal Creator, LLM Wiki & CapCut Video Engine
 
-Aimake turns your AI agent (Antigravity, Codex, WorkBuddy, Claude Code, Cursor, dsh) into an end-to-end personal IP & multimodal publishing studio—**100% locally with zero backend servers**.
+Aimake turns your host AI agent (Google Antigravity, OpenAI Codex CLI, Claude Code, Cursor, WorkBuddy) into an end-to-end multimodal publishing and video creation studio—**100% locally with zero cloud backend servers**.
 
-## The 4-Stage Creative Flywheel Pipeline
+Conforming to the **HKUDS/CLI-Anything CLI-Hub** specification, all operations are deterministic, provide pristine machine-readable `--json` outputs, and follow strict schema contracts.
 
-Every piece of high-leverage content flows through four deterministic, local stages:
+---
+
+## 1. The 4-Stage Creative Flywheel Pipeline
+
+Every high-leverage piece of content flows through four deterministic, local stages:
 
 ```text
-① 抓取 Intake  ──>  ② 萃取 Distill  ──>  ③ 创作 Create  ──>  ④ 发布 Publish
- (sources/)          (wiki/ & briefs/)     (decks/ & studio)      (exports/ & multi-platform)
+① 抓取 Intake  ──>  ② 萃取 Distill  ──>  ③ 创作 Create  ──>  ④ 交付 Publish & Render
+ (sources/ & radar)   (wiki/ & briefs/)     (decks/ & studio)      (exports/ & CapCut drafts)
 ```
 
-1. **Stage ① 抓取 Intake (`aimake intake` / `aimake radar` / `aimake import`)**:
-   - Ingest raw research, URLs, office documents, or markdown into `sources/` and the local knowledge vault.
+1. **Stage ① 抓取 Intake (`aimake intake` / `aimake radar`)**:
+   - Ingest live trends with anti-SEO authenticity scoring (Polymarket odds, Reddit comments, GitHub stars, HN points) and parse research URLs, audio transcripts, or CSV metrics.
 2. **Stage ② 萃取 Distill (`aimake distill` / `aimake wiki` / `aimake persona`)**:
    - Distills raw facts into grounded Karpathy LLM Wiki cards ($\le 3,000$ tokens budget) and structured briefs in `briefs/` with strict `cite:` coordinates.
-3. **Stage ③ 创作 Create (`aimake create` / `aimake deck create` / `aimake studio`)**:
-   - Transforms distilled facts into 36 parametric design templates (Bento Grid, Swiss Grid, Risograph, Tech Keynote), with conversational diff iteration in Studio.
-4. **Stage ④ 发布 Publish (`aimake publish` / `aimake render`)**:
-   - Compiles one `.deck.md` into 5 native deliverables (PNG, WeChat HTML, PDF, PPTX, MP4) and publishes to WeChat, Zhihu, Juejin, Xiaohongshu, while compounding back into `wiki/published.md`.
+3. **Stage ③ 创作 Create (`aimake create` / `aimake studio`)**:
+   - Compiles distilled facts into 36 parametric design templates (Bento Grid, Swiss Grid, Risograph, Tech Keynote), with conversational diff iteration and real-time live preview in Studio.
+4. **Stage ④ 交付 Publish & Render (`aimake render` / `aimake publish`)**:
+   - Compiles `.deck.md` into 6 native formats: **CapCut / 剪映 6-track video drafts**, 3x Retina PNG cards, WeChat inline rich articles, PDF carousels, native editable PPTX, and MP4 video.
 
-## Interactive Guided Workflow
+---
 
-Unless the user already specified all inputs in a single prompt, check workspace state via `aimake pipeline` or ask:
+## 2. Machine-Readable JSON Contract (`--json`)
 
-1. **Source & Knowledge Grounding**:
-   - Where is the source material? (Live trend via `aimake radar` / Grok search, a URL/Office doc via `aimake intake <source>`, or existing notes in `wiki/index.md`?)
-2. **Target Market, Platform & Language**:
-   - Which deliverable & locale?
-     - `zh-CN` / `zh-TW`: Xiaohongshu `3:4` (`xhs-swiss-grid`, `xhs-paper-editorial`, `xhs-neon-tech`), WeChat Greenbook (`wechat-greenbook`), WeChat Official Account (`wechat-editorial-article`), Douyin/Channels `9:16` MP4 (`video-kinetic-reel`), Workplace 16:9 Editable `.pptx` (`ppt-executive-16x9`), or Classroom Flashcards (`edu-flashcard-kids`).
-     - `en`: LinkedIn `4:5` PDF Carousel (`linkedin-exec-carousel`) or System Architecture `.pptx` (`ppt-tech-architecture`).
-     - `ja`: Japan X `16:9` Zukai Blueprint (`x-zukai-quad` with strict kinsoku line-breaking).
-     - `ko`: Korea Instagram `4:5` Card News (`ig-cardnews-kr` with Pretendard `keep-all` phrasing).
-3. **Personal Style DNA**:
-   - Check `personas/` in the user's Wiki vault. Apply their personal cadence, hook formulas, and run `aimake persona humanize` to strip robotic AI clichés before rendering.
+Every Aimake subcommand supports `--json`. When `--json` is supplied:
+- **stdout**: Strictly outputs formatted JSON without log prefixes, ANSI escape sequences, or human chatter.
+- **stderr**: Diagnostic warnings or progress bars are directed to stderr without corrupting stdout.
+- **Exit Codes**:
+  - `0`: Success.
+  - `1`: Validation or execution failure (with `{ "ok": false, "error": string }` on stdout/stderr).
 
-## Core Deterministic CLI Commands
+---
 
-Aimake CLI requires **zero LLM API keys**—your host agent authors the clean `.deck.md` storyboard, and Aimake compiles deterministic visual/media deliverables:
+## 3. Subcommands Specification (CLI-Hub Catalog)
 
+### 3.1 `aimake render <deckPath>`
+Compiles a `.deck.md` storyboard into platform deliverables.
+
+**Syntax**:
 ```bash
-# 0. Check full pipeline progress at any time
-aimake pipeline
-
-# 1. Stage ① [抓取 Intake]: Ingest research URLs, notes, or documents
-aimake intake "https://example.com/deepseek-r1-benchmark" -w ./my-workspace
-aimake radar --sources hackernews,github --keywords "agent,mcp,tts"
-
-# 2. Stage ② [萃取 Distill]: Distill facts into <=3,000 token wiki cards & briefs
-aimake distill "DeepSeek-R1 本地部署评测" -t xhs-neon-tech -w ./my-workspace
-aimake wiki lint ./my-workspace/wiki
-
-# 3. Stage ③ [创作 Create]: Generate or conversationally edit visual storyboard
-aimake create "DeepSeek-R1 本地部署评测" -t xhs-neon-tech -o ./my-workspace/decks/deepseek.deck.md
-aimake studio ./my-workspace/decks/deepseek.deck.md
-
-# 4. Stage ④ [发布 Publish]: Package & cross-post to WeChat, Zhihu, Juejin, Xiaohongshu
-aimake publish ./my-workspace/decks/deepseek.deck.md --target wechat,zhihu,juejin,xiaohongshu
-
-# Or render individual native deliverables
-aimake render ./my-workspace/decks/deepseek.deck.md -t xhs-neon-tech -f png -o ./out/xhs
-aimake render ./my-workspace/decks/deepseek.deck.md -t wechat-editorial-article -f wechat -o ./out/article.html
-aimake render ./my-workspace/decks/deepseek.deck.md -t ppt-tech-architecture -f pptx -o ./out/slides.pptx
-aimake render ./my-workspace/decks/deepseek.deck.md -t video-kinetic-reel -f mp4 -o ./out/reel.mp4
+aimake render <deckPath> -f <png|wechat|pdf|pptx|mp4|html|capcut> [options] --json
 ```
 
-## Privacy-Safe Desensitized Template Sharing
+**Options**:
+- `-f, --format <fmt>`: `capcut` | `png` | `wechat` | `pdf` | `pptx` | `mp4` | `html` (Required)
+- `-o, --output <target>`: Output directory (for PNG/CapCut) or output file path.
+- `-t, --template <id>`: Override visual template ID.
+- `-l, --locale <loc>`: Override typography locale (`zh-CN`, `zh-TW`, `en`, `ja`, `ko`, `es`).
+- `--install-local`: Auto-install generated draft directly into local CapCut / JianYing Projects folder (`com.lveditor.draft`).
+- `--narrate <provider>`: Synthesize audio narration & SRT for MP4/CapCut (`offline-fixture` | `tencent-tccli`).
+- `--fps <n>`: Frames per second (default: 30).
+- `--seconds-per-slide <n>`: Slide duration in seconds (default: 5).
+- `--json`: Emit machine-readable JSON.
 
-If you helped the user craft or refine a custom `template.html` using internal documents, offer to scrub private metadata before sharing across teams:
-```bash
-aimake share ./custom-template.html -o ./sanitized-template.html --json
+**JSON Output Schema (`-f capcut`)**:
+```json
+{
+  "ok": true,
+  "format": "capcut",
+  "draftDir": "/path/to/deck-capcut",
+  "installedLocal": true,
+  "localDraftPath": "/Users/user/Movies/CapCut/User Data/Projects/com.lveditor.draft/deck-slug-uuid",
+  "appName": "CapCut Desktop",
+  "durationMs": 25000,
+  "artifacts": [
+    "/path/to/deck-capcut/draft_content.json",
+    "/path/to/deck-capcut/draft_meta_info.json",
+    "/path/to/deck-capcut/draft_cover.png"
+  ]
+}
 ```
 
-See [references/deck-spec.md](references/deck-spec.md) for the complete `.deck.md` storyboard syntax.
+---
+
+### 3.2 `aimake radar [idOrIndex]`
+Multi-source real-world engagement radar & 1-click deck generator inspired by `mvanhorn/last30days-skill`. Filters out AI slop and SEO spam by prioritizing skin-in-the-game consensus and genuine human discussion.
+
+**Syntax**:
+```bash
+aimake radar [idOrIndex] [options] --json
+```
+
+**Options**:
+- `-c, --category <cat>`: `all` | `real-discussion` | `prediction` | `x` | `ai-tech` | `social` | `creative` | `dev`.
+- `--sources <list>`: Comma-separated sources (`polymarket`, `reddit`, `hackernews`, `github`, `dailyhot`, `x`, `rss`).
+- `--min-authenticity <score>`: Filter out SEO spam by minimum authenticity score (0-100).
+- `--keywords <words>`: Comma-separated search terms.
+- `--limit <n>`: Max items returned (default: 10).
+- `-m, --make`: Generate `.deck.md` from the specified item.
+- `-t, --template <name>`: Template override (e.g. `apple-bento-launch`).
+- `-a, --aspect <ratio>`: Target aspect ratio (`3:4` | `16:9` | `4:5` | `9:16`).
+- `-o, --out <path>`: Destination path for generated `.deck.md`.
+- `--json`: Emit machine-readable JSON.
+
+**JSON Output Schema (Query list)**:
+```json
+[
+  {
+    "id": "radar:polymarket-agi-timeline-2026",
+    "source": "Polymarket 预测市场",
+    "sourceKind": "polymarket",
+    "category": "prediction",
+    "title": "Polymarket: 2026 年实现 AGI 预测胜率攀升至 68%",
+    "url": "https://polymarket.com/event/agi-by-2026",
+    "publishedAt": "2026-11-24T18:00:00.000Z",
+    "polymarketOdds": 68,
+    "score": 4500000,
+    "authenticityScore": 96,
+    "hotness": "📈 68% 胜率 · $4.5M 预测池",
+    "suggestedTemplate": "apple-bento-launch",
+    "suggestedAspectRatio": "3:4"
+  }
+]
+```
+
+---
+
+### 3.3 `aimake intake <source>`
+Normalizes any input (URL, research paper, table CSV, WebVTT transcript) into local Markdown and Bento metrics.
+
+**Syntax**:
+```bash
+aimake intake "https://x.com/karpathy/status/1880000000000000000" -w ./workspace --json
+```
+
+**JSON Output Schema**:
+```json
+{
+  "sourceType": "x-twitter",
+  "title": "Andrej Karpathy Grounded LLM Wiki",
+  "author": "@karpathy",
+  "metrics": [],
+  "savedPath": "sources/karpathy.md"
+}
+```
+
+---
+
+### 3.4 `aimake distill <topic>`
+Synthesizes research into $\le 3,000$ token Karpathy Wiki cards and structured creative briefs.
+
+**Syntax**:
+```bash
+aimake distill "DeepSeek V3 MLA Architecture" -t ppt-tech-architecture -w ./workspace --json
+```
+
+---
+
+### 3.5 `aimake create <topic>`
+Compiles distilled facts into a structured `.deck.md` storyboard ready for editing or rendering.
+
+**Syntax**:
+```bash
+aimake create "2026 Video Creator Handbook" -t video-cinema-talk -a 9:16 -o ./decks/handbook.deck.md --json
+```
+
+---
+
+### 3.6 `aimake pipeline`
+Audits the current status of all 4 stages in the active workspace.
+
+**Syntax**:
+```bash
+aimake pipeline -w ./workspace --json
+```
+
+**JSON Output Schema**:
+```json
+{
+  "workspace": "./workspace",
+  "counts": {
+    "sources": 12,
+    "wiki": 8,
+    "briefs": 4,
+    "decks": 6,
+    "exports": 18
+  },
+  "stageCompletion": {
+    "intake": true,
+    "distill": true,
+    "create": true,
+    "publish": true
+  }
+}
+```
+
+---
+
+## 4. Agent Prompting Recipes
+
+### Recipe A: Trend-to-CapCut Autonomous Flow
+When the user asks: *"发现最新的真实讨论趋势，并做成一个可以直接在剪映打开剪辑的视频项目"*
+
+```bash
+# 1. Fetch high-authenticity human discussion from Reddit / Polymarket
+aimake radar --category real-discussion --min-authenticity 90 --limit 5 --json
+
+# 2. Pick top item (e.g. index 1) and generate video storyboard
+aimake radar 1 -t video-cinema-talk -a 9:16 -o ./decks/trend-video.deck.md --json
+
+# 3. Export to CapCut draft and install into local desktop editor
+aimake render ./decks/trend-video.deck.md -f capcut --install-local --json
+```
+
+### Recipe B: Research-to-OmniChannel Publishing Flow
+When the user asks: *"将这篇论文/文章整理并输出为小红书卡片和公众号格式"*
+
+```bash
+# 1. Intake source
+aimake intake "https://example.com/research-paper" -w . --json
+
+# 2. Distill into LLM Wiki card
+aimake distill "Research Analysis" -t xhs-paper-editorial --json
+
+# 3. Render 3x Retina PNG cards for Xiaohongshu
+aimake render ./decks/research.deck.md -f png -o ./dist/xhs --json
+
+# 4. Render inline CSS rich HTML for WeChat Official Account
+aimake render ./decks/research.deck.md -f wechat -o ./dist/wechat.html --json
+```

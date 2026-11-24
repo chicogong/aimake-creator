@@ -2,7 +2,7 @@ export type SupportedLocale = 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'es';
 
 export type AspectRatio = '3:4' | '4:5' | '16:9' | '9:16' | '1:1' | 'article';
 
-export type ExportFormat = 'png' | 'wechat' | 'pdf' | 'pptx' | 'mp4' | 'html';
+export type ExportFormat = 'png' | 'wechat' | 'pdf' | 'pptx' | 'mp4' | 'html' | 'capcut';
 
 export type SlideLayout =
   | 'cover'
@@ -164,11 +164,15 @@ export interface RadarItem {
   publishedAt: string;
   summary?: string;
   score?: number;
-  category?: 'ai-tech' | 'social' | 'creative' | 'dev' | string;
+  category?: 'ai-tech' | 'social' | 'creative' | 'dev' | 'real-discussion' | 'prediction' | string;
   suggestedTemplate?: string;
   suggestedAspectRatio?: '3:4' | '16:9' | '4:5' | '9:16' | string;
   author?: string;
   hotness?: string;
+  sourceKind?: 'hackernews' | 'github' | 'rss' | 'dailyhot' | 'x' | 'reddit' | 'polymarket';
+  polymarketOdds?: number; // 0-100 real-money prediction probability %
+  redditComments?: number; // Real human community discussion volume
+  authenticityScore?: number; // 0-100 anti-SEO authenticity weight score (last30days inspired)
 }
 
 export interface SanitizeReport {

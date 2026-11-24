@@ -128,6 +128,7 @@ export const CALM_STUDIO_SCRIPT = `
     if (target) target.classList.add('open');
     if (bd) bd.classList.add('open');
     if (loopStep) setActiveLoopStep(loopStep);
+    if (drawerId === 'drawer-export') checkCapCutStatus();
   }
 
   function closeAllModals() {
@@ -501,8 +502,24 @@ export const CALM_STUDIO_SCRIPT = `
       }
     }
     const items = (state.radar || []).filter((it) => {
-      if (cat === 'all') return true;
+      if (cat === 'all' || cat === 'trending') return true;
       if (cat === 'x') return (it.source || '').includes('X') || (it.source || '').includes('Twitter');
+      if (cat === 'real-discussion') {
+        return (it.category === 'real-discussion') ||
+          (it.source || '').toLowerCase().includes('reddit') ||
+          (it.source || '').includes('论坛') ||
+          (it.source || '').includes('讨论') ||
+          (it.hotness || '').includes('讨论') ||
+          (it.hotness || '').includes('Comments') ||
+          (it.id || '').includes('reddit');
+      }
+      if (cat === 'prediction') {
+        return (it.category === 'prediction') ||
+          (it.source || '').toLowerCase().includes('polymarket') ||
+          (it.source || '').includes('预测') ||
+          (it.hotness || '').includes('%') ||
+          (it.id || '').includes('poly');
+      }
       return (it.category || 'ai-tech') === cat;
     });
     const badge = $('radar-total-badge');
@@ -953,6 +970,56 @@ export const CALM_STUDIO_SCRIPT = `
         if (origHtml) activeBtn.innerHTML = origHtml;
       }
       showToast('导出失败：' + err.message);
+    }
+  }
+
+  async function checkCapCutStatus() {
+    const badge = $('capcut-install-badge');
+    if (!badge) return;
+    try {
+      const res = await apiJson('/api/export/capcut-status');
+      if (res && res.installed) {
+        badge.textContent = '已就绪 · ' + res.appName;
+        badge.className = 'status-pill-tiny capcut-card-badge-installed';
+      } else {
+        badge.textContent = '支持导出工程目录';
+        badge.className = 'status-pill-tiny capcut-card-badge-uninstalled';
+      }
+    } catch (_) {
+      badge.textContent = '支持导出工程目录';
+      badge.className = 'status-pill-tiny capcut-card-badge-uninstalled';
+    }
+  }
+
+  async function runCapCutExport(installLocal) {
+    const btn = installLocal ? $('btn-export-capcut-inject') : $('btn-export-capcut-folder');
+    const origHtml = btn ? btn.innerHTML : null;
+    if (btn) {
+      btn.innerHTML = '${lucideIcon('loader', 'ic ic-sm spin')} 正在构建工程…';
+      btn.classList.add('btn-loading-anim');
+    }
+    showToast(installLocal ? '正在构建并注入剪映 / CapCut 草稿箱…' : '正在构建剪映工程目录…');
+    try {
+      const res = await apiJson('/api/export', {
+        method: 'POST',
+        body: JSON.stringify({ format: 'capcut', installLocal }),
+      });
+      await refreshWorkspaceAndEcosystem();
+      if (btn) {
+        btn.classList.remove('btn-loading-anim');
+        triggerButtonFeedback(btn, '${lucideIcon('check', 'ic ic-sm')} ' + (res.installedLocal ? '已注入剪映草稿 ✓' : '工程已就绪 ✓'));
+      }
+      if (res.installedLocal) {
+        showToast('✅ 剪映工程已注入！打开剪映即可在首屏草稿列表中看到，点击即可二次微调。');
+      } else {
+        showToast('草稿工程构建完成：已保存至 exports/capcut-draft/（' + ((res.artifacts && res.artifacts.length) || 3) + ' 个文件）');
+      }
+    } catch (err) {
+      if (btn) {
+        btn.classList.remove('btn-loading-anim');
+        if (origHtml) btn.innerHTML = origHtml;
+      }
+      showToast('剪映工程导出失败：' + err.message);
     }
   }
 
@@ -2192,6 +2259,14 @@ export const CALM_STUDIO_SCRIPT = `
   $('btn-export-pptx').addEventListener('click', () => runExport('pptx'));
   $('btn-export-mp4').addEventListener('click', () => runExport('mp4'));
   $('btn-export-mp4-narrated').addEventListener('click', () => runExport('mp4', 'offline-fixture'));
+  const btnCapCutInject = $('btn-export-capcut-inject');
+  if (btnCapCutInject) {
+    btnCapCutInject.addEventListener('click', () => runCapCutExport(true));
+  }
+  const btnCapCutFolder = $('btn-export-capcut-folder');
+  if (btnCapCutFolder) {
+    btnCapCutFolder.addEventListener('click', () => runCapCutExport(false));
+  }
   $('btn-compound-wiki').addEventListener('click', async () => {
     try {
       await apiJson('/api/media/compound', { method: 'POST', body: JSON.stringify({}) });
@@ -2348,6 +2423,7 @@ export const CALM_STUDIO_SCRIPT = `
   Promise.all([
     refreshState(true),
     refreshWorkspaceAndEcosystem(),
+    checkCapCutStatus(),
   ])
     .then(() => connectLiveEvents())
     .catch((err) => showToast('初始化失败：' + err.message));

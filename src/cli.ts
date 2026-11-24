@@ -33,6 +33,7 @@ import {
   verifyDeckCitationsAgainstVault,
 } from './wiki/wiki-engine.js';
 import {
+  CURATED_TREND_FIXTURES,
   generateDeckFromRadarItem,
   runTrendRadar,
 } from './radar/radar-engine.js';
@@ -767,11 +768,12 @@ personaCmd
 
 program
   .command('radar [idOrIndex]')
-  .description('Live trending materials radar & 1-click deck generation (Hacker News, GitHub, DailyHot, X)')
-  .option('-c, --category <cat>', 'Filter category (all, ai-tech, social, creative, dev)', 'all')
-  .option('--sources <list>', 'Comma-separated sources (hackernews,github,dailyhot,rss)', 'hackernews,github,dailyhot')
+  .description('Live multi-source engagement radar & 1-click deck generation (Polymarket, Reddit, HN, GitHub, DailyHot, X)')
+  .option('-c, --category <cat>', 'Filter category (all, real-discussion, prediction, x, ai-tech, social, creative, dev)', 'all')
+  .option('--sources <list>', 'Comma-separated sources (polymarket,reddit,hackernews,github,dailyhot,x,rss)', 'polymarket,reddit,hackernews,github,dailyhot,x')
   .option('--rss <urls>', 'Comma-separated RSS/Atom feed URLs')
   .option('--keywords <words>', 'Comma-separated filter keywords')
+  .option('--min-authenticity <score>', 'Minimum anti-SEO authenticity weight score (0-100)', '0')
   .option('--limit <n>', 'Max items', '10')
   .option('-m, --make', 'Generate deck from the specified item')
   .option('-t, --template <name>', 'Override design template (e.g. apple-bento-launch)')
@@ -782,10 +784,11 @@ program
     async (
       idOrIndex: string | undefined,
       opts: {
-        category?: 'all' | 'ai-tech' | 'social' | 'creative' | 'dev';
+        category?: string;
         sources: string;
         rss?: string;
         keywords?: string;
+        minAuthenticity?: string;
         limit: string;
         make?: boolean;
         template?: string;
@@ -796,10 +799,11 @@ program
     ) => {
       const items = await runTrendRadar({
         category: opts.category,
-        sources: opts.sources.split(',').map((s) => s.trim()) as Array<'hackernews' | 'github' | 'dailyhot' | 'rss'>,
+        sources: opts.sources.split(',').map((s) => s.trim()) as any,
         rssUrls: opts.rss ? opts.rss.split(',').map((s) => s.trim()) : undefined,
         keywords: opts.keywords ? opts.keywords.split(',').map((s) => s.trim()) : undefined,
         limit: Number(opts.limit) || 10,
+        minAuthenticity: opts.minAuthenticity ? Number(opts.minAuthenticity) : undefined,
       });
 
       // If user passed an ID or 1-based index to generate:
@@ -809,7 +813,9 @@ program
           const idx = parseInt(idOrIndex, 10) - 1;
           targetItem = items[idx];
         } else if (idOrIndex) {
-          targetItem = items.find((it) => it.id === idOrIndex || it.url === idOrIndex);
+          targetItem =
+            items.find((it) => it.id === idOrIndex || it.url === idOrIndex) ||
+            CURATED_TREND_FIXTURES.find((it) => it.id === idOrIndex || it.url === idOrIndex);
         }
         if (!targetItem) {
           targetItem = items[0];
@@ -852,7 +858,7 @@ program
         ].join('\n');
 
         printResult(result, opts.json, human);
-        return;
+        process.exit(0);
       }
 
       const human = [
@@ -861,7 +867,8 @@ program
         ...items.map((it, i) => {
           const hot = it.hotness ? ` (${it.hotness})` : '';
           const tpl = it.suggestedTemplate ? ` [建议模板: ${it.suggestedTemplate}]` : '';
-          return `${i + 1}. [${it.source}] ${it.title}${hot}${tpl}\n   URL: ${it.url}\n   Summary: ${(it.summary || '').slice(0, 75)}...`;
+          const auth = it.authenticityScore ? ` [🛡️ 真实度: ${it.authenticityScore}%]` : '';
+          return `${i + 1}. [${it.source}] ${it.title}${hot}${auth}${tpl}\n   URL: ${it.url}\n   Summary: ${(it.summary || '').slice(0, 75)}...`;
         }),
         ``,
         `💡 极速生成作品:`,
@@ -870,20 +877,22 @@ program
       ].join('\n');
 
       printResult(items, opts.json, human);
+      process.exit(0);
     }
   );
 
 program
   .command('render <deckPath>')
-  .description('Compile a .deck.md storyboard into PNG cards, WeChat HTML, PDF, Editable PPTX, or narrated 60fps MP4')
-  .requiredOption('-f, --format <fmt>', 'Output format: png | wechat | pdf | pptx | mp4 | html')
-  .option('-o, --output <target>', 'Output directory (for png) or output file path (defaults to same folder as deck)')
+  .description('Compile a .deck.md storyboard into PNG cards, WeChat HTML, PDF, Editable PPTX, MP4, or CapCut draft')
+  .requiredOption('-f, --format <fmt>', 'Output format: png | wechat | pdf | pptx | mp4 | html | capcut')
+  .option('-o, --output <target>', 'Output directory (for png/capcut) or output file path (defaults to same folder as deck)')
   .option('-t, --template <id>', 'Override template ID')
   .option('-l, --locale <loc>', 'Override locale (zh-CN, zh-TW, en, ja, ko, es)')
   .option('--vault <dir>', 'Optional Wiki vault directory for automatic compound write-back')
   .option('--fps <n>', 'Frames per second for mp4 export')
   .option('--seconds-per-slide <n>', 'Seconds per slide for mp4 export')
-  .option('--narrate <provider>', 'Synthesize audio narration & SRT for mp4: offline-fixture | tencent-tccli')
+  .option('--narrate <provider>', 'Synthesize audio narration & SRT for mp4/capcut: offline-fixture | tencent-tccli')
+  .option('--install-local', 'Auto-install CapCut project directly into local CapCut/JianYing application library')
   .option('--json', 'Emit machine-readable JSON')
   .action(
     async (
@@ -897,6 +906,7 @@ program
         fps?: string;
         secondsPerSlide?: string;
         narrate?: 'offline-fixture' | 'tencent-tccli';
+        installLocal?: boolean;
         json?: boolean;
       }
     ) => {
@@ -912,6 +922,8 @@ program
           ? path.join(path.dirname(absDeck), `${baseName}.png`)
           : opts.format === 'wechat'
           ? path.join(path.dirname(absDeck), `${baseName}.wechat.html`)
+          : opts.format === 'capcut'
+          ? path.join(path.dirname(absDeck), `${baseName}-capcut`)
           : path.join(path.dirname(absDeck), `${baseName}.${opts.format}`);
       const outAbs = path.resolve(opts.output || defaultOut);
       let audioTrackPath: string | undefined;
@@ -919,10 +931,10 @@ program
       let slideDurationsMs: number[] | undefined;
 
       const hasSpeech = doc.slides.some((s) => s.speech && s.speech.trim().length > 0);
-      const shouldNarrate = opts.narrate || (opts.format === 'mp4' && hasSpeech);
+      const shouldNarrate = opts.narrate || ((opts.format === 'mp4' || opts.format === 'capcut') && hasSpeech);
 
-      if (opts.format === 'mp4' && shouldNarrate) {
-        const speechRunDir = path.join(path.dirname(outAbs), `${path.basename(outAbs, '.mp4')}-speech`);
+      if ((opts.format === 'mp4' || opts.format === 'capcut') && shouldNarrate) {
+        const speechRunDir = path.join(path.dirname(outAbs), `${path.basename(outAbs, path.extname(outAbs))}-speech`);
         const provider =
           opts.narrate === 'tencent-tccli'
             ? createTencentTccliSpeechProvider()
@@ -939,6 +951,7 @@ program
         audioTrackPath,
         subtitlesSrtPath,
         slideDurationsMs,
+        installLocal: opts.installLocal,
       });
 
       if (subtitlesSrtPath) artifacts.push(subtitlesSrtPath);

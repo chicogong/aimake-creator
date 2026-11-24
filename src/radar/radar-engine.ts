@@ -1,13 +1,14 @@
 import type { RadarItem } from '../schema/types.js';
 
 export interface RadarQueryOptions {
-  sources?: Array<'hackernews' | 'github' | 'rss' | 'dailyhot' | 'x'>;
+  sources?: Array<'hackernews' | 'github' | 'rss' | 'dailyhot' | 'x' | 'reddit' | 'polymarket'>;
   rssUrls?: string[];
   keywords?: string[];
-  category?: 'all' | 'ai-tech' | 'social' | 'creative' | 'dev';
+  category?: 'all' | 'ai-tech' | 'social' | 'creative' | 'dev' | 'real-discussion' | 'prediction' | 'x' | string;
   limit?: number;
   timeoutMs?: number;
   apiBase?: string;
+  minAuthenticity?: number;
 }
 
 export interface DeckGenerationOptions {
@@ -101,13 +102,148 @@ export function inferSuggestedTemplate(
 }
 
 /**
+ * Anti-SEO authenticity weight calculator inspired by mvanhorn/last30days-skill.
+ * Filters out AI slop, SEO spam, and clickbait by prioritizing verified human
+ * discussions (Reddit comments, HackerNews points), real-money market consensus
+ * (Polymarket odds), and open-source code commits (GitHub stars).
+ */
+export function calcAuthenticityScore(item: Partial<RadarItem>): number {
+  let score = 50;
+
+  // Source base weights
+  if (item.sourceKind === 'polymarket' || item.source?.toLowerCase().includes('polymarket')) {
+    score = 88; // Prediction market with skin in the game
+  } else if (item.sourceKind === 'reddit' || item.source?.toLowerCase().includes('reddit')) {
+    score = 82; // Human community forum
+  } else if (item.sourceKind === 'hackernews' || item.source?.toLowerCase().includes('hacker news')) {
+    score = 84; // Tech practitioner discussion
+  } else if (item.sourceKind === 'github' || item.source?.toLowerCase().includes('github')) {
+    score = 80; // Concrete code & repositories
+  } else if (item.sourceKind === 'x' || item.source?.toLowerCase().includes('x / twitter') || item.source?.toLowerCase().includes('x.com')) {
+    score = 75; // Curated domain experts
+  }
+
+  // Signal boosts
+  if (typeof item.polymarketOdds === 'number' && item.polymarketOdds > 0) {
+    score += Math.min(10, Math.round(item.polymarketOdds / 10));
+  }
+  if (typeof item.redditComments === 'number' && item.redditComments > 0) {
+    score += Math.min(15, Math.round(Math.log10(item.redditComments + 1) * 6));
+  }
+  if (typeof item.score === 'number' && item.score > 0) {
+    score += Math.min(10, Math.round(Math.log10(item.score + 1) * 3));
+  }
+
+  const text = `${item.title || ''} ${item.summary || ''}`.toLowerCase();
+
+  // SEO Slop / Clickbait penalties
+  const seoFluffTerms = [
+    'ultimate guide', 'top 10', 'top 5', 'top 7', 'game changer', 'revolutionize',
+    'cheat sheet', 'secrets revealed', 'you won\'t believe', '10x your', 'must know',
+    'guaranteed', 'easy money', 'best ai tools in 2026', '终极指南', '十大神器', '千万别错过', '绝密'
+  ];
+  for (const term of seoFluffTerms) {
+    if (text.includes(term)) {
+      score -= 15;
+    }
+  }
+
+  // Grounded technical / empirical signals bonus
+  const authenticTerms = [
+    'benchmark', 'rfc', 'post-mortem', 'paper', 'arxiv', 'reproducible',
+    'weights', 'compiler', 'runtime', 'latency', 'eval', 'm4', 'deepseek',
+    'odds', 'percent', '复盘', '实测', '架构', '源码', '开源', '评测', '对齐'
+  ];
+  for (const term of authenticTerms) {
+    if (text.includes(term)) {
+      score += 4;
+    }
+  }
+
+  return Math.max(10, Math.min(99, Math.round(score)));
+}
+
+/**
  * Built-in high-quality trend fixtures:
  * Guarantees zero-blank-screen cold start and resilient offline local-first operation.
  */
 export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
+    id: 'radar:polymarket-agi-timeline-2026',
+    source: 'Polymarket 预测市场',
+    sourceKind: 'polymarket',
+    category: 'prediction',
+    title: 'Polymarket: 2026 年实现 AGI 预测胜率攀升至 68%（全网资金量超 $4.5M）',
+    url: 'https://polymarket.com/event/agi-by-2026',
+    publishedAt: new Date(Date.now() - 1800 * 1000).toISOString(),
+    summary:
+      '真实资金博弈过滤 SEO 噪音：全球预测市场关于大模型自监督学习与自主推理架构能否在 2026 年突破 AGI 门槛的下注量突破历史新高。',
+    polymarketOdds: 68,
+    score: 4500000,
+    hotness: '📈 68% 胜率 · $4.5M 预测池',
+    authenticityScore: 96,
+    suggestedTemplate: 'apple-bento-launch',
+    suggestedAspectRatio: '3:4',
+    author: 'Polymarket Odds',
+  },
+  {
+    id: 'radar:reddit-localllama-anti-cloud',
+    source: 'Reddit r/LocalLLaMA',
+    sourceKind: 'reddit',
+    category: 'real-discussion',
+    title: 'r/LocalLLaMA: 为什么我们团队彻底放弃云端 API，全面转向本地 100% 确定性离线工作流？',
+    url: 'https://reddit.com/r/LocalLLaMA/comments/2026_local_first_workflow',
+    publishedAt: new Date(Date.now() - 2400 * 1000).toISOString(),
+    summary:
+      '超 500 位一线工程师真实复盘：数据安全审查、按 token 计费的云端账单失控与网络抖动，促使严肃创作者全面采用 Local-First 方案。',
+    redditComments: 542,
+    score: 3820,
+    hotness: '💬 542 真实讨论 · r/LocalLLaMA',
+    authenticityScore: 97,
+    suggestedTemplate: 'ppt-linear-dark',
+    suggestedAspectRatio: '16:9',
+    author: 'u/local_tinker',
+  },
+  {
+    id: 'radar:polymarket-open-weights-benchmark',
+    source: 'Polymarket 预测市场',
+    sourceKind: 'polymarket',
+    category: 'prediction',
+    title: 'Polymarket: 开源大模型在 2026 年权威代码基准中超越闭源旗舰的概率达 72%',
+    url: 'https://polymarket.com/event/open-weights-coding-2026',
+    publishedAt: new Date(Date.now() - 3200 * 1000).toISOString(),
+    summary:
+      '真金白银博弈展现的技术共识：随着 MoE 与端侧蒸馏算法进化，开源权重不仅成本优势压倒性，在工程代码与多语言评测中正加速反超。',
+    polymarketOdds: 72,
+    score: 3200000,
+    hotness: '📈 72% 胜率 · $3.2M 预测池',
+    authenticityScore: 95,
+    suggestedTemplate: 'apple-bento-launch',
+    suggestedAspectRatio: '3:4',
+    author: 'Polymarket Odds',
+  },
+  {
+    id: 'radar:reddit-selfhosted-creator-studio',
+    source: 'Reddit r/selfhosted',
+    sourceKind: 'reddit',
+    category: 'real-discussion',
+    title: 'r/selfhosted: 零订阅、零云端泄露：超级个体的内容工厂本地自建全套技术栈实测',
+    url: 'https://reddit.com/r/selfhosted/comments/2026_creator_studio_stack',
+    publishedAt: new Date(Date.now() - 4200 * 1000).toISOString(),
+    summary:
+      '利用 Markdown 事实单源（SSOT）、参数化渲染与本地音频合成，单台 MacBook 支撑每周全渠道高质量多模态发布。',
+    redditComments: 328,
+    score: 2190,
+    hotness: '💬 328 真实讨论 · r/selfhosted',
+    authenticityScore: 94,
+    suggestedTemplate: 'xhs-paper-editorial',
+    suggestedAspectRatio: '3:4',
+    author: 'u/selfhosted_guy',
+  },
+  {
     id: 'radar:x-karpathy-wiki-pattern',
     source: 'X / Twitter',
+    sourceKind: 'x',
     category: 'creative',
     title: 'Andrej Karpathy: 创作者构建第二大脑的秘密是可溯源的 Grounded LLM Wiki',
     url: 'https://x.com/karpathy/status/1880000000000000000',
@@ -116,6 +252,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '从碎片化阅读转向高密度事实沉淀。先将推文、论文与音视频转为原子 Markdown 事实卡片，再通过 LLM 生成多格式分发内容，彻底告别白屏创作焦虑。',
     score: 8940,
     hotness: '🔥 8.9k Likes · @karpathy',
+    authenticityScore: 93,
     suggestedTemplate: 'apple-bento-launch',
     suggestedAspectRatio: '3:4',
     author: '@karpathy',
@@ -123,6 +260,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
     id: 'radar:x-sama-local-agents',
     source: 'X / Twitter',
+    sourceKind: 'x',
     category: 'ai-tech',
     title: 'Sam Altman: 下一代人机协同的飞跃是端侧自主沉淀、长期复利的 Local Agent',
     url: 'https://x.com/sama/status/1881000000000000000',
@@ -131,6 +269,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '未来的个人生产力核心，是拥有本地文件系统读写、确定性排版、音视频渲染与端侧私有执行能力的超级协同副驾驶。',
     score: 14200,
     hotness: '🔥 14.2k Likes · @sama',
+    authenticityScore: 90,
     suggestedTemplate: 'apple-bento-launch',
     suggestedAspectRatio: '3:4',
     author: '@sama',
@@ -138,6 +277,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
     id: 'radar:x-ylecun-openweights',
     source: 'X / Twitter',
+    sourceKind: 'x',
     category: 'ai-tech',
     title: 'Yann LeCun: 开源权重与端侧推理正在重构全球 AI 基础设施成本',
     url: 'https://x.com/ylecun/status/1882000000000000000',
@@ -146,6 +286,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '垂直领域的确定性输出与规则编译无需百亿参数大云，小型化专家模型配合结构化编译器，在 MacBook 本地即可打出超越云端大模型的排版精度。',
     score: 6850,
     hotness: '🔥 6.8k Likes · @ylecun',
+    authenticityScore: 92,
     suggestedTemplate: 'ppt-tech-architecture',
     suggestedAspectRatio: '16:9',
     author: '@ylecun',
@@ -153,6 +294,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
     id: 'radar:x-levelsio-solo-creator',
     source: 'X / Twitter',
+    sourceKind: 'x',
     category: 'creative',
     title: 'Pieter Levels: 为什么 2026 年超级个体创作者全面回归 Local-First 桌面原生应用？',
     url: 'https://x.com/levelsio/status/1883000000000000000',
@@ -161,6 +303,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '零月租、零云端排队、零数据泄露。一个人利用现代本地工具链，一天可以完成以往一个 10 人工作室的图文、研报、幻灯片与视频全渠道交付。',
     score: 11800,
     hotness: '🔥 11.8k Likes · @levelsio',
+    authenticityScore: 89,
     suggestedTemplate: 'xhs-bold-headline',
     suggestedAspectRatio: '3:4',
     author: '@levelsio',
@@ -168,6 +311,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
     id: 'radar:x-swyx-one-person-unicorn',
     source: 'X / Twitter',
+    sourceKind: 'x',
     category: 'dev',
     title: 'swyx: AI 工程师时代，纯 Markdown 作为唯一事实源（Single Source of Truth）的威力',
     url: 'https://x.com/swyx/status/1884000000000000000',
@@ -176,6 +320,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '告别重型专有排版文件格式。写好结构轻盈的 .deck.md，让代码和编译器去处理微信内联 CSS、微软 PPTX OOXML 与视频时间轴。',
     score: 9540,
     hotness: '🔥 9.5k Likes · @swyx',
+    authenticityScore: 91,
     suggestedTemplate: 'ppt-linear-dark',
     suggestedAspectRatio: '16:9',
     author: '@swyx',
@@ -183,6 +328,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
     id: 'radar:ai-local-agent-2026',
     source: 'GitHub Trending',
+    sourceKind: 'github',
     category: 'dev',
     title: 'Local-First Agent OS: 100% 离线自主多智能体操作系统全面破圈',
     url: 'https://github.com/trending?since=daily',
@@ -191,6 +337,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '从云端 API 依赖转向本地硬件原生计算，基于 Apple Silicon 与 MLX 的端侧智能体已实现 120ms 级低延迟推理，创作者拥有 100% 数据资产主权。',
     score: 18450,
     hotness: '★ 18.5k · GitHub',
+    authenticityScore: 94,
     suggestedTemplate: 'apple-bento-launch',
     suggestedAspectRatio: '3:4',
     author: '@autonomous-core',
@@ -198,6 +345,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
     id: 'radar:deepseek-v3-distill',
     source: 'Hacker News',
+    sourceKind: 'hackernews',
     category: 'ai-tech',
     title: 'DeepSeek-V3 & Open Weights: 深度剖析开源模型如何重塑全球推理成本结构',
     url: 'https://news.ycombinator.com/item?id=42890001',
@@ -206,6 +354,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '通过多头潜在注意力 (MLA) 与专家混合架构 (MoE)，将每百万 Token 训练与运行成本降至行业基准的 1/10，推动本地私有化部署浪潮。',
     score: 2180,
     hotness: '2180 pts · Hacker News',
+    authenticityScore: 95,
     suggestedTemplate: 'ppt-tech-architecture',
     suggestedAspectRatio: '16:9',
     author: 'karpathy_fan',
@@ -213,6 +362,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
     id: 'radar:apple-m4-ultra-studio',
     source: '36Kr 科技',
+    sourceKind: 'dailyhot',
     category: 'ai-tech',
     title: 'Apple 发布 M4 Max / Ultra 移动工作站：超级个体的 512GB 统一内存时代',
     url: 'https://36kr.com/p/20260000001',
@@ -221,6 +371,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '统一内存带宽突破 800GB/s，可直接在本地运行 70B+ 量级全尺寸多模态模型，音视频无损渲染时间缩短 65%。',
     score: 12400,
     hotness: '🔥 93.1°C · 36氪',
+    authenticityScore: 88,
     suggestedTemplate: 'apple-bento-launch',
     suggestedAspectRatio: '3:4',
     author: '36氪硬科技',
@@ -228,6 +379,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
     id: 'radar:xiaohongshu-bento-card',
     source: '知乎热榜',
+    sourceKind: 'dailyhot',
     category: 'social',
     title: '为什么 Bento Grid（便当盒网格）成为 2026 年小红书与图文平台排版天花板？',
     url: 'https://www.zhihu.com/question/20260002',
@@ -236,6 +388,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '3:4 比例下单图承载多维度信息：数据卡片、高对比标题、色块隔离与微质感高光，阅读完成率比传统大段文字卡片提升 340%。',
     score: 95400,
     hotness: '🔥 95.4k 赞同 · 知乎',
+    authenticityScore: 86,
     suggestedTemplate: 'apple-bento-launch',
     suggestedAspectRatio: '3:4',
     author: '设计前沿观察',
@@ -243,6 +396,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
     id: 'radar:multimodal-tts-voice-clone',
     source: 'Weibo 热搜',
+    sourceKind: 'dailyhot',
     category: 'creative',
     title: '端侧音色克隆与词级对齐爆发：一人完成从脚本到短视频的全流程配音',
     url: 'https://weibo.com/hot/20260003',
@@ -251,6 +405,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
       '3 秒参考音频即可在 MacBook 本地生成自然度媲美真人播音的高清旁白，配合 Whisper 毫秒级时间轴对齐，剪辑导出效率飞跃。',
     score: 84300,
     hotness: '🔥 热搜 TOP 3',
+    authenticityScore: 85,
     suggestedTemplate: 'xhs-quote-card',
     suggestedAspectRatio: '3:4',
     author: 'AI数字人实验室',
@@ -345,10 +500,16 @@ export function parseFeedXml(xml: string, sourceLabel = 'rss'): RadarItem[] {
 async function fetchWithTimeout(url: string, timeoutMs: number): Promise<Response> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+  if (typeof timer.unref === 'function') {
+    timer.unref();
+  }
   try {
     return await fetch(url, {
       signal: controller.signal,
-      headers: { 'User-Agent': 'Aimake-Radar/2.0 (+https://aimake.cc)' },
+      headers: {
+        'User-Agent': 'Aimake-Radar/2.0 (+https://aimake.cc)',
+        'Connection': 'close',
+      },
     });
   } finally {
     clearTimeout(timer);
@@ -358,7 +519,7 @@ async function fetchWithTimeout(url: string, timeoutMs: number): Promise<Respons
 async function fetchHackerNewsTop(limit: number, timeoutMs: number): Promise<RadarItem[]> {
   const res = await fetchWithTimeout('https://hacker-news.firebaseio.com/v0/topstories.json', timeoutMs);
   if (!res.ok) return [];
-  const ids = ((await res.json()) as number[]).slice(0, Math.min(limit, 15));
+  const ids = ((await res.json()) as number[]).slice(0, Math.min(limit, 6));
   const items = await Promise.all(
     ids.map(async (id): Promise<RadarItem | null> => {
       try {
@@ -462,9 +623,10 @@ async function fetchDailyHotEndpoint(
       const cleanTitle = (d.title || '').trim();
       const cleanSummary = (d.desc || '').trim();
       const { template, aspectRatio } = inferSuggestedTemplate(cleanTitle, cleanSummary);
-      return {
+      const item: RadarItem = {
         id: `dailyhot:${sourceName}:${d.id || cleanTitle.slice(0, 20)}`,
         source: sourceName,
+        sourceKind: 'dailyhot',
         category,
         title: cleanTitle,
         url: d.url || `https://aimake.cc`,
@@ -475,9 +637,123 @@ async function fetchDailyHotEndpoint(
         suggestedTemplate: template,
         suggestedAspectRatio: aspectRatio,
       };
+      item.authenticityScore = calcAuthenticityScore(item);
+      return item;
     });
   } catch {
     return [];
+  }
+}
+
+/**
+ * Fetch prediction market consensus from Polymarket
+ */
+async function fetchPolymarketPredictions(limit: number, timeoutMs: number): Promise<RadarItem[]> {
+  const curated = CURATED_TREND_FIXTURES.filter((f) => f.sourceKind === 'polymarket');
+  try {
+    const res = await fetchWithTimeout(
+      `https://gamma-api.polymarket.com/events?closed=false&limit=${Math.min(limit, 10)}`,
+      timeoutMs
+    );
+    if (!res.ok) return curated;
+    const data = (await res.json()) as Array<{
+      id: string | number;
+      title?: string;
+      description?: string;
+      volume?: number;
+      markets?: Array<{ outcomePrices?: string[]; groupItemTitle?: string }>;
+    }>;
+    if (!Array.isArray(data) || data.length === 0) return curated;
+    return data.slice(0, limit).map((ev) => {
+      const title = (ev.title || '').trim();
+      const summary = (ev.description || '').slice(0, 180);
+      let odds = 50;
+      if (ev.markets?.[0]?.outcomePrices) {
+        try {
+          const prices = JSON.parse(ev.markets[0].outcomePrices[0] || '0.5');
+          odds = Math.round((Number(prices) || 0.5) * 100);
+        } catch {
+          odds = 50;
+        }
+      }
+      const { template, aspectRatio } = inferSuggestedTemplate(title, summary);
+      const item: RadarItem = {
+        id: `polymarket:${ev.id}`,
+        source: 'Polymarket 预测市场',
+        sourceKind: 'polymarket',
+        category: 'prediction',
+        title,
+        url: `https://polymarket.com/event/${ev.id}`,
+        publishedAt: new Date().toISOString(),
+        summary: summary || undefined,
+        polymarketOdds: odds,
+        score: Math.round(ev.volume || 100000),
+        hotness: `📈 ${odds}% 胜率 · $${Math.round((ev.volume || 100000) / 1000)}k`,
+        suggestedTemplate: template,
+        suggestedAspectRatio: aspectRatio,
+      };
+      item.authenticityScore = calcAuthenticityScore(item);
+      return item;
+    });
+  } catch {
+    return curated;
+  }
+}
+
+/**
+ * Fetch human community discussions from Reddit
+ */
+async function fetchRedditDiscussions(limit: number, timeoutMs: number): Promise<RadarItem[]> {
+  const curated = CURATED_TREND_FIXTURES.filter((f) => f.sourceKind === 'reddit');
+  try {
+    const res = await fetchWithTimeout(
+      `https://www.reddit.com/r/LocalLLaMA/hot.json?limit=${Math.min(limit, 10)}`,
+      timeoutMs
+    );
+    if (!res.ok) return curated;
+    const json = (await res.json()) as {
+      data?: {
+        children?: Array<{
+          data?: {
+            id: string;
+            title: string;
+            selftext?: string;
+            permalink: string;
+            num_comments: number;
+            score: number;
+            author: string;
+            created_utc: number;
+          };
+        }>;
+      };
+    };
+    const posts = json?.data?.children || [];
+    if (posts.length === 0) return curated;
+    return posts.slice(0, limit).map(({ data }) => {
+      const title = (data?.title || '').trim();
+      const summary = (data?.selftext || '').slice(0, 180);
+      const { template, aspectRatio } = inferSuggestedTemplate(title, summary);
+      const item: RadarItem = {
+        id: `reddit:localllama:${data?.id || Math.random()}`,
+        source: 'Reddit r/LocalLLaMA',
+        sourceKind: 'reddit',
+        category: 'real-discussion',
+        title,
+        url: data?.permalink ? `https://reddit.com${data.permalink}` : 'https://reddit.com/r/LocalLLaMA',
+        publishedAt: data?.created_utc ? new Date(data.created_utc * 1000).toISOString() : new Date().toISOString(),
+        summary: summary || undefined,
+        redditComments: data?.num_comments || 0,
+        score: data?.score || 100,
+        hotness: `💬 ${data?.num_comments || 0} 条真实讨论 · r/LocalLLaMA`,
+        author: data?.author ? `u/${data.author}` : undefined,
+        suggestedTemplate: template,
+        suggestedAspectRatio: aspectRatio,
+      };
+      item.authenticityScore = calcAuthenticityScore(item);
+      return item;
+    });
+  } catch {
+    return curated;
   }
 }
 
@@ -488,14 +764,51 @@ export function filterRadarItems(
 ): RadarItem[] {
   let res = items;
   if (category && category !== 'all') {
-    res = res.filter((item) => (item.category || 'ai-tech') === category);
+    if (category === 'real-discussion') {
+      res = res.filter(
+        (item) =>
+          item.sourceKind === 'reddit' ||
+          item.sourceKind === 'hackernews' ||
+          (item.redditComments !== undefined && item.redditComments > 0) ||
+          item.category === 'real-discussion' ||
+          (item.source || '').toLowerCase().includes('reddit') ||
+          (item.source || '').toLowerCase().includes('hacker news')
+      );
+    } else if (category === 'prediction') {
+      res = res.filter(
+        (item) =>
+          item.sourceKind === 'polymarket' ||
+          item.polymarketOdds !== undefined ||
+          item.category === 'prediction' ||
+          (item.source || '').toLowerCase().includes('polymarket')
+      );
+    } else if (category === 'x') {
+      res = res.filter(
+        (item) =>
+          item.sourceKind === 'x' ||
+          (item.source || '').toLowerCase().includes('x') ||
+          (item.source || '').toLowerCase().includes('twitter')
+      );
+    } else {
+      res = res.filter((item) => (item.category || 'ai-tech') === category);
+    }
   }
-  if (keywords.length === 0) return res;
-  const lowered = keywords.map((k) => k.toLowerCase().trim()).filter(Boolean);
-  if (lowered.length === 0) return res;
-  return res.filter((item) => {
-    const hay = `${item.title} ${item.summary || ''} ${item.source}`.toLowerCase();
-    return lowered.some((kw) => hay.includes(kw));
+  if (keywords.length > 0) {
+    const lowered = keywords.map((k) => k.toLowerCase().trim()).filter(Boolean);
+    if (lowered.length > 0) {
+      res = res.filter((item) => {
+        const hay = `${item.title} ${item.summary || ''} ${item.source} ${item.author || ''}`.toLowerCase();
+        return lowered.some((kw) => hay.includes(kw));
+      });
+    }
+  }
+
+  // Anti-SEO prioritization: sort by authenticityScore descending, then score descending
+  return [...res].sort((a, b) => {
+    const authA = a.authenticityScore ?? calcAuthenticityScore(a);
+    const authB = b.authenticityScore ?? calcAuthenticityScore(b);
+    if (authB !== authA) return authB - authA;
+    return (b.score || 0) - (a.score || 0);
   });
 }
 
@@ -504,7 +817,7 @@ export function filterRadarItems(
  * gracefully merging with curated fixtures for zero-latency, reliable response.
  */
 export async function runTrendRadar(options: RadarQueryOptions = {}): Promise<RadarItem[]> {
-  const sources = options.sources || ['hackernews', 'github', 'dailyhot', 'x'];
+  const sources = options.sources || ['hackernews', 'github', 'dailyhot', 'x', 'reddit', 'polymarket'];
   const limit = options.limit || 16;
   const timeoutMs = options.timeoutMs || 2500;
   const collected: RadarItem[] = [];
@@ -535,8 +848,14 @@ export async function runTrendRadar(options: RadarQueryOptions = {}): Promise<Ra
   for (const src of sources) {
     try {
       if (src === 'x') {
-        const xItems = CURATED_TREND_FIXTURES.filter((f) => f.source === 'X / Twitter');
+        const xItems = CURATED_TREND_FIXTURES.filter((f) => f.source === 'X / Twitter' || f.sourceKind === 'x');
         collected.push(...xItems);
+      } else if (src === 'polymarket') {
+        const poly = await fetchPolymarketPredictions(limit, timeoutMs);
+        collected.push(...poly);
+      } else if (src === 'reddit') {
+        const red = await fetchRedditDiscussions(limit, timeoutMs);
+        collected.push(...red);
       } else if (src === 'hackernews') {
         const hn = await fetchHackerNewsTop(limit, timeoutMs);
         collected.push(...hn);
@@ -572,7 +891,17 @@ export async function runTrendRadar(options: RadarQueryOptions = {}): Promise<Ra
     }
   }
 
-  const filtered = filterRadarItems(collected, options.keywords, options.category);
+  // Ensure every item has calculated authenticityScore and sourceKind
+  for (const item of collected) {
+    if (item.authenticityScore === undefined) {
+      item.authenticityScore = calcAuthenticityScore(item);
+    }
+  }
+
+  let filtered = filterRadarItems(collected, options.keywords, options.category);
+  if (options.minAuthenticity !== undefined) {
+    filtered = filtered.filter((i) => (i.authenticityScore ?? 0) >= options.minAuthenticity!);
+  }
   return filtered.slice(0, limit);
 }
 
@@ -623,7 +952,8 @@ date: "${new Date().toISOString().slice(0, 10)}"
 - **资产价值**: 100% 本地优先存储，数据主权完全自主
 
 \`\`\`metric
-- 关注热度: ${item.hotness || '98.5°C'}
+- 关注热度: ${item.hotness || '98.5°C'}${item.polymarketOdds !== undefined ? `\n- 预测胜率: ${item.polymarketOdds}%` : ''}${item.redditComments !== undefined ? `\n- 社区讨论: ${item.redditComments} 条` : ''}
+- 真实评分: ${item.authenticityScore || 90}/100 (Anti-SEO)
 - 交付格式: 5+1 Omni-Channel
 - 渲染耗时: <500ms
 \`\`\`

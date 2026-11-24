@@ -1477,6 +1477,24 @@ export const CALM_STUDIO_CSS = `
     grid-column: 1 / -1;
     justify-content: center;
   }
+  .capcut-export-card {
+    background: linear-gradient(135deg, rgba(105, 81, 255, 0.08), rgba(24, 28, 40, 0.6));
+    border: 1px solid rgba(105, 81, 255, 0.32);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+  .capcut-card-badge-installed {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: var(--emerald) !important;
+    border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  }
+  .capcut-card-badge-uninstalled {
+    background: rgba(148, 163, 184, 0.15) !important;
+    color: var(--ink-secondary) !important;
+    border: 1px solid rgba(148, 163, 184, 0.25) !important;
+  }
 
   .field-label {
     display: block;

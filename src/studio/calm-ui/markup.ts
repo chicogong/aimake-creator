@@ -445,7 +445,9 @@ export const CALM_STUDIO_MARKUP = `
         </p>
         <div class="filter-bar" style="margin-bottom:14px;">
           <div class="chip-row" id="radar-category-chips">
-            <button class="filter-chip active" data-radar-cat="all">全部热点</button>
+            <button class="filter-chip active" data-radar-cat="all">🔥 全网热榜</button>
+            <button class="filter-chip" data-radar-cat="real-discussion">🎯 真实讨论 (last30days)</button>
+            <button class="filter-chip" data-radar-cat="prediction">📈 预测市场</button>
             <button class="filter-chip" data-radar-cat="x">𝕏 前沿爆款</button>
             <button class="filter-chip" data-radar-cat="ai-tech">AI & 科技</button>
             <button class="filter-chip" data-radar-cat="social">社交热榜</button>
@@ -500,6 +502,27 @@ export const CALM_STUDIO_MARKUP = `
         <div class="export-grid">
           <button class="btn" id="btn-export-mp4">导出静音 MP4</button>
           <button class="btn btn-primary" id="btn-export-mp4-narrated">导出带配音字幕 MP4</button>
+        </div>
+      </div>
+
+      <div class="capcut-export-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <h4 style="margin:0;display:flex;align-items:center;gap:6px;font-size:13.5px;">
+            <span>🎬</span>
+            <span>剪映 / CapCut 视频草稿工程</span>
+          </h4>
+          <span class="status-pill-tiny" id="capcut-install-badge">检测中...</span>
+        </div>
+        <p style="margin:0 0 12px;font-size:12px;color:var(--ink-secondary);line-height:1.55;">
+          一键生成包含完整 6 轨时间轴、微秒级镜头切片与对齐字幕的本地草稿。打开剪映/CapCut 即可在首屏草稿箱中二次微调。
+        </p>
+        <div class="export-grid">
+          <button class="btn btn-primary btn-wide" id="btn-export-capcut-inject">
+            ⚡ 一键注入剪映 / CapCut 草稿箱
+          </button>
+          <button class="btn btn-wide" id="btn-export-capcut-folder">
+            📁 导出草稿工程目录至 exports/
+          </button>
         </div>
       </div>
 

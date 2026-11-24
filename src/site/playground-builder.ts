@@ -263,29 +263,37 @@ export async function buildWebPlaygroundHtml(
       overflow-x: auto; scrollbar-width: none;
     }
     .pg-controls::-webkit-scrollbar { display: none; }
+    .pg-control-sep {
+      width: 1px; height: 16px;
+      background: var(--border);
+      flex-shrink: 0; margin: 0 2px;
+    }
     .pg-select {
       background: var(--surface); color: var(--ink);
-      border: 1px solid var(--border); border-radius: 7px;
-      height: 30px; padding: 0 8px; font-size: 11.5px; outline: none;
-      max-width: 152px; min-width: 88px;
+      border: 1px solid var(--border); border-radius: 6px;
+      height: 32px; padding: 0 10px; font-size: 11.5px; outline: none;
+      max-width: 156px; min-width: 90px;
       white-space: nowrap; text-overflow: ellipsis;
+      transition: border-color 0.15s ease;
     }
     .pg-select:hover, .pg-select:focus { border-color: var(--border-strong); }
     .pg-btn {
       background: var(--surface); color: var(--ink);
-      border: 1px solid var(--border); border-radius: 7px;
-      height: 30px; padding: 0 9px; font-size: 11.5px; font-weight: 500;
-      cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+      border: 1px solid var(--border); border-radius: 6px;
+      height: 32px; padding: 0 10px; font-size: 11.5px; font-weight: 500;
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
       white-space: nowrap; flex-shrink: 0;
       transition: all 0.15s ease;
+      box-sizing: border-box;
     }
     .pg-btn:hover { background: var(--surface-elev); border-color: var(--border-strong); color: var(--ink); }
     .pg-btn-primary {
-      background: var(--accent); color: var(--accent-ink);
-      border-color: var(--accent); font-weight: 600;
+      background: #745dff; color: #ffffff;
+      border-color: #745dff; font-weight: 600;
+      box-shadow: 0 2px 8px rgba(116, 93, 255, 0.35);
     }
     .pg-btn-primary:hover {
-      background: var(--accent-hover); color: var(--accent-ink); border-color: var(--accent-hover);
+      background: #6046f8; border-color: #6046f8; color: #ffffff;
     }
 
     .pg-body {
@@ -609,7 +617,12 @@ export async function buildWebPlaygroundHtml(
         <option value="4:5">4:5 长图</option>
       </select>
 
+      <span class="pg-control-sep"></span>
+
       <button class="pg-btn" id="btn-humanize" title="四语种去 AI 套话清洗器">${lucideIcon('wand')} 去AI味</button>
+
+      <span class="pg-control-sep"></span>
+
       <button class="pg-btn pg-btn-primary" id="btn-copy-wechat" title="一键复制内联富文本，直粘公众号后台">${lucideIcon('copy')} 复制公众号</button>
       <button class="pg-btn" id="btn-export-png" title="将当前页导出为高清 PNG 图片">${lucideIcon('image')} 导图</button>
       <button class="pg-btn" id="btn-print-pdf" title="打印 / 另存为 PDF 演示文稿">${lucideIcon('printer')} PDF</button>

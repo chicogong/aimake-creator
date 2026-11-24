@@ -108,8 +108,8 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitle: '超级个体的本地创作外脑：从灵感火花到全域多模态出版',
     heroSub:
       '素材吸纳、知识蒸馏、私有风格对齐、确定性美学排版。全流程在一个工作区里端到端闭环，一套在本地飞速运转的超级个体个人出版流水线。内置 36 套商业级参数化设计模板与反 AI 废话风格库，零云端依赖，80 毫秒极速直出小红书 3x 超清图卡、微信内联富文本、微软原生可编辑 PPTX 与 60fps 动效短视频。',
-    primaryCta: '🚀 网页版在线体验 (开箱即用)',
-    secondaryCta: '浏览 36 套个人 IP 视觉系统',
+    primaryCta: '网页版在线工坊 (开箱即用)',
+    secondaryCta: '浏览 36 套设计模板',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: '已复制终端命令至剪贴板',
     stageCaption: '确定性排版编译舞台 · 点击上方介质标签实时切换同一原稿的多端渲染画布',
@@ -270,8 +270,8 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitle: 'The Local-First Creative OS: From Raw Sparks to Omni-Channel Publishing',
     heroSub:
       'Lossless intake, Karpathy LLM Wiki distillation, private style alignment, and deterministic typography. An end-to-end publishing pipeline running 100% locally for solopreneurs. Build your flagship personal IP with 36 parametric design systems—compiling Retina 3x PNG cards, inline newsletter HTML, native editable PPTX, and 60fps narrated video in 80ms.',
-    primaryCta: '🚀 Try Web Playground (Zero Install)',
-    secondaryCta: 'Explore 36 Personal IP Design Systems',
+    primaryCta: 'Try Web Studio (Zero Install)',
+    secondaryCta: 'Explore 36 Design Systems',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: 'Command copied to clipboard',
     stageCaption: 'Deterministic layout compiler stage · Switch tabs to inspect real parametric HTML outputs',
@@ -432,7 +432,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitle: 'クリエイターのためのローカル創作外脳：アイデアの閃きから全メディア出版まで',
     heroSub:
       '素材の高速摂取、Karpathy 式 LLM Wiki による知識蒸留、独自トーンの同期、そして確定性美学レイアウト。単一ワークスペースで完结するローカル出版パイプライン。36 種のプロ品質デザインシステムを内蔵し、高解像度SNSカード、Webリッチテキスト、編集可能PPTX、60fps動画を80msで一括生成。',
-    primaryCta: '🚀 Web版を今すぐ体験（インストール不要）',
+    primaryCta: 'Web版スタジオを体験（インストール不要）',
     secondaryCta: '36種のデザインシステムを見る',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: 'コマンドをクリップボードにコピーしました',
@@ -586,8 +586,8 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitle: '슈퍼 인디비주얼을 위한 로컬 창작 외뇌: 영감의 불꽃에서 전 채널 출판까지',
     heroSub:
       '무손실 소재 수집, Karpathy LLM 위키 지식 증류, 고유 스타일 동기화, 결정론적 미학 레이아웃. 로컬에서 즉시 구동되는 올인원 1인 출판 파이프라인. 36종의 파라메트릭 디자인 시스템을 탑재하여 80ms 만에 초고해상도 카드뉴스, 웹 리치 텍스트, 편집형 PPTX, 60fps 모션 비디오를 완벽 컴파일.',
-    primaryCta: '🚀 웹 플레이그라운드 체험하기 (설치 불필요)',
-    secondaryCta: '36가지 퍼스널 IP 템플릿 보기',
+    primaryCta: '웹 스튜디오 체험하기 (설치 불필요)',
+    secondaryCta: '36가지 디자인 시스템 보기',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: '명령어가 클립보드에 복사되었습니다',
     stageCaption: '결정론적 레이아웃 컴파일러 · 탭을 눌러 매체별 렌더링 결과를 확인하세요',
@@ -961,33 +961,56 @@ function sharedSiteCss(): string {
       background: #f1f5f9;
     }
     [data-theme="light"] .stage-shell {
-      background: #ffffff;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+      background: #0f131c;
+      border-color: rgba(0, 0, 0, 0.14);
+      box-shadow: 0 20px 48px rgba(15, 23, 42, 0.16);
     }
-    [data-theme="light"] .stage-bar,
+    [data-theme="light"] .stage-bar {
+      background: #141924;
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
     [data-theme="light"] .stage-foot {
-      background: #f8fafc;
-      border-color: var(--border);
+      background: #141924;
+      border-top-color: rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
     }
     [data-theme="light"] .stage-viewport {
-      background: #f1f5f9;
-    }
-    [data-theme="light"] footer {
-      background: #f8fafc;
-      border-top-color: var(--border);
+      background: #07090e;
     }
     [data-theme="light"] .stage-tab {
-      color: var(--muted);
-      border-color: var(--border);
+      color: #94a3b8;
     }
     [data-theme="light"] .stage-tab:hover {
-      color: var(--ink);
-      border-color: var(--border-strong);
+      color: #ffffff;
     }
     [data-theme="light"] .stage-tab.active {
-      background: rgba(105, 81, 255, 0.12);
-      color: var(--cobalt);
+      background: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    [data-theme="light"] .work-card {
+      background: #ffffff;
+      border-color: var(--border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+    [data-theme="light"] .work-btn {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: var(--border-strong);
+    }
+    [data-theme="light"] .work-btn:hover {
+      background: var(--cobalt);
+      color: #ffffff;
       border-color: var(--cobalt);
+    }
+    [data-theme="light"] .deliverables-badge {
+      background: #ffffff;
+      border-color: var(--border);
+      color: #334155;
+    }
+    [data-theme="light"] footer {
+      background: #f1f5f9;
+      border-top-color: var(--border);
     }
     * { box-sizing: border-box; }
     html {
@@ -1248,52 +1271,75 @@ function sharedSiteCss(): string {
       max-width: 620px;
       line-height: 1.7;
     }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; align-items: center; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; align-items: center; }
     .btn-primary {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      height: 42px;
       background: linear-gradient(135deg, var(--am-violet), var(--am-violet-hover));
       color: #fff;
       font-weight: 600;
-      font-size: 14px;
-      padding: 12px 22px;
+      font-size: 13.5px;
+      padding: 0 20px;
       border-radius: 9px;
       border: 1px solid rgba(255,255,255,0.18);
       box-shadow: 0 4px 18px var(--cobalt-glow);
       transition: all 0.15s;
+      white-space: nowrap;
+      text-decoration: none;
+      box-sizing: border-box;
     }
     .btn-primary:hover { background: linear-gradient(135deg, var(--am-violet-hover), #4324e4); transform: translateY(-1px); }
     .btn-secondary {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      height: 42px;
       background: var(--surface);
       backdrop-filter: blur(12px);
       color: var(--ink);
       font-weight: 600;
-      font-size: 14px;
-      padding: 12px 20px;
+      font-size: 13.5px;
+      padding: 0 16px;
       border-radius: 9px;
       border: 1px solid var(--border);
       transition: all 0.15s;
+      white-space: nowrap;
+      text-decoration: none;
+      box-sizing: border-box;
     }
     .btn-secondary:hover { border-color: var(--border-hover); background: var(--surface-elevated); transform: translateY(-1px); }
     .quick-cli-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      height: 42px;
       background: rgba(13, 17, 26, 0.9);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 14px;
+      border-radius: 9px;
+      padding: 0 14px;
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 12.5px;
       color: #93c5fd;
       cursor: pointer;
       transition: all 0.15s;
+      box-sizing: border-box;
+      white-space: nowrap;
     }
     .quick-cli-pill:hover { border-color: var(--cobalt); color: #fff; background: rgba(22, 29, 44, 0.95); }
+    .deliverables-strip { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); margin-top: 14px; }
+    .deliverables-label { font-size: 11.5px; font-weight: 600; color: var(--dim); margin-right: 2px; }
+    .deliverables-badge {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink);
+      backdrop-filter: blur(8px);
+    }
     .spec-strip { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--mono); font-size: 11px; color: #cbd5e1; }
     .spec-pill {
       background: var(--surface);
@@ -1305,11 +1351,9 @@ function sharedSiteCss(): string {
 
     /* Hero Stage */
     .stage-shell {
-      background: var(--surface);
-      backdrop-filter: blur(24px) saturate(1.8);
-      -webkit-backdrop-filter: blur(24px) saturate(1.8);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      background: #0c0f17;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
       overflow: hidden;
       box-shadow: 0 28px 70px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.06) inset;
     }
@@ -1317,42 +1361,59 @@ function sharedSiteCss(): string {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      padding: 11px 16px;
-      background: rgba(11, 15, 23, 0.92);
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
+      gap: 12px;
+      padding: 9px 14px;
+      background: #111520;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: nowrap;
     }
-    .stage-mac-dots { display: flex; gap: 6px; align-items: center; }
+    .stage-mac-dots { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
     .stage-mac-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .stage-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .stage-tabs {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding: 2px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .stage-tabs::-webkit-scrollbar { display: none; }
     .stage-tab {
       background: transparent;
-      border: 1px solid var(--border);
+      border: 1px solid transparent;
       color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 5px 10px;
-      border-radius: 6px;
+      font-family: var(--sans);
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-    .stage-tab:hover { color: var(--ink); border-color: var(--border-strong); }
+    .stage-tab:hover { color: var(--ink); background: rgba(255, 255, 255, 0.06); }
     .stage-tab.active {
-      background: rgba(59, 130, 246, 0.22);
+      background: rgba(255, 255, 255, 0.14);
       color: #fff;
-      border-color: var(--cobalt);
-      box-shadow: 0 0 10px var(--cobalt-glow);
+      border-color: rgba(255, 255, 255, 0.18);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
     }
-    .stage-viewport { height: 470px; background: #07090e; position: relative; }
+    .stage-viewport { height: 480px; background: #07090e; position: relative; }
     .stage-viewport iframe { width: 100%; height: 100%; border: none; display: block; }
     .stage-foot {
-      padding: 10px 16px;
+      padding: 9px 14px;
       font-family: var(--mono);
       font-size: 11px;
       color: var(--muted);
-      border-top: 1px solid var(--border);
-      background: rgba(11, 15, 23, 0.92);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: #111520;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1651,20 +1712,183 @@ function sharedSiteCss(): string {
       font-weight: 600;
     }
 
-    /* Footer */
-    footer { padding: 42px 0 52px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); }
-    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; }
-    .footer-links a:hover { color: var(--ink); }
+    /* Multimodal Works Section */
+    .works-section { padding: 64px 0 54px; border-bottom: 1px solid var(--border); }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+    .work-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      backdrop-filter: blur(20px);
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .work-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-hover);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
+    }
+    .work-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .work-aspect-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: rgba(105, 81, 255, 0.14);
+      color: #c4b5fd;
+      border: 1px solid rgba(105, 81, 255, 0.32);
+    }
+    .work-format-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .work-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.45;
+      margin: 0 0 8px;
+      color: var(--ink);
+    }
+    .work-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .work-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+    .work-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--dim);
+      font-family: var(--mono);
+    }
+    .work-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 13px;
+      border-radius: 7px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--ink);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .work-btn:hover {
+      background: var(--cobalt);
+      border-color: var(--cobalt);
+      color: #fff;
+    }
+
+    /* Modern 4-Column Software Footer */
+    footer {
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      padding: 56px 0 32px;
+      margin-top: 60px;
+    }
+    .footer-cols {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 36px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      margin: 0 0 14px;
+    }
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .footer-col a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.15s ease;
+    }
+    .footer-col a:hover {
+      color: var(--ink);
+    }
+    .footer-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--dim);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
     /* Radar Section Styling */
     .radar-api-banner {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: rgba(14, 18, 27, 0.95);
+      border: 1px solid var(--border-strong);
       border-radius: 12px;
       padding: 16px 20px;
       margin-bottom: 24px;
       backdrop-filter: blur(16px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .radar-method-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: var(--emerald);
+    }
+    .radar-api-url {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 500;
     }
     .radar-grid {
       display: grid;
@@ -2074,6 +2298,108 @@ function renderLandingHtml(
     })
     .join('\n');
 
+  const multimodalWorks = [
+    {
+      id: 'work-xhs',
+      aspect: '3:4',
+      format: '3x Retina PNG',
+      platform: '小红书视觉图文',
+      template: 'xhs-swiss-grid',
+      title: '《DeepSeek-R1 纯本地部署与知识蒸馏实战全景》',
+      summary:
+        '瑞士国际网格排版系统，高信息密度与无衬线严谨断行。全面拆解本地 Ollama / vLLM 权重部署、推理成本与真实知识库评测。',
+      badge: '4.8万 收藏 · 零数据泄露',
+      tplId: 'xhs-swiss-grid',
+    },
+    {
+      id: 'work-pptx',
+      aspect: '16:9',
+      format: '原生 OOXML .pptx',
+      platform: '微软商业演示',
+      template: 'ppt-linear-dark',
+      title: '《2026 AI Agent 从对话套壳到端到端闭环体系》',
+      summary:
+        '极客黑几何科技排版。生成双击可编辑原生文本框与矢量形状，非截图拼凑。支持直接作为商业路演与年度技术汇报 Keynote。',
+      badge: '双击可编辑 · 矢量原图',
+      tplId: 'ppt-linear-dark',
+    },
+    {
+      id: 'work-wechat',
+      aspect: '自适应流式',
+      format: '100% 内联富文本',
+      platform: '微信公众号长文',
+      template: 'apple-dark-keynote',
+      title: '《跑完超 1000 亿 Token 后：超级个体的纯本地创作飞轮》',
+      summary:
+        '极简暗黑杂志美学。零外部样式表与脚本依赖，在微信公众号后台直接 Cmd+V 粘贴即可无损呈现，杜绝防盗链与排版错乱。',
+      badge: '10w+ 深度长文 · 零格式错位',
+      tplId: 'apple-dark-keynote',
+    },
+    {
+      id: 'work-video',
+      aspect: '9:16',
+      format: '60fps MP4 / 剪映草稿',
+      platform: '移动短视频播客',
+      template: 'video-cinema-talk',
+      title: '《午夜播客 · 告别 AI 废话的四语种 Style DNA》',
+      summary:
+        '电影级对谈播客排版。精准微秒级音画同步、多轨字幕与安全边距规则，直接导出 60fps 高清视频或剪映/CapCut 工程。',
+      badge: '60fps 逐帧步进 · 剪映原生工程',
+      tplId: 'video-cinema-talk',
+    },
+    {
+      id: 'work-linkedin',
+      aspect: '4:5',
+      format: 'Retina PNG / PDF',
+      platform: '领英高管专栏',
+      template: 'linkedin-exec-carousel',
+      title: '《Anthropic MCP 协议与开放外脑架构白皮书》',
+      summary:
+        '专为 LinkedIn 与 Substack 设计的高管级横滑卡片。严谨的方法论骨架、数据引用标与核心结论，专为深度商业受众打造。',
+      badge: '全球技术视野 · 高管沉浸阅读',
+      tplId: 'linkedin-exec-carousel',
+    },
+    {
+      id: 'work-poster',
+      aspect: '1:1',
+      format: '矢量 SVG / PDF',
+      platform: '极简科技海报',
+      template: 'poster-risograph',
+      title: '《具身智能的世界模型演进：空间感知与动作决策》',
+      summary:
+        '孔版印刷 Risograph 双色叠印质感。粗犷主义大字排版与硬核技术图解，适用于技术发声、活动封面与朋友圈极简视觉。',
+      badge: '孔版印刷质感 · 矢量级输出',
+      tplId: 'poster-risograph',
+    },
+  ];
+
+  const worksCardsHtml = multimodalWorks
+    .map((w) => {
+      const playgroundLink = `/playground/?template=${encodeURIComponent(w.tplId)}&title=${encodeURIComponent(w.title)}`;
+      return `
+      <div class="work-card">
+        <div>
+          <div class="work-card-head">
+            <span class="work-aspect-tag">${esc(w.aspect)} · ${esc(w.platform)}</span>
+            <span class="work-format-tag">${esc(w.format)}</span>
+          </div>
+          <h3 class="work-title">${esc(w.title)}</h3>
+          <p class="work-desc">${esc(w.summary)}</p>
+        </div>
+        <div class="work-foot">
+          <div class="work-badge">
+            <span class="pulse-dot"></span>
+            <span>${esc(w.badge)}</span>
+          </div>
+          <a href="${playgroundLink}" class="work-btn">
+            <span>在工坊打开做同款</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>`;
+    })
+    .join('\n');
+
   const firstScenario = copy.terminalScenarios[0];
 
   return `<!DOCTYPE html>
@@ -2109,21 +2435,31 @@ function renderLandingHtml(
         <h1>${esc(copy.heroTitle)}</h1>
         <p class="lead">${esc(copy.heroSub)}</p>
         <div class="cta-row">
-          <a class="btn-primary" href="/playground/">${esc(copy.primaryCta)} →</a>
-          <a class="btn-secondary" href="https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.dmg" title="下载 macOS 桌面端安装包 (.dmg)">🍏 macOS (.dmg)</a>
-          <a class="btn-secondary" href="#templates">${esc(copy.secondaryCta)}</a>
+          <a class="btn-primary" href="/playground/">
+            <span>${esc(copy.primaryCta)}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a class="btn-secondary" href="https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.dmg" title="下载 macOS 桌面端安装包 (.dmg)">
+            <svg width="14" height="14" viewBox="0 0 170 170" fill="currentColor"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.69-3.04-7.67-7.81-11.96-14.34-6.3-9.78-11.05-20.98-14.25-33.61-3.21-12.63-4.82-24.31-4.82-35.04 0-14.46 3.69-26.47 11.08-36.03 7.39-9.57 16.63-14.46 27.72-14.68 4.58 0 9.88 1.25 15.91 3.75 6.02 2.5 10.22 3.79 12.6 3.86 1.85 0 6.13-1.32 12.84-3.97 6.71-2.65 12.04-3.83 15.99-3.53 12.3.82 22.04 5.37 29.23 13.66-10.76 6.53-16.03 15.54-15.82 27.05.22 9.03 3.63 16.63 10.23 22.82 6.6 6.19 14.48 9.68 23.63 10.49-2.5 7.4-5.39 14.8-8.67 22.2zM119.22 31.84c0-7.39 2.66-14.34 7.98-20.85 5.32-6.52 11.92-10.51 19.8-11.99.33 1.1.5 2.1.5 3 0 7.28-2.77 14.3-8.31 21.05-5.54 6.75-12.29 10.7-20.25 11.85-.22-.98-.32-1.98-.32-3.06z"/></svg>
+            <span>macOS (.dmg)</span>
+          </a>
+          <a class="btn-secondary" href="#templates">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+            <span>${esc(copy.secondaryCta)}</span>
+          </a>
           <div class="quick-cli-pill" id="hero-quick-cli" title="Click to copy install command" data-copy="${esc(copy.quickInstall)}">
-            <span style="color:var(--emerald);">$</span>
+            <span style="color:var(--emerald);font-weight:700;">$</span>
             <span>${esc(copy.quickInstall)}</span>
-            <span style="font-size:11px;opacity:0.7;">📋</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </div>
         </div>
-        <div class="spec-strip">
-          <span class="spec-pill">3x Retina PNG</span>
-          <span class="spec-pill">WeChat Inline HTML</span>
-          <span class="spec-pill">Vector PDF</span>
-          <span class="spec-pill">Editable OOXML .pptx</span>
-          <span class="spec-pill">60fps H.264 .mp4</span>
+        <div class="deliverables-strip">
+          <span class="deliverables-label">支持原生直出：</span>
+          <span class="deliverables-badge">3x Retina PNG</span>
+          <span class="deliverables-badge">WeChat Inline HTML</span>
+          <span class="deliverables-badge">Vector PDF</span>
+          <span class="deliverables-badge">Microsoft OOXML .pptx</span>
+          <span class="deliverables-badge">60fps H.264 .mp4</span>
         </div>
       </div>
 
@@ -2147,12 +2483,26 @@ function renderLandingHtml(
           <iframe id="hero-stage-frame" src="/${lang}/templates/${stagePresets[0].tplId}/preview.html" title="Aimake live template preview" loading="eager" style="background-color:#07090e;transition:opacity 0.15s ease;" allowtransparency="true"></iframe>
         </div>
         <div class="stage-foot">
-          <span>${esc(copy.stageCaption)}</span>
-          <span class="stage-foot-badge">● 0 外部依赖 · 100% 本地编译</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;"><span class="pulse-dot"></span>${esc(copy.stageCaption)}</span>
+          <span class="stage-foot-badge">0 外部依赖 · 100% 本地编译</span>
         </div>
       </div>
     </div>
   </header>
+
+  <!-- MULTIMODAL REAL-WORLD WORKS SHOWCASE -->
+  <section id="works" class="section-block works-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">2026 MULTIMODAL REAL-WORLD SHOWCASE</div>
+        <h2>从前沿风向到全域出版 · 2026 时事爆款全模态实战</h2>
+        <p>告别跨平台低效重复搬运：同一份 Markdown 原稿，精准直出 6 种主流媒介的高定级商业交付物。</p>
+      </div>
+      <div class="works-grid">
+        ${worksCardsHtml}
+      </div>
+    </div>
+  </section>
 
   <!-- BENTO GRID SHOWCASE (THE 4-STAGE CREATIVE FLYWHEEL) -->
   <section id="flywheel" class="section-block">
@@ -2174,27 +2524,25 @@ function renderLandingHtml(
           <span class="eyebrow" style="margin:0;">WEEKLY TREND RADAR · 2026 第 47 周</span>
           <span class="stage-foot-badge" style="background:rgba(16,185,129,0.12);padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:11px;">📅 每周一 08:00 定期更新</span>
         </div>
-        <h2>🔥 创作灵感雷达 · 捕捉全网前沿爆款</h2>
+        <h2>全网创作灵感雷达 · 前沿风向与开放 API</h2>
         <p>每周一自动聚合 𝕏 (Twitter) 硅谷前沿推文、知乎热榜、Hacker News 与 36Kr 实时风向。零鉴权开放静态 API，无论在桌面端、Web 工坊还是第三方智能体中，均可一键开箱创作。</p>
       </div>
 
       <div class="radar-api-banner">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-          <div>
-            <div style="font-weight:700;color:var(--emerald);font-size:13px;display:flex;align-items:center;gap:6px;">
-              <span class="pulse-dot"></span>
-              <span>开放远端 API 端点 · 零鉴权 · 全球 CDN 毫秒响应</span>
-            </div>
-            <div style="font-family:var(--mono);font-size:13px;color:var(--ink);margin-top:4px;">
-              GET https://aimake.cc/api/radar.json
-            </div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span class="radar-method-badge">GET</span>
+            <span class="radar-api-url">https://aimake.cc/api/radar.json</span>
+            <span class="stage-foot-badge" style="font-size:11px;">200 OK · 全球 CDN 毫秒分发 · 零鉴权</span>
           </div>
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <a href="/api/radar.json" target="_blank" rel="noopener" class="btn-secondary" style="font-size:12px;padding:8px 14px;">
-              查看实时 JSON 接口 ↗
+            <a href="/api/radar.json" target="_blank" rel="noopener" class="btn-secondary" style="font-size:12px;padding:6px 14px;height:34px;display:inline-flex;align-items:center;gap:6px;">
+              <span>查看实时 JSON 接口</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
             </a>
-            <a href="/playground/" class="btn-primary" style="font-size:12px;padding:8px 14px;">
-              在工坊一键做同款 🚀
+            <a href="/playground/" class="btn-primary" style="font-size:12px;padding:6px 14px;height:34px;display:inline-flex;align-items:center;gap:6px;">
+              <span>在工坊一键做同款</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
           </div>
         </div>
@@ -2203,10 +2551,10 @@ function renderLandingHtml(
       <!-- Filters & Chips -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;" id="landing-radar-filters">
         <button type="button" class="stage-tab active" data-filter-radar="all">全部热点 (16)</button>
-        <button type="button" class="stage-tab" data-filter-radar="x">𝕏 前沿爆款</button>
+        <button type="button" class="stage-tab" data-filter-radar="x">𝕏 硅谷前沿</button>
         <button type="button" class="stage-tab" data-filter-radar="ai-tech">AI &amp; 科技突破</button>
         <button type="button" class="stage-tab" data-filter-radar="creative">创作者经济</button>
-        <button type="button" class="stage-tab" data-filter-radar="social">社交热榜</button>
+        <button type="button" class="stage-tab" data-filter-radar="social">深度社交热榜</button>
       </div>
 
       <div class="radar-grid" id="landing-radar-grid">
@@ -2304,29 +2652,29 @@ function renderLandingHtml(
       <div class="family-grid">
         <div class="family-card">
           <div>
-            <span class="family-badge">FLAGSHIP · aimake.cc</span>
-            <h3 style="margin:12px 0 8px;font-size:20px;">Aimake 爱创 · 多模态创作与知识复利平台</h3>
-            <p style="margin:0;color:var(--muted);font-size:14px;">连接本地 Karpathy LLM Wiki、个人风格基因与 36 套四国商业设计系统，在 Claude Code / Codex / WorkBuddy 内一键交付图文、公众号、可编辑 PPTX 与短视频。</p>
+            <span class="family-badge">WEB STUDIO · aimake.cc</span>
+            <h3 style="margin:12px 0 8px;font-size:18px;">Aimake Web Studio · 在线工坊</h3>
+            <p style="margin:0;color:var(--muted);font-size:13.5px;line-height:1.6;">零安装、纯前端沙盒安全运行。内置 36 套设计模板、实时参数化排版舞台与四语种去 AI 腔清洗器，开箱即用，支持一键导出与做同款。</p>
           </div>
-          <a class="btn-secondary" style="width:fit-content;" href="#templates">${esc(copy.primaryCta)} →</a>
+          <a class="btn-secondary" style="width:fit-content;height:36px;" href="/playground/">打开在线工坊 →</a>
         </div>
 
         <div class="family-card">
           <div>
             <span class="family-badge">CORE ENGINE · @aimake/engine</span>
-            <h3 style="margin:12px 0 8px;font-size:20px;">Aimake Engine · 爱创核心引擎</h3>
-            <p style="margin:0;color:var(--muted);font-size:14px;">底层无头音视频渲染内核与 Recipe 执行引擎。支持 Plan/Run 可验证收据、逐场景音频重用、Whisper 词级对齐与本地确定性媒体合成。</p>
+            <h3 style="margin:12px 0 8px;font-size:18px;">Aimake Engine · 确定性排版内核</h3>
+            <p style="margin:0;color:var(--muted);font-size:13.5px;line-height:1.6;">底层无头多模态渲染内核与 CLI 编译器。支持纯本地端到端编译、多介质直出、Karpathy LLM Wiki 知识复利与全渠道自动化分发。</p>
           </div>
-          <a class="btn-secondary" style="width:fit-content;" href="https://github.com/chicogong/aimake-studio" target="_blank" rel="noopener">浏览 Engine 源码 ↗</a>
+          <a class="btn-secondary" style="width:fit-content;height:36px;" href="https://github.com/chicogong/aimake-studio" target="_blank" rel="noopener">浏览 Engine 源码 ↗</a>
         </div>
 
         <div class="family-card">
           <div>
-            <span class="family-badge">AGENT PROTOCOLS · ACP & MCP</span>
-            <h3 style="margin:12px 0 8px;font-size:20px;">Aimake Agent Protocols · 原生 IDE 协议栈</h3>
-            <p style="margin:0;color:var(--muted);font-size:14px;">全面支持 Agent Client Protocol (ACP) 与 Model Context Protocol (MCP)。无缝挂载至 Zed、Cursor、Claude Code 与 JetBrains，实现双向流式原稿生成与确定性资产渲染。</p>
+            <span class="family-badge">AGENT PROTOCOLS · ACP &amp; MCP</span>
+            <h3 style="margin:12px 0 8px;font-size:18px;">Aimake Agent Protocols · 智能体协议栈</h3>
+            <p style="margin:0;color:var(--muted);font-size:13.5px;line-height:1.6;">原生支持 Agent Client Protocol (ACP) 与 Model Context Protocol (MCP)。无缝挂载至 Claude Code、Cursor 与 AGY，赋能智能体双向多模态出版。</p>
           </div>
-          <a class="btn-secondary" style="width:fit-content;" href="https://github.com/chicogong/aimake-creator" target="_blank" rel="noopener">探索 Agent 协议规范 ↗</a>
+          <a class="btn-secondary" style="width:fit-content;height:36px;" href="https://github.com/chicogong/aimake-creator" target="_blank" rel="noopener">探索 Agent 协议规范 ↗</a>
         </div>
       </div>
     </div>
@@ -2334,15 +2682,65 @@ function renderLandingHtml(
 
   <!-- FOOTER -->
   <footer>
-    <div class="container footer-inner">
-      <div>${esc(copy.footerLine)}</div>
-      <div class="footer-links">
-        <a href="/zh/">简体中文</a>
-        <a href="/en/">English</a>
-        <a href="/ja/">日本語</a>
-        <a href="/ko/">한국어</a>
-        <a href="https://github.com/chicogong/aimake-creator" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://github.com/chicogong/aimake-studio" target="_blank" rel="noopener">Aimake Engine</a>
+    <div class="container">
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+            <img src="/brand/logos/symbol-color.svg" width="22" height="22" style="vertical-align:middle;display:inline-block;border-radius:5px;" alt="Aimake Studio Logo" />
+            <strong style="font-size:15px;color:var(--ink);">Aimake Studio</strong>
+          </div>
+          <p style="font-size:13px;line-height:1.6;color:var(--muted);margin:0 0 16px;">
+            超级个体的本地创作外脑：从灵感火花到全域多模态出版。素材吸纳、知识蒸馏、私有风格对齐、确定性美学排版。
+          </p>
+          <div style="display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:6px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:var(--emerald);">
+            <span class="pulse-dot"></span>
+            <span>100% 纯本地优先 · 零云端隐私回传</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>产品与工坊</h4>
+          <ul>
+            <li><a href="/playground/">在线工坊 (Web Studio)</a></li>
+            <li><a href="https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.dmg">macOS 客户端 (.dmg)</a></li>
+            <li><a href="/${lang}/#radar">创作灵感雷达 API</a></li>
+            <li><a href="/${lang}/#templates">36 套设计模板</a></li>
+            <li><a href="/${lang}/#works">全模态时事爆款实战</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>架构与协议</h4>
+          <ul>
+            <li><a href="https://github.com/chicogong/aimake-studio" target="_blank" rel="noopener">Aimake Engine 核心</a></li>
+            <li><a href="/${lang}/#cli">CLI 终端工作流</a></li>
+            <li><a href="/${lang}/#cli">MCP 智能体协议</a></li>
+            <li><a href="/api/radar.json" target="_blank" rel="noopener">开放 REST API</a></li>
+            <li><a href="https://github.com/chicogong/aimake-creator" target="_blank" rel="noopener">剪映 / CapCut 协议</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>国际化与开源</h4>
+          <ul>
+            <li><a href="/zh/">简体中文 (zh-CN)</a></li>
+            <li><a href="/en/">English (en)</a></li>
+            <li><a href="/ja/">日本語 (ja)</a></li>
+            <li><a href="/ko/">한국어 (ko)</a></li>
+            <li><a href="https://github.com/chicogong/aimake-creator" target="_blank" rel="noopener">GitHub 开源仓库</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>© 2026 Aimake Studio. 本地优先，数据 100% 留存本机。All systems local.</div>
+        <div style="display:flex;gap:16px;align-items:center;font-family:var(--mono);font-size:11px;">
+          <span>v2.1.0-release</span>
+          <span>·</span>
+          <span>Zero-Telemetry</span>
+          <span>·</span>
+          <span>Local-First OS</span>
+        </div>
       </div>
     </div>
   </footer>
