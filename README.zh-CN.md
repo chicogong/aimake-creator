@@ -45,6 +45,12 @@ aimake wizard
 
 免安装在线体验浏览器沙盒：**[https://aimake.cc/playground/](https://aimake.cc/playground/)**
 
+### 🍏 macOS 原生桌面端安装包
+
+为超级个体提供最佳的零配置纯本地离线体验（自带菜单栏常驻托盘与深色 squircle 图标）：
+- **[下载 Aimake-v2.0.0-macOS.dmg (推荐 · 拖拽安装镜像 6.8MB)](https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.dmg)**
+- **[下载 Aimake-v2.0.0-macOS.zip (便携绿色压缩包 6.7MB)](https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.zip)**
+
 ---
 
 ## 🏛️ 产品架构与生态分层 (Architecture & Ecosystem)

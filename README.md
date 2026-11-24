@@ -45,6 +45,12 @@ aimake wizard
 
 Try the instant zero-install browser sandbox: **[https://aimake.cc/playground/](https://aimake.cc/playground/)**
 
+### 🍏 Native macOS Desktop Applications
+
+For the best zero-configuration local-first experience with status bar dock and dark squircle branding:
+- **[Download Aimake-v2.0.0-macOS.dmg (Recommended · Drag & Drop Installer 6.8MB)](https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.dmg)**
+- **[Download Aimake-v2.0.0-macOS.zip (Portable Standalone Archive 6.7MB)](https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.zip)**
+
 ---
 
 ## 🏛️ Ecosystem & Architecture Hierarchy

@@ -1457,6 +1457,7 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
       </div>
       <div class="nav-links">
         <a href="/playground/" class="nav-pill-highlight">🚀 ${esc(copy.navPlayground)}</a>
+        <a href="https://github.com/chicogong/aimake-creator/releases/tag/v2.0.0" target="_blank" rel="noopener">🍏 macOS</a>
         <a href="/${lang}/#flywheel">${esc(copy.navFlywheel)}</a>
         <a href="/${lang}/#templates">${esc(copy.navTemplates)}</a>
         <a href="/${lang}/#cli">${esc(copy.navCli)}</a>
@@ -1604,6 +1605,7 @@ function renderLandingHtml(
         <p class="lead">${esc(copy.heroSub)}</p>
         <div class="cta-row">
           <a class="btn-primary" href="/playground/">${esc(copy.primaryCta)} →</a>
+          <a class="btn-secondary" href="https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.dmg" title="下载 macOS 桌面端安装包 (.dmg)">🍏 macOS (.dmg)</a>
           <a class="btn-secondary" href="#templates">${esc(copy.secondaryCta)}</a>
           <div class="quick-cli-pill" id="hero-quick-cli" title="Click to copy install command" data-copy="${esc(copy.quickInstall)}">
             <span style="color:var(--emerald);">$</span>
