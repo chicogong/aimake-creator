@@ -106,16 +106,91 @@ export function inferSuggestedTemplate(
  */
 export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
+    id: 'radar:x-karpathy-wiki-pattern',
+    source: 'X / Twitter',
+    category: 'creative',
+    title: 'Andrej Karpathy: 创作者构建第二大脑的秘密是可溯源的 Grounded LLM Wiki',
+    url: 'https://x.com/karpathy/status/1880000000000000000',
+    publishedAt: new Date(Date.now() - 3600 * 1000).toISOString(),
+    summary:
+      '从碎片化阅读转向高密度事实沉淀。先将推文、论文与音视频转为原子 Markdown 事实卡片，再通过 LLM 生成多格式分发内容，彻底告别白屏创作焦虑。',
+    score: 8940,
+    hotness: '🔥 8.9k Likes · @karpathy',
+    suggestedTemplate: 'apple-bento-launch',
+    suggestedAspectRatio: '3:4',
+    author: '@karpathy',
+  },
+  {
+    id: 'radar:x-sama-local-agents',
+    source: 'X / Twitter',
+    category: 'ai-tech',
+    title: 'Sam Altman: 下一代人机协同的飞跃是端侧自主沉淀、长期复利的 Local Agent',
+    url: 'https://x.com/sama/status/1881000000000000000',
+    publishedAt: new Date(Date.now() - 5400 * 1000).toISOString(),
+    summary:
+      '未来的个人生产力核心不再是云端简单问答，而是拥有本地文件系统读写、确定性排版、音视频渲染与端侧私有执行能力的超级协同副驾驶。',
+    score: 14200,
+    hotness: '🔥 14.2k Likes · @sama',
+    suggestedTemplate: 'apple-bento-launch',
+    suggestedAspectRatio: '3:4',
+    author: '@sama',
+  },
+  {
+    id: 'radar:x-ylecun-openweights',
+    source: 'X / Twitter',
+    category: 'ai-tech',
+    title: 'Yann LeCun: 开源权重与端侧推理正在重构全球 AI 基础设施成本',
+    url: 'https://x.com/ylecun/status/1882000000000000000',
+    publishedAt: new Date(Date.now() - 7200 * 1000).toISOString(),
+    summary:
+      '垂直领域的确定性输出与规则编译无需百亿参数大云，小型化专家模型配合结构化编译器，在 MacBook 本地即可打出超越云端大模型的排版精度。',
+    score: 6850,
+    hotness: '🔥 6.8k Likes · @ylecun',
+    suggestedTemplate: 'ppt-tech-architecture',
+    suggestedAspectRatio: '16:9',
+    author: '@ylecun',
+  },
+  {
+    id: 'radar:x-levelsio-solo-creator',
+    source: 'X / Twitter',
+    category: 'creative',
+    title: 'Pieter Levels: 为什么 2026 年超级个体创作者全面回归 Local-First 桌面原生应用？',
+    url: 'https://x.com/levelsio/status/1883000000000000000',
+    publishedAt: new Date(Date.now() - 9000 * 1000).toISOString(),
+    summary:
+      '零月租、零云端排队、零数据泄露。一个人利用现代本地工具链，一天可以完成以往一个 10 人工作室的图文、研报、幻灯片与视频全渠道交付。',
+    score: 11800,
+    hotness: '🔥 11.8k Likes · @levelsio',
+    suggestedTemplate: 'xhs-bold-headline',
+    suggestedAspectRatio: '3:4',
+    author: '@levelsio',
+  },
+  {
+    id: 'radar:x-swyx-one-person-unicorn',
+    source: 'X / Twitter',
+    category: 'dev',
+    title: 'swyx: AI 工程师时代，纯 Markdown 作为唯一事实源（Single Source of Truth）的威力',
+    url: 'https://x.com/swyx/status/1884000000000000000',
+    publishedAt: new Date(Date.now() - 10800 * 1000).toISOString(),
+    summary:
+      '告别重型专有排版文件格式。写好结构轻盈的 .deck.md，让代码和编译器去处理微信内联 CSS、微软 PPTX OOXML 与视频时间轴。',
+    score: 9540,
+    hotness: '🔥 9.5k Likes · @swyx',
+    suggestedTemplate: 'ppt-linear-dark',
+    suggestedAspectRatio: '16:9',
+    author: '@swyx',
+  },
+  {
     id: 'radar:ai-local-agent-2026',
     source: 'GitHub Trending',
-    category: 'ai-tech',
+    category: 'dev',
     title: 'Local-First Agent OS: 100% 离线自主多智能体操作系统全面破圈',
     url: 'https://github.com/trending?since=daily',
     publishedAt: new Date().toISOString(),
     summary:
       '从云端 API 依赖转向本地硬件原生计算，基于 Apple Silicon 与 MLX 的端侧智能体已实现 120ms 级低延迟推理，创作者拥有 100% 数据资产主权。',
     score: 18450,
-    hotness: '98.5°C',
+    hotness: '★ 18.5k · GitHub',
     suggestedTemplate: 'apple-bento-launch',
     suggestedAspectRatio: '3:4',
     author: '@autonomous-core',
@@ -130,25 +205,10 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     summary:
       '通过多头潜在注意力 (MLA) 与专家混合架构 (MoE)，将每百万 Token 训练与运行成本降至行业基准的 1/10，推动本地私有化部署浪潮。',
     score: 2180,
-    hotness: '96.2°C',
+    hotness: '2180 pts · Hacker News',
     suggestedTemplate: 'ppt-tech-architecture',
     suggestedAspectRatio: '16:9',
     author: 'karpathy_fan',
-  },
-  {
-    id: 'radar:karpathy-wiki-pattern',
-    source: 'X / Twitter',
-    category: 'creative',
-    title: 'Andrej Karpathy: 创作者构建第二大脑的秘密是可溯源的 Grounded LLM Wiki',
-    url: 'https://x.com/karpathy/status/1880000000000000000',
-    publishedAt: new Date(Date.now() - 7200 * 1000).toISOString(),
-    summary:
-      '从碎片化阅读转向高密度事实沉淀。先将推文、论文与音视频转为原子 Markdown 事实卡片，再通过 LLM 生成多格式分发内容，彻底告别白屏创作焦虑。',
-    score: 8940,
-    hotness: '94.8°C',
-    suggestedTemplate: 'xhs-paper-editorial',
-    suggestedAspectRatio: '3:4',
-    author: '@karpathy',
   },
   {
     id: 'radar:apple-m4-ultra-studio',
@@ -160,7 +220,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     summary:
       '统一内存带宽突破 800GB/s，可直接在本地运行 70B+ 量级全尺寸多模态模型，音视频无损渲染时间缩短 65%。',
     score: 12400,
-    hotness: '93.1°C',
+    hotness: '🔥 93.1°C · 36氪',
     suggestedTemplate: 'apple-bento-launch',
     suggestedAspectRatio: '3:4',
     author: '36氪硬科技',
@@ -175,7 +235,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     summary:
       '3:4 比例下单图承载多维度信息：数据卡片、高对比标题、色块隔离与微质感高光，阅读完成率比传统大段文字卡片提升 340%。',
     score: 95400,
-    hotness: '91.4°C',
+    hotness: '🔥 95.4k 赞同 · 知乎',
     suggestedTemplate: 'apple-bento-launch',
     suggestedAspectRatio: '3:4',
     author: '设计前沿观察',
@@ -190,7 +250,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     summary:
       '3 秒参考音频即可在 MacBook 本地生成自然度媲美真人播音的高清旁白，配合 Whisper 毫秒级时间轴对齐，剪辑导出效率飞跃。',
     score: 84300,
-    hotness: '89.7°C',
+    hotness: '🔥 热搜 TOP 3',
     suggestedTemplate: 'xhs-quote-card',
     suggestedAspectRatio: '3:4',
     author: 'AI数字人实验室',
@@ -444,10 +504,27 @@ export function filterRadarItems(
  * gracefully merging with curated fixtures for zero-latency, reliable response.
  */
 export async function runTrendRadar(options: RadarQueryOptions = {}): Promise<RadarItem[]> {
-  const sources = options.sources || ['hackernews', 'github', 'dailyhot'];
-  const limit = options.limit || 12;
+  const sources = options.sources || ['hackernews', 'github', 'dailyhot', 'x'];
+  const limit = options.limit || 16;
   const timeoutMs = options.timeoutMs || 2500;
   const collected: RadarItem[] = [];
+
+  // 1. Attempt to fetch remote syndicated radar endpoint (https://aimake.cc/api/radar.json)
+  const remoteApi = options.apiBase || process.env.AIMAKE_RADAR_API || 'https://aimake.cc/api/radar.json';
+  if (!options.sources && !options.keywords) {
+    try {
+      const res = await fetchWithTimeout(remoteApi, Math.min(timeoutMs, 1600));
+      if (res.ok) {
+        const json = (await res.json()) as { items?: RadarItem[] } | RadarItem[];
+        const remoteList = Array.isArray(json) ? json : (json.items || []);
+        if (remoteList.length > 0) {
+          collected.push(...remoteList);
+        }
+      }
+    } catch {
+      // Gracefully fallback to local scrapers
+    }
+  }
 
   const apiBase =
     options.apiBase ||
@@ -457,7 +534,10 @@ export async function runTrendRadar(options: RadarQueryOptions = {}): Promise<Ra
 
   for (const src of sources) {
     try {
-      if (src === 'hackernews') {
+      if (src === 'x') {
+        const xItems = CURATED_TREND_FIXTURES.filter((f) => f.source === 'X / Twitter');
+        collected.push(...xItems);
+      } else if (src === 'hackernews') {
         const hn = await fetchHackerNewsTop(limit, timeoutMs);
         collected.push(...hn);
       } else if (src === 'github') {

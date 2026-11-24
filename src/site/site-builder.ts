@@ -1,13 +1,33 @@
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { DeckDocument, SupportedLocale, TemplateManifest } from '../schema/types.js';
 import { compileDeckToHtml } from '../renderer/html-compiler.js';
 import { listMarketplaceCatalog, type MarketplaceTemplateEntry, type TemplatePack } from '../marketplace/index.js';
 import { buildWebPlaygroundHtml } from './playground-builder.js';
+import { CURATED_TREND_FIXTURES } from '../radar/radar-engine.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PACKAGE_ROOT = path.resolve(__dirname, '..', '..');
+
+function findPackageRoot(): string {
+  let cur = __dirname;
+  for (let i = 0; i < 5; i++) {
+    if (fsSync.existsSync(path.join(cur, 'templates')) && fsSync.existsSync(path.join(cur, 'package.json'))) {
+      return cur;
+    }
+    const parent = path.dirname(cur);
+    if (parent === cur) break;
+    cur = parent;
+  }
+  const cwd = process.cwd();
+  if (fsSync.existsSync(path.join(cwd, 'templates')) && fsSync.existsSync(path.join(cwd, 'package.json'))) {
+    return cwd;
+  }
+  return path.resolve(__dirname, '..', '..');
+}
+
+const PACKAGE_ROOT = findPackageRoot();
 
 type SiteLang = 'zh' | 'en' | 'ja' | 'ko';
 
@@ -42,6 +62,7 @@ interface LangCopy {
   deckLocale: SupportedLocale;
   navPlayground: string;
   navFlywheel: string;
+  navRadar: string;
   navTemplates: string;
   navCli: string;
   navStudio: string;
@@ -78,6 +99,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     deckLocale: 'zh-CN',
     navPlayground: '在线工坊',
     navFlywheel: '创作飞轮',
+    navRadar: '灵感雷达',
     navTemplates: '36 套设计模板',
     navCli: '终端 & MCP',
     navStudio: '爱创工坊 Studio',
@@ -239,6 +261,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     deckLocale: 'en',
     navPlayground: 'Web Playground',
     navFlywheel: 'Flywheel',
+    navRadar: 'Trend Radar',
     navTemplates: '36 Design Systems',
     navCli: 'CLI & MCP',
     navStudio: 'Aimake Studio',
@@ -400,6 +423,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     deckLocale: 'ja',
     navPlayground: 'Web プレイグラウンド',
     navFlywheel: '制作フライホイール',
+    navRadar: 'トレンドレーダー',
     navTemplates: '36 種デザインシステム',
     navCli: 'CLI & MCP',
     navStudio: 'Aimake Studio',
@@ -553,6 +577,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     deckLocale: 'ko',
     navPlayground: '웹 플레이그라운드',
     navFlywheel: '플라이휠',
+    navRadar: '트렌드 레이더',
     navTemplates: '36 종 디자인 시스템',
     navCli: 'CLI & MCP',
     navStudio: 'Aimake Studio',
@@ -804,8 +829,9 @@ function createSampleDeckForTemplate(tpl: TemplateManifest, lang: SiteLang): Dec
         bullets: [],
         bodyParagraphs: [],
         metrics: [
-          { label: 'Context Saved', value: '95%', delta: 'index.md <= 3000t' },
-          { label: 'Cloud Upload', value: '0 KB', delta: '100% Local-First' },
+          { label: 'Token 压缩', value: '95%', delta: 'index.md <= 3000t' },
+          { label: '端侧隐私', value: '100%', delta: '0 KB 云端上传' },
+          { label: '编译延迟', value: '< 80ms', delta: '多端原生直出' },
         ],
         cite: 'wiki/index.md#L1',
       },
@@ -819,6 +845,35 @@ function createSampleDeckForTemplate(tpl: TemplateManifest, lang: SiteLang): Dec
         bodyParagraphs: [],
         metrics: [],
         cite: 'wiki/architecture.md#L18',
+      },
+      {
+        index: 2,
+        id: 'sample-quote',
+        layout: 'quote',
+        eyebrow: 'STYLE DNA & TYPOGRAPHY',
+        title:
+          lang === 'zh'
+            ? '在 AI 泛滥的时代，真实排版与品味是最坚固的护城河'
+            : lang === 'ja'
+            ? 'AIの定型句があふれる時代に、真のタイポグラフィと美意識こそが最強の差別化'
+            : lang === 'ko'
+            ? 'AI 상투어가 넘쳐나는 시대, 진짜 타이포그래피와 고유 문체가 유일한 차별점'
+            : 'In the age of AI noise, authentic taste and deterministic typography are the moat',
+        quote: {
+          text:
+            lang === 'zh'
+              ? '“写一份纯文本 Markdown 原稿，同步直出小红书 3:4 社交图文、微信公众号 100% 内联富文本、微软原生双击可编辑 PPTX 与 60fps 动态视频。”'
+              : lang === 'ja'
+              ? '「1つのMarkdown原稿から、X図解・インライン記事・編集可能PPTX・フレーム同期動画を同時出力。」'
+              : lang === 'ko'
+              ? '「하나의 마크다운 원고로 카드뉴스, 뉴스레터 HTML, 편집형 PPTX, 60fps 영상을 완벽 컴파일.」'
+              : '"Author one plain-Markdown storyboard and output 3x Retina social cards, inline newsletter HTML, editable PPTX and 60fps MP4."',
+          author: '@aimake-creator',
+        },
+        bullets: [],
+        bodyParagraphs: [],
+        metrics: [],
+        cite: 'wiki/manifesto.md#L42',
       },
     ],
   };
@@ -871,6 +926,112 @@ function sharedSiteCss(): string {
       --rose: #f43f5e;
       --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Plus Jakarta Sans', 'PingFang SC', 'Hiragino Sans', 'Pretendard', sans-serif;
+    }
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-alt: #f1f5f9;
+      --surface: rgba(255, 255, 255, 0.92);
+      --surface-elevated: #ffffff;
+      --border: rgba(15, 23, 42, 0.08);
+      --border-strong: rgba(15, 23, 42, 0.16);
+      --border-hover: rgba(105, 81, 255, 0.65);
+      --ink: #0f172a;
+      --muted: #475569;
+      --dim: #94a3b8;
+      --cobalt: #5236f3;
+      --cobalt-glow: rgba(82, 54, 243, 0.2);
+    }
+    [data-theme="light"] body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 90% 45% at 50% -12%, rgba(105, 81, 255, 0.08), transparent 70%),
+        radial-gradient(circle 600px at 90% 25%, rgba(59, 130, 246, 0.05), transparent 60%),
+        radial-gradient(circle 500px at 10% 50%, rgba(16, 185, 129, 0.04), transparent 60%);
+      color: var(--ink);
+    }
+    [data-theme="light"] nav.topbar {
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom-color: var(--border);
+    }
+    [data-theme="light"] .hero h1 {
+      background: linear-gradient(180deg, #0f172a 15%, #334155 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-theme="light"] .hero {
+      background-image:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(105, 81, 255, 0.09), transparent 70%),
+        radial-gradient(circle 500px at 90% 20%, rgba(255, 203, 73, 0.06), transparent 60%);
+    }
+    [data-theme="light"] .hero-badge-pill {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+    [data-theme="light"] .btn-secondary {
+      background: #ffffff;
+      color: #0f172a;
+      border-color: var(--border-strong);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    [data-theme="light"] .btn-secondary:hover {
+      background: #f8fafc;
+      border-color: var(--cobalt);
+    }
+    [data-theme="light"] .quick-cli-pill {
+      background: #ffffff;
+      border-color: var(--border-strong);
+      color: var(--cobalt);
+    }
+    [data-theme="light"] .spec-pill {
+      background: #ffffff;
+      border-color: var(--border);
+      color: var(--muted);
+    }
+    [data-theme="light"] .bento-card,
+    [data-theme="light"] .feature-card,
+    [data-theme="light"] .pillar-card,
+    [data-theme="light"] .scenario-box,
+    [data-theme="light"] .preset-card,
+    [data-theme="light"] .radar-card,
+    [data-theme="light"] .radar-api-banner {
+      background: #ffffff;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border-color: var(--border);
+    }
+    [data-theme="light"] .bento-detail-item {
+      color: #334155;
+    }
+    [data-theme="light"] .bento-art {
+      background: #f1f5f9;
+    }
+    [data-theme="light"] .stage-shell {
+      background: #ffffff;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+    }
+    [data-theme="light"] .stage-bar,
+    [data-theme="light"] .stage-foot {
+      background: #f8fafc;
+      border-color: var(--border);
+    }
+    [data-theme="light"] .stage-viewport {
+      background: #f1f5f9;
+    }
+    [data-theme="light"] footer {
+      background: #f8fafc;
+      border-top-color: var(--border);
+    }
+    [data-theme="light"] .stage-tab {
+      color: var(--muted);
+      border-color: var(--border);
+    }
+    [data-theme="light"] .stage-tab:hover {
+      color: var(--ink);
+      border-color: var(--border-strong);
+    }
+    [data-theme="light"] .stage-tab.active {
+      background: rgba(105, 81, 255, 0.12);
+      color: var(--cobalt);
+      border-color: var(--cobalt);
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -945,6 +1106,26 @@ function sharedSiteCss(): string {
     }
     .lang-switch a:hover { color: var(--ink); border-color: var(--border-strong); }
     .lang-switch a.active { border-color: var(--cobalt); color: #fff; background: rgba(59, 130, 246, 0.2); }
+    .theme-toggle-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13.5px;
+      padding: 0;
+      transition: all 0.15s;
+    }
+    .theme-toggle-btn:hover {
+      border-color: var(--cobalt);
+      background: var(--surface-elevated);
+      transform: scale(1.06);
+    }
 
     /* Hero */
     .hero {
@@ -1410,6 +1591,95 @@ function sharedSiteCss(): string {
     .footer-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; }
     .footer-links a:hover { color: var(--ink); }
 
+    /* Radar Section Styling */
+    .radar-api-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(16px);
+    }
+    .radar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+    @media (max-width: 640px) { .radar-grid { grid-template-columns: 1fr; } }
+    .radar-card {
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .radar-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-hover);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+    .radar-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .radar-source-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(105, 81, 255, 0.15);
+      color: #b7aaff;
+      border: 1px solid rgba(105, 81, 255, 0.3);
+    }
+    .radar-source-tag.x-tag {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    [data-theme="light"] .radar-source-tag.x-tag {
+      background: rgba(0, 0, 0, 0.08);
+      color: #0f172a;
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+    .radar-hotness {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--amber);
+      font-weight: 600;
+    }
+    .radar-title {
+      font-size: 15.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin: 0 0 6px;
+      color: var(--ink);
+    }
+    .radar-summary {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .radar-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
     /* Toast */
     #site-toast {
       position: fixed;
@@ -1442,6 +1712,27 @@ function sharedSiteCss(): string {
   `;
 }
 
+function themeHeadScript(): string {
+  return `<script>
+(function() {
+  try {
+    var saved = localStorage.getItem('aimake-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = saved || (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch(e) {}
+})();
+function toggleAimakeTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('aimake-theme', next); } catch(e) {}
+  var btn = document.getElementById('theme-toggle-btn');
+  if (btn) btn.textContent = next === 'dark' ? '🌙' : '☀️';
+}
+</script>`;
+}
+
 function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
   const copy = UI_COPY[lang];
   const langs: SiteLang[] = ['zh', 'en', 'ja', 'ko'];
@@ -1458,19 +1749,23 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
       <div class="nav-links">
         <a href="/playground/" class="nav-pill-highlight">🚀 ${esc(copy.navPlayground)}</a>
         <a href="https://github.com/chicogong/aimake-creator/releases/tag/v2.0.0" target="_blank" rel="noopener">🍏 macOS</a>
+        <a href="/${lang}/#radar">🔥 ${esc(copy.navRadar)}</a>
         <a href="/${lang}/#flywheel">${esc(copy.navFlywheel)}</a>
         <a href="/${lang}/#templates">${esc(copy.navTemplates)}</a>
         <a href="/${lang}/#cli">${esc(copy.navCli)}</a>
         <a href="https://studio.aimake.cc" target="_blank" rel="noopener">${esc(copy.navStudio)} ↗</a>
         <a href="/universe/">${esc(copy.navUniverse)}</a>
       </div>
-      <div class="lang-switch" aria-label="Language switcher">
-        ${langs
-          .map(
-            (l) =>
-              `<a href="/${l}/${activeSuffix}" class="${l === lang ? 'active' : ''}">${l.toUpperCase()}</a>`
-          )
-          .join('')}
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleAimakeTheme()" aria-label="Toggle dark/light theme" title="切换浅色 / 深色模式">🌓</button>
+        <div class="lang-switch" aria-label="Language switcher">
+          ${langs
+            .map(
+              (l) =>
+                `<a href="/${l}/${activeSuffix}" class="${l === lang ? 'active' : ''}">${l.toUpperCase()}</a>`
+            )
+            .join('')}
+        </div>
       </div>
     </div>
   </nav>`;
@@ -1486,10 +1781,11 @@ function renderLandingHtml(
   const langs: SiteLang[] = ['zh', 'en', 'ja', 'ko'];
 
   const stagePresets: Array<{ label: string; tplId: string }> = [
-    { label: '3:4 小红书 / Social', tplId: 'xhs-swiss-grid' },
-    { label: '4:5 LinkedIn PDF', tplId: 'linkedin-exec-carousel' },
-    { label: '16:9 図解 / PPTX', tplId: 'x-zukai-quad' },
-    { label: '9:16 60fps Video', tplId: 'video-cinema-talk' },
+    { label: '3:4 便当盒 · Bento', tplId: 'apple-bento-launch' },
+    { label: '3:4 瑞士版面 · Swiss', tplId: 'xhs-swiss-grid' },
+    { label: '16:9 极客黑 · Linear', tplId: 'ppt-linear-dark' },
+    { label: '4:5 LinkedIn · 专栏', tplId: 'linkedin-exec-carousel' },
+    { label: '9:16 60fps · 动态视频', tplId: 'video-cinema-talk' },
   ];
 
   const packsHtml = packs
@@ -1543,6 +1839,34 @@ function renderLandingHtml(
     })
     .join('\n');
 
+  const radarItems = CURATED_TREND_FIXTURES.slice(0, 16);
+  const radarCardsHtml = radarItems
+    .map((item) => {
+      const isX = (item.source || '').includes('X') || (item.source || '').includes('Twitter');
+      const authorText = item.author ? esc(item.author) : '@aimake-creator';
+      const playgroundLink = `/playground/?template=${encodeURIComponent(item.suggestedTemplate || 'apple-bento-launch')}&title=${encodeURIComponent(item.title)}`;
+      return `
+      <div class="radar-card" data-radar-cat="${esc(item.category || 'ai-tech')}" data-radar-source="${isX ? 'x' : 'other'}">
+        <div>
+          <div class="radar-card-head" style="margin-bottom:10px;">
+            <span class="radar-source-tag ${isX ? 'x-tag' : ''}">${isX ? '𝕏 ' : ''}${esc(item.source)}</span>
+            <span class="radar-hotness">${esc(item.hotness || '🔥 高关注')}</span>
+          </div>
+          <h4 class="radar-title">${esc(item.title)}</h4>
+          <p class="radar-summary">${esc(item.summary || '')}</p>
+        </div>
+        <div class="radar-foot">
+          <div style="display:flex;align-items:center;gap:6px;font-family:var(--mono);color:var(--dim);font-size:11.5px;">
+            <span>${authorText}</span>
+            <span>·</span>
+            <span style="color:var(--cobalt);font-weight:600;">#${esc(item.suggestedTemplate || 'bento')}</span>
+          </div>
+          <a href="${playgroundLink}" class="btn-primary" style="padding:6px 12px;font-size:12px;text-decoration:none;">在工坊做同款 ↗</a>
+        </div>
+      </div>`;
+    })
+    .join('\n');
+
   const bentoHtml = copy.bentoItems
     .map((item) => {
       const typeClass = item.type === 'wide' ? 'bento-wide' : item.type === 'tall' ? 'bento-tall' : '';
@@ -1580,6 +1904,7 @@ function renderLandingHtml(
   <title>${esc(copy.heroTitle)} | Aimake 爱创</title>
   <meta name="description" content="${esc(copy.heroSub)}" />
   ${verificationMetaTags()}
+  ${themeHeadScript()}
   <link rel="canonical" href="${canonicalUrl}" />
   <link rel="alternate" hreflang="x-default" href="https://aimake.cc/" />
   ${langs.map((l) => `<link rel="alternate" hreflang="${UI_COPY[l].htmlLang}" href="https://aimake.cc/${l}/" />`).join('\n  ')}
@@ -1658,6 +1983,55 @@ function renderLandingHtml(
         <p>${esc(copy.flywheelSub)}</p>
       </div>
       <div class="bento-grid">${bentoHtml}</div>
+    </div>
+  </section>
+
+  <!-- LIVE TREND RADAR & OPEN API SHOWCASE -->
+  <section id="radar" class="section-block">
+    <div class="container">
+      <div class="section-head">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+          <span class="eyebrow" style="margin:0;">WEEKLY TREND RADAR · 2026 第 47 周</span>
+          <span class="stage-foot-badge" style="background:rgba(16,185,129,0.12);padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:11px;">📅 每周一 08:00 定期更新</span>
+        </div>
+        <h2>🔥 创作灵感雷达 · 捕捉全网前沿爆款</h2>
+        <p>每周一自动聚合 𝕏 (Twitter) 硅谷前沿推文、知乎热榜、Hacker News 与 36Kr 实时风向。零鉴权开放静态 API，无论在桌面端、Web 工坊还是第三方智能体中，均可一键开箱创作。</p>
+      </div>
+
+      <div class="radar-api-banner">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div>
+            <div style="font-weight:700;color:var(--emerald);font-size:13px;display:flex;align-items:center;gap:6px;">
+              <span class="pulse-dot"></span>
+              <span>开放远端 API 端点 · 零鉴权 · 全球 CDN 毫秒响应</span>
+            </div>
+            <div style="font-family:var(--mono);font-size:13px;color:var(--ink);margin-top:4px;">
+              GET https://aimake.cc/api/radar.json
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <a href="/api/radar.json" target="_blank" rel="noopener" class="btn-secondary" style="font-size:12px;padding:8px 14px;">
+              查看实时 JSON 接口 ↗
+            </a>
+            <a href="/playground/" class="btn-primary" style="font-size:12px;padding:8px 14px;">
+              在工坊一键做同款 🚀
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Chips -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;" id="landing-radar-filters">
+        <button type="button" class="stage-tab active" data-filter-radar="all">全部热点 (16)</button>
+        <button type="button" class="stage-tab" data-filter-radar="x">𝕏 前沿爆款</button>
+        <button type="button" class="stage-tab" data-filter-radar="ai-tech">AI &amp; 科技突破</button>
+        <button type="button" class="stage-tab" data-filter-radar="creative">创作者经济</button>
+        <button type="button" class="stage-tab" data-filter-radar="social">社交热榜</button>
+      </div>
+
+      <div class="radar-grid" id="landing-radar-grid">
+        ${radarCardsHtml}
+      </div>
     </div>
   </section>
 
@@ -1923,6 +2297,26 @@ function renderLandingHtml(
           applyMarketFilter();
         });
       });
+
+      // Radar category filter
+      var radarChips = document.querySelectorAll('#landing-radar-filters [data-filter-radar]');
+      var radarCards = document.querySelectorAll('#landing-radar-grid .radar-card');
+      radarChips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          radarChips.forEach(function (c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+          var filter = chip.getAttribute('data-filter-radar');
+          radarCards.forEach(function (card) {
+            if (filter === 'all') {
+              card.style.display = 'flex';
+            } else if (filter === 'x') {
+              card.style.display = card.getAttribute('data-radar-source') === 'x' ? 'flex' : 'none';
+            } else {
+              card.style.display = card.getAttribute('data-radar-cat') === filter ? 'flex' : 'none';
+            }
+          });
+        });
+      });
     })();
   </script>
 </body>
@@ -1957,6 +2351,7 @@ function renderUniverseBridgeHtml(): string {
   <title>Aimake Universe 爱创星球矩阵 | Aimake 爱创</title>
   <meta name="description" content="纯净、零广告、免登录、本地优先的儿童跨学科探索生态：脑力、数学、任务工坊、单词、编程与 AI 素养六大星球。" />
   ${verificationMetaTags()}
+  ${themeHeadScript()}
   <link rel="canonical" href="https://universe.aimake.cc/" />
   <style>${sharedSiteCss()}</style>
 </head>
@@ -2008,6 +2403,7 @@ function renderDashboardBridgeHtml(): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>家长学习回看迁移指引 | Aimake Universe 爱创星球</title>
   ${verificationMetaTags()}
+  ${themeHeadScript()}
   <link rel="canonical" href="https://universe.aimake.cc/dashboard" />
   <style>${sharedSiteCss()}</style>
 </head>
@@ -2110,6 +2506,7 @@ export async function buildStaticSite(outDir: string): Promise<{
   <title>${esc(tpl.name[lang])} — Aimake #${esc(tpl.id)}</title>
   <meta name="description" content="${esc(tpl.description[lang])}" />
   ${verificationMetaTags()}
+  ${themeHeadScript()}
   <link rel="canonical" href="https://aimake.cc/${lang}/templates/${tpl.id}/" />
   ${langs.map((l) => `<link rel="alternate" hreflang="${UI_COPY[l].htmlLang}" href="https://aimake.cc/${l}/templates/${tpl.id}/" />`).join('\n  ')}
   <style>${sharedSiteCss()}
@@ -2169,6 +2566,34 @@ export async function buildStaticSite(outDir: string): Promise<{
   await fs.mkdir(path.join(outDir, 'dashboard'), { recursive: true });
   await fs.writeFile(path.join(outDir, 'dashboard', 'index.html'), renderDashboardBridgeHtml(), 'utf8');
   pagesWritten++;
+
+  // Generate public static remote radar API (https://aimake.cc/api/radar.json)
+  const apiDir = path.join(outDir, 'api');
+  await fs.mkdir(apiDir, { recursive: true });
+  const radarApiDir = path.join(apiDir, 'radar');
+  await fs.mkdir(radarApiDir, { recursive: true });
+
+  const radarPayload = {
+    status: 'ok',
+    updatedAt: new Date().toISOString(),
+    source: 'Aimake Creative Trend Radar Remote API',
+    homepage: 'https://aimake.cc',
+    endpoints: {
+      radar: 'https://aimake.cc/api/radar.json',
+      health: 'https://aimake.cc/api/health.json',
+    },
+    total: CURATED_TREND_FIXTURES.length,
+    items: CURATED_TREND_FIXTURES,
+  };
+  const radarJson = JSON.stringify(radarPayload, null, 2);
+  await fs.writeFile(path.join(apiDir, 'radar.json'), radarJson, 'utf8');
+  await fs.writeFile(path.join(radarApiDir, 'index.json'), radarJson, 'utf8');
+  await fs.writeFile(
+    path.join(apiDir, 'health.json'),
+    JSON.stringify({ status: 'ok', service: 'aimake-radar-api', timestamp: Date.now() }, null, 2),
+    'utf8'
+  );
+  urls.push('https://aimake.cc/api/radar.json');
 
   const sitemapXml = [
     '<?xml version="1.0" encoding="UTF-8"?>',

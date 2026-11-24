@@ -500,7 +500,11 @@ export const CALM_STUDIO_SCRIPT = `
         // Fallback gracefully
       }
     }
-    const items = (state.radar || []).filter((it) => cat === 'all' || (it.category || 'ai-tech') === cat);
+    const items = (state.radar || []).filter((it) => {
+      if (cat === 'all') return true;
+      if (cat === 'x') return (it.source || '').includes('X') || (it.source || '').includes('Twitter');
+      return (it.category || 'ai-tech') === cat;
+    });
     const badge = $('radar-total-badge');
     if (badge) badge.textContent = String(items.length);
 
@@ -561,7 +565,7 @@ export const CALM_STUDIO_SCRIPT = `
           const tName = locText(t.name, 'zh');
           const tDesc = locText(t.description, 'zh');
           return (
-            '<article class="tpl-card' + (isActive ? ' active' : '') + '">' +
+            '<article class="tpl-card' + (isActive ? ' active' : '') + '" data-card-template-id="' + esc(t.id) + '">' +
             '<div class="tpl-thumb-wrap' + (t.aspect === '16:9' ? ' is-wide' : '') + '">' +
             '<img src="/api/templates/thumb/' + encodeURIComponent(t.id) + '.png" alt="' + esc(tName) + '" loading="lazy" />' +
             '<span class="tpl-aspect-tag">' + esc(t.aspect) + '</span>' +
@@ -570,8 +574,9 @@ export const CALM_STUDIO_SCRIPT = `
             '<div class="tpl-card-name">' + esc(tName) + '</div>' +
             '<div class="tpl-card-desc">' + esc(tDesc) + '</div>' +
             '<div class="tpl-card-actions">' +
-            '<button class="btn btn-xs btn-primary" data-remix-template="' + esc(t.id) + '">一键做同款</button>' +
-            '<button class="btn btn-xs" data-template-id="' + esc(t.id) + '">切换</button>' +
+            (isActive
+              ? '<span class="tpl-status-badge active">✓ 当前使用中</span>'
+              : '<button type="button" class="btn btn-xs btn-primary tpl-btn-apply" data-template-id="' + esc(t.id) + '" data-remix-template="' + esc(t.id) + '">应用此风格</button>') +
             '</div></div></article>'
           );
         })
@@ -985,6 +990,13 @@ export const CALM_STUDIO_SCRIPT = `
     switchGalleryTab('templates');
     openDrawer('drawer-gallery', 'stage');
   });
+  const btnSidebarRadar = $('btn-sidebar-radar');
+  if (btnSidebarRadar) {
+    btnSidebarRadar.addEventListener('click', () => {
+      switchGalleryTab('radar');
+      openDrawer('drawer-gallery', 'stage');
+    });
+  }
   $('btn-open-trending').addEventListener('click', () => {
     switchGalleryTab('trending');
     openDrawer('drawer-gallery', 'stage');
@@ -2145,27 +2157,9 @@ export const CALM_STUDIO_SCRIPT = `
   }
 
   $('gallery-template-grid').addEventListener('click', async (e) => {
-    const remixBtn = e.target.closest('[data-remix-template]');
-    if (remixBtn) {
-      const tplId = remixBtn.getAttribute('data-remix-template');
-      const humanize = Boolean($('chk-remix-humanize') && $('chk-remix-humanize').checked);
-      try {
-        await apiJson('/api/remix', {
-          method: 'POST',
-          body: JSON.stringify({ sourceTemplateId: tplId, humanize }),
-        });
-        await refreshState(true);
-        closeAllDrawers();
-        showToast('一键做同款完成：已套用 ' + tplId + ' 视觉风格');
-      } catch (err) {
-        showToast('一键同款失败：' + err.message);
-      }
-      return;
-    }
-
-    const switchBtn = e.target.closest('[data-template-id]');
-    if (switchBtn) {
-      const tplId = switchBtn.getAttribute('data-template-id');
+    const cardOrBtn = e.target.closest('[data-template-id]') || e.target.closest('[data-remix-template]') || e.target.closest('[data-card-template-id]');
+    if (cardOrBtn) {
+      const tplId = cardOrBtn.getAttribute('data-template-id') || cardOrBtn.getAttribute('data-remix-template') || cardOrBtn.getAttribute('data-card-template-id');
       try {
         await apiJson('/api/meta', {
           method: 'POST',
@@ -2173,10 +2167,11 @@ export const CALM_STUDIO_SCRIPT = `
         });
         await refreshState(true);
         closeAllDrawers();
-        showToast('已切换风格：' + tplId);
+        showToast('已切换至「' + tplId + '」视觉风格');
       } catch (err) {
-        showToast('切换失败：' + err.message);
+        showToast('切换风格失败：' + err.message);
       }
+      return;
     }
   });
 

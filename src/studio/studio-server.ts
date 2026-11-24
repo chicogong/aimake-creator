@@ -91,7 +91,25 @@ import { buildStudioShellHtml } from './studio-ui.js';
 export const MAX_JSON_BODY_BYTES = 512 * 1024;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PACKAGE_ROOT = path.resolve(__dirname, '..', '..');
+
+export function findPackageRoot(): string {
+  let cur = __dirname;
+  for (let i = 0; i < 5; i++) {
+    if (fsSync.existsSync(path.join(cur, 'templates')) && fsSync.existsSync(path.join(cur, 'package.json'))) {
+      return cur;
+    }
+    const parent = path.dirname(cur);
+    if (parent === cur) break;
+    cur = parent;
+  }
+  const cwd = process.cwd();
+  if (fsSync.existsSync(path.join(cwd, 'templates')) && fsSync.existsSync(path.join(cwd, 'package.json'))) {
+    return cwd;
+  }
+  return path.resolve(__dirname, '..');
+}
+
+const PACKAGE_ROOT = findPackageRoot();
 
 export interface StudioServerOptions {
   deckPath: string;
@@ -801,24 +819,43 @@ export async function startStudioServer(
       }
 
       // =======================================================================
-      // TEMPLATE PREVIEW COVER THUMBNAILS (22 REAL RENDERED COVERS)
+      // TEMPLATE PREVIEW COVER THUMBNAILS (Cacheable static PNG assets with SVG fallback)
       // =======================================================================
       if (req.method === 'GET' && url.pathname.startsWith('/api/templates/thumb/')) {
         const rawName = decodeURIComponent(url.pathname.slice('/api/templates/thumb/'.length));
-        const match = /^([a-z0-9-]+)\.png$/i.exec(rawName);
+        const match = /^([a-z0-9-]+)\.(png|svg)$/i.exec(rawName);
         if (!match) {
           throw new HttpError(400, 'Invalid template thumbnail id');
         }
-        const tplRoot = resolveTemplatesRoot();
-        const thumbPath = await resolveContainedExistingFile(tplRoot, `${match[1]}/preview.png`);
-        const stat = await fs.stat(thumbPath);
-        res.writeHead(200, {
-          'Content-Type': 'image/png',
-          'Content-Length': String(stat.size),
-          'Cache-Control': 'public, max-age=3600',
-        });
-        fsSync.createReadStream(thumbPath).pipe(res);
-        return;
+        const tplId = match[1];
+        try {
+          const tplRoot = resolveTemplatesRoot();
+          const thumbPath = await resolveContainedExistingFile(tplRoot, `${tplId}/preview.png`);
+          const stat = await fs.stat(thumbPath);
+          res.writeHead(200, {
+            'Content-Type': 'image/png',
+            'Content-Length': String(stat.size),
+            'Cache-Control': 'public, max-age=3600',
+          });
+          fsSync.createReadStream(thumbPath).pipe(res);
+          return;
+        } catch {
+          const label = tplId.replace(/[-_]+/g, ' ').toUpperCase();
+          const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480" fill="none">
+            <rect width="640" height="480" fill="#131722"/>
+            <rect x="20" y="20" width="600" height="440" rx="16" fill="#1A1F2E" stroke="#2B3347" stroke-width="2"/>
+            <circle cx="320" cy="200" r="44" fill="#6951FF" fill-opacity="0.18" stroke="#6951FF" stroke-width="2"/>
+            <polygon points="310,185 338,200 310,215" fill="#6951FF"/>
+            <text x="320" y="285" fill="#F8FAFC" font-size="19" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-weight="600" text-anchor="middle">${label}</text>
+            <text x="320" y="315" fill="#94A3B8" font-size="13" font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle">Aimake Parametric Design System</text>
+          </svg>`;
+          res.writeHead(200, {
+            'Content-Type': 'image/svg+xml; charset=utf-8',
+            'Cache-Control': 'public, max-age=3600',
+          });
+          res.end(svg);
+          return;
+        }
       }
 
       // =======================================================================
@@ -849,16 +886,34 @@ export async function startStudioServer(
         if (!match) {
           throw new HttpError(400, 'Invalid trending thumbnail id');
         }
-        const trendingRoot = resolveTrendingRoot();
-        const thumbPath = await resolveContainedExistingFile(trendingRoot, `${match[1]}.preview.png`);
-        const stat = await fs.stat(thumbPath);
-        res.writeHead(200, {
-          'Content-Type': 'image/png',
-          'Content-Length': String(stat.size),
-          'Cache-Control': 'public, max-age=3600',
-        });
-        fsSync.createReadStream(thumbPath).pipe(res);
-        return;
+        try {
+          const trendingRoot = resolveTrendingRoot();
+          const thumbPath = await resolveContainedExistingFile(trendingRoot, `${match[1]}.preview.png`);
+          const stat = await fs.stat(thumbPath);
+          res.writeHead(200, {
+            'Content-Type': 'image/png',
+            'Content-Length': String(stat.size),
+            'Cache-Control': 'public, max-age=3600',
+          });
+          fsSync.createReadStream(thumbPath).pipe(res);
+          return;
+        } catch {
+          const label = match[1].replace(/[-_]+/g, ' ').toUpperCase();
+          const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480" fill="none">
+            <rect width="640" height="480" fill="#131722"/>
+            <rect x="20" y="20" width="600" height="440" rx="16" fill="#1A1F2E" stroke="#FFCB49" stroke-width="2"/>
+            <circle cx="320" cy="200" r="44" fill="#FFCB49" fill-opacity="0.18" stroke="#FFCB49" stroke-width="2"/>
+            <polygon points="310,185 338,200 310,215" fill="#FFCB49"/>
+            <text x="320" y="285" fill="#F8FAFC" font-size="18" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-weight="600" text-anchor="middle">${label}</text>
+            <text x="320" y="315" fill="#94A3B8" font-size="13" font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle">2026 Aimake Trending Showcase Work</text>
+          </svg>`;
+          res.writeHead(200, {
+            'Content-Type': 'image/svg+xml; charset=utf-8',
+            'Cache-Control': 'public, max-age=3600',
+          });
+          res.end(svg);
+          return;
+        }
       }
 
       if (req.method === 'POST' && url.pathname === '/api/trending/import') {

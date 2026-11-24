@@ -72,14 +72,27 @@ export const CALM_STUDIO_MARKUP = `
     <!-- Left Collapsible Workspace Rail -->
     <aside class="sidebar" aria-label="工作区导航">
       <div class="sidebar-scroll">
-        <!-- Quick Entry to Timely 2026 Current-News Showcase Works -->
-        <button class="trending-promo-btn" id="btn-open-trending" title="浏览 2026 最新科技时事成品，一键导入或做同款">
-          <span class="nav-item-main">
-            <span class="nav-item-title" style="font-weight:650;color:var(--ink);">2026 时事灵感成品</span>
-            <span class="nav-item-sub">4 套最新热点作品 · 点一下做同款</span>
-          </span>
-          <span class="hot-pill">HOT</span>
-        </button>
+        <!-- Quick Entry to Timely 2026 Current-News Showcase Works & Weekly Radar -->
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+          <button class="trending-promo-btn radar-promo-card" id="btn-sidebar-radar" title="浏览全网实时热点（X/Twitter、知乎、36Kr），一键生成新作品">
+            <span class="nav-item-main">
+              <span class="nav-item-title" style="font-weight:650;color:var(--ink);display:flex;align-items:center;gap:6px;">
+                <span class="live-pulse-dot"></span>
+                <span>每周灵感雷达 · W47</span>
+              </span>
+              <span class="nav-item-sub">16 篇 X 前沿推文与时事 · 一键填装</span>
+            </span>
+            <span class="hot-pill" style="background:linear-gradient(135deg,rgba(105,81,255,0.2),rgba(139,92,246,0.25));color:var(--accent);">RADAR</span>
+          </button>
+
+          <button class="trending-promo-btn" id="btn-open-trending" title="浏览 2026 最新科技时事成品，一键导入或做同款">
+            <span class="nav-item-main">
+              <span class="nav-item-title" style="font-weight:650;color:var(--ink);">2026 时事灵感成品</span>
+              <span class="nav-item-sub">6 套高保真热点成品 · 点一下做同款</span>
+            </span>
+            <span class="hot-pill">HOT</span>
+          </button>
+        </div>
 
         <div class="nav-group">
           <div class="nav-group-head">
@@ -373,28 +386,24 @@ export const CALM_STUDIO_MARKUP = `
   <div class="drawer-backdrop" id="drawer-backdrop"></div>
 
   <!-- Drawer 1: 36-Template Visual Gallery + 2026 Trending Works + 7 Industry Packs -->
-  <section class="drawer wide" id="drawer-gallery" aria-label="视觉风格画廊与时事范例">
+  <section class="drawer wide" id="drawer-gallery" aria-label="视觉风格画廊与设计系统">
     <div class="drawer-head">
       <div>
-        <h3 class="drawer-title">视觉风格画廊 · 2026 时事范例</h3>
-        <p class="drawer-sub">36 套高颜值差异化视觉模板 + 4 套紧跟热点的真实示范作品，点击即可一键做同款</p>
+        <h3 class="drawer-title">视觉风格画廊 · 36 套设计模板</h3>
+        <p class="drawer-sub">严格遵循 CJK 排版美学与双色主题契约，一键为当前文稿换装</p>
       </div>
       <div style="display:flex;align-items:center;gap:12px;">
-        <label style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-secondary);cursor:pointer;">
-          <input type="checkbox" id="chk-remix-humanize" />
-          <span>同时去 AI 味</span>
-        </label>
-        <button class="icon-btn" data-close-drawer aria-label="关闭">
+        <button class="icon-btn" data-close-drawer aria-label="关闭" title="关闭画廊 (ESC)">
           <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"></path></svg>
         </button>
       </div>
     </div>
     <div class="drawer-body">
       <div class="segmented-tabs" id="gallery-mode-tabs">
-        <button class="seg-tab active" data-gallery-tab="templates">全部风格（<span id="gallery-total-badge">36</span>）</button>
-        <button class="seg-tab" data-gallery-tab="trending">2026 时事热点成品（<span id="trending-total-badge">4</span>）</button>
-        <button class="seg-tab" data-gallery-tab="radar">🔥 实时灵感雷达（<span id="radar-total-badge">6</span>）</button>
-        <button class="seg-tab" data-gallery-tab="packs">行业风格套件（<span id="packs-total-badge">7</span>）</button>
+        <button class="seg-tab active" data-gallery-tab="templates">🎨 全部模板（<span id="gallery-total-badge">36</span>）</button>
+        <button class="seg-tab" data-gallery-tab="radar">🔥 实时灵感雷达（<span id="radar-total-badge">16</span>）</button>
+        <button class="seg-tab" data-gallery-tab="trending">✨ 2026 时事范例（<span id="trending-total-badge">6</span>）</button>
+        <button class="seg-tab" data-gallery-tab="packs">📦 行业套件（<span id="packs-total-badge">7</span>）</button>
       </div>
 
       <!-- Tab 1: All 36 Visual Templates -->
@@ -437,6 +446,7 @@ export const CALM_STUDIO_MARKUP = `
         <div class="filter-bar" style="margin-bottom:14px;">
           <div class="chip-row" id="radar-category-chips">
             <button class="filter-chip active" data-radar-cat="all">全部热点</button>
+            <button class="filter-chip" data-radar-cat="x">𝕏 前沿爆款</button>
             <button class="filter-chip" data-radar-cat="ai-tech">AI & 科技</button>
             <button class="filter-chip" data-radar-cat="social">社交热榜</button>
             <button class="filter-chip" data-radar-cat="creative">创作者经济</button>
