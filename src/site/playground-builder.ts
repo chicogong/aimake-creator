@@ -40,32 +40,33 @@ export function extractTemplatePaletteFromCss(css: string): {
 
 const STARTER_SAMPLES: Record<string, string> = {
   agent: `---
-title: 2026 AI Agent 架构演进：从单体模型到端到端闭环
+title: "Andrej Karpathy: 'Vibe Coding' 与个人软件的全面觉醒"
 template: apple-bento-launch
 locale: zh-CN
 aspect: 16:9
-author: Chico Gong
-handle: "@chicogong"
+author: Andrej Karpathy (@karpathy)
+handle: "@karpathy"
 ---
 
-<!-- scene: intro | layout: metrics | eyebrow: ARCHITECTURE 2026 -->
-# 为什么大模型套壳正在加速退场？
-## 从一次性问答消费，进化为多模态资产编译
+<!-- scene: intro | layout: metrics | eyebrow: 编程范式大迁徙 | cite: @karpathy on X (Feb 2025) -->
+# Andrej Karpathy: 'Vibe Coding' 与个人软件的全面觉醒
+## 敲击代码行数归零，跟随机感对话：每个人都成为专属软件造物主
 
 \`\`\`metric
-- 交付延迟: < 1.2s (-75%)
-- 本地隐私留存: 100% (Zero-Cloud)
-- 多端介质直出: 5 种 (原生排版)
+- 手工编写语法: 0% (完全依赖 LLM 即时生成)
+- 个人软件交付速度: 20 分钟 (从灵感闪现到浏览器可用)
+- 软件受众规模: 仅限 1 人 (Personal Software 爆发)
+- X 社区共鸣度: 4.8M+ 浏览 · 4.2万点赞
 \`\`\`
 
 ---
 
 <!-- scene: compare | layout: comparison | eyebrow: PARADIGM SHIFT -->
-# 通用单体模型 vs Aimake 端到端闭环
+# 传统重型协作 vs Vibe Coding 个人软件
 
 \`\`\`compare
-通用聊天套壳 :: 一次性对话，关掉窗口灵感丢失 | 样式死板无法导出可编辑 PPTX | 隐私云端暴露
-Aimake 爱创闭环 :: 本地 Karpathy LLM Wiki 知识复利 | 一稿直出公众号、小红书、PDF 与短视频 | 100% 数据留存本机
+传统重型开发 :: 论证商业 ROI 与规模化需求 | 数周搭建 CI/CD 与脚手架 | 70% 精力消耗在语法与环境
+个人软件觉醒 :: 仅为满足当下 1 个微小需求 | 单份 Markdown 即刻拉起应用 | 100% 精力聚焦在审美与直觉
 \`\`\`
 
 ---
@@ -77,41 +78,41 @@ Aimake 爱创闭环 :: 本地 Karpathy LLM Wiki 知识复利 | 一稿直出公�
 - 预设 7 大闭环 Skill，实体化沉淀在工作区，零全局污染
 
 \`\`\`bash
-aimake new my-launch --template apple-bento-launch
-aimake render deck.md -f pptx -o launch.pptx
+aimake render decks/karpathy-vibe-coding.deck.md -f pptx -o launch.pptx
+aimake render decks/karpathy-vibe-coding.deck.md -f png -o dist/
 \`\`\`
 `,
 
   deepseek: `---
-title: DeepSeek-R1 纯本地部署与知识蒸馏实战全景
+title: "Andrej Karpathy: 为什么纯本地「LLM Wiki」构建永续第二大脑"
 template: xhs-swiss-grid
 locale: zh-CN
 aspect: 3:4
-author: Aimake Studio
-handle: "@aimake.cc"
+author: Andrej Karpathy (@karpathy)
+handle: "@karpathy"
 ---
 
-<!-- scene: intro | layout: metrics | eyebrow: DEEPSEEK R1 2026 -->
-# 为什么 2026 年超级个体必须掌握本地大模型蒸馏？
-## 零云端依赖 · 数据资产 100% 留存本机 · 毫秒级极速响应
+<!-- scene: intro | layout: metrics | eyebrow: SWISS GRID 2026 -->
+# 为什么纯本地「LLM Wiki」是超级个体的永续第二大脑？
+## 抛弃黑盒向量检索与盲目 RAG · 100% 纯离线端侧数据复利
 
 \`\`\`metric
-- 本地蒸馏压缩比: 92% (端侧可跑)
-- 单次调用延迟: < 120ms (M4 Max)
-- 隐私外泄风险: 0% (全程离线)
+- 恒定预算约束: <= 3000t (index.md)
+- 知识蒸馏命中率: 98% (反 AI 假大空)
+- 纯离线隐私留存: 100% (Zero-Cloud)
 \`\`\`
 
-- **告别算力盲目攀比**：通过 Ollama / vLLM 在本地运行 DeepSeek-R1 量化蒸馏版，推理成本降低 98%。
-- **私有知识精准注入**：单份 Markdown 笔记即可一键蒸馏为个人高频句式与 Style DNA。
+- **告别算力盲目攀比**：通过本地 Ollama / vLLM 运行蒸馏版，构建个人高频句式与 Style DNA。
+- **物理级上下文约束**：恒定约束索引页，杜绝上下文无限膨胀与灾难性遗忘。
 
 ---
 
 <!-- scene: compare | layout: comparison | eyebrow: ARCHITECTURE -->
-# 纯云端 API vs 纯本地模型蒸馏工作流
+# 纯云端黑盒 RAG vs 本地版本化 LLM Wiki
 
 \`\`\`compare
-云端商业 API :: 按 Token 持续扣费 | 敏感原稿面临云端审计风险 | 网络抖动偶发超时
-本地蒸馏内核 :: 一次配置永久免费调用 | 100% 数据在本地沙盒隔离 | 断网环境下毫秒级响应
+云端黑盒 RAG :: 切片割裂语境 | 向量相似度误判 | 敏感原稿面临云端审计风险
+本地 LLM Wiki :: 维持全局双向链接 | 恒定上下文预算 | 100% 纯净 Markdown 留存本机
 \`\`\`
 
 ---
@@ -2783,10 +2784,6 @@ export async function buildWebPlaygroundHtml(
         showToast('已复制微信公众号富文本！可直接粘贴至公众号后台');
       } catch (err) {
         btnCopyWechat.disabled = false;
-        btnCopyWechat.innerHTML = origHtml;
-        showToast('复制失败: ' + err.message);
-      }
-    });
         btnCopyWechat.innerHTML = origHtml;
         showToast('复制失败: ' + err.message);
       }
