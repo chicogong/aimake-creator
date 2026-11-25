@@ -182,6 +182,45 @@ export function isAllowedOriginHeader(originHeader: string | undefined, port: nu
   }
 }
 
+export function isAllowedRefererHeader(refererHeader: string | undefined, port: number): boolean {
+  if (!refererHeader) return true;
+  try {
+    const parsed = new URL(refererHeader.trim());
+    const hostWithPort = parsed.host.toLowerCase();
+    const expected1 = `127.0.0.1:${port}`;
+    const expected2 = `localhost:${port}`;
+    return (
+      (parsed.protocol === 'http:' || parsed.protocol === 'https:') &&
+      (hostWithPort === expected1 || hostWithPort === expected2)
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function isForbiddenSystemPath(targetPath: string): boolean {
+  const resolved = path.resolve(targetPath);
+  const root = path.parse(resolved).root;
+  if (resolved === root) return true;
+  const lower = resolved.toLowerCase();
+  const forbiddenPrefixes = [
+    '/etc',
+    '/var',
+    '/usr',
+    '/bin',
+    '/sbin',
+    '/sys',
+    '/proc',
+    '/dev',
+    '/System',
+    '/Library',
+    '/private',
+  ];
+  return forbiddenPrefixes.some(
+    (prefix) => lower === prefix.toLowerCase() || lower.startsWith(prefix.toLowerCase() + path.sep)
+  );
+}
+
 export function getCurrentWeekString(d = new Date()): string {
   const target = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
   target.setUTCDate(target.getUTCDate() + 4 - (target.getUTCDay() || 7));
@@ -610,7 +649,13 @@ export async function startStudioServer(
     const wire = `data: ${JSON.stringify(payload)}\n\n`;
     for (const client of sseClients) {
       try {
-        client.write(wire);
+        if (!client.writableEnded && !client.destroyed) {
+          client.write(wire, (err) => {
+            if (err) sseClients.delete(client);
+          });
+        } else {
+          sseClients.delete(client);
+        }
       } catch {
         sseClients.delete(client);
       }
@@ -789,7 +834,7 @@ export async function startStudioServer(
         return;
       }
 
-      // 2. Anti-CSRF: Validate Sec-Fetch-Site and Origin for non-GET/HEAD mutating requests
+      // 2. Anti-CSRF: Validate Sec-Fetch-Site, Origin, and Referer for non-GET/HEAD mutating requests
       if (req.method !== 'GET' && req.method !== 'HEAD') {
         const secFetchSite = Array.isArray(req.headers['sec-fetch-site'])
           ? req.headers['sec-fetch-site'][0]
@@ -802,9 +847,20 @@ export async function startStudioServer(
         const origin = Array.isArray(req.headers.origin)
           ? req.headers.origin[0]
           : req.headers.origin;
-        if (origin && !isAllowedOriginHeader(origin, actualPort)) {
-          sendJson(res, 403, { error: 'Cross-site or invalid Origin forbidden' });
-          return;
+        if (origin) {
+          if (!isAllowedOriginHeader(origin, actualPort)) {
+            sendJson(res, 403, { error: 'Cross-site or invalid Origin forbidden' });
+            return;
+          }
+        } else {
+          // If Origin is absent, validate Referer against loopback
+          const referer = Array.isArray(req.headers.referer)
+            ? req.headers.referer[0]
+            : req.headers.referer;
+          if (referer && !isAllowedRefererHeader(referer, actualPort)) {
+            sendJson(res, 403, { error: 'Cross-site or invalid Referer forbidden' });
+            return;
+          }
         }
       }
 
@@ -821,9 +877,13 @@ export async function startStudioServer(
         });
         res.write(`data: ${JSON.stringify({ type: 'connected', ts: Date.now() })}\n\n`);
         sseClients.add(res);
-        req.on('close', () => {
+        const cleanup = () => {
           sseClients.delete(res);
-        });
+        };
+        res.on('close', cleanup);
+        res.on('finish', cleanup);
+        res.on('error', cleanup);
+        req.on('close', cleanup);
         return;
       }
 
@@ -1394,6 +1454,9 @@ export async function startStudioServer(
           throw new HttpError(400, 'workspaceDir is required');
         }
         const resolved = path.resolve(targetDir);
+        if (isForbiddenSystemPath(resolved)) {
+          throw new HttpError(403, 'Switching to root or system directories is forbidden');
+        }
         const hasConfig = fsSync.existsSync(path.join(resolved, '.aimake', 'workspace.json'));
         if (!hasConfig && body.initIfMissing !== false) {
           await initWorkspace(resolved, {
@@ -1946,9 +2009,13 @@ export async function startStudioServer(
         const sourceTemplateId = body.sourceTemplateId
           ? String(body.sourceTemplateId).trim()
           : undefined;
-        const sourceDeckPath = body.sourceDeckPath
-          ? path.resolve(String(body.sourceDeckPath))
-          : undefined;
+        let sourceDeckPath: string | undefined;
+        if (body.sourceDeckPath) {
+          sourceDeckPath = await resolveContainedExistingFile(
+            workspaceDir,
+            String(body.sourceDeckPath)
+          );
+        }
         if (!sourceTemplateId && !sourceDeckPath) {
           throw new HttpError(400, 'sourceTemplateId or sourceDeckPath is required');
         }

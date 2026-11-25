@@ -7,6 +7,8 @@ import {
   getCurrentWeekString,
   isAllowedHostHeader,
   isAllowedOriginHeader,
+  isAllowedRefererHeader,
+  isForbiddenSystemPath,
   startStudioServer,
 } from '../src/studio/studio-server.js';
 
@@ -42,6 +44,41 @@ describe('Local Loopback Security & Anti-CSRF Validation', () => {
       expect(isAllowedOriginHeader('null', port)).toBe(false);
       expect(isAllowedOriginHeader('javascript:void(0)', port)).toBe(false);
       expect(isAllowedOriginHeader('invalid-url-origin', port)).toBe(false);
+    });
+  });
+
+  describe('isAllowedRefererHeader', () => {
+    const port = 4310;
+
+    it('allows omitted or empty Referer header', () => {
+      expect(isAllowedRefererHeader(undefined, port)).toBe(true);
+      expect(isAllowedRefererHeader('', port)).toBe(true);
+    });
+
+    it('allows valid loopback 127.0.0.1 and localhost referers', () => {
+      expect(isAllowedRefererHeader(`http://127.0.0.1:${port}/`, port)).toBe(true);
+      expect(isAllowedRefererHeader(`http://localhost:${port}/page`, port)).toBe(true);
+    });
+
+    it('rejects cross-site or mismatched port referers', () => {
+      expect(isAllowedRefererHeader('http://evil.com/exploit', port)).toBe(false);
+      expect(isAllowedRefererHeader(`http://127.0.0.1:${port + 1}/`, port)).toBe(false);
+      expect(isAllowedRefererHeader('invalid-referer', port)).toBe(false);
+    });
+  });
+
+  describe('isForbiddenSystemPath', () => {
+    it('identifies filesystem root and system directories as forbidden', () => {
+      expect(isForbiddenSystemPath('/')).toBe(true);
+      expect(isForbiddenSystemPath('/etc')).toBe(true);
+      expect(isForbiddenSystemPath('/etc/passwd')).toBe(true);
+      expect(isForbiddenSystemPath('/var')).toBe(true);
+      expect(isForbiddenSystemPath('/usr/local')).toBe(true);
+    });
+
+    it('allows user workspaces and safe project paths', () => {
+      expect(isForbiddenSystemPath('/Users/alice/projects/deck')).toBe(false);
+      expect(isForbiddenSystemPath('/home/runner/work/aimake')).toBe(false);
     });
   });
 
@@ -259,6 +296,56 @@ Security test content
         const slideFiles = await fs.readdir(capcutSlidesDir);
         expect(slideFiles.length).toBeGreaterThanOrEqual(1);
         expect(slideFiles.some((f) => f.endsWith('.png'))).toBe(true);
+
+        // 11. Anti-CSRF: Mutating POST with cross-site Referer without Origin -> 403 Forbidden
+        const evilRefererRes = await fetch(`${studio.url}/api/markdown`, {
+          method: 'POST',
+          headers: {
+            host: `127.0.0.1:${port}`,
+            referer: 'https://evil-attacker.com/csrf.html',
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({ rawMarkdown: '# Attacker CSRF via Referer' }),
+        });
+        expect(evilRefererRes.status).toBe(403);
+        const evilRefererJson = (await evilRefererRes.json()) as { error: string };
+        expect(evilRefererJson.error).toContain('Referer forbidden');
+
+        // 12. Sandbox Escape Guard: /api/workspace/switch rejecting root '/' or system directories -> 403
+        const switchRootRes = await fetch(`${studio.url}/api/workspace/switch`, {
+          method: 'POST',
+          headers: {
+            host: `127.0.0.1:${port}`,
+            origin: validOrigin,
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({ workspaceDir: '/' }),
+        });
+        expect(switchRootRes.status).toBe(403);
+        const switchRootJson = (await switchRootRes.json()) as { error: string };
+        expect(switchRootJson.error).toContain('system directories is forbidden');
+
+        // 13. Path Traversal Guard: /api/remix rejecting escaping sourceDeckPath -> 403
+        const remixEscapeRes = await fetch(`${studio.url}/api/remix`, {
+          method: 'POST',
+          headers: {
+            host: `127.0.0.1:${port}`,
+            origin: validOrigin,
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({ sourceDeckPath: '/etc/passwd' }),
+        });
+        expect(remixEscapeRes.status).toBe(403);
+
+        // 14. SSE Stream connection and graceful client cleanup
+        const sseController = new AbortController();
+        const sseRes = await fetch(`${studio.url}/api/events`, {
+          signal: sseController.signal,
+          headers: { host: `127.0.0.1:${port}` },
+        });
+        expect(sseRes.status).toBe(200);
+        expect(sseRes.headers.get('content-type')).toContain('text/event-stream');
+        sseController.abort(); // simulate immediate client disconnect
       } finally {
         await studio.close();
         await fs.rm(tmpDir, { recursive: true, force: true }).catch(() => {});

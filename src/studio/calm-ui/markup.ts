@@ -684,7 +684,7 @@ export const CALM_STUDIO_MARKUP = `
   </section>
 
   <!-- Modal 1: Command Palette (⌘K) -->
-  <div class="modal-backdrop" id="modal-cmdk">
+  <div class="modal-backdrop" id="modal-cmdk" role="dialog" aria-modal="true" aria-label="快捷命令面板">
     <div class="cmdk-box">
       <input class="cmdk-input" id="cmdk-input" placeholder="输入命令、切换风格、调整外观或打开功能…" autocomplete="off" />
       <div class="cmdk-list" id="cmdk-list"></div>
@@ -692,11 +692,11 @@ export const CALM_STUDIO_MARKUP = `
   </div>
 
   <!-- Modal 2: Custom New Deck Modal (Zero window.prompt!) -->
-  <div class="modal-backdrop" id="modal-new-deck">
+  <div class="modal-backdrop" id="modal-new-deck" role="dialog" aria-modal="true" aria-labelledby="title-new-deck">
     <div class="dialog-box">
       <div class="drawer-head">
         <div>
-          <h3 class="drawer-title">新建创作作品</h3>
+          <h3 class="drawer-title" id="title-new-deck">新建创作作品</h3>
           <p class="drawer-sub">选一个顺手的起步风格，马上在舞台上直接微调或交给 AI 续写</p>
         </div>
         <button class="icon-btn" data-close-modal aria-label="关闭">
@@ -744,11 +744,11 @@ export const CALM_STUDIO_MARKUP = `
   </div>
 
   <!-- Modal 3: Create Workspace Dialog -->
-  <div class="modal-backdrop" id="modal-new-workspace">
+  <div class="modal-backdrop" id="modal-new-workspace" role="dialog" aria-modal="true" aria-labelledby="title-new-workspace">
     <div class="dialog-box">
       <div class="drawer-head">
         <div>
-          <h3 class="drawer-title">新建端到端创作工作区</h3>
+          <h3 class="drawer-title" id="title-new-workspace">新建端到端创作工作区</h3>
           <p class="drawer-sub">将在独立文件夹内实体预设 7 大闭环 Skill，零软链接、零全局污染</p>
         </div>
         <button class="icon-btn" data-close-modal aria-label="关闭">
@@ -794,11 +794,11 @@ export const CALM_STUDIO_MARKUP = `
   </div>
 
   <!-- Modal 4: Custom Open Local Workspace Dialog (Zero window.prompt!) -->
-  <div class="modal-backdrop" id="modal-open-workspace">
+  <div class="modal-backdrop" id="modal-open-workspace" role="dialog" aria-modal="true" aria-labelledby="title-open-workspace">
     <div class="dialog-box">
       <div class="drawer-head">
         <div>
-          <h3 class="drawer-title">打开本地文件夹作为工作区</h3>
+          <h3 class="drawer-title" id="title-open-workspace">打开本地文件夹作为工作区</h3>
           <p class="drawer-sub">仅在该文件夹内写入工作区预设，绝不触碰你电脑里的其他项目</p>
         </div>
         <button class="icon-btn" data-close-modal aria-label="关闭">
@@ -820,11 +820,11 @@ export const CALM_STUDIO_MARKUP = `
   </div>
 
   <!-- Modal 5: Workspace Preset Skills Inspector -->
-  <div class="modal-backdrop" id="modal-skills">
+  <div class="modal-backdrop" id="modal-skills" role="dialog" aria-modal="true" aria-labelledby="title-skills">
     <div class="dialog-box" style="width:600px;">
       <div class="drawer-head">
         <div>
-          <h3 class="drawer-title">工作区实体预设 Skill（零全局污染）</h3>
+          <h3 class="drawer-title" id="title-skills">工作区实体预设 Skill（零全局污染）</h3>
           <p class="drawer-sub">存放于当前工作区 .agents/skills/ 与 .claude/skills/，升级不覆盖你的手工定制</p>
         </div>
         <button class="icon-btn" data-close-modal aria-label="关闭">

@@ -430,6 +430,7 @@ export async function exportDeckToMp4(
   const ffmpegBin = await resolveWorkingFfmpegBinary();
   const encoderConfig = await resolveOptimalVideoEncoder(ffmpegBin, options?.videoEncoder);
   const browser = await launchSmartBrowser();
+  let ffProc: any = null;
 
   try {
     const page = await browser.newPage({
@@ -493,13 +494,20 @@ export async function exportDeckToMp4(
       outFile
     );
 
-    const ffProc = spawn(ffmpegBin, ffArgs, { stdio: ['pipe', 'ignore', 'pipe'] });
+    const proc = spawn(ffmpegBin, ffArgs, { stdio: ['pipe', 'ignore', 'pipe'] });
+    ffProc = proc;
+    const procStdin = proc.stdin;
+    const procStderr = proc.stderr;
+    if (!procStdin || !procStderr) {
+      throw new Error('Failed to spawn FFmpeg with piped stdio');
+    }
+
     let stderrLog = '';
     let stdinBroken = false;
-    ffProc.stderr.on('data', (chunk: Buffer) => {
+    procStderr.on('data', (chunk: Buffer) => {
       stderrLog += chunk.toString();
     });
-    ffProc.stdin.on('error', (err: NodeJS.ErrnoException) => {
+    procStdin.on('error', (err: NodeJS.ErrnoException) => {
       if (err.code === 'EPIPE' || err.code === 'ERR_STREAM_DESTROYED') {
         stdinBroken = true;
       }
@@ -507,7 +515,7 @@ export async function exportDeckToMp4(
     // Register close/error listener immediately before piping frames to avoid
     // missing early 'close' events (e.g. when -shortest completes before totalFrames).
     const ffClosePromise = new Promise<void>((resolve, reject) => {
-      ffProc.once('close', (code) => {
+      proc.once('close', (code: number | null) => {
         if (code === 0) resolve();
         else
           reject(
@@ -516,14 +524,16 @@ export async function exportDeckToMp4(
             )
           );
       });
-      ffProc.once('error', reject);
+      proc.once('error', reject);
     });
+    // Catch early rejection to avoid unhandled rejection during frame rendering
+    ffClosePromise.catch(() => {});
 
     const entranceFrames = Math.ceil(Math.max(1, fps * 0.35));
     const settledSlideCache = new Map<number, Buffer>();
 
     for (let f = 0; f < totalFrames; f++) {
-      if (stdinBroken || ffProc.exitCode !== null || ffProc.stdin.destroyed) {
+      if (stdinBroken || proc.exitCode !== null || procStdin.destroyed) {
         break;
       }
       let activeSlideIdx = 0;
@@ -583,33 +593,63 @@ export async function exportDeckToMp4(
         }
       }
 
-      if (stdinBroken || ffProc.exitCode !== null || ffProc.stdin.destroyed) {
+      if (stdinBroken || proc.exitCode !== null || procStdin.destroyed) {
         break;
       }
-      const canWrite = ffProc.stdin.write(pngBuf);
+      const canWrite = procStdin.write(pngBuf);
       if (!canWrite && !stdinBroken) {
         await new Promise<void>((resolve) => {
+          let resolved = false;
           const done = () => {
-            ffProc.stdin.off('drain', done);
-            ffProc.stdin.off('error', done);
-            ffProc.stdin.off('close', done);
+            if (resolved) return;
+            resolved = true;
+            procStdin.off('drain', done);
+            procStdin.off('error', done);
+            procStdin.off('close', done);
+            proc.off('close', done);
+            proc.off('exit', done);
             resolve();
           };
-          ffProc.stdin.once('drain', done);
-          ffProc.stdin.once('error', done);
-          ffProc.stdin.once('close', done);
+          if (proc.exitCode !== null || procStdin.destroyed) {
+            resolve();
+            return;
+          }
+          procStdin.once('drain', done);
+          procStdin.once('error', done);
+          procStdin.once('close', done);
+          proc.once('close', done);
+          proc.once('exit', done);
         });
       }
     }
 
-    if (!ffProc.stdin.destroyed) {
-      ffProc.stdin.end();
+    if (!procStdin.destroyed) {
+      procStdin.end();
     }
     await ffClosePromise;
 
     return outFile;
   } finally {
-    await browser.close();
+    try {
+      if (ffProc) {
+        if (ffProc.stdin && !ffProc.stdin.destroyed) {
+          try {
+            ffProc.stdin.destroy();
+          } catch {
+            // ignore
+          }
+        }
+        if (ffProc.exitCode === null && !ffProc.killed) {
+          try {
+            ffProc.kill('SIGKILL');
+          } catch {
+            // ignore
+          }
+        }
+      }
+    } finally {
+      await browser.close().catch(() => {});
+    }
   }
 }
 

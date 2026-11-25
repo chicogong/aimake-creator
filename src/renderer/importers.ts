@@ -59,11 +59,19 @@ function splitOutsideFences(body: string): string[] {
   const chunks: string[] = [];
   let buf: string[] = [];
   let inFence = false;
+  let fenceMarker = '';
 
   for (const line of lines) {
     const trimmed = line.trim();
-    if (/^(`{3,}|~{3,})/.test(trimmed)) {
-      inFence = !inFence;
+    const fenceMatch = trimmed.match(/^(`{3,}|~{3,})/);
+    if (fenceMatch) {
+      if (!inFence) {
+        inFence = true;
+        fenceMarker = fenceMatch[1][0];
+      } else if (trimmed.startsWith(fenceMarker.repeat(3))) {
+        inFence = false;
+        fenceMarker = '';
+      }
       buf.push(line);
       continue;
     }

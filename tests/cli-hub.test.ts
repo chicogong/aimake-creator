@@ -327,6 +327,23 @@ locale: "zh-CN"
       expect(parsed.error).toContain("unknown command 'unknown-subcommand-xyz'");
     });
 
+    it('returns structured JSON with code 1 (GENERAL_ERROR) on wiki lint failure with --json', async () => {
+      const brokenVault = path.join(tmpDir, 'broken-vault');
+      await fs.mkdir(path.join(brokenVault, 'wiki'), { recursive: true });
+      await fs.writeFile(
+        path.join(brokenVault, 'wiki', 'broken.md'),
+        '# Broken\n[[NonExistentLink1]] and [[NonExistentLink2]]',
+        'utf8'
+      );
+      const res = await runCli(['wiki', 'lint', brokenVault, '--json']);
+      expect(res.exitCode).toBe(EXIT_CODES.GENERAL_ERROR);
+
+      const parsed = JSON.parse(res.stdout);
+      expect(parsed.ok).toBe(false);
+      expect(parsed.code).toBe(EXIT_CODES.GENERAL_ERROR);
+      expect(parsed.error).toContain('Wiki lint failed');
+    });
+
     it('outputs colored error to stderr without JSON when --json is omitted', async () => {
       const missingDeck = path.join(tmpDir, 'no-json-test.deck.md');
       const res = await runCli(['render', missingDeck, '-f', 'wechat']);

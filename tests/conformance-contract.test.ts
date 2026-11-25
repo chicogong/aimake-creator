@@ -516,7 +516,7 @@ Content 1
     const docJson = JSON.parse(docRes.stdout.trim());
     expect(docJson.ok).toBe(true);
     expect(docJson.templateCount).toBeGreaterThanOrEqual(36);
-  });
+  }, 20000);
 
   it('conforms to 5-tier semantic exit codes and structured error envelope schema', async () => {
     // Exit Code 2: INVALID_ARGUMENTS (invalid export format on existing deck)

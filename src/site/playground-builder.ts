@@ -1453,11 +1453,11 @@ export async function buildWebPlaygroundHtml(
 
         <!-- Zoom Controls -->
         <div class="pg-zoom-actions">
-          <button class="pg-dock-icon-btn" id="pg-zoom-out" title="缩小视图">
+          <button class="pg-dock-icon-btn" id="pg-zoom-out" title="缩小视图" aria-label="缩小视图">
             <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" x2="19" y1="12" y2="12"/></svg>
           </button>
-          <button class="pg-dock-pill-btn" id="pg-zoom-level" title="点击重置自适应比例">自适应</button>
-          <button class="pg-dock-icon-btn" id="pg-zoom-in" title="放大视图">${lucideIcon('plus')}</button>
+          <button class="pg-dock-pill-btn" id="pg-zoom-level" title="点击重置自适应比例" aria-label="自适应缩放">自适应</button>
+          <button class="pg-dock-icon-btn" id="pg-zoom-in" title="放大视图" aria-label="放大视图">${lucideIcon('plus')}</button>
         </div>
 
         <span class="pg-control-sep"></span>
@@ -1519,6 +1519,7 @@ export async function buildWebPlaygroundHtml(
     const elZoomLevel = document.getElementById('pg-zoom-level');
 
     let currentSlideIdx = 0;
+    let currentDim = { w: 1920, h: 1080 };
     let viewMode = 'single'; // 'single' | 'all'
     let totalSlides = 1;
     let userZoomScale = 'auto'; // 'auto' | number
@@ -2178,6 +2179,7 @@ export async function buildWebPlaygroundHtml(
       const dim = (elAspect.value === 'auto' && tpl.width && tpl.height)
         ? { w: tpl.width, h: tpl.height }
         : (nativeDims[aspect] || { w: 1920, h: 1080 });
+      currentDim = dim;
 
       const slidesHtml = parsed.slides
         .map((s, idx) => renderNativeSlideHtml(s, idx, totalSlides, tpl, aspect, parsed.fm))
@@ -2627,13 +2629,15 @@ export async function buildWebPlaygroundHtml(
         if (!frameDoc) throw new Error('无法读取画布 DOM');
         const slideEl = frameDoc.getElementById('slide-' + currentSlideIdx) || frameDoc.querySelector('.aimake-slide');
         if (!slideEl) throw new Error('找不到当前页面');
-        const w = slideEl.offsetWidth || 1920;
-        const h = slideEl.offsetHeight || 1080;
+        const win = elFrame.contentWindow;
+        const w = (win && win.NATIVE_W) || currentDim.w || 1920;
+        const h = (win && win.NATIVE_H) || currentDim.h || 1080;
+        const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         const styles = Array.from(frameDoc.querySelectorAll('style')).map(s => s.textContent || '').join('\\n');
         const clone = slideEl.cloneNode(true);
         clone.style.display = 'flex';
         clone.style.margin = '0';
-        const xhtml = '<div xmlns="http://www.w3.org/1999/xhtml" style="width:' + w + 'px;height:' + h + 'px;"><style>' + styles + '</style>' + clone.outerHTML + '</div>';
+        const xhtml = '<div xmlns="http://www.w3.org/1999/xhtml" data-theme="' + curTheme + '" style="width:' + w + 'px;height:' + h + 'px;"><style>' + styles + '</style>' + clone.outerHTML + '</div>';
         const svgStr = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '"><foreignObject width="100%" height="100%">' + xhtml + '</foreignObject></svg>';
         const img = new Image();
         img.onload = () => {
@@ -2694,9 +2698,50 @@ export async function buildWebPlaygroundHtml(
         if (!frameDoc) throw new Error('无法读取画布 DOM');
         const deckRoot = frameDoc.getElementById('aimake-deck-root');
         if (!deckRoot) throw new Error('画布尚未完成渲染');
+        const win = elFrame.contentWindow;
 
         const cloned = deckRoot.cloneNode(true);
-        cloned.querySelectorAll('.aimake-slide').forEach(node => { node.style.display = 'flex'; });
+        const origNodes = [deckRoot, ...deckRoot.querySelectorAll('*')];
+        const cloneNodes = [cloned, ...cloned.querySelectorAll('*')];
+        const importantProps = [
+          'color', 'background-color', 'background-image', 'background-size', 'background-position',
+          'font-size', 'font-family', 'font-weight', 'line-height', 'letter-spacing',
+          'text-align', 'text-decoration', 'display', 'flex-direction', 'justify-content',
+          'align-items', 'gap', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
+          'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right',
+          'border', 'border-radius', 'border-color', 'border-width', 'border-style',
+          'box-shadow', 'opacity', 'box-sizing'
+        ];
+        for (let i = 0; i < origNodes.length && i < cloneNodes.length; i++) {
+          const orig = origNodes[i];
+          const clone = cloneNodes[i];
+          if (orig.nodeType !== 1) continue;
+          if (clone.classList && clone.classList.contains('aimake-slide')) {
+            clone.style.display = 'flex';
+            clone.style.flexDirection = 'column';
+            clone.style.margin = '0 auto 24px auto';
+            clone.style.maxWidth = '100%';
+            clone.style.boxSizing = 'border-box';
+          }
+          try {
+            if (win && win.getComputedStyle) {
+              const cs = win.getComputedStyle(orig);
+              if (cs) {
+                let inlineCss = '';
+                for (const prop of importantProps) {
+                  const val = cs.getPropertyValue(prop);
+                  if (val && val !== 'initial' && val !== 'none' && val !== 'normal' && val !== 'auto' && val !== 'rgba(0, 0, 0, 0)') {
+                    inlineCss += prop + ':' + val + ';';
+                  }
+                }
+                if (inlineCss) {
+                  const existing = clone.getAttribute('style') || '';
+                  clone.setAttribute('style', inlineCss + (existing ? ' ' + existing : ''));
+                }
+              }
+            }
+          } catch (_) {}
+        }
         const html = cloned.outerHTML;
         const plainText = deckRoot.innerText || html;
 
@@ -2738,6 +2783,10 @@ export async function buildWebPlaygroundHtml(
         showToast('已复制微信公众号富文本！可直接粘贴至公众号后台');
       } catch (err) {
         btnCopyWechat.disabled = false;
+        btnCopyWechat.innerHTML = origHtml;
+        showToast('复制失败: ' + err.message);
+      }
+    });
         btnCopyWechat.innerHTML = origHtml;
         showToast('复制失败: ' + err.message);
       }
@@ -2787,12 +2836,20 @@ export async function buildWebPlaygroundHtml(
     }
 
     document.getElementById('btn-download-md').addEventListener('click', () => {
-      const blob = new Blob([elInput.value], { type: 'text/markdown;charset=utf-8' });
+      const raw = elInput.value;
+      const parsed = parseClientMarkdown(raw);
+      const title = parsed && parsed.fm && parsed.fm.title;
+      const safeTitle = title
+        ? title.trim().replace(/[^\w\u4e00-\u9fa5-]+/g, '_') + '.deck.md'
+        : 'presentation.deck.md';
+      const blob = new Blob([raw], { type: 'text/markdown;charset=utf-8' });
       const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'presentation.deck.md';
+      const url = URL.createObjectURL(blob);
+      a.href = url;
+      a.download = safeTitle;
       a.click();
-      showToast('已开始下载 presentation.deck.md');
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast('已开始下载 ' + safeTitle);
     });
 
     document.getElementById('btn-fullscreen').addEventListener('click', () => {
@@ -2827,7 +2884,7 @@ export async function buildWebPlaygroundHtml(
         document.body.classList.remove('fullscreen-mode');
         return;
       }
-      if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT') return;
+      if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || tag === 'BUTTON' || (e.target && e.target.isContentEditable) || (e.target && e.target.getAttribute && e.target.getAttribute('role') === 'button')) return;
       if (e.key.toLowerCase() === 'f') {
         document.body.classList.toggle('fullscreen-mode');
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'ArrowUp') {

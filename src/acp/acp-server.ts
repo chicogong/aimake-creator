@@ -120,25 +120,25 @@ export class AcpServer {
     }
 
     if (!this.options.output) {
-      return true;
+      return false;
     }
 
     const reqId = this.nextRequestId++;
     return new Promise<boolean>((resolve) => {
       const timer = setTimeout(() => {
         this.pendingRequests.delete(reqId);
-        resolve(true);
+        resolve(false);
       }, 5000);
 
       this.pendingRequests.set(reqId, {
         resolve: (val) => {
           clearTimeout(timer);
           const res = val as AcpPermissionResponseResult | undefined;
-          resolve(res?.granted ?? true);
+          resolve(Boolean(res?.granted));
         },
         reject: () => {
           clearTimeout(timer);
-          resolve(true);
+          resolve(false);
         },
         timer,
       });
@@ -209,29 +209,36 @@ export class AcpServer {
       );
     }
 
+    const isNotification = req.id === undefined;
     const id = req.id ?? null;
     const method = req.method;
     const params = req.params || {};
 
     try {
+      let resp: JsonRpcResponse | null = null;
       switch (method) {
         case 'initialize':
-          return await this.handleInitialize(id, params as AcpInitializeParams);
+          resp = await this.handleInitialize(id, params as AcpInitializeParams);
+          break;
 
         case 'session/new':
-          return await this.handleSessionNew(id, params as AcpSessionNewParams);
+          resp = await this.handleSessionNew(id, params as AcpSessionNewParams);
+          break;
 
         case 'session/prompt':
-          return await this.handleSessionPrompt(id, params as AcpSessionPromptParams);
+          resp = await this.handleSessionPrompt(id, params as AcpSessionPromptParams);
+          break;
 
         case 'session/update':
-          return await this.handleSessionUpdate(id, params as unknown as AcpSessionUpdateParams);
+          resp = await this.handleSessionUpdate(id, params as unknown as AcpSessionUpdateParams);
+          break;
 
         case 'session/cancel':
-          return await this.handleSessionCancel(id, params as unknown as AcpSessionCancelParams);
+          resp = await this.handleSessionCancel(id, params as unknown as AcpSessionCancelParams);
+          break;
 
         case 'session/list':
-          return createSuccessResponse(id, {
+          resp = createSuccessResponse(id, {
             sessions: this.getAllSessions().map((s) => ({
               sessionId: s.sessionId,
               status: s.status,
@@ -241,39 +248,55 @@ export class AcpServer {
               updatedAt: s.updatedAt,
             })),
           });
+          break;
 
         case 'session/get': {
           const sId = (params as { sessionId?: string }).sessionId;
           if (!sId) {
-            return createErrorResponse(id, JSON_RPC_ERRORS.INVALID_PARAMS, 'sessionId is required for session/get');
+            resp = createErrorResponse(id, JSON_RPC_ERRORS.INVALID_PARAMS, 'sessionId is required for session/get');
+          } else {
+            const session = this.sessions.get(sId);
+            if (!session) {
+              resp = createErrorResponse(id, JSON_RPC_ERRORS.INVALID_PARAMS, `Session not found: ${sId}`);
+            } else {
+              resp = createSuccessResponse(id, {
+                sessionId: session.sessionId,
+                status: session.status,
+                cwd: session.cwd,
+                workspaceDir: session.workspaceDir,
+                activeDeckPath: session.activeDeckPath,
+                createdAt: session.createdAt,
+                updatedAt: session.updatedAt,
+                slideCount: session.currentDeck?.slides.length ?? 0,
+              });
+            }
           }
-          const session = this.sessions.get(sId);
-          if (!session) {
-            return createErrorResponse(id, JSON_RPC_ERRORS.INVALID_PARAMS, `Session not found: ${sId}`);
-          }
-          return createSuccessResponse(id, {
-            sessionId: session.sessionId,
-            status: session.status,
-            cwd: session.cwd,
-            workspaceDir: session.workspaceDir,
-            activeDeckPath: session.activeDeckPath,
-            createdAt: session.createdAt,
-            updatedAt: session.updatedAt,
-            slideCount: session.currentDeck?.slides.length ?? 0,
-          });
+          break;
         }
 
         case 'ping':
-          return createSuccessResponse(id, { pong: true, timestamp: Date.now() });
+          resp = createSuccessResponse(id, { pong: true, timestamp: Date.now() });
+          break;
 
         case 'shutdown':
           this.close();
-          return createSuccessResponse(id, { ok: true, message: 'ACP Server shutting down' });
+          resp = createSuccessResponse(id, { ok: true, message: 'ACP Server shutting down' });
+          break;
 
         default:
-          return createErrorResponse(id, JSON_RPC_ERRORS.METHOD_NOT_FOUND, `Method not found: ${method}`);
+          resp = createErrorResponse(id, JSON_RPC_ERRORS.METHOD_NOT_FOUND, `Method not found: ${method}`);
+          break;
       }
+
+      if (isNotification) {
+        return null;
+      }
+      return resp;
     } catch (err) {
+      if (isNotification) {
+        this.logDebug('Error executing notification method:', method, err);
+        return null;
+      }
       this.logDebug('Internal error executing method:', method, err);
       return createErrorResponse(
         id,
@@ -330,9 +353,14 @@ export class AcpServer {
 
     let session = params.sessionId ? this.sessions.get(params.sessionId) : undefined;
     if (!session) {
+      const derivedWorkspace =
+        params.workspaceDir ||
+        (params.output ? path.dirname(path.resolve(params.output)) : undefined) ||
+        this.options.workspace;
       session = this.createSession({
         sessionId: params.sessionId,
-        cwd: params.workspaceDir || this.options.workspace,
+        cwd: derivedWorkspace,
+        workspaceDir: derivedWorkspace,
       });
     }
 
@@ -344,7 +372,16 @@ export class AcpServer {
       );
     }
 
+    if (session.status === 'running') {
+      return createErrorResponse(
+        id,
+        JSON_RPC_ERRORS.INVALID_REQUEST,
+        `Session ${session.sessionId} is already running a prompt`
+      );
+    }
+
     session.status = 'running';
+    session.abortController = new AbortController();
     session.updatedAt = new Date().toISOString();
     session.history.push({
       role: 'user',
@@ -359,192 +396,218 @@ export class AcpServer {
       });
     };
 
-    // 1. Notify analyzing
-    notifyUpdate({
-      status: 'analyzing',
-      progress: 0.15,
-      message: 'Analyzing prompt, design rhythm, and workspace context...',
-    });
-
-    // Check cancellation
-    if (session.abortController?.signal.aborted || (session.status as string) === 'cancelled') {
-      return createErrorResponse(id, JSON_RPC_ERRORS.INTERNAL_ERROR, 'Session prompt cancelled');
-    }
-
-    // 2. Resolve working deck
-    let currentDeck: DeckDocument;
-    const targetDeckPath =
-      params.targetDeckPath ||
-      params.deckPath ||
-      session.activeDeckPath ||
-      (params.output ? path.resolve(params.output) : undefined);
-
-    let isExistingDeck = false;
-
-    if (targetDeckPath && fsSync.existsSync(targetDeckPath)) {
-      try {
-        const rawContent = await fs.readFile(targetDeckPath, 'utf8');
-        currentDeck = parseDeckMarkdown(rawContent);
-        isExistingDeck = true;
-      } catch (err) {
-        return createErrorResponse(
-          id,
-          JSON_RPC_ERRORS.INTERNAL_ERROR,
-          `Failed to parse target deck at ${targetDeckPath}: ${err instanceof Error ? err.message : String(err)}`
-        );
-      }
-    } else {
-      const cleanTitle = promptText
-        .replace(/请帮我|生成|写一篇|创作/g, '')
-        .trim()
-        .slice(0, 30) || '新创作作品';
-      const template = params.template || 'xhs-swiss-grid';
-      const aspect: AspectRatio = params.aspect || (template.includes('16x9') ? '16:9' : '3:4');
-      const locale: SupportedLocale = params.locale || 'zh-CN';
-
-      currentDeck = {
-        frontmatter: {
-          title: cleanTitle,
-          template: template as any,
-          aspect,
-          locale,
-          tags: ['aimake', 'acp-agent'],
-          watermark: false,
-          fps: 30,
-          secondsPerSlide: 4,
-        },
-        slides: [
-          {
-            index: 0,
-            id: 'slide-1',
-            layout: 'bullets',
-            eyebrow: 'AIMAKE ACP AGENT',
-            title: cleanTitle,
-            subtitle: '基于 ACP 协议与 IDE 协同生成',
-            bullets: [
-              '核心要点 1：本地优先与零外部网络外传',
-              '核心要点 2：高保真排版与即时预览',
-            ],
-            bodyParagraphs: [],
-            metrics: [],
-          },
-        ],
-      };
-    }
-
-    // 3. Request write permission if requested
-    if (params.requestPermission) {
-      const granted = await this.requestPermission({
-        sessionId: session.sessionId,
-        permission: 'fs/write_text_file',
-        title: isExistingDeck ? 'Update Storyboard Deck' : 'Create New Storyboard Deck',
-        description: `Write changes to deck markdown for "${currentDeck.frontmatter.title || 'Deck'}"`,
+    try {
+      // 1. Notify analyzing
+      notifyUpdate({
+        status: 'analyzing',
+        progress: 0.15,
+        message: 'Analyzing prompt, design rhythm, and workspace context...',
       });
 
-      if (!granted) {
-        session.status = 'ready';
-        return createErrorResponse(
-          id,
-          JSON_RPC_ERRORS.INTERNAL_ERROR,
-          'Operation rejected: User denied permission'
-        );
+      // Check cancellation
+      if (session.abortController?.signal.aborted || (session.status as string) === 'cancelled') {
+        return createErrorResponse(id, JSON_RPC_ERRORS.INTERNAL_ERROR, 'Session prompt cancelled');
       }
-    }
 
-    // 4. Notify generating
-    notifyUpdate({
-      status: 'generating',
-      progress: 0.5,
-      message: 'Drafting multi-turn slide layout and applying humanized content...',
-      deck: currentDeck,
-    });
+      // 2. Resolve working deck with containment verification
+      let currentDeck!: DeckDocument;
+      const wsRoot = path.resolve(
+        session.workspaceDir || this.options.workspace || session.cwd || process.cwd()
+      );
+      const rawTarget =
+        params.targetDeckPath ||
+        params.deckPath ||
+        session.activeDeckPath ||
+        (params.output ? path.resolve(params.output) : undefined);
 
-    if (session.abortController?.signal.aborted || (session.status as string) === 'cancelled') {
-      return createErrorResponse(id, JSON_RPC_ERRORS.INTERNAL_ERROR, 'Session prompt cancelled');
-    }
+      let isExistingDeck = false;
+      let targetDeckPath: string | undefined;
 
-    // 5. Process through chat engine
-    const activeSlideIndex = params.activeSlideIndex ?? (currentDeck.slides.length > 0 ? 0 : 0);
-    const chatRes = await processChatMessage({
-      message: promptText,
-      intent: params.intent,
-      activeSlideIndex,
-      deck: currentDeck,
-      backend: params.backend || 'offline',
-      targetLocale: params.locale || currentDeck.frontmatter.locale,
-      workspaceDir: session.workspaceDir || session.cwd,
-    });
-
-    if (session.abortController?.signal.aborted || (session.status as string) === 'cancelled') {
-      return createErrorResponse(id, JSON_RPC_ERRORS.INTERNAL_ERROR, 'Session prompt cancelled');
-    }
-
-    const finalDeck = chatRes.updatedDeck || currentDeck;
-    const finalDeckMarkdown = serializeDeckMarkdown(finalDeck);
-
-    // 6. Notify compiling
-    notifyUpdate({
-      status: 'compiling',
-      progress: 0.85,
-      message: 'Compiling final markdown and saving storyboard state...',
-      deck: finalDeck,
-      deckMarkdown: finalDeckMarkdown,
-    });
-
-    // 7. Write to target file if destination is known
-    let outputPath = targetDeckPath;
-    if (!outputPath && (session.workspaceDir || this.options.workspace)) {
-      const ws = session.workspaceDir || this.options.workspace!;
-      const slug = (finalDeck.frontmatter.title || 'deck')
-        .toLowerCase()
-        .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .slice(0, 32) || 'deck';
-      outputPath = path.join(ws, 'decks', `${slug}.deck.md`);
-    }
-
-    if (outputPath) {
-      try {
-        await fs.mkdir(path.dirname(outputPath), { recursive: true });
-        await fs.writeFile(outputPath, finalDeckMarkdown, 'utf8');
-      } catch (err) {
-        this.logDebug('Warning: failed to persist deck file to disk:', err);
+      if (rawTarget) {
+        const resolvedTarget = path.resolve(wsRoot, rawTarget);
+        if (resolvedTarget === wsRoot || resolvedTarget.startsWith(wsRoot + path.sep)) {
+          targetDeckPath = resolvedTarget;
+          if (fsSync.existsSync(resolvedTarget)) {
+            try {
+              const rawContent = await fs.readFile(resolvedTarget, 'utf8');
+              currentDeck = parseDeckMarkdown(rawContent);
+              isExistingDeck = true;
+            } catch (err) {
+              session.status = 'error';
+              return createErrorResponse(
+                id,
+                JSON_RPC_ERRORS.INTERNAL_ERROR,
+                `Failed to parse target deck at ${resolvedTarget}: ${err instanceof Error ? err.message : String(err)}`
+              );
+            }
+          }
+        } else {
+          this.logDebug(`targetDeckPath escapes session.workspaceDir: ${rawTarget}`);
+        }
       }
+
+      if (!isExistingDeck) {
+        const cleanTitle = promptText
+          .replace(/请帮我|生成|写一篇|创作/g, '')
+          .trim()
+          .slice(0, 30) || '新创作作品';
+        const template = params.template || 'xhs-swiss-grid';
+        const aspect: AspectRatio = params.aspect || (template.includes('16x9') ? '16:9' : '3:4');
+        const locale: SupportedLocale = params.locale || 'zh-CN';
+
+        currentDeck = {
+          frontmatter: {
+            title: cleanTitle,
+            template: template as any,
+            aspect,
+            locale,
+            tags: ['aimake', 'acp-agent'],
+            watermark: false,
+            fps: 30,
+            secondsPerSlide: 4,
+          },
+          slides: [
+            {
+              index: 0,
+              id: 'slide-1',
+              layout: 'bullets',
+              eyebrow: 'AIMAKE ACP AGENT',
+              title: cleanTitle,
+              subtitle: '基于 ACP 协议与 IDE 协同生成',
+              bullets: [
+                '核心要点 1：本地优先与零外部网络外传',
+                '核心要点 2：高保真排版与即时预览',
+              ],
+              bodyParagraphs: [],
+              metrics: [],
+            },
+          ],
+        };
+      }
+
+      // 3. Request write permission if requested
+      if (params.requestPermission) {
+        const granted = await this.requestPermission({
+          sessionId: session.sessionId,
+          permission: 'fs/write_text_file',
+          title: isExistingDeck ? 'Update Storyboard Deck' : 'Create New Storyboard Deck',
+          description: `Write changes to deck markdown for "${currentDeck.frontmatter.title || 'Deck'}"`,
+        });
+
+        if (!granted) {
+          session.status = 'ready';
+          return createErrorResponse(
+            id,
+            JSON_RPC_ERRORS.INTERNAL_ERROR,
+            'Operation rejected: User denied permission'
+          );
+        }
+      }
+
+      // 4. Notify generating
+      notifyUpdate({
+        status: 'generating',
+        progress: 0.5,
+        message: 'Drafting multi-turn slide layout and applying humanized content...',
+        deck: currentDeck,
+      });
+
+      if (session.abortController?.signal.aborted || (session.status as string) === 'cancelled') {
+        return createErrorResponse(id, JSON_RPC_ERRORS.INTERNAL_ERROR, 'Session prompt cancelled');
+      }
+
+      // 5. Process through chat engine
+      const activeSlideIndex = params.activeSlideIndex ?? (currentDeck.slides.length > 0 ? 0 : 0);
+      const chatRes = await processChatMessage({
+        message: promptText,
+        intent: params.intent,
+        activeSlideIndex,
+        deck: currentDeck,
+        backend: params.backend || 'offline',
+        targetLocale: params.locale || currentDeck.frontmatter.locale,
+        workspaceDir: session.workspaceDir || session.cwd,
+      });
+
+      if (session.abortController?.signal.aborted || (session.status as string) === 'cancelled') {
+        return createErrorResponse(id, JSON_RPC_ERRORS.INTERNAL_ERROR, 'Session prompt cancelled');
+      }
+
+      const finalDeck = chatRes.updatedDeck || currentDeck;
+      const finalDeckMarkdown = serializeDeckMarkdown(finalDeck);
+
+      // 6. Notify compiling
+      notifyUpdate({
+        status: 'compiling',
+        progress: 0.85,
+        message: 'Compiling final markdown and saving storyboard state...',
+        deck: finalDeck,
+        deckMarkdown: finalDeckMarkdown,
+      });
+
+      // 7. Write to target file if destination is known
+      let outputPath = targetDeckPath;
+      if (!outputPath && (session.workspaceDir || this.options.workspace)) {
+        const ws = session.workspaceDir || this.options.workspace!;
+        const slug = (finalDeck.frontmatter.title || 'deck')
+          .toLowerCase()
+          .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .slice(0, 32) || 'deck';
+        outputPath = path.join(ws, 'decks', `${slug}.deck.md`);
+      }
+
+      if (outputPath) {
+        try {
+          await fs.mkdir(path.dirname(outputPath), { recursive: true });
+          await fs.writeFile(outputPath, finalDeckMarkdown, 'utf8');
+        } catch (err) {
+          this.logDebug('Warning: failed to persist deck file to disk:', err);
+        }
+      }
+
+      session.currentDeck = finalDeck;
+      if (outputPath) {
+        session.activeDeckPath = outputPath;
+      }
+      session.status = 'completed';
+      session.updatedAt = new Date().toISOString();
+      session.history.push({
+        role: 'agent',
+        content: chatRes.message || 'Deck updated successfully.',
+        timestamp: new Date().toISOString(),
+      });
+
+      // 8. Notify completion
+      notifyUpdate({
+        status: 'completed',
+        progress: 1.0,
+        message: chatRes.changeSummary || 'Deck compilation complete.',
+        deck: finalDeck,
+        deckMarkdown: finalDeckMarkdown,
+      });
+
+      return createSuccessResponse(id, {
+        sessionId: session.sessionId,
+        status: session.status,
+        deck: finalDeck,
+        deckMarkdown: finalDeckMarkdown,
+        outputPath: outputPath ? path.resolve(outputPath) : undefined,
+        slideCount: finalDeck.slides.length,
+        changeSummary: chatRes.changeSummary || 'Deck updated successfully.',
+        engineUsed: chatRes.engineUsed,
+        diffLines: chatRes.diffLines,
+        suggestedActions: chatRes.suggestedActions,
+      });
+    } catch (err) {
+      session.status = 'error';
+      session.updatedAt = new Date().toISOString();
+      notifyUpdate({
+        status: 'error',
+        progress: 1.0,
+        message: err instanceof Error ? err.message : String(err),
+      });
+      throw err;
     }
-
-    session.currentDeck = finalDeck;
-    if (outputPath) {
-      session.activeDeckPath = outputPath;
-    }
-    session.status = 'completed';
-    session.updatedAt = new Date().toISOString();
-    session.history.push({
-      role: 'agent',
-      content: chatRes.message || 'Deck updated successfully.',
-      timestamp: new Date().toISOString(),
-    });
-
-    // 8. Notify completion
-    notifyUpdate({
-      status: 'completed',
-      progress: 1.0,
-      message: chatRes.changeSummary || 'Deck compilation complete.',
-      deck: finalDeck,
-      deckMarkdown: finalDeckMarkdown,
-    });
-
-    return createSuccessResponse(id, {
-      sessionId: session.sessionId,
-      status: session.status,
-      deck: finalDeck,
-      deckMarkdown: finalDeckMarkdown,
-      outputPath: outputPath ? path.resolve(outputPath) : undefined,
-      slideCount: finalDeck.slides.length,
-      changeSummary: chatRes.changeSummary || 'Deck updated successfully.',
-      engineUsed: chatRes.engineUsed,
-      diffLines: chatRes.diffLines,
-      suggestedActions: chatRes.suggestedActions,
-    });
   }
 
   private async handleSessionUpdate(id: JsonRpcId, params: AcpSessionUpdateParams): Promise<JsonRpcResponse> {
@@ -567,12 +630,18 @@ export class AcpServer {
 
     if (params.deckPath) {
       session.activeDeckPath = params.deckPath;
-      if (fsSync.existsSync(params.deckPath)) {
-        try {
-          const raw = await fs.readFile(params.deckPath, 'utf8');
-          session.currentDeck = parseDeckMarkdown(raw);
-        } catch {
-          // ignore parse errors
+      const wsRoot = path.resolve(
+        session.workspaceDir || this.options.workspace || session.cwd || process.cwd()
+      );
+      const resolved = path.resolve(wsRoot, params.deckPath);
+      if (resolved === wsRoot || resolved.startsWith(wsRoot + path.sep)) {
+        if (fsSync.existsSync(resolved)) {
+          try {
+            const raw = await fs.readFile(resolved, 'utf8');
+            session.currentDeck = parseDeckMarkdown(raw);
+          } catch {
+            // ignore parse errors
+          }
         }
       }
     }

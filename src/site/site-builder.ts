@@ -90,6 +90,8 @@ interface LangCopy {
   navEcosystem: string;
   heroTag: string;
   heroTitle: string;
+  heroTitleMain?: string;
+  heroTitleAccent?: string;
   heroSub: string;
   primaryCta: string;
   secondaryCta: string;
@@ -112,6 +114,17 @@ interface LangCopy {
   specLabel: string;
   deliverablesLabel: string;
   footerLine: string;
+  tplCtaRemix: string;
+  tplCtaDetail: string;
+  tplCtaDesktop: string;
+  detailCtaPlayground: string;
+  detailCtaDesktop: string;
+  radarCtaRemix: string;
+  radarExpandAll: string;
+  radarCollapse: string;
+  tplExpandAll: string;
+  tplCollapse: string;
+  ecosystemCards: Array<{ badge: string; title: string; desc: string; cta: string; href: string; isExternal?: boolean }>;
 }
 
 const UI_COPY: Record<SiteLang, LangCopy> = {
@@ -125,8 +138,10 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     navTemplates: '36 套设计模板',
     navCli: '终端 & MCP',
     navEcosystem: '技术架构',
-    heroTag: 'AIMAKE STUDIO · 超级个体的本地创作外脑 · 100% 纯本地优先',
-    heroTitle: '超级个体的本地创作外脑：从灵感火花到全域多模态出版',
+    heroTag: '✨ AIMAKE 2.0 · 超级个体创作外脑 · 100% 纯本地优先',
+    heroTitle: '超级个体的全域创作外脑：从灵感火花到全模态高定交付',
+    heroTitleMain: '超级个体的全域创作外脑',
+    heroTitleAccent: '从灵感火花，到全模态高定交付',
     heroSub:
       '素材吸纳、知识蒸馏、私有风格对齐、确定性美学排版。全流程在一个工作区里端到端闭环，一套在本地飞速运转的超级个体个人出版流水线。内置 36 套商业级参数化设计模板与反 AI 废话风格库，零云端依赖，80 毫秒极速直出小红书 3x 超清图卡、微信内联富文本、微软原生可编辑 PPTX 与 60fps 动效短视频。',
     primaryCta: '网页版在线工坊 (开箱即用)',
@@ -276,6 +291,41 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     specLabel: '画布规格与导出介质',
     deliverablesLabel: '支持原生导出',
     footerLine: 'Aimake 爱创 · 本地优先多模态创作与知识复利平台 · 数据 100% 留存本机',
+    tplCtaRemix: '在线做同款 →',
+    tplCtaDetail: '详情',
+    tplCtaDesktop: '在 Aimake 桌面端打开做同款',
+    detailCtaPlayground: '在在线工坊做同款 →',
+    detailCtaDesktop: '在 Aimake 桌面端打开',
+    radarCtaRemix: '做同款 ↗',
+    radarExpandAll: '展开全部 {count} 条实时热点',
+    radarCollapse: '收起实时热点 (仅看精选 {count} 条)',
+    tplExpandAll: '展开全部 {total} 套设计系统 (剩余 {rem} 套)',
+    tplCollapse: '收起部分设计系统 (保留精选 {count} 套)',
+    ecosystemCards: [
+      {
+        badge: 'WEB STUDIO · aimake.cc',
+        title: 'Aimake Web Studio · 在线工坊',
+        desc: '零安装、纯前端沙盒安全运行。内置 36 套设计模板、实时参数化排版舞台与四语种去 AI 腔清洗器，开箱即用，支持一键导出与做同款。',
+        cta: '打开在线工坊 →',
+        href: '/playground/',
+      },
+      {
+        badge: 'CORE ENGINE · @aimake/engine',
+        title: 'Aimake Engine · 确定性排版内核',
+        desc: '底层无头多模态渲染内核与 CLI 编译器。支持纯本地端到端编译、多介质直出、Karpathy LLM Wiki 知识复利与全渠道自动化分发。',
+        cta: '浏览 Engine 源码 ↗',
+        href: 'https://github.com/chicogong/aimake-studio',
+        isExternal: true,
+      },
+      {
+        badge: 'AGENT PROTOCOLS · ACP & MCP',
+        title: 'Aimake Agent Protocols · 智能体协议栈',
+        desc: '原生支持 Agent Client Protocol (ACP) 与 Model Context Protocol (MCP)。无缝挂载至 Claude Code、Cursor 与 AGY，赋能智能体双向多模态出版。',
+        cta: '探索 Agent 协议规范 ↗',
+        href: 'https://github.com/chicogong/aimake-creator',
+        isExternal: true,
+      },
+    ],
   },
   en: {
     htmlLang: 'en',
@@ -287,8 +337,10 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     navTemplates: '36 Design Systems',
     navCli: 'CLI & MCP',
     navEcosystem: 'Ecosystem',
-    heroTag: 'AIMAKE STUDIO · LOCAL-FIRST CREATIVE OS · ZERO-CLOUD PRIVACY',
-    heroTitle: 'The Local-First Creative OS: From Raw Sparks to Omni-Channel Publishing',
+    heroTag: '✨ AIMAKE 2.0 · LOCAL-FIRST CREATIVE OS · ZERO-CLOUD PRIVACY',
+    heroTitle: 'The Omni-Channel Creative OS: From Raw Sparks to High-End Deliverables',
+    heroTitleMain: 'The Omni-Channel Creative OS',
+    heroTitleAccent: 'From Raw Sparks to High-End Deliverables',
     heroSub:
       'Lossless intake, Karpathy LLM Wiki distillation, private style alignment, and deterministic typography. An end-to-end publishing pipeline running 100% locally for solopreneurs. Build your flagship personal IP with 36 parametric design systems—compiling Retina 3x PNG cards, inline newsletter HTML, native editable PPTX, and 60fps narrated video in 80ms.',
     primaryCta: 'Try Web Studio (Zero Install)',
@@ -438,6 +490,41 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     specLabel: 'Canvas & Output Specs',
     deliverablesLabel: 'Native Deliverables',
     footerLine: 'Aimake.cc · Local-First Multimodal Creator & LLM Wiki Studio · All Rights Reserved',
+    tplCtaRemix: 'Use Template →',
+    tplCtaDetail: 'Details',
+    tplCtaDesktop: 'Open in Aimake Desktop',
+    detailCtaPlayground: 'Open in Web Playground →',
+    detailCtaDesktop: 'Open in Aimake Desktop',
+    radarCtaRemix: 'Remix ↗',
+    radarExpandAll: 'Show all {count} trending items',
+    radarCollapse: 'Collapse (show {count} curated)',
+    tplExpandAll: 'Show all {total} design templates ({rem} more)',
+    tplCollapse: 'Collapse templates (keep {count} curated)',
+    ecosystemCards: [
+      {
+        badge: 'WEB STUDIO · aimake.cc',
+        title: 'Aimake Web Studio — Online Playground',
+        desc: 'Zero installation, client-side sandbox. 36 built-in design templates, real-time parametric stage, multi-language anti-slop refiner, and one-click export.',
+        cta: 'Launch Web Studio →',
+        href: '/playground/',
+      },
+      {
+        badge: 'CORE ENGINE · @aimake/engine',
+        title: 'Aimake Engine — Deterministic Layout Kernel',
+        desc: 'Headless multimodal rendering core and CLI compiler. Supports local compilation, multi-format export, Karpathy LLM Wiki compounding, and automated publishing.',
+        cta: 'View Engine Source ↗',
+        href: 'https://github.com/chicogong/aimake-studio',
+        isExternal: true,
+      },
+      {
+        badge: 'AGENT PROTOCOLS · ACP & MCP',
+        title: 'Aimake Agent Protocols — ACP & MCP Stack',
+        desc: 'Native support for Agent Client Protocol (ACP) and Model Context Protocol (MCP). Seamless integration with Claude Code, Cursor, and AGY for agentic publishing.',
+        cta: 'Explore Agent Protocols ↗',
+        href: 'https://github.com/chicogong/aimake-creator',
+        isExternal: true,
+      },
+    ],
   },
   ja: {
     htmlLang: 'ja',
@@ -449,8 +536,10 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     navTemplates: '36 種デザインシステム',
     navCli: 'CLI & MCP',
     navEcosystem: 'エコシステム',
-    heroTag: 'AIMAKE STUDIO · ローカル創作外脳 · 100% ローカルファースト',
-    heroTitle: 'クリエイターのためのローカル創作外脳：アイデアの閃きから全メディア出版まで',
+    heroTag: '✨ AIMAKE 2.0 · スーパー個人の創作OS · 完全ローカル完結',
+    heroTitle: 'スーパー個人的な創作OS：着想の火花から、高品質マルチモーダル出版へ',
+    heroTitleMain: 'スーパー個人のための創作OS',
+    heroTitleAccent: '着想の火花から、高品質マルチモーダル出版へ',
     heroSub:
       '素材の高速摂取、Karpathy 式 LLM Wiki による知識蒸留、独自トーンの同期、そして確定性美学レイアウト。単一ワークスペースで完结するローカル出版パイプライン。36 種のプロ品質デザインシステムを内蔵し、高解像度SNSカード、Webリッチテキスト、編集可能PPTX、60fps動画を80msで一括生成。',
     primaryCta: 'Web版スタジオを体験（インストール不要）',
@@ -592,6 +681,41 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     specLabel: 'キャンバス仕様',
     deliverablesLabel: '対応出力フォーマット',
     footerLine: 'Aimake.cc · ローカルファースト・マルチモーダル制作スタジオ · All Rights Reserved',
+    tplCtaRemix: 'この型で作る →',
+    tplCtaDetail: '詳細',
+    tplCtaDesktop: 'Aimake デスクトップで開く',
+    detailCtaPlayground: 'オンライン工房で作る →',
+    detailCtaDesktop: 'Aimake デスクトップで開く',
+    radarCtaRemix: 'この型で作る ↗',
+    radarExpandAll: '全 {count} 件のトレンドを表示',
+    radarCollapse: '折りたたむ (おすすめ {count} 件のみ)',
+    tplExpandAll: '全 {total} 種のデザインを表示 (残り {rem} 種)',
+    tplCollapse: '一部を折りたたむ (厳選 {count} 種を表示)',
+    ecosystemCards: [
+      {
+        badge: 'WEB STUDIO · aimake.cc',
+        title: 'Aimake Web Studio · オンライン工房',
+        desc: 'インストール不要、ブラウザ完結のセキュアサンドボックス。36種のデザインテンプレート、リアルタイム組版ステージ、ワンクリック出力に対応。',
+        cta: 'オンライン工房を開く →',
+        href: '/playground/',
+      },
+      {
+        badge: 'CORE ENGINE · @aimake/engine',
+        title: 'Aimake Engine · 決定的レイアウトエンジン',
+        desc: 'ヘッドレス・マルチモーダルレンダリングコアとCLIコンパイラ。完全ローカルコンパイル、マルチメディア出力、全自動パブリッシングに対応。',
+        cta: 'Engine ソースコードを見る ↗',
+        href: 'https://github.com/chicogong/aimake-studio',
+        isExternal: true,
+      },
+      {
+        badge: 'AGENT PROTOCOLS · ACP & MCP',
+        title: 'Aimake Agent Protocols · エージェントプロトコル群',
+        desc: 'Agent Client Protocol（ACP）および Model Context Protocol（MCP）にネイティブ対応。Claude Code、Cursor、AGY とシームレスに連携。',
+        cta: 'エージェントプロトコル仕様を見る ↗',
+        href: 'https://github.com/chicogong/aimake-creator',
+        isExternal: true,
+      },
+    ],
   },
   ko: {
     htmlLang: 'ko',
@@ -603,8 +727,10 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     navTemplates: '36 종 디자인 시스템',
     navCli: 'CLI & MCP',
     navEcosystem: '에코시스템',
-    heroTag: 'AIMAKE STUDIO · 로컬 창작 외뇌 · 100% 로컬 퍼스트',
-    heroTitle: '슈퍼 인디비주얼을 위한 로컬 창작 외뇌: 영감의 불꽃에서 전 채널 출판까지',
+    heroTag: '✨ AIMAKE 2.0 · 슈퍼 개인 창작 OS · 100% 로컬 완결형',
+    heroTitle: '슈퍼 개인을 위한 로컬 창작 OS: 영감의 불꽃에서 고품격 멀티모달 출판까지',
+    heroTitleMain: '슈퍼 개인을 위한 로컬 창작 OS',
+    heroTitleAccent: '영감의 불꽃에서 고품격 멀티모달 출판까지',
     heroSub:
       '무손실 소재 수집, Karpathy LLM 위키 지식 증류, 고유 스타일 동기화, 결정론적 미학 레이아웃. 로컬에서 즉시 구동되는 올인원 1인 출판 파이프라인. 36종의 파라메트릭 디자인 시스템을 탑재하여 80ms 만에 초고해상도 카드뉴스, 웹 리치 텍스트, 편집형 PPTX, 60fps 모션 비디오를 완벽 컴파일.',
     primaryCta: '웹 스튜디오 체험하기 (설치 불필요)',
@@ -746,6 +872,41 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     specLabel: '캔버스 규격',
     deliverablesLabel: '네이티브 출력 포맷',
     footerLine: 'Aimake.cc · 로컬 퍼스트 멀티모달 제작 & LLM 위키 스튜디오 · All Rights Reserved',
+    tplCtaRemix: '템플릿 사용 →',
+    tplCtaDetail: '상세보기',
+    tplCtaDesktop: 'Aimake 데스크톱에서 열기',
+    detailCtaPlayground: '온라인 스튜디오에서 제작 →',
+    detailCtaDesktop: 'Aimake 데스크톱에서 열기',
+    radarCtaRemix: '제작하기 ↗',
+    radarExpandAll: '실시간 트렌드 {count}개 모두 보기',
+    radarCollapse: '접기 (주요 {count}개만 보기)',
+    tplExpandAll: '전체 {total}개 디자인 보기 ({rem}개 더보기)',
+    tplCollapse: '템플릿 접기 (추천 {count}개 유지)',
+    ecosystemCards: [
+      {
+        badge: 'WEB STUDIO · aimake.cc',
+        title: 'Aimake Web Studio · 온라인 스튜디오',
+        desc: '설치 불필요, 브라우저에서 실행되는 샌드박스. 36가지 디자인 템플릿, 실시간 파라메트릭 스테이지, 원클릭 내보내기 지원.',
+        cta: '온라인 스튜디오 열기 →',
+        href: '/playground/',
+      },
+      {
+        badge: 'CORE ENGINE · @aimake/engine',
+        title: 'Aimake Engine · 결정론적 조판 엔진',
+        desc: '헤드리스 멀티모달 렌더링 코어 및 CLI 컴파일러. 로컬 완결형 컴파일, 다중 포맷 출력, 전 채널 자동 배포 지원.',
+        cta: 'Engine 소스코드 보기 ↗',
+        href: 'https://github.com/chicogong/aimake-studio',
+        isExternal: true,
+      },
+      {
+        badge: 'AGENT PROTOCOLS · ACP & MCP',
+        title: 'Aimake Agent Protocols · 에이전트 프로토콜 스택',
+        desc: 'Agent Client Protocol(ACP) 및 Model Context Protocol(MCP) 기본 지원. Claude Code, Cursor, AGY와 완벽 연동되는 에이전트 출판 체계.',
+        cta: '에이전트 프로토콜 규격 보기 ↗',
+        href: 'https://github.com/chicogong/aimake-creator',
+        isExternal: true,
+      },
+    ],
   },
 };
 
@@ -1399,7 +1560,33 @@ function sharedSiteCss(): string {
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+    }
+    .nav-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 13px;
+      background: var(--am-violet);
+      color: #ffffff !important;
+      font-size: 12.5px;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 0 16px var(--am-violet-glow);
+      transition: all var(--duration-fast) var(--ease-spring);
+      white-space: nowrap;
+    }
+    .nav-cta-btn:hover {
+      background: var(--am-violet-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 0 24px rgba(105, 81, 255, 0.48);
+    }
+    [data-theme="light"] .nav-cta-btn {
+      background: #141413;
+      color: #ffffff !important;
+      box-shadow: 0 2px 8px rgba(20, 20, 19, 0.18);
     }
     .theme-toggle-btn {
       background: var(--surface);
@@ -1458,6 +1645,7 @@ function sharedSiteCss(): string {
     }
     .lang-trigger:hover,
     .lang-dropdown:hover .lang-trigger,
+    .lang-dropdown.open .lang-trigger,
     .lang-dropdown:focus-within .lang-trigger {
       border-color: var(--hairline-dark-hover);
       color: var(--ink);
@@ -1468,6 +1656,7 @@ function sharedSiteCss(): string {
       opacity: 0.6;
     }
     .lang-dropdown:hover .lang-chevron,
+    .lang-dropdown.open .lang-chevron,
     .lang-dropdown:focus-within .lang-chevron {
       transform: rotate(180deg);
       opacity: 1;
@@ -1495,6 +1684,7 @@ function sharedSiteCss(): string {
       box-shadow: 0 16px 36px rgba(20, 20, 19, 0.1), var(--inset-highlight);
     }
     .lang-dropdown:hover .lang-menu,
+    .lang-dropdown.open .lang-menu,
     .lang-dropdown:focus-within .lang-menu {
       opacity: 1;
       pointer-events: auto;
@@ -1569,27 +1759,62 @@ function sharedSiteCss(): string {
       0%, 100% { opacity: 0.6; transform: scale(0.95); }
       50% { opacity: 1; transform: scale(1.05); }
     }
-    .hero h1 {
+    .hero-headline {
+      margin: 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hero-headline-main {
       font-family: var(--font-sans);
       font-feature-settings: var(--font-features-base);
-      font-size: clamp(34px, 4.4vw, 56px);
-      line-height: 1.12;
-      margin: 0 0 18px;
+      font-size: clamp(32px, 4.3vw, 54px);
+      line-height: 1.15;
       letter-spacing: var(--tracking-tighter);
       font-weight: 800;
-      background: linear-gradient(180deg, #ffffff 30%, rgba(255, 255, 255, 0.7) 100%);
+      background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.78) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+    }
+    .hero-headline-accent {
+      font-family: var(--font-sans);
+      font-feature-settings: var(--font-features-base);
+      font-size: clamp(28px, 3.8vw, 46px);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      font-weight: 800;
+      background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 35%, #f472b6 70%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+    }
+    [data-theme="light"] .hero-headline-main {
+      background: linear-gradient(180deg, #0f172a 40%, #1e293b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-theme="light"] .hero-headline-accent {
+      background: linear-gradient(135deg, #6951ff 0%, #db2777 60%, #0284c7 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .hero p.lead {
-      font-size: 16px;
+      font-size: 15.5px;
       color: var(--muted);
-      margin: 0 0 28px;
+      margin: 0 0 24px;
       max-width: 620px;
       line-height: 1.68;
       letter-spacing: var(--tracking-tight);
     }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; align-items: center; }
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .hero-cli-row { display: flex; align-items: center; }
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -1651,15 +1876,15 @@ function sharedSiteCss(): string {
     .quick-cli-pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      height: 42px;
-      background: var(--bg-obsidian-surface);
-      border: var(--hairline-dark);
-      box-shadow: var(--inset-highlight);
-      border-radius: 9px;
-      padding: 0 14px;
+      gap: 10px;
+      height: 38px;
+      background: rgba(14, 16, 23, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 0 13px;
       font-family: var(--mono);
-      font-size: 12.5px;
+      font-size: 12px;
       color: #93c5fd;
       cursor: pointer;
       transition: all var(--duration-fast) var(--ease-spring);
@@ -1669,13 +1894,27 @@ function sharedSiteCss(): string {
     .quick-cli-pill:hover {
       border-color: var(--am-violet-hairline);
       color: #fff;
-      background: var(--surface-elevated);
+      background: rgba(21, 24, 33, 0.95);
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px -2px rgba(105, 81, 255, 0.25), var(--inset-highlight);
+      box-shadow: 0 4px 14px -2px rgba(105, 81, 255, 0.25);
+    }
+    .cli-prompt-symbol { color: var(--am-emerald); font-weight: 700; }
+    .cli-copy-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 2px 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      margin-left: 6px;
     }
     .deliverables-strip { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); margin-top: 14px; }
     .deliverables-label { font-size: 11.5px; font-weight: 600; color: var(--dim); margin-right: 2px; }
     .deliverables-badge {
+      display: inline-flex;
+      align-items: center;
       background: var(--surface);
       border: var(--hairline-dark);
       box-shadow: var(--inset-highlight);
@@ -1686,6 +1925,14 @@ function sharedSiteCss(): string {
       font-size: 11px;
       color: var(--ink);
       backdrop-filter: blur(8px);
+    }
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+      flex-shrink: 0;
     }
     .spec-strip { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--mono); font-size: 11px; color: #cbd5e1; }
     .spec-pill {
@@ -1753,7 +2000,12 @@ function sharedSiteCss(): string {
       font-weight: 600;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), var(--inset-highlight);
     }
-    .stage-viewport { height: 480px; background: #07080c; position: relative; }
+    .stage-viewport {
+      height: 480px;
+      background: #07080c;
+      position: relative;
+      overflow: hidden;
+    }
     .stage-viewport iframe { width: 100%; height: 100%; border: none; display: block; }
     .stage-foot {
       padding: 9px 14px;
@@ -1781,6 +2033,300 @@ function sharedSiteCss(): string {
       color: var(--am-emerald);
       font-size: 10.5px;
       flex-shrink: 0;
+    }
+
+    /* Hero Stage Slides (High-DPI Vector Masterpieces) */
+    .hero-stage-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.985);
+      transition: opacity 220ms var(--ease-spring), transform 220ms var(--ease-spring);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 24px;
+    }
+    .hero-stage-slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+    .stage-remix-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      background: var(--am-violet);
+      color: #fff !important;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 10px rgba(105, 81, 255, 0.35);
+      transition: all var(--duration-fast) var(--ease-spring);
+      white-space: nowrap;
+    }
+    .stage-remix-btn:hover {
+      background: var(--am-violet-hover);
+      transform: translateY(-1px);
+    }
+    .stage-remix-btn-dark {
+      background: #0f172a;
+      border: 1px solid rgba(15, 23, 42, 0.2);
+      color: #fff !important;
+    }
+    .stage-remix-btn-dark:hover {
+      background: #1e293b;
+    }
+    .hss-foot-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+
+    /* Masterpiece 1: Apple Keynote Bento */
+    .hss-bento {
+      background: radial-gradient(circle at 85% 15%, rgba(105, 81, 255, 0.18), transparent 60%),
+                  radial-gradient(circle at 15% 90%, rgba(56, 189, 248, 0.12), transparent 50%),
+                  #090b14;
+      color: #f8fafc;
+      justify-content: space-between;
+    }
+    .hss-bento-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #94a3b8;
+      letter-spacing: 0.05em;
+    }
+    .hss-bento-title {
+      font-size: clamp(18px, 2.2vw, 23px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin: 10px 0 14px;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+    .hss-bento-flow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      font-size: 11px;
+      font-family: var(--mono);
+      margin-bottom: 14px;
+      overflow-x: auto;
+    }
+    .hss-bento-node {
+      background: rgba(105, 81, 255, 0.2);
+      border: 1px solid rgba(105, 81, 255, 0.4);
+      color: #c4b5fd;
+      padding: 3px 8px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+    .hss-bento-arrow { color: #64748b; font-weight: bold; }
+    .hss-bento-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .hss-bento-tile {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .hss-bento-val {
+      font-size: 26px;
+      font-weight: 800;
+      font-family: var(--mono);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 3px;
+    }
+    .hss-bento-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .hss-bento-sub {
+      font-size: 10.5px;
+      font-family: var(--mono);
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    /* Masterpiece 2: Swiss Grid (Cream / Crimson / Black) */
+    .hss-swiss {
+      background: #fcf9f2;
+      color: #0f172a;
+      justify-content: space-between;
+      border-top: 5px solid #e11d48;
+    }
+    .hss-swiss .hss-foot-action {
+      border-top-color: rgba(15, 23, 42, 0.12);
+      color: #475569;
+    }
+    .hss-swiss-grid-wrap {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 18px;
+      height: 100%;
+    }
+    .hss-swiss-num {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 0.9;
+      color: #e11d48;
+      font-family: var(--sans);
+      letter-spacing: -0.05em;
+    }
+    .hss-swiss-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hss-swiss-title {
+      font-size: clamp(18px, 2.2vw, 23px);
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      margin: 0 0 14px;
+    }
+    .hss-swiss-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+    }
+    .hss-swiss-cell { font-size: 11.5px; line-height: 1.5; color: #334155; }
+    .hss-swiss-cell strong { color: #0f172a; display: block; font-size: 13px; }
+
+    /* Masterpiece 3: Linear Geek Dark (IDE + Compiled Split) */
+    .hss-linear {
+      background: #090b11;
+      color: #f1f5f9;
+      justify-content: space-between;
+    }
+    .hss-linear-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+      margin-bottom: 12px;
+      min-height: 0;
+    }
+    .hss-code-win {
+      background: #0d1017;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9px;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.55;
+      color: #94a3b8;
+      overflow: hidden;
+    }
+    .hss-code-win .kw { color: #f472b6; }
+    .hss-code-win .str { color: #34d399; }
+    .hss-code-win .prop { color: #38bdf8; }
+    .hss-preview-win {
+      background: radial-gradient(circle at 70% 30%, rgba(105, 81, 255, 0.22), transparent 70%), #111420;
+      border: 1px solid rgba(105, 81, 255, 0.35);
+      border-radius: 9px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Masterpiece 4: WeChat In-Depth Editorial (Phone Mockup) */
+    .hss-wechat {
+      background: #0b0d14;
+      color: #f3f4f6;
+      justify-content: space-between;
+    }
+    .hss-phone-frame {
+      max-width: 420px;
+      width: 100%;
+      margin: 0 auto;
+      background: #12141e;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 16px 20px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .hss-quote-callout {
+      border-left: 3px solid #f59e0b;
+      padding: 8px 12px;
+      background: rgba(245, 158, 11, 0.08);
+      border-radius: 0 6px 6px 0;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #fde68a;
+      font-style: italic;
+      margin: 8px 0;
+    }
+
+    /* Masterpiece 5: Cinema 9:16 Video + CapCut 4-Track Timeline */
+    .hss-video {
+      background: #090a12;
+      color: #f8fafc;
+      justify-content: space-between;
+    }
+    .hss-video-top {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex: 1;
+      margin-bottom: 12px;
+      min-height: 0;
+    }
+    .hss-video-canvas {
+      width: 120px;
+      height: 190px;
+      background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+      border: 1px solid rgba(167, 139, 250, 0.4);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
+    }
+    .hss-timeline-box {
+      flex: 1;
+      background: #0d0f18;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9px;
+      padding: 12px;
     }
 
     /* Sections */
@@ -2272,9 +2818,9 @@ function sharedSiteCss(): string {
       box-shadow: var(--shadow-obsidian-hover);
     }
     .work-preview {
-      height: 124px;
-      border-radius: 10px;
-      padding: 12px 14px;
+      height: 168px;
+      border-radius: 12px;
+      padding: 16px 18px;
       margin-bottom: 14px;
       position: relative;
       overflow: hidden;
@@ -2909,15 +3455,18 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
         <span class="logo-sub">爱创工坊 · Local-First Multimodal Studio</span>
       </div>
       <div class="nav-links">
-        <a href="/playground/" class="nav-pill-highlight">${esc(copy.navPlayground)}</a>
-        <a href="https://github.com/chicogong/aimake-creator/releases/tag/v2.0.0" target="_blank" rel="noopener">macOS</a>
         <a href="/${lang}/#radar">${esc(copy.navRadar)}</a>
         <a href="/${lang}/#flywheel">${esc(copy.navFlywheel)}</a>
         <a href="/${lang}/#templates">${esc(copy.navTemplates)}</a>
         <a href="/${lang}/#cli">${esc(copy.navCli)}</a>
         <a href="/${lang}/#ecosystem">${esc(copy.navEcosystem)}</a>
+        <a href="https://github.com/chicogong/aimake-creator/releases/tag/v2.0.0" target="_blank" rel="noopener">macOS</a>
       </div>
       <div class="nav-actions">
+        <a href="/playground/" class="nav-cta-btn">
+          <span>${esc(copy.navPlayground)}</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
         <div class="lang-dropdown">
           <button type="button" class="lang-trigger" id="lang-trigger-btn" aria-haspopup="true" aria-expanded="false" aria-label="Select language">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -2963,7 +3512,26 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
         <a href="/${lang}/#ecosystem">${esc(copy.navEcosystem)}</a>
       </div>
     </div>
-  </nav>`;
+  </nav>
+  <script>
+    (function() {
+      var trigger = document.getElementById('lang-trigger-btn');
+      if (!trigger) return;
+      var dropdown = trigger.closest('.lang-dropdown');
+      if (!dropdown) return;
+      trigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var isOpen = dropdown.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+      document.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+  </script>`;
 }
 
 function renderLandingHtml(
@@ -2975,12 +3543,12 @@ function renderLandingHtml(
   const copy = UI_COPY[lang];
   const langs: SiteLang[] = ['zh', 'en', 'ja', 'ko'];
 
-  const stagePresets: Array<{ label: string; tplId: string }> = [
-    { label: '16:9 便当盒 · Bento', tplId: 'apple-bento-launch' },
-    { label: '3:4 瑞士版面 · Swiss', tplId: 'xhs-swiss-grid' },
-    { label: '16:9 极客黑 · Linear', tplId: 'ppt-linear-dark' },
-    { label: '4:5 LinkedIn · 专栏', tplId: 'linkedin-exec-carousel' },
-    { label: '9:16 60fps · 动态视频', tplId: 'video-cinema-talk' },
+  const stagePresets: Array<{ label: string; tplId: string; stageKey: string }> = [
+    { label: '16:9 苹果发布会 · Bento', tplId: 'apple-bento-launch', stageKey: 'bento' },
+    { label: '3:4 小红书 · 瑞士网格', tplId: 'xhs-swiss-grid', stageKey: 'swiss' },
+    { label: '16:9 极客黑 · 架构演示', tplId: 'ppt-linear-dark', stageKey: 'linear' },
+    { label: '微信深度长文 · 流式', tplId: 'wechat-clean-editorial', stageKey: 'wechat' },
+    { label: '9:16 短视频 · 剪映工程', tplId: 'video-cinema-talk', stageKey: 'video' },
   ];
 
   const packsHtml = packs
@@ -3062,9 +3630,9 @@ function renderLandingHtml(
             ${tpl.supportedFormats.slice(0, 3).map((f) => `<span class="fmt-tag">${esc(f.toUpperCase())}</span>`).join('')}
           </div>
           <div class="tpl-cta-row">
-            <a class="btn-primary tpl-cta-main" href="/playground/?template=${esc(tpl.id)}">在线做同款 →</a>
-            <a class="btn-secondary tpl-cta-sub" href="/${lang}/templates/${tpl.id}/">详情</a>
-            <a class="btn-secondary tpl-cta-icon" href="aimake://remix?template=${esc(tpl.id)}" title="在 Aimake 桌面端打开做同款" aria-label="在 Aimake 桌面端打开做同款">
+            <a class="btn-primary tpl-cta-main" href="/playground/?template=${esc(tpl.id)}">${esc(copy.tplCtaRemix)}</a>
+            <a class="btn-secondary tpl-cta-sub" href="/${lang}/templates/${tpl.id}/">${esc(copy.tplCtaDetail)}</a>
+            <a class="btn-secondary tpl-cta-icon" href="aimake://remix?template=${esc(tpl.id)}" title="${esc(copy.tplCtaDesktop)}" aria-label="${esc(copy.tplCtaDesktop)}">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
             </a>
           </div>
@@ -3111,7 +3679,7 @@ function renderLandingHtml(
             <span>·</span>
             <span style="color:var(--cobalt);font-weight:600;">#${esc(item.suggestedTemplate || 'bento')}</span>
           </div>
-          <a href="${playgroundLink}" class="btn-primary radar-cta-btn">做同款 ↗</a>
+          <a href="${playgroundLink}" class="btn-primary radar-cta-btn">${esc(copy.radarCtaRemix)}</a>
         </div>
       </div>`;
     })
@@ -3481,34 +4049,44 @@ function renderLandingHtml(
           <span class="pulse-dot"></span>
           <span>${esc(copy.heroTag)}</span>
         </div>
-        <h1>${esc(copy.heroTitle)}</h1>
+        <h1 class="hero-headline">
+          <span class="hero-headline-main">${esc(copy.heroTitleMain || copy.heroTitle)}</span>
+          <span class="hero-headline-accent">${esc(copy.heroTitleAccent || '')}</span>
+        </h1>
         <p class="lead">${esc(copy.heroSub)}</p>
-        <div class="cta-row">
-          <a class="btn-primary" href="/playground/">
-            <span>${esc(copy.primaryCta)}</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a class="btn-secondary" href="https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.dmg" title="下载 macOS 桌面端安装包 (.dmg)">
-            <svg width="14" height="14" viewBox="0 0 170 170" fill="currentColor"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.69-3.04-7.67-7.81-11.96-14.34-6.3-9.78-11.05-20.98-14.25-33.61-3.21-12.63-4.82-24.31-4.82-35.04 0-14.46 3.69-26.47 11.08-36.03 7.39-9.57 16.63-14.46 27.72-14.68 4.58 0 9.88 1.25 15.91 3.75 6.02 2.5 10.22 3.79 12.6 3.86 1.85 0 6.13-1.32 12.84-3.97 6.71-2.65 12.04-3.83 15.99-3.53 12.3.82 22.04 5.37 29.23 13.66-10.76 6.53-16.03 15.54-15.82 27.05.22 9.03 3.63 16.63 10.23 22.82 6.6 6.19 14.48 9.68 23.63 10.49-2.5 7.4-5.39 14.8-8.67 22.2zM119.22 31.84c0-7.39 2.66-14.34 7.98-20.85 5.32-6.52 11.92-10.51 19.8-11.99.33 1.1.5 2.1.5 3 0 7.28-2.77 14.3-8.31 21.05-5.54 6.75-12.29 10.7-20.25 11.85-.22-.98-.32-1.98-.32-3.06z"/></svg>
-            <span>macOS (.dmg)</span>
-          </a>
-          <a class="btn-secondary" href="#templates">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-            <span>${esc(copy.secondaryCta)}</span>
-          </a>
-          <div class="quick-cli-pill" id="hero-quick-cli" title="Click to copy install command" data-copy="${esc(copy.quickInstall)}">
-            <span style="color:var(--emerald);font-weight:700;">$</span>
-            <span>${esc(copy.quickInstall)}</span>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <div class="hero-cta-group">
+          <div class="cta-row">
+            <a class="btn-primary" href="/playground/">
+              <span>${esc(copy.primaryCta)}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a class="btn-secondary" href="https://github.com/chicogong/aimake-creator/releases/download/v2.0.0/Aimake-v2.0.0-macOS.dmg" title="下载 macOS 桌面端安装包 (.dmg)">
+              <svg width="14" height="14" viewBox="0 0 170 170" fill="currentColor"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.69-3.04-7.67-7.81-11.96-14.34-6.3-9.78-11.05-20.98-14.25-33.61-3.21-12.63-4.82-24.31-4.82-35.04 0-14.46 3.69-26.47 11.08-36.03 7.39-9.57 16.63-14.46 27.72-14.68 4.58 0 9.88 1.25 15.91 3.75 6.02 2.5 10.22 3.79 12.6 3.86 1.85 0 6.13-1.32 12.84-3.97 6.71-2.65 12.04-3.83 15.99-3.53 12.3.82 22.04 5.37 29.23 13.66-10.76 6.53-16.03 15.54-15.82 27.05.22 9.03 3.63 16.63 10.23 22.82 6.6 6.19 14.48 9.68 23.63 10.49-2.5 7.4-5.39 14.8-8.67 22.2zM119.22 31.84c0-7.39 2.66-14.34 7.98-20.85 5.32-6.52 11.92-10.51 19.8-11.99.33 1.1.5 2.1.5 3 0 7.28-2.77 14.3-8.31 21.05-5.54 6.75-12.29 10.7-20.25 11.85-.22-.98-.32-1.98-.32-3.06z"/></svg>
+              <span>macOS (.dmg)</span>
+            </a>
+            <a class="btn-secondary" href="#templates">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+              <span>${esc(copy.secondaryCta)}</span>
+            </a>
+          </div>
+          <div class="hero-cli-row">
+            <div class="quick-cli-pill" id="hero-quick-cli" title="Click to copy install command" data-copy="${esc(copy.quickInstall)}">
+              <span class="cli-prompt-symbol">$</span>
+              <span class="cli-cmd-text">${esc(copy.quickInstall)}</span>
+              <span class="cli-copy-hint">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>复制</span>
+              </span>
+            </div>
           </div>
         </div>
         <div class="deliverables-strip">
           <span class="deliverables-label">支持原生直出：</span>
-          <span class="deliverables-badge">3x Retina PNG</span>
-          <span class="deliverables-badge">WeChat Inline HTML</span>
-          <span class="deliverables-badge">Vector PDF</span>
-          <span class="deliverables-badge">Microsoft OOXML .pptx</span>
-          <span class="deliverables-badge">60fps H.264 .mp4</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#a78bfa;"></span>3x Retina PNG</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#10b981;"></span>微信公众号内联富文本</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#38bdf8;"></span>微软原生 PPTX</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#f59e0b;"></span>矢量 PDF</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#f43f5e;"></span>60fps H.264 视频</span>
         </div>
       </div>
 
@@ -3523,16 +4101,195 @@ function renderLandingHtml(
             ${stagePresets
               .map(
                 (preset, idx) =>
-                  `<button type="button" class="stage-tab ${idx === 0 ? 'active' : ''}" data-src="/${lang}/templates/${preset.tplId}/preview.html">${esc(preset.label)}</button>`
+                  `<button type="button" class="stage-tab ${idx === 0 ? 'active' : ''}" data-stage="${preset.stageKey}" data-src="/${lang}/templates/${preset.tplId}/preview.html">${esc(preset.label)}</button>`
               )
               .join('')}
           </div>
         </div>
         <div class="stage-viewport">
-          <iframe id="hero-stage-frame" src="/${lang}/templates/${stagePresets[0].tplId}/preview.html" title="Aimake live template preview" loading="eager" style="background-color:#07090e;transition:opacity 0.15s ease;" allowtransparency="true"></iframe>
+          <!-- Slide 1: Apple Keynote Bento -->
+          <div class="hero-stage-slide hss-bento active" data-slide="bento">
+            <div>
+              <div class="hss-bento-head">
+                <span>PRESENTATION · KEYNOTE BENTO</span>
+                <span style="color:#a78bfa;">16:9 · SLIDE 01 / 04</span>
+              </div>
+              <div class="hss-bento-title">为什么纯本地 LLM Wiki 是超级个体的护城河</div>
+              <div class="hss-bento-flow">
+                <span class="hss-bento-node">全网素材零损耗摄入</span>
+                <span class="hss-bento-arrow">→</span>
+                <span class="hss-bento-node" style="background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.4);color:#7dd3fc;">Karpathy LLM Wiki 知识萃取</span>
+                <span class="hss-bento-arrow">→</span>
+                <span class="hss-bento-node" style="background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">5 大原生商业介质直出</span>
+              </div>
+              <div class="hss-bento-metrics">
+                <div class="hss-bento-tile">
+                  <div class="hss-bento-val" style="color:#34d399;">95%</div>
+                  <div class="hss-bento-label">上下文压缩率</div>
+                  <div class="hss-bento-sub">index.md &lt;= 3,000t</div>
+                </div>
+                <div class="hss-bento-tile">
+                  <div class="hss-bento-val" style="color:#c4b5fd;">100%</div>
+                  <div class="hss-bento-label">纯本地端侧隐私</div>
+                  <div class="hss-bento-sub">0 KB 数据云端外传</div>
+                </div>
+                <div class="hss-bento-tile">
+                  <div class="hss-bento-val" style="color:#38bdf8;">&lt; 80ms</div>
+                  <div class="hss-bento-label">确定性直出延迟</div>
+                  <div class="hss-bento-sub">毫秒级极速编译</div>
+                </div>
+              </div>
+            </div>
+            <div class="hss-foot-action">
+              <span>确定性排版内核 · 双击原生可编辑文本框与矢量形状</span>
+              <a href="/playground/?sample=bento&template=apple-bento-launch" class="stage-remix-btn">做同款作品 ↗</a>
+            </div>
+          </div>
+
+          <!-- Slide 2: Swiss Grid (Cream / Crimson / Black) -->
+          <div class="hero-stage-slide hss-swiss" data-slide="swiss">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#64748b;margin-bottom:8px;">
+                <span>NEUE GRAFIK · ISSUE 26</span>
+                <span style="color:#e11d48;font-weight:700;">3:4 · SWISS MODERNIST</span>
+              </div>
+              <div class="hss-swiss-grid-wrap">
+                <div class="hss-swiss-num">01</div>
+                <div class="hss-swiss-main">
+                  <div class="hss-swiss-title">DeepSeek-R1 本地蒸馏<br/>与端侧知识库全景评测</div>
+                  <div class="hss-swiss-table">
+                    <div class="hss-swiss-cell"><strong>671B 满血蒸馏</strong>端侧 Ollama 运行</div>
+                    <div class="hss-swiss-cell"><strong>Q4_K_M 量化</strong>极低显存占用</div>
+                    <div class="hss-swiss-cell"><strong>112 tok/s</strong>高吞吐本地推理</div>
+                    <div class="hss-swiss-cell"><strong>私有 Style DNA</strong>反 AI 假大空腔调</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hss-foot-action">
+              <span>瑞士国际主义网格 · 严谨排版无孤字断行</span>
+              <a href="/playground/?sample=deepseek&template=xhs-swiss-grid" class="stage-remix-btn stage-remix-btn-dark">做同款图文 ↗</a>
+            </div>
+          </div>
+
+          <!-- Slide 3: Linear Geek Dark -->
+          <div class="hero-stage-slide hss-linear" data-slide="linear">
+            <div style="display:flex;flex-direction:column;flex:1;min-height:0;">
+              <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#94a3b8;margin-bottom:10px;">
+                <span>MARKDOWN IDE ➔ OOXML PPTX</span>
+                <span style="color:#818cf8;">16:9 · LINEAR GEEK DARK</span>
+              </div>
+              <div class="hss-linear-split">
+                <div class="hss-code-win">
+                  <div style="color:#64748b;margin-bottom:6px;">// decks/agent.deck.md</div>
+                  <div><span class="kw">---</span></div>
+                  <div><span class="prop">title</span>: <span class="str">AI Agent 闭环架构</span></div>
+                  <div><span class="prop">template</span>: <span class="str">ppt-linear-dark</span></div>
+                  <div><span class="prop">aspect</span>: <span class="str">16:9</span></div>
+                  <div><span class="kw">---</span></div>
+                  <div style="margin-top:6px;"><span class="prop"># 2026 AI Agent 闭环体系</span></div>
+                  <div>- 100% 本地优先运行时</div>
+                  <div>- 零云端隐私泄露</div>
+                  <div>- 80ms 编译交付</div>
+                </div>
+                <div class="hss-preview-win">
+                  <div style="font-size:13px;font-weight:700;color:#f8fafc;letter-spacing:-0.02em;">Compiled PPTX Deliverables</div>
+                  <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
+                    <div style="font-size:11px;color:#c4b5fd;background:rgba(105,81,255,0.18);padding:5px 8px;border-radius:5px;border:1px solid rgba(105,81,255,0.3);">✓ 微软 OOXML .pptx 原生文本框</div>
+                    <div style="font-size:11px;color:#6ee7b7;background:rgba(16,185,129,0.18);padding:5px 8px;border-radius:5px;border:1px solid rgba(16,185,129,0.3);">✓ 3x Retina PNG 社交超清图</div>
+                    <div style="font-size:11px;color:#7dd3fc;background:rgba(56,189,248,0.18);padding:5px 8px;border-radius:5px;border:1px solid rgba(56,189,248,0.3);">✓ 矢量图表可二次自由编辑</div>
+                  </div>
+                  <div style="font-size:10.5px;font-family:var(--mono);color:#94a3b8;">双击直接在 PowerPoint 编辑文字</div>
+                </div>
+              </div>
+            </div>
+            <div class="hss-foot-action">
+              <span>CLI 编译：aimake render decks/agent.deck.md -f pptx</span>
+              <a href="/playground/?sample=agent&template=ppt-linear-dark" class="stage-remix-btn">做同款 Keynote ↗</a>
+            </div>
+          </div>
+
+          <!-- Slide 4: WeChat In-Depth Editorial -->
+          <div class="hero-stage-slide hss-wechat" data-slide="wechat">
+            <div class="hss-phone-frame">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#94a3b8;font-family:var(--mono);">
+                <span>深度技术特稿 · W47</span>
+                <span style="color:#34d399;">阅读 6 分钟</span>
+              </div>
+              <div>
+                <div style="font-size:16px;font-weight:700;color:#f8fafc;margin:6px 0;line-height:1.35;">超级个体的护城河：从信息洪流到私有知识复利</div>
+                <div class="hss-quote-callout">
+                  “真正的超级个体，不在于每天订阅了多少 AI 工具，而在于本地沉淀了多少不可替代的私有认知资产。”
+                </div>
+                <div style="font-size:11.5px;color:#94a3b8;line-height:1.55;">
+                  基于 Karpathy LLM Wiki 架构与纯内联 CSS 渲染，彻底根治微信排版样式被微信后台剥离的顽疾。
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;font-family:var(--mono);font-size:10.5px;color:#cbd5e1;">
+                <span style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;">100% 纯内联样式</span>
+                <span style="background:rgba(16,185,129,0.15);color:#6ee7b7;padding:2px 6px;border-radius:4px;">一键草稿箱</span>
+              </div>
+            </div>
+            <div class="hss-foot-action">
+              <span>微信公众号纯内联富文本 · 样式零丢失</span>
+              <a href="/playground/?sample=wechat&template=wechat-clean-editorial" class="stage-remix-btn">做同款长文 ↗</a>
+            </div>
+          </div>
+
+          <!-- Slide 5: Cinema 9:16 Video + CapCut 4-Track Timeline -->
+          <div class="hero-stage-slide hss-video" data-slide="video">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#94a3b8;margin-bottom:8px;">
+                <span>60FPS CINEMA TALK · CAPCUT PROJECT</span>
+                <span style="color:#34d399;">-14 LUFS / TP -1.0</span>
+              </div>
+              <div class="hss-video-top">
+                <div class="hss-video-canvas">
+                  <div style="font-size:9.5px;font-family:var(--mono);color:#c4b5fd;">9:16 CINEMA</div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+                    <div style="width:36px;height:36px;border-radius:50%;background:rgba(105,81,255,0.3);border:1px solid rgba(167,139,250,0.6);display:flex;align-items:center;justify-content:center;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="#a78bfa"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </div>
+                    <div style="font-size:10px;text-align:center;font-weight:600;color:#fff;">四语种 Style DNA</div>
+                  </div>
+                  <div style="font-size:9px;background:rgba(0,0,0,0.6);padding:2px 4px;border-radius:3px;color:#34d399;text-align:center;">微秒级音画同步</div>
+                </div>
+                <div class="hss-timeline-box">
+                  <div style="font-size:11px;font-family:var(--mono);color:#94a3b8;margin-bottom:6px;">CapCut 6-Track Timeline (Microsecond Precision)</div>
+                  <div style="display:flex;flex-direction:column;gap:5px;">
+                    <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
+                      <span style="width:20px;color:#a78bfa;">V1</span>
+                      <div style="flex:1;height:12px;background:#1e1b4b;border-radius:3px;display:flex;overflow:hidden;gap:2px;">
+                        <span style="width:25%;background:#6951ff;"></span><span style="width:25%;background:#8b5cf6;"></span><span style="width:25%;background:#6951ff;"></span><span style="width:25%;background:#8b5cf6;"></span>
+                      </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
+                      <span style="width:20px;color:#fbbf24;">T1</span>
+                      <div style="flex:1;height:12px;background:#451a03;border-radius:3px;display:flex;overflow:hidden;gap:2px;">
+                        <span style="width:30%;background:#f59e0b;"></span><span style="width:35%;background:#fbbf24;"></span><span style="width:30%;background:#f59e0b;"></span>
+                      </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
+                      <span style="width:20px;color:#34d399;">A1</span>
+                      <div style="flex:1;height:12px;background:#064e3b;border-radius:3px;display:flex;overflow:hidden;">
+                        <span style="width:96%;background:#10b981;"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hss-foot-action">
+              <span>直接导出 60fps MP4 或一键导入剪映草稿</span>
+              <a href="/playground/?sample=video&template=video-cinema-talk" class="stage-remix-btn">做同款短视频 ↗</a>
+            </div>
+          </div>
+
+          <!-- Hidden legacy iframe for fallback and automated testing compatibility -->
+          <iframe id="hero-stage-frame" src="/${lang}/templates/${stagePresets[0].tplId}/preview.html" title="Aimake live template preview" loading="eager" style="display:none;" allowtransparency="true"></iframe>
         </div>
         <div class="stage-foot">
-          <span style="display:inline-flex;align-items:center;gap:6px;"><span class="pulse-dot"></span>${esc(copy.stageCaption)}</span>
+          <span id="stage-foot-caption" style="display:inline-flex;align-items:center;gap:6px;"><span class="pulse-dot"></span>${esc(copy.stageCaption)}</span>
           <span class="stage-foot-badge">0 外部依赖 · 100% 本地编译</span>
         </div>
       </div>
@@ -3619,8 +4376,8 @@ function renderLandingHtml(
       ${
         radarItems.length > INITIAL_VISIBLE_RADAR
           ? `<div class="section-expand-wrap" id="radar-expand-wrap">
-        <button type="button" class="btn-expand-more" id="btn-expand-radar" data-expanded="false" data-total="${radarItems.length}" data-initial="${INITIAL_VISIBLE_RADAR}">
-          <span>展开全部 ${radarItems.length} 条实时热点</span>
+        <button type="button" class="btn-expand-more" id="btn-expand-radar" data-expanded="false" data-total="${radarItems.length}" data-initial="${INITIAL_VISIBLE_RADAR}" data-txt-open="${esc(copy.radarExpandAll.replace('{count}', String(radarItems.length)))}" data-txt-close="${esc(copy.radarCollapse.replace('{count}', String(INITIAL_VISIBLE_RADAR)))}">
+          <span>${esc(copy.radarExpandAll.replace('{count}', String(radarItems.length)))}</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
       </div>`
@@ -3703,8 +4460,8 @@ function renderLandingHtml(
       ${
         templates.length > INITIAL_VISIBLE_TEMPLATES
           ? `<div class="section-expand-wrap" id="templates-expand-wrap">
-        <button type="button" class="btn-expand-more" id="btn-expand-templates" data-expanded="false" data-total="${templates.length}" data-initial="${INITIAL_VISIBLE_TEMPLATES}">
-          <span>展开全部 ${templates.length} 套设计系统 (剩余 ${templates.length - INITIAL_VISIBLE_TEMPLATES} 套)</span>
+        <button type="button" class="btn-expand-more" id="btn-expand-templates" data-expanded="false" data-total="${templates.length}" data-initial="${INITIAL_VISIBLE_TEMPLATES}" data-txt-open="${esc(copy.tplExpandAll.replace('{total}', String(templates.length)).replace('{rem}', String(templates.length - INITIAL_VISIBLE_TEMPLATES)))}" data-txt-close="${esc(copy.tplCollapse.replace('{count}', String(INITIAL_VISIBLE_TEMPLATES)))}">
+          <span>${esc(copy.tplExpandAll.replace('{total}', String(templates.length)).replace('{rem}', String(templates.length - INITIAL_VISIBLE_TEMPLATES)))}</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
       </div>`
@@ -3727,32 +4484,19 @@ function renderLandingHtml(
         <p>${esc(copy.familySub)}</p>
       </div>
       <div class="family-grid">
+        ${copy.ecosystemCards
+          .map(
+            (card) => `
         <div class="family-card">
           <div>
-            <span class="family-badge">WEB STUDIO · aimake.cc</span>
-            <h3 style="margin:12px 0 8px;font-size:18px;">Aimake Web Studio · 在线工坊</h3>
-            <p style="margin:0;color:var(--muted);font-size:13.5px;line-height:1.6;">零安装、纯前端沙盒安全运行。内置 36 套设计模板、实时参数化排版舞台与四语种去 AI 腔清洗器，开箱即用，支持一键导出与做同款。</p>
+            <span class="family-badge">${esc(card.badge)}</span>
+            <h3 style="margin:12px 0 8px;font-size:18px;">${esc(card.title)}</h3>
+            <p style="margin:0;color:var(--muted);font-size:13.5px;line-height:1.6;">${esc(card.desc)}</p>
           </div>
-          <a class="btn-secondary" style="width:fit-content;height:36px;" href="/playground/">打开在线工坊 →</a>
-        </div>
-
-        <div class="family-card">
-          <div>
-            <span class="family-badge">CORE ENGINE · @aimake/engine</span>
-            <h3 style="margin:12px 0 8px;font-size:18px;">Aimake Engine · 确定性排版内核</h3>
-            <p style="margin:0;color:var(--muted);font-size:13.5px;line-height:1.6;">底层无头多模态渲染内核与 CLI 编译器。支持纯本地端到端编译、多介质直出、Karpathy LLM Wiki 知识复利与全渠道自动化分发。</p>
-          </div>
-          <a class="btn-secondary" style="width:fit-content;height:36px;" href="https://github.com/chicogong/aimake-studio" target="_blank" rel="noopener">浏览 Engine 源码 ↗</a>
-        </div>
-
-        <div class="family-card">
-          <div>
-            <span class="family-badge">AGENT PROTOCOLS · ACP &amp; MCP</span>
-            <h3 style="margin:12px 0 8px;font-size:18px;">Aimake Agent Protocols · 智能体协议栈</h3>
-            <p style="margin:0;color:var(--muted);font-size:13.5px;line-height:1.6;">原生支持 Agent Client Protocol (ACP) 与 Model Context Protocol (MCP)。无缝挂载至 Claude Code、Cursor 与 AGY，赋能智能体双向多模态出版。</p>
-          </div>
-          <a class="btn-secondary" style="width:fit-content;height:36px;" href="https://github.com/chicogong/aimake-creator" target="_blank" rel="noopener">探索 Agent 协议规范 ↗</a>
-        </div>
+          <a class="btn-secondary" style="width:fit-content;height:36px;" href="${esc(card.href)}"${card.isExternal ? ' target="_blank" rel="noopener"' : ''}>${esc(card.cta)}</a>
+        </div>`
+          )
+          .join('\n')}
       </div>
     </div>
   </section>
@@ -3883,20 +4627,29 @@ function renderLandingHtml(
         });
       });
 
-      // Hero stage iframe tab switcher (STRICTLY scoped to .stage-tabs)
-      var tabs = document.querySelectorAll('.stage-tabs .stage-tab');
+      // Hero stage tab switcher (crossfades native masterpiece slides & updates iframe)
+      var stageTabs = document.querySelectorAll('.stage-tabs .stage-tab');
+      var stageSlides = document.querySelectorAll('.hero-stage-slide');
       var frame = document.getElementById('hero-stage-frame');
-      tabs.forEach(function (btn) {
+      stageTabs.forEach(function (btn) {
         btn.addEventListener('click', function () {
-          tabs.forEach(function (b) { b.classList.remove('active'); });
+          stageTabs.forEach(function (b) { b.classList.remove('active'); });
           btn.classList.add('active');
+
+          var targetStage = btn.getAttribute('data-stage') || '';
+          if (targetStage) {
+            stageSlides.forEach(function (slide) {
+              if (slide.getAttribute('data-slide') === targetStage) {
+                slide.classList.add('active');
+              } else {
+                slide.classList.remove('active');
+              }
+            });
+          }
+
           var nextSrc = btn.getAttribute('data-src');
-          if (nextSrc && frame && frame.getAttribute('src') !== nextSrc) {
-            frame.style.opacity = '0.6';
+          if (nextSrc && frame) {
             frame.setAttribute('src', nextSrc);
-            frame.onload = function () {
-              frame.style.opacity = '1';
-            };
           }
         });
       });
@@ -3991,10 +4744,10 @@ function renderLandingHtml(
           btnExpandTpl.setAttribute('data-expanded', String(tplExpanded));
           var labelSpan = btnExpandTpl.querySelector('span');
           var iconSvg = btnExpandTpl.querySelector('svg');
+          var txtOpen = btnExpandTpl.getAttribute('data-txt-open') || ('展开全部 ' + total + ' 套设计系统 (剩余 ' + rem + ' 套)');
+          var txtClose = btnExpandTpl.getAttribute('data-txt-close') || ('收起部分设计系统 (保留精选 ' + initial + ' 套)');
           if (labelSpan) {
-            labelSpan.textContent = tplExpanded
-              ? '收起部分设计系统 (保留精选 ' + initial + ' 套)'
-              : '展开全部 ' + total + ' 套设计系统 (剩余 ' + rem + ' 套)';
+            labelSpan.textContent = tplExpanded ? txtClose : txtOpen;
           }
           if (iconSvg) iconSvg.style.transform = tplExpanded ? 'rotate(180deg)' : '';
           applyMarketFilter();
@@ -4055,10 +4808,10 @@ function renderLandingHtml(
           btnExpandRadar.setAttribute('data-expanded', String(radarExpanded));
           var labelSpan = btnExpandRadar.querySelector('span');
           var iconSvg = btnExpandRadar.querySelector('svg');
+          var txtOpen = btnExpandRadar.getAttribute('data-txt-open') || ('展开全部 ' + total + ' 条实时热点');
+          var txtClose = btnExpandRadar.getAttribute('data-txt-close') || ('收起实时热点 (仅看精选 ' + initial + ' 条)');
           if (labelSpan) {
-            labelSpan.textContent = radarExpanded
-              ? '收起实时热点 (仅看精选 ' + initial + ' 条)'
-              : '展开全部 ' + total + ' 条实时热点';
+            labelSpan.textContent = radarExpanded ? txtClose : txtOpen;
           }
           if (iconSvg) iconSvg.style.transform = radarExpanded ? 'rotate(180deg)' : '';
           applyRadarFilter();
@@ -4227,8 +4980,8 @@ export async function buildStaticSite(outDir: string): Promise<{
         <span style="color:var(--muted);font-family:var(--mono);font-size:11px;"> · v${esc(tpl.version)}</span>
       </div>
       <div style="margin-top:20px;display:flex;flex-direction:column;gap:9px;">
-        <a class="btn-primary" style="width:100%;justify-content:center;" href="/playground/?template=${esc(tpl.id)}">在在线工坊做同款 →</a>
-        <a class="btn-secondary" style="width:100%;justify-content:center;" href="aimake://remix?template=${esc(tpl.id)}">在 Aimake 桌面端打开</a>
+        <a class="btn-primary" style="width:100%;justify-content:center;" href="/playground/?template=${esc(tpl.id)}">${esc(copy.detailCtaPlayground)}</a>
+        <a class="btn-secondary" style="width:100%;justify-content:center;" href="aimake://remix?template=${esc(tpl.id)}">${esc(copy.detailCtaDesktop)}</a>
         <button type="button" class="detail-cli-row" id="detail-cli-copy" data-copy="${esc(detailCliCmd)}" title="Click to copy CLI command">
           <span class="detail-cli-code">${esc(detailCliCmd)}</span>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>

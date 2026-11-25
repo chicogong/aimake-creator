@@ -551,8 +551,19 @@ wikiCmd
     await rebuildWikiIndex(abs);
     const report = await lintWiki(abs);
     const summary = `Wiki Lint: ${report.valid ? 'PASS' : 'FAIL'} | index=${report.indexTokens}/${report.indexBudget} tokens | pages=${report.totalWikiPages} | brokenLinks=${report.brokenLinks.length}`;
-    printResult(report, opts.json, summary);
-    if (!report.valid) process.exitCode = EXIT_CODES.GENERAL_ERROR;
+    if (!report.valid) {
+      if (isJsonRequested(opts)) {
+        throw new CliError(
+          `Wiki lint failed with ${report.brokenLinks.length} broken link(s) or budget violations`,
+          EXIT_CODES.GENERAL_ERROR,
+          report
+        );
+      }
+      printResult(report, opts.json, summary);
+      process.exitCode = EXIT_CODES.GENERAL_ERROR;
+    } else {
+      printResult(report, opts.json, summary);
+    }
   });
 
 wikiCmd

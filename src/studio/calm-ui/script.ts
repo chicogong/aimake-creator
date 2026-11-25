@@ -1745,7 +1745,7 @@ export const CALM_STUDIO_SCRIPT = `
       openCmdk();
       return;
     }
-    if (mod && e.key === '\\\\') {
+    if (mod && (e.key === '\\\\' || e.code === 'Backslash')) {
       e.preventDefault();
       $('shell-body').classList.toggle('sidebar-collapsed');
       return;
@@ -1761,11 +1761,23 @@ export const CALM_STUDIO_SCRIPT = `
       return;
     }
 
+    const isControl =
+      target &&
+      (target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'BUTTON' ||
+        target.tagName === 'SELECT' ||
+        target.isContentEditable ||
+        target.getAttribute('role') === 'button');
+
     if (!isInput) {
       if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'ArrowUp') {
         e.preventDefault();
         focusSlideInFrame(state.activeSlideIndex - 1);
-      } else if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'ArrowDown' || e.key === ' ') {
+      } else if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        focusSlideInFrame(state.activeSlideIndex + 1);
+      } else if (e.key === ' ' && !isControl) {
         e.preventDefault();
         focusSlideInFrame(state.activeSlideIndex + 1);
       } else if (e.key.toLowerCase() === 'f') {

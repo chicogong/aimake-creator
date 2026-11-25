@@ -320,34 +320,39 @@ describe('Agent Client Protocol (ACP) Server 2.0 (RFC-2026-001)', () => {
     });
 
     it('handles -32603 (Internal error) gracefully on unexpected errors', async () => {
-      const server = new AcpServer();
-      const resp = await server.handleRequest({
-        jsonrpc: '2.0',
-        id: 56,
-        method: 'session/prompt',
-        params: {
-          prompt: 'test prompt',
-          targetDeckPath: '/invalid/forbidden/root/path/deck.md',
-        },
-      });
+      const localTmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-acp-err-'));
+      try {
+        const server = new AcpServer({ workspace: localTmpDir });
+        const resp = await server.handleRequest({
+          jsonrpc: '2.0',
+          id: 56,
+          method: 'session/prompt',
+          params: {
+            prompt: 'test prompt',
+            targetDeckPath: '/invalid/forbidden/root/path/deck.md',
+          },
+        });
 
-      // When targetDeckPath points to a non-existent file, it falls back to creating a new deck
-      // But if an internal exception is triggered:
-      const brokenServer = new AcpServer();
-      // Force an unexpected internal throw
-      (brokenServer as any).handleInitialize = async () => {
-        throw new Error('Database disk image is malformed simulated crash');
-      };
+        // When targetDeckPath points to a non-existent file, it falls back to creating a new deck
+        // But if an internal exception is triggered:
+        const brokenServer = new AcpServer({ workspace: localTmpDir });
+        // Force an unexpected internal throw
+        (brokenServer as any).handleInitialize = async () => {
+          throw new Error('Database disk image is malformed simulated crash');
+        };
 
-      const crashResp = await brokenServer.handleRequest({
-        jsonrpc: '2.0',
-        id: 57,
-        method: 'initialize',
-      });
+        const crashResp = await brokenServer.handleRequest({
+          jsonrpc: '2.0',
+          id: 57,
+          method: 'initialize',
+        });
 
-      expect(crashResp?.id).toBe(57);
-      expect(crashResp?.error?.code).toBe(JSON_RPC_ERRORS.INTERNAL_ERROR);
-      expect(crashResp?.error?.message).toContain('Database disk image is malformed simulated crash');
+        expect(crashResp?.id).toBe(57);
+        expect(crashResp?.error?.code).toBe(JSON_RPC_ERRORS.INTERNAL_ERROR);
+        expect(crashResp?.error?.message).toContain('Database disk image is malformed simulated crash');
+      } finally {
+        await fs.rm(localTmpDir, { recursive: true, force: true });
+      }
     });
   });
 
@@ -399,6 +404,45 @@ describe('Agent Client Protocol (ACP) Server 2.0 (RFC-2026-001)', () => {
 
       expect(resp?.error?.code).toBe(JSON_RPC_ERRORS.INTERNAL_ERROR);
       expect(resp?.error?.message).toContain('User denied permission');
+    });
+
+    it('fails closed (denies permission) on timeout or missing output stream', async () => {
+      const server = new AcpServer(); // no output stream
+      const resNoOut = await server.requestPermission({
+        sessionId: 'sess-1',
+        permission: 'fs/write_text_file',
+        title: 'Test',
+        description: 'Test permission',
+      });
+      expect(resNoOut).toBe(false);
+    });
+
+    it('suppresses responses for JSON-RPC 2.0 notifications (id undefined)', async () => {
+      const server = new AcpServer();
+      const notifResp = await server.handleRequest({
+        jsonrpc: '2.0',
+        method: 'ping',
+      });
+      expect(notifResp).toBeNull();
+    });
+
+    it('rejects concurrent prompt execution on active running session', async () => {
+      const server = new AcpServer();
+      const sess = server.createSession();
+      sess.status = 'running';
+
+      const resp = await server.handleRequest({
+        jsonrpc: '2.0',
+        id: 62,
+        method: 'session/prompt',
+        params: {
+          sessionId: sess.sessionId,
+          prompt: 'Concurrent prompt attempt',
+        },
+      });
+
+      expect(resp?.error?.code).toBe(JSON_RPC_ERRORS.INVALID_REQUEST);
+      expect(resp?.error?.message).toContain('already running a prompt');
     });
   });
 

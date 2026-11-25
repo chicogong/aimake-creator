@@ -149,11 +149,13 @@ function parseSingleSlide(rawChunk: string, index: number, total: number): DeckS
   let working = cleaned;
 
   // Extract ::: speech ... ::: block
-  let speech: string | undefined;
+  const speechParts: string[] = [];
   working = working.replace(/:::\s*speech\s*\n([\s\S]*?)\n:::/g, (_m, inner: string) => {
-    speech = inner.trim();
+    const trimmed = inner.trim();
+    if (trimmed) speechParts.push(trimmed);
     return '';
   });
+  const speech: string | undefined = speechParts.length > 0 ? speechParts.join('\n\n') : undefined;
 
   // Extract fenced blocks
   const metrics: MetricItem[] = [];

@@ -1909,10 +1909,10 @@ export const CALM_STUDIO_CSS = `
     transform: translateX(-50%) translateY(-8px);
     pointer-events: none;
     transition: opacity 0.18s ease, transform 0.18s ease;
-    max-width: min(460px, 88vw);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: min(520px, 88vw);
+    white-space: normal;
+    line-height: 1.45;
+    text-align: center;
   }
   #toast.show {
     opacity: 1;
@@ -2379,5 +2379,53 @@ export const CALM_STUDIO_CSS = `
   }
   .stage-wrap.fullscreen-mode .stage-dock:hover {
     opacity: 1;
+  }
+
+  /* Responsive breakpoints for sub-1024px screens */
+  @media (max-width: 960px) {
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      gap: 8px;
+    }
+    .loop-stepper {
+      display: none;
+    }
+    .topbar-right .btn span {
+      display: none;
+    }
+    .topbar-right .btn {
+      padding: 0 8px;
+    }
+    .sidebar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 40;
+      box-shadow: var(--shadow-lg);
+    }
+    .chat-panel {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 40;
+      width: min(380px, 100vw);
+      box-shadow: var(--shadow-lg);
+    }
+  }
+  @media (max-width: 640px) {
+    .workspace-name {
+      max-width: 130px;
+    }
+    .stage-dock {
+      max-width: calc(100% - 12px);
+      padding: 0 4px;
+    }
+    .stage-status-bar {
+      display: none;
+    }
   }
 `;

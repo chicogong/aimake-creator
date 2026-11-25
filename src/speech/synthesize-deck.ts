@@ -1,4 +1,4 @@
-import { readFile, lstat } from 'node:fs/promises';
+import { readFile, lstat, unlink } from 'node:fs/promises';
 import { basename } from 'node:path';
 import type { DeckDocument } from '../schema/types.js';
 import {
@@ -93,6 +93,8 @@ export interface SynthesizeDeckSpeechOptions {
   reuseSlideIds?: ReadonlySet<string> | readonly string[];
   estimate?: DeckSpeechUsageEstimate;
   aiDisclosure?: Partial<SpeechAiDisclosure>;
+  cleanIncompleteChunks?: boolean;
+  forceRecovery?: boolean;
 }
 
 export interface SynthesizeDeckSpeechResult {
@@ -219,7 +221,8 @@ async function readChunkReceipt(
   receiptPath: string,
   audioPath: string,
   subtitlesPath: string,
-  expected: Pick<DeckSpeechChunkArtifact, 'slideId' | 'chunkIndex' | 'textHash' | 'sessionId'>
+  expected: Pick<DeckSpeechChunkArtifact, 'slideId' | 'chunkIndex' | 'textHash' | 'sessionId'>,
+  options?: { autoClean?: boolean }
 ): Promise<{
   receipt: DeckSpeechChunkArtifact;
   audio: Buffer;
@@ -285,14 +288,27 @@ async function readChunkReceipt(
       [audioPath, subtitlesPath, receiptPath].map(async (filePath) => {
         try {
           await lstat(filePath);
-          return true;
+          return filePath;
         } catch (inner) {
-          if ((inner as NodeJS.ErrnoException).code === 'ENOENT') return false;
+          if ((inner as NodeJS.ErrnoException).code === 'ENOENT') return null;
           throw inner;
         }
       })
     );
-    if (leftovers.some(Boolean)) {
+    const existingLeftovers = leftovers.filter((p): p is string => Boolean(p));
+    if (existingLeftovers.length > 0) {
+      if (options?.autoClean) {
+        await Promise.all(
+          existingLeftovers.map(async (filePath) => {
+            try {
+              await unlink(filePath);
+            } catch {
+              // ignore
+            }
+          })
+        );
+        return undefined;
+      }
       throw new AimakeError(
         'SPEECH_RECOVERY_REQUIRED',
         'Partial speech chunk artifacts exist; refusing to repeat a provider call'
@@ -448,6 +464,7 @@ export async function synthesizeDeckSpeech(
   const provider = options.provider ?? offlineFixtureSpeechProvider();
   const offlineFixture = isOfflineFixtureProvider(provider);
   const runId = sanitizeSafeId(options.runId ?? basename(root), 'speech-run');
+  const autoClean = options.cleanIncompleteChunks ?? options.forceRecovery ?? true;
   const script = compileDeckSpeechScript(deck, { inputHash: options.inputHash });
   const configuration = resolveSpeechConfiguration(options.configuration, deck.frontmatter.locale);
 
@@ -552,7 +569,8 @@ export async function synthesizeDeckSpeech(
           chunkIndex,
           textHash: sha256Hex(text),
           sessionId,
-        }
+        },
+        { autoClean }
       );
       if (!cached) {
         allCached = false;
@@ -640,7 +658,8 @@ export async function synthesizeDeckSpeech(
           chunkIndex,
           textHash,
           sessionId,
-        }
+        },
+        { autoClean }
       );
       if (cached) {
         chunks.push(cached.receipt);
