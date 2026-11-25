@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import type { AspectRatio, DeckDocument, DeckSlide } from '../schema/types.js';
+import { parsePcmWav } from '../speech/wav.js';
 
 /**
  * Microsecond timebase constants (1 second = 1,000,000 us).
@@ -365,6 +366,7 @@ export async function buildCapCutDraft(
 
   // Global Audio Track if provided (e.g. single rendered master WAV)
   let masterAudioId: string | undefined;
+  let masterAudioDurationUs: number | undefined;
   if (options.audioTrackPath && fsSync.existsSync(options.audioTrackPath)) {
     masterAudioId = `mat_aud_master_${draftId.slice(0, 6)}`;
     const srcAudio = path.resolve(options.audioTrackPath);
@@ -372,11 +374,18 @@ export async function buildCapCutDraft(
     if (path.resolve(srcAudio) !== path.resolve(draftAudioPath)) {
       await fs.copyFile(srcAudio, draftAudioPath);
     }
+    try {
+      const audioBytes = await fs.readFile(draftAudioPath);
+      const parsedWav = parsePcmWav(audioBytes);
+      masterAudioDurationUs = Math.round(parsedWav.durationMs * US_PER_MS);
+    } catch {
+      // Non-WAV or unparsed audio; fallback handled below
+    }
     materials.audios.push({
       id: masterAudioId,
       type: 'record',
       path: draftAudioPath,
-      duration: 0, // Will be updated to totalUs
+      duration: masterAudioDurationUs ?? 0, // Will be finalized after slide loop
       material_name: path.basename(draftAudioPath),
     });
   }
@@ -482,14 +491,16 @@ export async function buildCapCutDraft(
   // Bind Master Audio to Track 4 if present
   if (masterAudioId) {
     const audioMat = materials.audios.find((a) => a.id === masterAudioId);
+    const audioDurationUs = masterAudioDurationUs ?? currentUs;
     if (audioMat) {
-      audioMat.duration = currentUs;
+      audioMat.duration = audioDurationUs;
     }
+    const safeSourceDuration = Math.min(audioDurationUs, currentUs);
     trackAudioVoice.segments.push({
       id: `seg_aud_master_${draftId.slice(0, 6)}`,
       material_id: masterAudioId,
       target_timerange: { start: 0, duration: currentUs },
-      source_timerange: { start: 0, duration: currentUs },
+      source_timerange: { start: 0, duration: safeSourceDuration },
       volume: 1.0,
       speed: 1.0,
       extra_material_refs: ['mat_spd_norm'],

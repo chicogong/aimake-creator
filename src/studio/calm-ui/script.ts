@@ -1627,6 +1627,13 @@ export const CALM_STUDIO_SCRIPT = `
       clearTimeout(phaseTimer2);
       aiDiv.innerHTML = '<span style="color:var(--hot);">❌ 执行失败：' + esc(err.message) + '</span>';
       list.scrollTop = list.scrollHeight;
+    } finally {
+      state.isSendingChat = false;
+      if (btnSendChat) btnSendChat.disabled = false;
+      if (chatInput) {
+        chatInput.disabled = false;
+        chatInput.focus();
+      }
     }
   }
 

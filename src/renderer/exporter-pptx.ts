@@ -468,7 +468,8 @@ export async function rasterizeMermaidToHighDpiPng(
       deviceScaleFactor: 3,
     });
 
-    const html = `<!DOCTYPE html>
+    try {
+      const html = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -497,17 +498,19 @@ ${themedSvg}
 </body>
 </html>`;
 
-    await page.setContent(html, { waitUntil: 'load' });
-    const locator = page.locator('svg');
-    const buf = await locator.screenshot({ omitBackground: true, type: 'png' });
-    await page.close();
+      await page.setContent(html, { waitUntil: 'load' });
+      const locator = page.locator('svg');
+      const buf = await locator.screenshot({ omitBackground: true, type: 'png' });
 
-    return `data:image/png;base64,${buf.toString('base64')}`;
+      return `data:image/png;base64,${buf.toString('base64')}`;
+    } finally {
+      await page.close().catch(() => {});
+    }
   } catch {
     return null;
   } finally {
     if (localBrowser) {
-      await localBrowser.close();
+      await localBrowser.close().catch(() => {});
     }
   }
 }

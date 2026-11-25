@@ -335,7 +335,10 @@ export async function compileDeckToHtml(
 
   let finalHtml = htmlSource.replace(
     /<html([^>]*)>/i,
-    `<html$1 lang="${doc.frontmatter.locale}">`
+    (_match, attrs) => {
+      const cleanedAttrs = attrs.replace(/\s*\blang=(['"])[^'"]*\1/gi, '');
+      return `<html${cleanedAttrs} lang="${doc.frontmatter.locale}">`;
+    }
   );
   if (finalHtml.includes('</head>')) {
     finalHtml = finalHtml.replace('</head>', `${localeCss}\n${bootstrapScript}\n</head>`);
