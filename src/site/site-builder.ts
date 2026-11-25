@@ -2001,7 +2001,7 @@ function sharedSiteCss(): string {
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), var(--inset-highlight);
     }
     .stage-viewport {
-      height: 480px;
+      height: 490px;
       background: #07080c;
       position: relative;
       overflow: hidden;
@@ -2093,9 +2093,9 @@ function sharedSiteCss(): string {
 
     /* Masterpiece 1: Apple Keynote Bento */
     .hss-bento {
-      background: radial-gradient(circle at 85% 15%, rgba(105, 81, 255, 0.18), transparent 60%),
-                  radial-gradient(circle at 15% 90%, rgba(56, 189, 248, 0.12), transparent 50%),
-                  #090b14;
+      background: radial-gradient(circle at 85% 15%, rgba(105, 81, 255, 0.22), transparent 60%),
+                  radial-gradient(circle at 15% 90%, rgba(56, 189, 248, 0.15), transparent 50%),
+                  #080a12;
       color: #f8fafc;
       justify-content: space-between;
     }
@@ -2109,7 +2109,7 @@ function sharedSiteCss(): string {
       letter-spacing: 0.05em;
     }
     .hss-bento-title {
-      font-size: clamp(18px, 2.2vw, 23px);
+      font-size: clamp(19px, 2.3vw, 24px);
       font-weight: 700;
       letter-spacing: -0.025em;
       margin: 10px 0 14px;
@@ -2119,64 +2119,83 @@ function sharedSiteCss(): string {
     .hss-bento-flow {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 9px 12px;
-      background: rgba(255, 255, 255, 0.04);
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.035);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      font-size: 11px;
+      border-radius: 9px;
+      font-size: 11.5px;
       font-family: var(--mono);
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       overflow-x: auto;
     }
     .hss-bento-node {
-      background: rgba(105, 81, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(105, 81, 255, 0.18);
       border: 1px solid rgba(105, 81, 255, 0.4);
       color: #c4b5fd;
-      padding: 3px 8px;
-      border-radius: 5px;
+      padding: 5px 10px;
+      border-radius: 6px;
       white-space: nowrap;
+      font-weight: 500;
     }
-    .hss-bento-arrow { color: #64748b; font-weight: bold; }
+    .hss-bento-node-icon {
+      width: 14px;
+      height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .hss-bento-arrow { color: #64748b; font-weight: bold; font-size: 13px; }
     .hss-bento-metrics {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
     .hss-bento-tile {
       background: rgba(255, 255, 255, 0.035);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 10px;
-      padding: 12px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      padding: 14px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      position: relative;
+      overflow: hidden;
     }
     .hss-bento-val {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 800;
       font-family: var(--mono);
       letter-spacing: -0.03em;
       line-height: 1.1;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
     }
     .hss-bento-label {
       font-size: 12px;
       font-weight: 600;
       color: #e2e8f0;
+      margin-bottom: 2px;
     }
     .hss-bento-sub {
       font-size: 10.5px;
       font-family: var(--mono);
       color: #94a3b8;
-      margin-top: 2px;
     }
 
     /* Masterpiece 2: Swiss Grid (Cream / Crimson / Black) */
     .hss-swiss {
-      background: #fcf9f2;
+      background: #faf8f2;
       color: #0f172a;
       justify-content: space-between;
       border-top: 5px solid #e11d48;
+      background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
+      background-size: 18px 18px;
     }
     .hss-swiss .hss-foot-action {
       border-top-color: rgba(15, 23, 42, 0.12);
@@ -2184,17 +2203,34 @@ function sharedSiteCss(): string {
     }
     .hss-swiss-grid-wrap {
       display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: 18px;
+      grid-template-columns: 88px 1fr;
+      gap: 20px;
       height: 100%;
     }
+    .hss-swiss-num-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 2px solid #0f172a;
+      padding-right: 14px;
+    }
     .hss-swiss-num {
-      font-size: 64px;
+      font-size: 72px;
       font-weight: 900;
-      line-height: 0.9;
+      line-height: 0.85;
       color: #e11d48;
       font-family: var(--sans);
-      letter-spacing: -0.05em;
+      letter-spacing: -0.06em;
+    }
+    .hss-swiss-vert-tag {
+      writing-mode: vertical-rl;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.15em;
+      color: #64748b;
+      font-weight: 700;
+      text-transform: uppercase;
+      transform: rotate(180deg);
     }
     .hss-swiss-main {
       display: flex;
@@ -2202,24 +2238,25 @@ function sharedSiteCss(): string {
       justify-content: space-between;
     }
     .hss-swiss-title {
-      font-size: clamp(18px, 2.2vw, 23px);
+      font-size: clamp(19px, 2.3vw, 24px);
       font-weight: 800;
       color: #0f172a;
       letter-spacing: -0.03em;
       line-height: 1.25;
-      margin: 0 0 14px;
+      margin: 0 0 12px;
     }
     .hss-swiss-table {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       background: #ffffff;
-      padding: 12px;
+      padding: 14px;
       border-radius: 8px;
-      border: 1px solid rgba(15, 23, 42, 0.1);
+      border: 1.5px solid #0f172a;
+      box-shadow: 3px 3px 0 #0f172a;
     }
     .hss-swiss-cell { font-size: 11.5px; line-height: 1.5; color: #334155; }
-    .hss-swiss-cell strong { color: #0f172a; display: block; font-size: 13px; }
+    .hss-swiss-cell strong { color: #0f172a; display: block; font-size: 13px; font-weight: 700; }
 
     /* Masterpiece 3: Linear Geek Dark (IDE + Compiled Split) */
     .hss-linear {
@@ -2238,63 +2275,114 @@ function sharedSiteCss(): string {
     .hss-code-win {
       background: #0d1017;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 9px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 12px 14px;
       font-family: var(--mono);
       font-size: 11px;
-      line-height: 1.55;
+      line-height: 1.6;
       color: #94a3b8;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .hss-code-win-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 10.5px;
+      color: #64748b;
     }
     .hss-code-win .kw { color: #f472b6; }
     .hss-code-win .str { color: #34d399; }
     .hss-code-win .prop { color: #38bdf8; }
+    .hss-code-win .heading { color: #fbbf24; font-weight: bold; }
     .hss-preview-win {
-      background: radial-gradient(circle at 70% 30%, rgba(105, 81, 255, 0.22), transparent 70%), #111420;
+      background: radial-gradient(circle at 75% 25%, rgba(105, 81, 255, 0.25), transparent 70%), #111422;
       border: 1px solid rgba(105, 81, 255, 0.35);
-      border-radius: 9px;
-      padding: 14px;
+      border-radius: 10px;
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .hss-preview-card-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     /* Masterpiece 4: WeChat In-Depth Editorial (Phone Mockup) */
     .hss-wechat {
-      background: #0b0d14;
+      background: #090b12;
       color: #f3f4f6;
       justify-content: space-between;
     }
     .hss-phone-frame {
-      max-width: 420px;
+      max-width: 440px;
       width: 100%;
       margin: 0 auto;
-      background: #12141e;
+      background: #11131d;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 14px;
-      padding: 16px 20px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      border-radius: 18px;
+      padding: 14px 18px;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       margin-bottom: 12px;
+      position: relative;
+    }
+    .hss-phone-island {
+      width: 80px;
+      height: 18px;
+      background: #000000;
+      border-radius: 10px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 6px;
+    }
+    .hss-phone-island-cam {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #1e1b4b;
+      border: 1px solid #312e81;
     }
     .hss-quote-callout {
       border-left: 3px solid #f59e0b;
       padding: 8px 12px;
       background: rgba(245, 158, 11, 0.08);
       border-radius: 0 6px 6px 0;
-      font-size: 12.5px;
+      font-size: 12px;
       line-height: 1.6;
       color: #fde68a;
       font-style: italic;
       margin: 8px 0;
     }
+    .hss-wechat-stats {
+      display: flex;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #94a3b8;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
 
     /* Masterpiece 5: Cinema 9:16 Video + CapCut 4-Track Timeline */
     .hss-video {
-      background: #090a12;
+      background: #080910;
       color: #f8fafc;
       justify-content: space-between;
     }
@@ -2307,26 +2395,55 @@ function sharedSiteCss(): string {
       min-height: 0;
     }
     .hss-video-canvas {
-      width: 120px;
-      height: 190px;
-      background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
-      border: 1px solid rgba(167, 139, 250, 0.4);
-      border-radius: 10px;
+      width: 124px;
+      height: 196px;
+      background: linear-gradient(180deg, #1e1b4b 0%, #0c0e17 100%);
+      border: 1px solid rgba(167, 139, 250, 0.45);
+      border-radius: 12px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       padding: 10px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
       flex-shrink: 0;
+    }
+    .hss-video-eq-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 24px;
+      justify-content: center;
+      margin: 4px 0;
+    }
+    .hss-eq-bar {
+      width: 3px;
+      border-radius: 1.5px;
+      background: #a78bfa;
+      animation: hss-eq-bounce 1s ease-in-out infinite alternate;
+    }
+    .hss-eq-bar:nth-child(1) { height: 8px; animation-delay: 0.1s; }
+    .hss-eq-bar:nth-child(2) { height: 16px; animation-delay: 0.25s; }
+    .hss-eq-bar:nth-child(3) { height: 22px; animation-delay: 0.4s; }
+    .hss-eq-bar:nth-child(4) { height: 12px; animation-delay: 0.15s; }
+    .hss-eq-bar:nth-child(5) { height: 18px; animation-delay: 0.3s; }
+    .hss-eq-bar:nth-child(6) { height: 24px; animation-delay: 0.5s; }
+    .hss-eq-bar:nth-child(7) { height: 14px; animation-delay: 0.2s; }
+    .hss-eq-bar:nth-child(8) { height: 9px; animation-delay: 0.35s; }
+    @keyframes hss-eq-bounce {
+      0% { transform: scaleY(0.35); }
+      100% { transform: scaleY(1); }
     }
     .hss-timeline-box {
       flex: 1;
       background: #0d0f18;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 9px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     /* Sections */
@@ -2818,7 +2935,7 @@ function sharedSiteCss(): string {
       box-shadow: var(--shadow-obsidian-hover);
     }
     .work-preview {
-      height: 168px;
+      height: 184px;
       border-radius: 12px;
       padding: 16px 18px;
       margin-bottom: 14px;
@@ -2829,12 +2946,17 @@ function sharedSiteCss(): string {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) var(--ease-spring);
+    }
+    .work-card:hover .work-preview {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(105, 81, 255, 0.4);
     }
     .work-preview-swiss {
-      background: #f6f4ee;
+      background: #faf8f2;
       color: #111111;
-      background-image: linear-gradient(to right, rgba(17,17,17,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,17,17,0.06) 1px, transparent 1px);
-      background-size: 24px 24px;
+      background-image: radial-gradient(rgba(17,17,17,0.12) 1px, transparent 1px);
+      background-size: 16px 16px;
     }
     .work-preview-swiss::before {
       content: '';
@@ -2845,9 +2967,40 @@ function sharedSiteCss(): string {
       height: 4px;
       background: #e11d48;
     }
+    .wp-swiss-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      background: #ffffff;
+      border: 1px solid #111111;
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 9.5px;
+      line-height: 1.35;
+      color: #334155;
+    }
+    .wp-swiss-specs strong { color: #111111; display: block; font-size: 10.5px; }
     .work-preview-linear {
       background: radial-gradient(circle at 80% 0%, rgba(105,81,255,0.32), transparent 60%), #0a0d14;
       color: #f8fafc;
+    }
+    .wp-linear-flow {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      padding: 4px 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 5px;
+    }
+    .wp-linear-node {
+      background: rgba(105, 81, 255, 0.25);
+      border: 1px solid rgba(105, 81, 255, 0.4);
+      color: #c4b5fd;
+      padding: 2px 6px;
+      border-radius: 4px;
     }
     .work-preview-bento {
       background: radial-gradient(circle at 80% 10%, rgba(105, 81, 255, 0.22), transparent 60%), #0c0e16;
@@ -2855,22 +3008,33 @@ function sharedSiteCss(): string {
     }
     .wp-bento-mini-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5px;
-      margin-top: 6px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin-top: 4px;
     }
     .wp-bento-tile {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 5px;
-      padding: 3px 6px;
+      border-radius: 6px;
+      padding: 5px 6px;
       display: flex;
       flex-direction: column;
-      gap: 1px;
+      gap: 2px;
     }
     .work-preview-wechat {
       background: linear-gradient(135deg, #141720 0%, #0d1017 100%);
       color: #f1f5f9;
+    }
+    .wp-wechat-quote-bar {
+      border-left: 2px solid #f59e0b;
+      padding: 4px 8px;
+      background: rgba(245, 158, 11, 0.08);
+      font-size: 10.5px;
+      line-height: 1.45;
+      color: #fde68a;
+      font-style: italic;
+      border-radius: 0 4px 4px 0;
+      margin: 4px 0;
     }
     .work-preview-video {
       background: linear-gradient(160deg, #161028 0%, #090b12 100%);
@@ -2885,13 +3049,13 @@ function sharedSiteCss(): string {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 4px;
-      margin-top: 5px;
+      margin-top: 4px;
     }
     .wp-zukai-cell {
       background: #ffffff;
       border: 1px solid rgba(2, 132, 199, 0.18);
       border-radius: 5px;
-      padding: 3px 6px;
+      padding: 4px 6px;
       font-size: 9.5px;
       line-height: 1.3;
     }
@@ -2899,9 +3063,28 @@ function sharedSiteCss(): string {
       background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
       color: #0f172a;
     }
+    .wp-linkedin-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin: 4px 0;
+    }
+    .wp-linkedin-step-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 9.5px;
+      color: #334155;
+      font-family: var(--mono);
+      background: rgba(29, 78, 216, 0.06);
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
     .work-preview-riso {
       background: #f4efe6;
       color: #1d4ed8;
+      background-image: radial-gradient(rgba(29, 78, 216, 0.15) 1px, transparent 1px);
+      background-size: 12px 12px;
     }
     .wp-eyebrow {
       font-family: var(--mono);
@@ -3802,12 +3985,17 @@ function renderLandingHtml(
       tplId: 'xhs-swiss-grid',
       previewHtml: `
         <div class="work-preview work-preview-swiss">
-          <div class="wp-eyebrow"><span>SWISS GRID · 3:4</span><span style="color:#e11d48;">01 / 04</span></div>
-          <div class="wp-headline">DeepSeek-R1 本地蒸馏<br/>与端侧知识库全景评测</div>
+          <div class="wp-eyebrow"><span>SWISS GRID · 3:4</span><span style="color:#e11d48;font-weight:700;">01 / 04</span></div>
+          <div class="wp-headline">DeepSeek-R1 本地蒸馏全景</div>
+          <div class="wp-swiss-specs">
+            <div><strong>671B 蒸馏</strong>端侧 Ollama</div>
+            <div><strong>Q4_K_M</strong>低显存占用</div>
+            <div><strong>112 tok/s</strong>本地高吞吐</div>
+            <div><strong>Style DNA</strong>反 AI 假大空</div>
+          </div>
           <div class="wp-chips">
-            <span class="wp-chip-light">压缩比 92%</span>
-            <span class="wp-chip-light">延迟 &lt;120ms</span>
-            <span class="wp-chip-light" style="color:#e11d48;border-color:rgba(225,29,72,0.3);">3x PNG</span>
+            <span class="wp-chip-light" style="color:#0f172a;font-weight:700;">CH-8001</span>
+            <span class="wp-chip-light" style="color:#e11d48;border-color:rgba(225,29,72,0.3);">3x Retina PNG</span>
           </div>
         </div>`,
     },
@@ -3825,12 +4013,18 @@ function renderLandingHtml(
       tplId: 'ppt-linear-dark',
       previewHtml: `
         <div class="work-preview work-preview-linear">
-          <div class="wp-eyebrow"><span style="color:#a5b4fc;">LINEAR DARK · 16:9</span><span>OOXML</span></div>
-          <div class="wp-headline">AI Agent 端到端闭环架构</div>
+          <div class="wp-eyebrow"><span style="color:#a5b4fc;">LINEAR DARK · 16:9</span><span style="color:#6ee7b7;">OOXML NATIVE</span></div>
+          <div class="wp-headline">AI Agent 端到端闭环体系</div>
+          <div class="wp-linear-flow">
+            <span class="wp-linear-node">Agent Core</span>
+            <span style="color:#64748b;">➔</span>
+            <span class="wp-linear-node" style="background:rgba(56,189,248,0.25);border-color:rgba(56,189,248,0.4);color:#7dd3fc;">AST Engine</span>
+            <span style="color:#64748b;">➔</span>
+            <span class="wp-linear-node" style="background:rgba(16,185,129,0.25);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">5 Native Formats</span>
+          </div>
           <div class="wp-chips">
-            <span class="wp-chip" style="border-color:rgba(105,81,255,0.5);color:#c4b5fd;">95% Token↓</span>
-            <span class="wp-chip">80ms 编译</span>
-            <span class="wp-chip" style="color:#6ee7b7;">5 介质</span>
+            <span class="wp-chip" style="border-color:rgba(105,81,255,0.5);color:#c4b5fd;">双击可编辑文本框</span>
+            <span class="wp-chip" style="color:#6ee7b7;">80ms 极速</span>
           </div>
         </div>`,
     },
@@ -3849,10 +4043,24 @@ function renderLandingHtml(
       previewHtml: `
         <div class="work-preview work-preview-bento">
           <div class="wp-eyebrow"><span style="color:#a5b4fc;">BENTO LAUNCH · 16:9</span><span style="color:#38bdf8;">KEYNOTE</span></div>
+          <div class="wp-headline">2026 旗舰级产品便当盒发布会</div>
           <div class="wp-bento-mini-grid">
-            <div class="wp-bento-tile"><span style="color:#94a3b8;font-size:9px;">TOKEN</span><strong style="font-size:12px;color:#fff;">100B+</strong></div>
-            <div class="wp-bento-tile"><span style="color:#94a3b8;font-size:9px;">SPEED</span><strong style="font-size:12px;color:#34d399;">74ms</strong></div>
-            <div class="wp-bento-tile" style="grid-column:span 2;"><span style="color:#94a3b8;font-size:9px;">ARCH</span><strong style="font-size:11px;color:#c4b5fd;">Local First · Zero Slop</strong></div>
+            <div class="wp-bento-tile">
+              <span style="color:#94a3b8;font-size:9px;">TOKEN 吞吐</span>
+              <strong style="font-size:13px;color:#fff;">100B+</strong>
+            </div>
+            <div class="wp-bento-tile">
+              <span style="color:#94a3b8;font-size:9px;">确定性直出</span>
+              <strong style="font-size:13px;color:#34d399;">74ms</strong>
+            </div>
+            <div class="wp-bento-tile">
+              <span style="color:#94a3b8;font-size:9px;">端侧隐私</span>
+              <strong style="font-size:12px;color:#c4b5fd;">0 KB 泄露</strong>
+            </div>
+          </div>
+          <div class="wp-chips">
+            <span class="wp-chip">Local First</span>
+            <span class="wp-chip" style="color:#38bdf8;">Apple Bento Grid</span>
           </div>
         </div>`,
     },
@@ -3870,11 +4078,14 @@ function renderLandingHtml(
       tplId: 'apple-dark-keynote',
       previewHtml: `
         <div class="work-preview work-preview-wechat">
-          <div class="wp-eyebrow"><span style="color:#fbbf24;">EDITORIAL · INLINE CSS</span><span>Cmd+V</span></div>
-          <div class="wp-headline" style="border-left:2px solid #6951ff;padding-left:9px;">跑完 1000 亿 Token 后<br/>本地创作飞轮复盘</div>
+          <div class="wp-eyebrow"><span style="color:#fbbf24;">EDITORIAL · INLINE CSS</span><span>阅读 8 分钟</span></div>
+          <div class="wp-headline">跑完 1000 亿 Token 后：超级个体创作飞轮</div>
+          <div class="wp-wechat-quote-bar">
+            “真正的认知护城河，在于本地沉淀的私有知识资产。”
+          </div>
           <div class="wp-chips">
-            <span class="wp-chip">Zero External CSS</span>
-            <span class="wp-chip">防盗链清洗</span>
+            <span class="wp-chip" style="color:#fbbf24;">❤️ 8.9k 赞</span>
+            <span class="wp-chip">100% 纯内联样式</span>
           </div>
         </div>`,
     },
@@ -3892,12 +4103,16 @@ function renderLandingHtml(
       tplId: 'video-cinema-talk',
       previewHtml: `
         <div class="work-preview work-preview-video">
-          <div class="wp-eyebrow"><span style="color:#c4b5fd;">CINEMA 9:16 · 60FPS</span><span style="color:#34d399;">CAPCUT</span></div>
+          <div class="wp-eyebrow"><span style="color:#c4b5fd;">CINEMA 9:16 · 60FPS</span><span style="color:#34d399;">-14 LUFS</span></div>
           <div class="wp-headline">午夜播客 · 四语种 Style DNA</div>
           <div class="wp-timeline">
             <div class="wp-track"><span style="width:16px;">V1</span><div class="wp-track-bar"><span style="width:45%;background:#6951ff;"></span><span style="width:52%;background:#8b5cf6;"></span></div></div>
             <div class="wp-track"><span style="width:16px;">T1</span><div class="wp-track-bar"><span style="width:30%;background:#f59e0b;"></span><span style="width:35%;background:#fbbf24;"></span><span style="width:30%;background:#f59e0b;"></span></div></div>
             <div class="wp-track"><span style="width:16px;">A1</span><div class="wp-track-bar"><span style="width:94%;background:#10b981;"></span></div></div>
+          </div>
+          <div class="wp-chips">
+            <span class="wp-chip" style="color:#34d399;">剪映工程</span>
+            <span class="wp-chip">微秒级音画同步</span>
           </div>
         </div>`,
     },
@@ -3915,12 +4130,17 @@ function renderLandingHtml(
       tplId: 'x-zukai-quad',
       previewHtml: `
         <div class="work-preview work-preview-zukai">
-          <div class="wp-eyebrow" style="color:#0284c7;"><span>ZUKAI QUAD · 1:1</span><span>構造図解</span></div>
+          <div class="wp-eyebrow" style="color:#0284c7;"><span>ZUKAI QUAD · 1:1</span><span>構造図解モデル</span></div>
+          <div class="wp-headline" style="color:#0369a1;">日系「図解」思考法 · 四象限</div>
           <div class="wp-zukai-grid">
             <div class="wp-zukai-cell"><span style="color:#0369a1;font-weight:700;">課題</span><br/><span style="font-size:9px;color:#475569;">混沌情報</span></div>
             <div class="wp-zukai-cell"><span style="color:#0369a1;font-weight:700;">洞察</span><br/><span style="font-size:9px;color:#475569;">本質抽出</span></div>
             <div class="wp-zukai-cell"><span style="color:#0369a1;font-weight:700;">構造</span><br/><span style="font-size:9px;color:#475569;">四象限化</span></div>
-            <div class="wp-zukai-cell" style="background:#e0f2fe;"><span style="color:#0284c7;font-weight:700;">行動</span><br/><span style="font-size:9px;color:#0369a1;">実行直結</span></div>
+            <div class="wp-zukai-cell" style="background:#e0f2fe;"><span style="color:#0284c7;font-weight:700;">行動</span><br/><span style="font-size:9px;color:#0369a1;">即時実行</span></div>
+          </div>
+          <div class="wp-chips">
+            <span class="wp-chip-light" style="color:#0284c7;">JIS 禁则排版</span>
+            <span class="wp-chip-light">1:1 矢量 SVG</span>
           </div>
         </div>`,
     },
@@ -3938,11 +4158,16 @@ function renderLandingHtml(
       tplId: 'linkedin-exec-carousel',
       previewHtml: `
         <div class="work-preview work-preview-linkedin">
-          <div class="wp-eyebrow" style="color:#1d4ed8;"><span>EXECUTIVE CAROUSEL · 4:5</span><span>01 / 06</span></div>
-          <div class="wp-headline" style="color:#0f172a;">MCP Protocol &amp; Local<br/>Brain Architecture</div>
+          <div class="wp-eyebrow" style="color:#1d4ed8;"><span>EXECUTIVE CAROUSEL · 4:5</span><span>SLIDE 01 / 06</span></div>
+          <div class="wp-headline" style="color:#0f172a;">MCP Protocol &amp; Local Brain Architecture</div>
+          <div class="wp-linkedin-steps">
+            <div class="wp-linkedin-step-item"><span style="color:#1d4ed8;font-weight:700;">01</span> <span>Context Ingestion (Ollama)</span></div>
+            <div class="wp-linkedin-step-item"><span style="color:#1d4ed8;font-weight:700;">02</span> <span>Deterministic AST Engine</span></div>
+            <div class="wp-linkedin-step-item"><span style="color:#1d4ed8;font-weight:700;">03</span> <span>Multi-Format Commercial Deliver</span></div>
+          </div>
           <div class="wp-chips">
-            <span class="wp-chip-light">16 Atomic Tools</span>
-            <span class="wp-chip-light" style="color:#1d4ed8;">PDF Vector</span>
+            <span class="wp-chip-light" style="color:#1d4ed8;">16 Atomic Tools</span>
+            <span class="wp-chip-light">Vector PDF Ready</span>
           </div>
         </div>`,
     },
@@ -3961,10 +4186,14 @@ function renderLandingHtml(
       previewHtml: `
         <div class="work-preview work-preview-riso">
           <div class="wp-eyebrow" style="color:#e11d48;"><span>RISOGRAPH 2-INK · 1:1</span><span>ISSUE #26</span></div>
-          <div class="wp-headline" style="color:#1d4ed8;font-size:15px;letter-spacing:-0.03em;">WORLD MODELS 2026<br/><span style="color:#e11d48;">空间感知与动作决策</span></div>
+          <div class="wp-headline" style="color:#1d4ed8;font-size:14.5px;letter-spacing:-0.03em;">WORLD MODELS 2026<br/><span style="color:#e11d48;">具身智能 · 空间感知与动作决策</span></div>
+          <div style="font-family:var(--mono);font-size:9.5px;color:#475569;display:flex;justify-content:space-between;padding:3px 0;border-top:1px dashed rgba(29,78,216,0.3);border-bottom:1px dashed rgba(29,78,216,0.3);">
+            <span>COBALT BLUE #1D4ED8</span>
+            <span>CORAL RED #E11D48</span>
+          </div>
           <div class="wp-chips">
-            <span class="wp-chip-light" style="border-color:rgba(29,78,216,0.3);color:#1d4ed8;">COBALT + CORAL</span>
-            <span class="wp-chip-light">SVG</span>
+            <span class="wp-chip-light" style="border-color:rgba(29,78,216,0.3);color:#1d4ed8;">DUOTONE PRINT</span>
+            <span class="wp-chip-light" style="color:#e11d48;">孔版双色矢量</span>
           </div>
         </div>`,
     },
@@ -4111,37 +4340,58 @@ function renderLandingHtml(
           <div class="hero-stage-slide hss-bento active" data-slide="bento">
             <div>
               <div class="hss-bento-head">
-                <span>PRESENTATION · KEYNOTE BENTO</span>
-                <span style="color:#a78bfa;">16:9 · SLIDE 01 / 04</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;"><span class="pulse-dot"></span>PRESENTATION · KEYNOTE BENTO</span>
+                <span style="color:#a78bfa;">16:9 · 4K MASTER · SLIDE 01 / 04</span>
               </div>
               <div class="hss-bento-title">为什么纯本地 LLM Wiki 是超级个体的护城河</div>
               <div class="hss-bento-flow">
-                <span class="hss-bento-node">全网素材零损耗摄入</span>
+                <span class="hss-bento-node">
+                  <span class="hss-bento-node-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/></svg></span>
+                  全网素材零损耗摄入
+                </span>
                 <span class="hss-bento-arrow">→</span>
-                <span class="hss-bento-node" style="background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.4);color:#7dd3fc;">Karpathy LLM Wiki 知识萃取</span>
+                <span class="hss-bento-node" style="background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.4);color:#7dd3fc;">
+                  <span class="hss-bento-node-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+                  Karpathy LLM Wiki 知识萃取
+                </span>
                 <span class="hss-bento-arrow">→</span>
-                <span class="hss-bento-node" style="background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">5 大原生商业介质直出</span>
+                <span class="hss-bento-node" style="background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">
+                  <span class="hss-bento-node-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                  5 大原生商业介质直出
+                </span>
               </div>
               <div class="hss-bento-metrics">
                 <div class="hss-bento-tile">
-                  <div class="hss-bento-val" style="color:#34d399;">95%</div>
+                  <div class="hss-bento-val" style="color:#34d399;">
+                    <span>95%</span>
+                    <svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M1 14L8 10L16 12L27 2" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
                   <div class="hss-bento-label">上下文压缩率</div>
-                  <div class="hss-bento-sub">index.md &lt;= 3,000t</div>
+                  <div class="hss-bento-sub">index.md &lt;= 3,000t 恒定约束</div>
                 </div>
                 <div class="hss-bento-tile">
-                  <div class="hss-bento-val" style="color:#c4b5fd;">100%</div>
+                  <div class="hss-bento-val" style="color:#c4b5fd;">
+                    <span>100%</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                  </div>
                   <div class="hss-bento-label">纯本地端侧隐私</div>
-                  <div class="hss-bento-sub">0 KB 数据云端外传</div>
+                  <div class="hss-bento-sub">0 KB 数据云端外传 · 零外泄</div>
                 </div>
                 <div class="hss-bento-tile">
-                  <div class="hss-bento-val" style="color:#38bdf8;">&lt; 80ms</div>
+                  <div class="hss-bento-val" style="color:#38bdf8;">
+                    <span>&lt; 80ms</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  </div>
                   <div class="hss-bento-label">确定性直出延迟</div>
-                  <div class="hss-bento-sub">毫秒级极速编译</div>
+                  <div class="hss-bento-sub">毫秒级极速无损编译</div>
                 </div>
               </div>
             </div>
             <div class="hss-foot-action">
-              <span>确定性排版内核 · 双击原生可编辑文本框与矢量形状</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;">
+                <kbd style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:4px;padding:1px 5px;font-family:var(--mono);font-size:10px;color:#cbd5e1;">Apple Keynote / OOXML .pptx</kbd>
+                确定性排版内核 · 双击原生可编辑文本框与矢量形状
+              </span>
               <a href="/playground/?sample=bento&template=apple-bento-launch" class="stage-remix-btn">做同款作品 ↗</a>
             </div>
           </div>
@@ -4150,24 +4400,30 @@ function renderLandingHtml(
           <div class="hero-stage-slide hss-swiss" data-slide="swiss">
             <div>
               <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#64748b;margin-bottom:8px;">
-                <span>NEUE GRAFIK · ISSUE 26</span>
-                <span style="color:#e11d48;font-weight:700;">3:4 · SWISS MODERNIST</span>
+                <span style="font-weight:700;">NEUE GRAFIK · ZÜRICH ISSUE 26</span>
+                <span style="color:#e11d48;font-weight:700;">3:4 · SWISS MODERNIST GRID</span>
               </div>
               <div class="hss-swiss-grid-wrap">
-                <div class="hss-swiss-num">01</div>
+                <div class="hss-swiss-num-col">
+                  <div class="hss-swiss-num">01</div>
+                  <div class="hss-swiss-vert-tag">EST. 1958 · DIE NEUE GRAPHIK</div>
+                </div>
                 <div class="hss-swiss-main">
                   <div class="hss-swiss-title">DeepSeek-R1 本地蒸馏<br/>与端侧知识库全景评测</div>
                   <div class="hss-swiss-table">
-                    <div class="hss-swiss-cell"><strong>671B 满血蒸馏</strong>端侧 Ollama 运行</div>
-                    <div class="hss-swiss-cell"><strong>Q4_K_M 量化</strong>极低显存占用</div>
-                    <div class="hss-swiss-cell"><strong>112 tok/s</strong>高吞吐本地推理</div>
-                    <div class="hss-swiss-cell"><strong>私有 Style DNA</strong>反 AI 假大空腔调</div>
+                    <div class="hss-swiss-cell"><strong>671B 满血蒸馏</strong>端侧 Ollama / vLLM 零损运行</div>
+                    <div class="hss-swiss-cell"><strong>Q4_K_M 量化</strong>极低显存占用 · Apple Silicon</div>
+                    <div class="hss-swiss-cell"><strong>112 tok/s</strong>高吞吐本地流式极速推理</div>
+                    <div class="hss-swiss-cell"><strong>私有 Style DNA</strong>反 AI 假大空 · 注入个人风格</div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="hss-foot-action">
-              <span>瑞士国际主义网格 · 严谨排版无孤字断行</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;">
+                <span style="font-family:var(--mono);background:#0f172a;color:#fff;padding:1px 6px;border-radius:3px;font-size:10px;">CH-8001</span>
+                瑞士国际主义网格 · 严谨排版无孤字断行 · 3x Retina PNG
+              </span>
               <a href="/playground/?sample=deepseek&template=xhs-swiss-grid" class="stage-remix-btn stage-remix-btn-dark">做同款图文 ↗</a>
             </div>
           </div>
@@ -4176,30 +4432,44 @@ function renderLandingHtml(
           <div class="hero-stage-slide hss-linear" data-slide="linear">
             <div style="display:flex;flex-direction:column;flex:1;min-height:0;">
               <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#94a3b8;margin-bottom:10px;">
-                <span>MARKDOWN IDE ➔ OOXML PPTX</span>
+                <span>MARKDOWN AST ➔ NATIVE OOXML PPTX</span>
                 <span style="color:#818cf8;">16:9 · LINEAR GEEK DARK</span>
               </div>
               <div class="hss-linear-split">
                 <div class="hss-code-win">
-                  <div style="color:#64748b;margin-bottom:6px;">// decks/agent.deck.md</div>
+                  <div class="hss-code-win-bar">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span>decks/agent.deck.md</span>
+                  </div>
                   <div><span class="kw">---</span></div>
-                  <div><span class="prop">title</span>: <span class="str">AI Agent 闭环架构</span></div>
-                  <div><span class="prop">template</span>: <span class="str">ppt-linear-dark</span></div>
-                  <div><span class="prop">aspect</span>: <span class="str">16:9</span></div>
+                  <div><span class="prop">title</span>: <span class="str">"2026 AI Agent 闭环体系"</span></div>
+                  <div><span class="prop">template</span>: <span class="str">"ppt-linear-dark"</span></div>
+                  <div><span class="prop">aspect</span>: <span class="str">"16:9"</span></div>
                   <div><span class="kw">---</span></div>
-                  <div style="margin-top:6px;"><span class="prop"># 2026 AI Agent 闭环体系</span></div>
+                  <div style="margin-top:4px;"><span class="heading"># 2026 AI Agent 闭环体系</span></div>
                   <div>- 100% 本地优先运行时</div>
-                  <div>- 零云端隐私泄露</div>
-                  <div>- 80ms 编译交付</div>
+                  <div>- 0 KB 云端隐私外泄</div>
+                  <div>- 80ms 毫秒级极速编译</div>
                 </div>
                 <div class="hss-preview-win">
-                  <div style="font-size:13px;font-weight:700;color:#f8fafc;letter-spacing:-0.02em;">Compiled PPTX Deliverables</div>
-                  <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
-                    <div style="font-size:11px;color:#c4b5fd;background:rgba(105,81,255,0.18);padding:5px 8px;border-radius:5px;border:1px solid rgba(105,81,255,0.3);">✓ 微软 OOXML .pptx 原生文本框</div>
-                    <div style="font-size:11px;color:#6ee7b7;background:rgba(16,185,129,0.18);padding:5px 8px;border-radius:5px;border:1px solid rgba(16,185,129,0.3);">✓ 3x Retina PNG 社交超清图</div>
-                    <div style="font-size:11px;color:#7dd3fc;background:rgba(56,189,248,0.18);padding:5px 8px;border-radius:5px;border:1px solid rgba(56,189,248,0.3);">✓ 矢量图表可二次自由编辑</div>
+                  <div>
+                    <div style="font-size:10.5px;font-family:var(--mono);color:#a78bfa;margin-bottom:4px;">OUTPUT DELIVERABLE</div>
+                    <div style="font-size:14px;font-weight:700;color:#f8fafc;letter-spacing:-0.02em;">2026 AI Agent 闭环体系</div>
                   </div>
-                  <div style="font-size:10.5px;font-family:var(--mono);color:#94a3b8;">双击直接在 PowerPoint 编辑文字</div>
+                  <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
+                    <div class="hss-preview-card-item" style="color:#c4b5fd;background:rgba(105,81,255,0.18);border-color:rgba(105,81,255,0.35);">
+                      <span>✓</span><span>微软 OOXML .pptx 原生文本框</span>
+                    </div>
+                    <div class="hss-preview-card-item" style="color:#6ee7b7;background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.35);">
+                      <span>✓</span><span>3x Retina PNG 社交超清原图</span>
+                    </div>
+                    <div class="hss-preview-card-item" style="color:#7dd3fc;background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.35);">
+                      <span>✓</span><span>矢量图表二次自由拆解与调色</span>
+                    </div>
+                  </div>
+                  <div style="font-size:10.5px;font-family:var(--mono);color:#94a3b8;display:flex;align-items:center;gap:6px;">
+                    <span style="color:#34d399;">●</span>双击在 Office / Keynote 中直接编辑
+                  </div>
                 </div>
               </div>
             </div>
@@ -4212,33 +4482,44 @@ function renderLandingHtml(
           <!-- Slide 4: WeChat In-Depth Editorial -->
           <div class="hero-stage-slide hss-wechat" data-slide="wechat">
             <div class="hss-phone-frame">
-              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#94a3b8;font-family:var(--mono);">
-                <span>深度技术特稿 · W47</span>
-                <span style="color:#34d399;">阅读 6 分钟</span>
-              </div>
               <div>
-                <div style="font-size:16px;font-weight:700;color:#f8fafc;margin:6px 0;line-height:1.35;">超级个体的护城河：从信息洪流到私有知识复利</div>
+                <div class="hss-phone-island">
+                  <div class="hss-phone-island-cam"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#94a3b8;font-family:var(--mono);margin-bottom:6px;">
+                  <span>深度技术特稿 · W47</span>
+                  <span style="color:#34d399;">阅读 6 分钟</span>
+                </div>
+                <div style="font-size:15px;font-weight:700;color:#f8fafc;margin:6px 0 8px;line-height:1.35;">超级个体的护城河：从信息洪流到私有知识复利</div>
                 <div class="hss-quote-callout">
                   “真正的超级个体，不在于每天订阅了多少 AI 工具，而在于本地沉淀了多少不可替代的私有认知资产。”
                 </div>
-                <div style="font-size:11.5px;color:#94a3b8;line-height:1.55;">
-                  基于 Karpathy LLM Wiki 架构与纯内联 CSS 渲染，彻底根治微信排版样式被微信后台剥离的顽疾。
+                <div style="font-size:11px;color:#94a3b8;line-height:1.5;margin-bottom:8px;">
+                  基于 Karpathy LLM Wiki 架构与纯内联 CSS 渲染，彻底根治微信排版样式被后台剥离的顽疾。
                 </div>
               </div>
-              <div style="display:flex;gap:6px;font-family:var(--mono);font-size:10.5px;color:#cbd5e1;">
-                <span style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;">100% 纯内联样式</span>
-                <span style="background:rgba(16,185,129,0.15);color:#6ee7b7;padding:2px 6px;border-radius:4px;">一键草稿箱</span>
+              <div>
+                <div class="hss-wechat-stats">
+                  <span>❤️ 8,924 赞</span>
+                  <span>🌟 3,412 收藏</span>
+                  <span>💬 526 评论</span>
+                  <span>在看 1,890</span>
+                </div>
+                <div style="display:flex;gap:6px;font-family:var(--mono);font-size:10px;color:#cbd5e1;margin-top:8px;">
+                  <span style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;">100% 纯内联样式</span>
+                  <span style="background:rgba(16,185,129,0.15);color:#6ee7b7;padding:2px 6px;border-radius:4px;">一键粘贴无损</span>
+                </div>
               </div>
             </div>
             <div class="hss-foot-action">
-              <span>微信公众号纯内联富文本 · 样式零丢失</span>
+              <span>微信公众号纯内联富文本 · 样式零丢失 · 告别第三方排版工具</span>
               <a href="/playground/?sample=wechat&template=wechat-clean-editorial" class="stage-remix-btn">做同款长文 ↗</a>
             </div>
           </div>
 
           <!-- Slide 5: Cinema 9:16 Video + CapCut 4-Track Timeline -->
           <div class="hero-stage-slide hss-video" data-slide="video">
-            <div>
+            <div style="display:flex;flex-direction:column;flex:1;min-height:0;">
               <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#94a3b8;margin-bottom:8px;">
                 <span>60FPS CINEMA TALK · CAPCUT PROJECT</span>
                 <span style="color:#34d399;">-14 LUFS / TP -1.0</span>
@@ -4246,35 +4527,53 @@ function renderLandingHtml(
               <div class="hss-video-top">
                 <div class="hss-video-canvas">
                   <div style="font-size:9.5px;font-family:var(--mono);color:#c4b5fd;">9:16 CINEMA</div>
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-                    <div style="width:36px;height:36px;border-radius:50%;background:rgba(105,81,255,0.3);border:1px solid rgba(167,139,250,0.6);display:flex;align-items:center;justify-content:center;">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="#a78bfa"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                    <div style="width:34px;height:34px;border-radius:50%;background:rgba(105,81,255,0.3);border:1px solid rgba(167,139,250,0.6);display:flex;align-items:center;justify-content:center;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="#a78bfa"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     </div>
-                    <div style="font-size:10px;text-align:center;font-weight:600;color:#fff;">四语种 Style DNA</div>
+                    <div class="hss-video-eq-wrap">
+                      <span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span>
+                      <span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span>
+                    </div>
+                    <div style="font-size:9.5px;text-align:center;font-weight:600;color:#fff;">四语种 Style DNA</div>
                   </div>
-                  <div style="font-size:9px;background:rgba(0,0,0,0.6);padding:2px 4px;border-radius:3px;color:#34d399;text-align:center;">微秒级音画同步</div>
+                  <div style="font-size:8.5px;background:rgba(0,0,0,0.6);padding:2px 4px;border-radius:3px;color:#34d399;text-align:center;">微秒级音画同步</div>
                 </div>
                 <div class="hss-timeline-box">
-                  <div style="font-size:11px;font-family:var(--mono);color:#94a3b8;margin-bottom:6px;">CapCut 6-Track Timeline (Microsecond Precision)</div>
-                  <div style="display:flex;flex-direction:column;gap:5px;">
-                    <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
-                      <span style="width:20px;color:#a78bfa;">V1</span>
-                      <div style="flex:1;height:12px;background:#1e1b4b;border-radius:3px;display:flex;overflow:hidden;gap:2px;">
-                        <span style="width:25%;background:#6951ff;"></span><span style="width:25%;background:#8b5cf6;"></span><span style="width:25%;background:#6951ff;"></span><span style="width:25%;background:#8b5cf6;"></span>
+                  <div>
+                    <div style="font-size:11px;font-family:var(--mono);color:#94a3b8;margin-bottom:6px;display:flex;justify-content:space-between;">
+                      <span>CapCut 4-Track Timeline</span>
+                      <span style="color:#818cf8;">00:01:24.08 / 60.00 fps</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:5px;">
+                      <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
+                        <span style="width:20px;color:#a78bfa;">V1</span>
+                        <div style="flex:1;height:14px;background:#1e1b4b;border-radius:3px;display:flex;overflow:hidden;gap:2px;">
+                          <span style="width:25%;background:#6951ff;"></span><span style="width:25%;background:#8b5cf6;"></span><span style="width:25%;background:#6951ff;"></span><span style="width:25%;background:#8b5cf6;"></span>
+                        </div>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
+                        <span style="width:20px;color:#fbbf24;">T1</span>
+                        <div style="flex:1;height:14px;background:#451a03;border-radius:3px;display:flex;overflow:hidden;gap:2px;">
+                          <span style="width:30%;background:#f59e0b;"></span><span style="width:35%;background:#fbbf24;"></span><span style="width:30%;background:#f59e0b;"></span>
+                        </div>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
+                        <span style="width:20px;color:#34d399;">A1</span>
+                        <div style="flex:1;height:14px;background:#064e3b;border-radius:3px;display:flex;overflow:hidden;position:relative;">
+                          <span style="width:96%;background:#10b981;"></span>
+                        </div>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
+                        <span style="width:20px;color:#38bdf8;">BGM</span>
+                        <div style="flex:1;height:14px;background:#082f49;border-radius:3px;display:flex;overflow:hidden;">
+                          <span style="width:100%;background:#0284c7;"></span>
+                        </div>
                       </div>
                     </div>
-                    <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
-                      <span style="width:20px;color:#fbbf24;">T1</span>
-                      <div style="flex:1;height:12px;background:#451a03;border-radius:3px;display:flex;overflow:hidden;gap:2px;">
-                        <span style="width:30%;background:#f59e0b;"></span><span style="width:35%;background:#fbbf24;"></span><span style="width:30%;background:#f59e0b;"></span>
-                      </div>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
-                      <span style="width:20px;color:#34d399;">A1</span>
-                      <div style="flex:1;height:12px;background:#064e3b;border-radius:3px;display:flex;overflow:hidden;">
-                        <span style="width:96%;background:#10b981;"></span>
-                      </div>
-                    </div>
+                  </div>
+                  <div style="font-size:10.5px;color:#94a3b8;font-family:var(--mono);margin-top:6px;">
+                    零时间轴累积漂移 · 原生剪映 draft_content.json
                   </div>
                 </div>
               </div>
