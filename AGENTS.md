@@ -40,4 +40,4 @@ pnpm verify
 10. `pnpm desktop:build` (builds & strict-verifies macOS `Aimake.app` bundle on darwin)
 11. `pnpm test:e2e` (Playwright browser Studio + Playground + 5-format export verification)
 
-See [`docs/DOCS_INDEX.md`](./docs/DOCS_INDEX.md), [`docs/guides/DEVELOPMENT_WORKFLOW.md`](./docs/guides/DEVELOPMENT_WORKFLOW.md), and [`docs/PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md`](./docs/PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md) for engineering standards, roadmap milestones, and Project #3 Kanban automation.
+See [`docs/DOCS_INDEX.md`](./docs/DOCS_INDEX.md), [`docs/guides/DEVELOPMENT_WORKFLOW.md`](./docs/guides/DEVELOPMENT_WORKFLOW.md), [`docs/guides/DEVELOPMENT_WORKFLOW.zh-CN.md`](./docs/guides/DEVELOPMENT_WORKFLOW.zh-CN.md), and [`docs/PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md`](./docs/PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md) for engineering standards, roadmap milestones, and Project #3 Kanban automation.

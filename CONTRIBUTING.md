@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing to **Aimake Studio**! We are building the local-first multimodal creation engine for the AI era — turning ideas, research, spreadsheets, and notes into grounded, design-grade content delivered across every channel.
 
-For an exhaustive guide covering the automated Kanban board, issue forms, branch policies, and GitHub CLI workflows, see the **[Development & Contribution Workflow Guide](docs/guides/DEVELOPMENT_WORKFLOW.md)**.
+For an exhaustive guide covering the automated Kanban board, issue forms, branch policies, Git Worktree isolation, and GitHub CLI workflows, see the **[Development & Contribution Workflow Guide (EN)](docs/guides/DEVELOPMENT_WORKFLOW.md)** or **[研发与交付工作流规范 (中文版)](docs/guides/DEVELOPMENT_WORKFLOW.zh-CN.md)**.
 
 ---
 

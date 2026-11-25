@@ -32,7 +32,7 @@
 
 | 文档 | 核心内容与用途 | 当前状态 |
 | :--- | :--- | :--- |
-| [**guides/DEVELOPMENT_WORKFLOW.md**](./guides/DEVELOPMENT_WORKFLOW.md) | Issue 生命周期、Project #3 看板自动化、`pnpm issue:create` 用法与分支/PR 规范 | `Active` |
+| [**guides/DEVELOPMENT_WORKFLOW.md**](./guides/DEVELOPMENT_WORKFLOW.md) · [**中文版**](./guides/DEVELOPMENT_WORKFLOW.zh-CN.md) | Issue 生命周期、Project #3 看板自动化、Git Worktree 隔离机制、`pnpm issue:create` 用法与分支/PR 规范 | `Active` |
 | [**guides/TESTING_AND_ENGINEERING_STANDARDS.md**](./guides/TESTING_AND_ENGINEERING_STANDARDS.md) | 四层测试金字塔（Smoke / Vitest / 黑盒 / E2E）、秘密审计与代码质量准则 | `Active` |
 
 ---

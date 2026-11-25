@@ -98,11 +98,39 @@ When this PR merges, **Issue #12** automatically closes and both move to the **D
 
 ---
 
-## 4. Git & Branching Strategy
+## 4. Git, Branching & Worktree Strategy
 
 To keep the git history clean and bisect-friendly, Aimake enforces a **Squash-and-Merge** policy with a single linear history on `main`.
 
-### Branch Naming Conventions
+### Git Worktree Workflow (Recommended for Parallel / Multi-Agent Work)
+
+When working on multiple features or bugs concurrently—or when autonomous agents collaborate—use **Git Worktree** instead of switching branches in a shared directory. This guarantees clean working states, prevents file locks, and avoids dirty uncommitted states:
+
+```bash
+# 1. Fetch latest origin and create an isolated worktree outside the primary directory
+git fetch origin main
+git worktree add ../aimake-fix-branch -b fix/my-fix-topic origin/main
+
+# 2. Enter the worktree and install dependencies (pnpm reuses the central content store)
+cd ../aimake-fix-branch
+pnpm install
+
+# 3. Develop, run tests, and commit
+pnpm typecheck
+pnpm test
+git commit -m "fix(subsystem): describe change affirmatively"
+
+# 4. Push to remote and open a Pull Request
+git push -u origin fix/my-fix-topic
+gh pr create --title "fix(subsystem): describe change" --body "Closes #IssueNum"
+
+# 5. Clean up after the PR is merged
+cd ../aimake
+git worktree remove ../aimake-fix-branch
+git branch -d fix/my-fix-topic
+```
+
+### Standard Branch Naming Conventions
 
 Always branch from the latest `origin/main`:
 
@@ -130,7 +158,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 
 - Allowed types: `feat`, `fix`, `docs`, `refactor`, `perf`, `test`, `chore`.
-- Scopes correspond to subsystem areas: `(cli)`, `(studio)`, `(templates)`, `(publisher)`, `(intake)`, `(mcp)`, `(desktop)`.
+- Scopes correspond to subsystem areas: `(cli)`, `(studio)`, `(templates)`, `(publisher)`, `(intake)`, `(mcp)`, `(desktop)`, `(site)`, `(acp)`, `(engine)`.
 - Example: `feat(publisher): add headless Chrome CDP publisher for WeChat MP drafts`
 
 ---
