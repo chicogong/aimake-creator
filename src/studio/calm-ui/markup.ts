@@ -73,16 +73,16 @@ export const CALM_STUDIO_MARKUP = `
     <aside class="sidebar" aria-label="工作区导航">
       <div class="sidebar-scroll">
         <!-- Quick Entry to Timely 2026 Current-News Showcase Works & Weekly Radar -->
-        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+        <div class="sidebar-promos">
           <button class="trending-promo-btn radar-promo-card" id="btn-sidebar-radar" title="浏览全网实时热点（X/Twitter、知乎、36Kr），一键生成新作品">
             <span class="nav-item-main">
-              <span class="nav-item-title" style="font-weight:650;color:var(--ink);display:flex;align-items:center;gap:6px;">
+              <span class="nav-item-title">
                 <span class="live-pulse-dot"></span>
                 <span id="sidebar-radar-badge">每周灵感雷达 · <span id="sidebar-radar-week">${(() => { const d = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())); d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7)); const y = new Date(Date.UTC(d.getUTCFullYear(), 0, 1)); return 'W' + Math.ceil(((d.getTime() - y.getTime()) / 86400000 + 1) / 7); })()}</span></span>
               </span>
               <span class="nav-item-sub" id="sidebar-radar-sub"><span id="sidebar-radar-count">16</span> 篇 X 前沿推文与时事 · 一键填装</span>
             </span>
-            <span class="hot-pill" style="background:linear-gradient(135deg,rgba(105,81,255,0.2),rgba(139,92,246,0.25));color:var(--accent);">RADAR</span>
+            <span class="hot-pill radar-pill">RADAR</span>
           </button>
           <script>
             (function() {
@@ -106,7 +106,7 @@ export const CALM_STUDIO_MARKUP = `
 
           <button class="trending-promo-btn" id="btn-open-trending" title="浏览 2026 最新科技时事成品，一键导入或做同款">
             <span class="nav-item-main">
-              <span class="nav-item-title" style="font-weight:650;color:var(--ink);">2026 时事灵感成品</span>
+              <span class="nav-item-title">2026 时事灵感成品</span>
               <span class="nav-item-sub">6 套高保真热点成品 · 点一下做同款</span>
             </span>
             <span class="hot-pill">HOT</span>
@@ -225,58 +225,67 @@ export const CALM_STUDIO_MARKUP = `
         <iframe id="preview-frame" title="Aimake 实时视觉舞台"></iframe>
       </div>
 
-      <!-- Floating Bottom Filmstrip & Tactile Dock (Linear / Figma Restrained 5-6 Controls) -->
+      <!-- Floating Bottom Filmstrip & Tactile Dock (Linear / Apple Keynote Restrained 5 Core Control Groups) -->
       <div class="stage-dock" role="toolbar" aria-label="舞台快捷栏">
-        <!-- 1. Filmstrip navigation pill -->
-        <div class="slide-nav-group">
-          <button class="dock-icon-btn" id="btn-prev-slide" title="上一页 (← / PageUp)">
+        <!-- 群组 1: 页码导航与快捷页面操作 -->
+        <div class="slide-nav-group" role="group" aria-label="幻灯片导航与页面管理">
+          <button class="dock-icon-btn" id="btn-prev-slide" title="上一页 (← / PageUp)" aria-label="上一页">
             ${lucideIcon('chevronLeft', 'ic ic-sm')}
           </button>
           <div class="slide-pills-wrap">
             <div class="slide-pills" id="slide-pills"></div>
           </div>
-          <button class="dock-icon-btn" id="btn-next-slide" title="下一页 (→ / Space / PageDown)">
+          <button class="dock-icon-btn" id="btn-next-slide" title="下一页 (→ / Space / PageDown)" aria-label="下一页">
             ${lucideIcon('chevronRight', 'ic ic-sm')}
           </button>
           <div class="slide-quick-actions" role="group" aria-label="页面增删复制">
-            <button class="dock-icon-btn" id="btn-add-slide" title="在当前页后新增一页 (+)">
-              ${lucideIcon('plus')}
+            <button class="dock-icon-btn" id="btn-add-slide" title="在当前页后新增一页 (+)" aria-label="新增页">
+              ${lucideIcon('plus', 'ic ic-sm')}
             </button>
-            <button class="dock-icon-btn" id="btn-dup-slide" title="复制当前页">
-              ${lucideIcon('copy')}
+            <button class="dock-icon-btn" id="btn-dup-slide" title="复制当前页" aria-label="复制页">
+              ${lucideIcon('copy', 'ic ic-sm')}
             </button>
-            <button class="dock-icon-btn dock-icon-btn-danger" id="btn-del-slide" title="删除当前页">
-              ${lucideIcon('trash')}
+            <button class="dock-icon-btn dock-icon-btn-danger" id="btn-del-slide" title="删除当前页" aria-label="删除页">
+              ${lucideIcon('trash', 'ic ic-sm')}
             </button>
           </div>
         </div>
-        <div class="dock-divider"></div>
-        <!-- 2. Aspect ratio control -->
+
+        <div class="dock-divider" aria-hidden="true"></div>
+
+        <!-- 群组 2: 画幅比例小胶囊 -->
         <button class="dock-chip" id="btn-dock-aspect" title="切换画幅比例（16:9, 9:16, 3:4, 1:1, 4:5）">
+          <svg class="ic ic-sm" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="9" rx="2"/></svg>
           <span id="active-aspect-label">16:9</span>
           ${lucideIcon('chevronDown', 'ic ic-sm')}
         </button>
-        <!-- 3. Style template control -->
-        <button class="dock-chip" id="btn-dock-style" title="切换 36 套视觉风格或一键做同款">
+
+        <!-- 群组 3: 模板快速切换触发器 -->
+        <button class="dock-chip" id="btn-dock-style" title="快速切换 36 套视觉风格或一键做同款">
+          ${lucideIcon('layers', 'ic ic-sm')}
           <span id="active-style-label">瑞士网格</span>
           ${lucideIcon('chevronDown', 'ic ic-sm')}
         </button>
-        <div class="dock-divider"></div>
-        <!-- 4. Zoom mode -->
+
+        <div class="dock-divider" aria-hidden="true"></div>
+
+        <!-- 群组 4: 自适应缩放与全屏演示 -->
         <button class="dock-chip dock-chip-muted" id="btn-dock-zoom" title="切换自适应缩放 / 100% 原比例">自适应</button>
-        <!-- 5. AI Copilot Chat toggle -->
-        <button class="dock-chip" id="btn-toggle-chat" title="展开/收起 AI 对话创作副驾驶 (⌘J)">
-          <span class="live-dot" style="margin-right:3px;"></span>
+        <button class="dock-icon-btn" id="btn-dock-fullscreen" title="全屏演示模式 (F)" aria-label="全屏演示">
+          ${lucideIcon('maximize', 'ic ic-sm')}
+        </button>
+
+        <div class="dock-divider" aria-hidden="true"></div>
+
+        <!-- 群组 5: AI 对话副驾驶胶囊 -->
+        <button class="dock-chip dock-chip-ai" id="btn-toggle-chat" title="展开/收起 AI 对话创作副驾驶 (⌘J)">
+          <span class="live-dot" style="margin-right:2px;"></span>
           <span>AI 对话</span>
         </button>
-        <!-- 6. Command palette -->
-        <button class="dock-chip dock-chip-muted" id="btn-open-cmdk" title="打开命令面板 (⌘K)">⌘K</button>
-        <!-- 7. Fullscreen presentation -->
-        <button class="dock-icon-btn" id="btn-dock-fullscreen" title="全屏演示 (F)">
-          ${lucideIcon('maximize')}
-        </button>
-        <!-- Secondary actions preserved in DOM for event listeners and shortcuts -->
+
+        <!-- Secondary preserved elements in DOM for keyboard shortcuts and event listeners -->
         <div class="dock-actions-secondary" style="display:none;" aria-hidden="true">
+          <button class="dock-chip dock-chip-muted" id="btn-open-cmdk" title="打开命令面板 (⌘K)">⌘K</button>
           <button class="dock-chip dock-chip-wechat" id="btn-quick-copy-wechat" title="一键复制微信公众号富文本，直粘后台">
             ${lucideIcon('copy', 'ic ic-sm')}
             <span>复制公众号</span>

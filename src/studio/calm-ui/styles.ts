@@ -1,37 +1,92 @@
 export const CALM_STUDIO_CSS = `
   :root {
     color-scheme: light dark;
-    --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans', 'Apple SD Gothic Neo', 'Segoe UI', sans-serif;
-    --font-mono: 'SF Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-    /* Atelier Vellum (Light Mode — Warm Architectural Mat + Obsidian Press Ink) */
+    /* ==========================================================================
+       1. Brand & Core Accent Tokens (Aimake 2026 Unified Spec)
+       ========================================================================== */
+    --am-violet: #6951ff;
+    --am-violet-hover: #553af5;
+    --am-violet-active: #472be6;
+    --am-violet-glow: rgba(105, 81, 255, 0.28);
+    --am-violet-soft: rgba(105, 81, 255, 0.10);
+    --am-violet-hairline: rgba(105, 81, 255, 0.35);
+
+    --am-emerald: #10b981;
+    --am-emerald-soft: rgba(16, 185, 129, 0.12);
+    --am-amber: #f59e0b;
+    --am-amber-soft: rgba(245, 158, 11, 0.12);
+    --am-coral: #ff6b74;
+
+    /* ==========================================================================
+       2. Typography & Micro-Features (Geist & Apple HIG Aligned)
+       ========================================================================== */
+    --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+                 'Inter', 'PingFang SC', 'Hiragino Sans', 'Pretendard', sans-serif;
+    --font-mono: 'SF Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --font-features-base: "cv02", "cv03", "cv04", "cv11", "ss01";
+    --font-features-numbers: "tnum", "cv02", "cv03", "cv04", "cv11";
+
+    --tracking-tighter: -0.035em;
+    --tracking-tight: -0.02em;
+    --tracking-normal: 0em;
+    --tracking-wide: 0.04em;
+
+    /* ==========================================================================
+       3. Physics Spring & Micro-Interactions (Raycast 240ms Damping)
+       ========================================================================== */
+    --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring-snappy: cubic-bezier(0.2, 0.9, 0.2, 1);
+    --duration-fast: 140ms;
+    --duration-normal: 240ms;
+    --duration-smooth: 320ms;
+    --press-scale: scale(0.975);
+
+    /* ==========================================================================
+       4. Atelier Vellum (Light Mode — Warm Architectural Mat + Obsidian Press Ink)
+       ========================================================================== */
     --stage-bg: #eceae4;
-    --stage-dot: rgba(20, 20, 19, 0.055);
-    --chrome-bg: rgba(248, 247, 243, 0.90);
+    --stage-bg-gradient: radial-gradient(circle at 50% 30%, #f5f4ee 0%, #eceae4 65%, #e3e1da 100%);
+    --stage-dot: rgba(20, 20, 19, 0.048);
+    --chrome-bg: rgba(246, 245, 240, 0.88);
     --sidebar-bg: #f5f4ef;
     --surface: #ffffff;
-    --surface-elev: #ffffff;
-    --surface-subtle: #eeede8;
-    --surface-hover: rgba(20, 20, 19, 0.055);
-    --surface-active: rgba(24, 24, 27, 0.085);
-    --border: rgba(20, 20, 19, 0.085);
-    --border-strong: rgba(20, 20, 19, 0.145);
+    --surface-elev: #fdfcf9;
+    --surface-subtle: #eeede7;
+    --surface-hover: rgba(20, 20, 19, 0.045);
+    --surface-active: rgba(20, 20, 19, 0.08);
+    --border: rgba(20, 20, 19, 0.075);
+    --border-subtle: rgba(20, 20, 19, 0.04);
+    --border-strong: rgba(20, 20, 19, 0.13);
+
+    --hairline-dark: 1px solid rgba(20, 20, 19, 0.08);
+    --hairline-dark-strong: 1px solid rgba(20, 20, 19, 0.15);
+    --hairline-dark-hover: 1px solid rgba(20, 20, 19, 0.26);
+
+    --inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    --inset-highlight-button: inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -1px 0 rgba(20, 20, 19, 0.04);
+
     --ink: #141413;
     --ink-secondary: #57554f;
     --ink-muted: #8c887f;
     --accent: #18181b;
-    --accent-hover: #2e2e33;
-    --accent-soft: rgba(24, 24, 27, 0.075);
+    --accent-hover: #27272a;
+    --accent-soft: rgba(24, 24, 27, 0.065);
     --accent-ink: #fafaf9;
     --live: #0f9d68;
-    --live-soft: rgba(15, 157, 104, 0.13);
+    --live-soft: rgba(15, 157, 104, 0.12);
     --hot: #d94e28;
-    --hot-soft: rgba(217, 78, 40, 0.10);
-    --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 1px 2px rgba(20, 20, 19, 0.06);
-    --btn-primary-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 1px 3px rgba(20, 20, 19, 0.24);
-    --shadow-sm: 0 1px 2px rgba(20, 20, 19, 0.05);
-    --shadow-md: 0 12px 32px rgba(20, 20, 19, 0.10), 0 1px 3px rgba(20, 20, 19, 0.06);
-    --shadow-lg: 0 24px 64px rgba(20, 20, 19, 0.18), 0 4px 16px rgba(20, 20, 19, 0.08);
+    --hot-soft: rgba(217, 78, 40, 0.09);
+
+    --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 1px 2px rgba(20, 20, 19, 0.05);
+    --btn-primary-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 4px rgba(20, 20, 19, 0.2);
+    --shadow-sm: 0 1px 2px rgba(20, 20, 19, 0.04), 0 0 0 1px rgba(20, 20, 19, 0.02);
+    --shadow-md: 0 12px 32px -4px rgba(20, 20, 19, 0.08), 0 2px 6px -1px rgba(20, 20, 19, 0.04);
+    --shadow-lg: 0 20px 48px -8px rgba(20, 20, 19, 0.18), 0 4px 16px -2px rgba(20, 20, 19, 0.06);
+    --shadow-obsidian-dock: 0 12px 32px -4px rgba(20, 20, 19, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(20, 20, 19, 0.04);
+    --shadow-obsidian-drawer: -12px 0 40px -6px rgba(20, 20, 19, 0.15);
+
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
@@ -40,65 +95,94 @@ export const CALM_STUDIO_CSS = `
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      /* Optical Darkroom */
+      /* ========================================================================
+         Optical Darkroom (Dark Mode — Deep Warm Obsidian Gradient #0c0c0e -> #16161b)
+         ======================================================================== */
       --stage-bg: #0c0c0e;
-      --stage-dot: rgba(255, 255, 255, 0.036);
-      --chrome-bg: rgba(18, 18, 21, 0.90);
-      --sidebar-bg: #121215;
-      --surface: #1a1a1f;
-      --surface-elev: #222228;
-      --surface-subtle: #151519;
-      --surface-hover: rgba(255, 255, 255, 0.065);
-      --surface-active: rgba(245, 244, 240, 0.12);
-      --border: rgba(255, 255, 255, 0.088);
-      --border-strong: rgba(255, 255, 255, 0.16);
+      --stage-bg-gradient: radial-gradient(ellipse 70% 50% at 50% 30%, #16161b 0%, #111115 50%, #0c0c0e 100%);
+      --stage-dot: rgba(255, 255, 255, 0.038);
+      --chrome-bg: rgba(16, 16, 20, 0.88);
+      --sidebar-bg: #111114;
+      --surface: #17171c;
+      --surface-elev: #1e1e24;
+      --surface-subtle: #131317;
+      --surface-hover: rgba(255, 255, 255, 0.05);
+      --surface-active: rgba(255, 255, 255, 0.09);
+      --border: rgba(255, 255, 255, 0.075);
+      --border-subtle: rgba(255, 255, 255, 0.04);
+      --border-strong: rgba(255, 255, 255, 0.14);
+
+      --hairline-dark: 1px solid rgba(255, 255, 255, 0.08);
+      --hairline-dark-strong: 1px solid rgba(255, 255, 255, 0.14);
+      --hairline-dark-hover: 1px solid rgba(255, 255, 255, 0.22);
+
+      --inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --inset-highlight-button: inset 0 1px 0 rgba(255, 255, 255, 0.20), inset 0 -1px 0 rgba(0, 0, 0, 0.20);
+
       --ink: #f5f4f0;
-      --ink-secondary: #a3a098;
-      --ink-muted: #6c6a63;
+      --ink-secondary: #9e9b93;
+      --ink-muted: #66635c;
       --accent: #f5f4f0;
-      --accent-hover: #e2e0d8;
-      --accent-soft: rgba(245, 244, 240, 0.10);
-      --accent-ink: #111113;
+      --accent-hover: #ffffff;
+      --accent-soft: rgba(245, 244, 240, 0.09);
+      --accent-ink: #0c0c0e;
       --live: #34d399;
-      --live-soft: rgba(52, 211, 153, 0.15);
+      --live-soft: rgba(52, 211, 153, 0.14);
       --hot: #f97316;
-      --hot-soft: rgba(249, 115, 22, 0.14);
-      --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 1px 2px rgba(0, 0, 0, 0.28);
-      --btn-primary-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.35);
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.28);
-      --shadow-md: 0 14px 36px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.32);
-      --shadow-lg: 0 28px 72px rgba(0, 0, 0, 0.66), 0 6px 20px rgba(0, 0, 0, 0.44);
+      --hot-soft: rgba(249, 115, 22, 0.13);
+
+      --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.35);
+      --btn-primary-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.45);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+      --shadow-md: 0 16px 36px -4px rgba(0, 0, 0, 0.5), 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 20px 48px -8px rgba(0, 0, 0, 0.5), 0 6px 20px -2px rgba(0, 0, 0, 0.35);
+      --shadow-obsidian-dock: 0 16px 40px -6px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+      --shadow-obsidian-drawer: -16px 0 48px -8px rgba(0, 0, 0, 0.65);
     }
   }
 
   :root[data-theme="dark"] {
+    /* Optical Darkroom Explicit Override */
     --stage-bg: #0c0c0e;
-    --stage-dot: rgba(255, 255, 255, 0.036);
-    --chrome-bg: rgba(18, 18, 21, 0.90);
-    --sidebar-bg: #121215;
-    --surface: #1a1a1f;
-    --surface-elev: #222228;
-    --surface-subtle: #151519;
-    --surface-hover: rgba(255, 255, 255, 0.065);
-    --surface-active: rgba(245, 244, 240, 0.12);
-    --border: rgba(255, 255, 255, 0.088);
-    --border-strong: rgba(255, 255, 255, 0.16);
+    --stage-bg-gradient: radial-gradient(ellipse 70% 50% at 50% 30%, #16161b 0%, #111115 50%, #0c0c0e 100%);
+    --stage-dot: rgba(255, 255, 255, 0.038);
+    --chrome-bg: rgba(16, 16, 20, 0.88);
+    --sidebar-bg: #111114;
+    --surface: #17171c;
+    --surface-elev: #1e1e24;
+    --surface-subtle: #131317;
+    --surface-hover: rgba(255, 255, 255, 0.05);
+    --surface-active: rgba(255, 255, 255, 0.09);
+    --border: rgba(255, 255, 255, 0.075);
+    --border-subtle: rgba(255, 255, 255, 0.04);
+    --border-strong: rgba(255, 255, 255, 0.14);
+
+    --hairline-dark: 1px solid rgba(255, 255, 255, 0.08);
+    --hairline-dark-strong: 1px solid rgba(255, 255, 255, 0.14);
+    --hairline-dark-hover: 1px solid rgba(255, 255, 255, 0.22);
+
+    --inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --inset-highlight-button: inset 0 1px 0 rgba(255, 255, 255, 0.20), inset 0 -1px 0 rgba(0, 0, 0, 0.20);
+
     --ink: #f5f4f0;
-    --ink-secondary: #a3a098;
-    --ink-muted: #6c6a63;
+    --ink-secondary: #9e9b93;
+    --ink-muted: #66635c;
     --accent: #f5f4f0;
-    --accent-hover: #e2e0d8;
-    --accent-soft: rgba(245, 244, 240, 0.10);
-    --accent-ink: #111113;
+    --accent-hover: #ffffff;
+    --accent-soft: rgba(245, 244, 240, 0.09);
+    --accent-ink: #0c0c0e;
     --live: #34d399;
-    --live-soft: rgba(52, 211, 153, 0.15);
+    --live-soft: rgba(52, 211, 153, 0.14);
     --hot: #f97316;
-    --hot-soft: rgba(249, 115, 22, 0.14);
-    --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 1px 2px rgba(0, 0, 0, 0.28);
-    --btn-primary-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.35);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.28);
-    --shadow-md: 0 14px 36px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.32);
-    --shadow-lg: 0 28px 72px rgba(0, 0, 0, 0.66), 0 6px 20px rgba(0, 0, 0, 0.44);
+    --hot-soft: rgba(249, 115, 22, 0.13);
+
+    --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.35);
+    --btn-primary-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.45);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 16px 36px -4px rgba(0, 0, 0, 0.5), 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 20px 48px -8px rgba(0, 0, 0, 0.5), 0 6px 20px -2px rgba(0, 0, 0, 0.35);
+    --shadow-obsidian-dock: 0 16px 40px -6px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+    --shadow-obsidian-drawer: -16px 0 48px -8px rgba(0, 0, 0, 0.65);
   }
 
   * { box-sizing: border-box; }
@@ -110,6 +194,7 @@ export const CALM_STUDIO_CSS = `
     background: var(--stage-bg);
     color: var(--ink);
     font-family: var(--font-sans);
+    font-feature-settings: var(--font-features-base);
     font-size: 13px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -141,9 +226,10 @@ export const CALM_STUDIO_CSS = `
     align-items: center;
     gap: 12px;
     background: var(--chrome-bg);
-    backdrop-filter: blur(22px) saturate(1.1);
-    -webkit-backdrop-filter: blur(22px) saturate(1.1);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-bottom: 1px solid var(--border);
+    box-shadow: var(--inset-highlight);
     position: relative;
     z-index: 60;
     user-select: none;
@@ -167,7 +253,9 @@ export const CALM_STUDIO_CSS = `
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.14s ease, color 0.14s ease, transform 0.1s ease;
+    transition: transform var(--duration-fast) var(--ease-spring),
+                background var(--duration-fast) ease,
+                color var(--duration-fast) ease;
     flex-shrink: 0;
   }
   .icon-btn:hover {
@@ -175,7 +263,7 @@ export const CALM_STUDIO_CSS = `
     color: var(--ink);
   }
   .icon-btn:active {
-    transform: scale(0.95);
+    transform: var(--press-scale);
   }
 
   .workspace-pill {
@@ -192,14 +280,16 @@ export const CALM_STUDIO_CSS = `
     font-weight: 600;
     cursor: pointer;
     max-width: 270px;
-    transition: background 0.14s ease, border-color 0.14s ease, transform 0.1s ease;
+    transition: transform var(--duration-fast) var(--ease-spring),
+                background var(--duration-fast) ease,
+                border-color var(--duration-fast) ease;
   }
   .workspace-pill:hover {
     background: var(--surface-hover);
     border-color: var(--border);
   }
   .workspace-pill:active {
-    transform: scale(0.985);
+    transform: var(--press-scale);
   }
   .brand-mark-badge {
     width: 22px;
@@ -242,7 +332,7 @@ export const CALM_STUDIO_CSS = `
     align-items: center;
     gap: 5px;
     cursor: pointer;
-    transition: all 0.16s ease;
+    transition: all var(--duration-fast) var(--ease-spring);
     white-space: nowrap;
   }
   .loop-step:hover {
@@ -257,6 +347,7 @@ export const CALM_STUDIO_CSS = `
   .loop-step .step-num {
     font-size: 10.5px;
     opacity: 0.72;
+    font-feature-settings: var(--font-features-numbers);
   }
   .loop-step .step-dot {
     width: 5px;
@@ -297,7 +388,10 @@ export const CALM_STUDIO_CSS = `
     gap: 6px;
     cursor: pointer;
     box-shadow: var(--btn-shadow);
-    transition: background 0.14s ease, border-color 0.14s ease, transform 0.1s ease, box-shadow 0.14s ease;
+    transition: transform var(--duration-fast) var(--ease-spring),
+                background var(--duration-fast) ease,
+                border-color var(--duration-fast) ease,
+                box-shadow var(--duration-fast) ease;
     white-space: nowrap;
   }
   .btn:hover {
@@ -305,7 +399,7 @@ export const CALM_STUDIO_CSS = `
     border-color: var(--border-strong);
   }
   .btn:active {
-    transform: scale(0.975);
+    transform: var(--press-scale);
   }
   .btn-ghost {
     border-color: transparent;
@@ -319,16 +413,17 @@ export const CALM_STUDIO_CSS = `
     border-color: transparent;
   }
   .btn-primary {
-    background: var(--accent);
+    background: var(--am-violet);
     border-color: transparent;
-    color: var(--accent-ink);
+    color: #ffffff;
     font-weight: 600;
-    box-shadow: var(--btn-primary-shadow);
+    box-shadow: var(--inset-highlight-button), 0 2px 8px var(--am-violet-glow);
   }
   .btn-primary:hover {
-    background: var(--accent-hover);
-    color: var(--accent-ink);
+    background: var(--am-violet-hover);
+    color: #ffffff;
     border-color: transparent;
+    box-shadow: var(--inset-highlight-button), 0 4px 14px var(--am-violet-glow);
   }
   .btn-ai-trigger {
     background: var(--surface);
@@ -379,7 +474,7 @@ export const CALM_STUDIO_CSS = `
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    transition: width 0.22s cubic-bezier(0.2, 0.85, 0.25, 1), opacity 0.18s ease;
+    transition: width var(--duration-normal) var(--ease-spring), opacity var(--duration-fast) ease;
     overflow: hidden;
   }
   .shell-body.sidebar-collapsed .sidebar {
@@ -395,18 +490,108 @@ export const CALM_STUDIO_CSS = `
     padding: 12px 10px 16px;
   }
 
+  .sidebar-promos {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+
+  .trending-promo-btn {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 9px 11px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--duration-fast) var(--ease-spring),
+                border-color var(--duration-fast) ease,
+                box-shadow var(--duration-fast) ease;
+  }
+  .trending-promo-btn:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .trending-promo-btn:active {
+    transform: var(--press-scale);
+  }
+  .hot-pill {
+    font-size: 9.5px;
+    font-family: var(--font-mono);
+    font-feature-settings: var(--font-features-numbers);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 2px 6px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    color: var(--hot);
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+  .hot-pill.radar-pill {
+    color: var(--accent);
+    border-color: var(--border-strong);
+    background: var(--accent-soft);
+  }
+
+  .radar-promo-card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+  }
+  .radar-promo-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--stage-dot) 1px, transparent 1px);
+    background-size: 8px 8px;
+    opacity: 0.65;
+    pointer-events: none;
+  }
+  .radar-promo-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+  }
+
+  .live-pulse-dot {
+    width: 5.5px;
+    height: 5.5px;
+    border-radius: 50%;
+    background: var(--live);
+    box-shadow: 0 0 6px var(--live);
+    display: inline-block;
+    flex-shrink: 0;
+    animation: am-breathe 2.4s ease-in-out infinite;
+  }
+
   .nav-group {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .nav-group:not(:first-child) {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 12px;
   }
   .nav-group-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4px 8px 6px;
-    font-size: 11px;
+    padding: 2px 8px 6px;
+    font-size: 10.5px;
     font-weight: 650;
     color: var(--ink-muted);
-    letter-spacing: 0.02em;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
   }
   .nav-add-btn {
     border: none;
@@ -418,9 +603,9 @@ export const CALM_STUDIO_CSS = `
     align-items: center;
     gap: 3px;
     cursor: pointer;
-    padding: 3px 7px;
+    padding: 2px 6px;
     border-radius: 6px;
-    transition: background 0.14s ease, color 0.14s ease;
+    transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
   }
   .nav-add-btn:hover {
     background: var(--surface-hover);
@@ -434,10 +619,10 @@ export const CALM_STUDIO_CSS = `
   }
   .nav-item {
     width: 100%;
-    border: none;
+    border: 1px solid transparent;
     background: transparent;
     border-radius: var(--radius-sm);
-    padding: 7px 9px;
+    padding: 6px 8px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -445,7 +630,7 @@ export const CALM_STUDIO_CSS = `
     text-align: left;
     cursor: pointer;
     color: var(--ink-secondary);
-    transition: background 0.12s ease, color 0.12s ease;
+    transition: all var(--duration-fast) var(--ease-spring);
   }
   .nav-item:hover {
     background: var(--surface-hover);
@@ -454,6 +639,7 @@ export const CALM_STUDIO_CSS = `
   .nav-item.active {
     background: var(--surface-active);
     color: var(--ink);
+    border-color: var(--border);
     font-weight: 600;
   }
   .nav-item-main {
@@ -472,6 +658,7 @@ export const CALM_STUDIO_CSS = `
   .nav-item-sub {
     font-size: 11px;
     color: var(--ink-muted);
+    font-feature-settings: var(--font-features-numbers);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -483,53 +670,8 @@ export const CALM_STUDIO_CSS = `
     line-height: 1.5;
   }
 
-  .trending-promo-btn {
-    width: 100%;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    border-radius: 10px;
-    padding: 9px 10px;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    cursor: pointer;
-    text-align: left;
-    box-shadow: var(--btn-shadow);
-    transition: border-color 0.15s ease, transform 0.12s ease;
-  }
-  .trending-promo-btn:hover {
-    border-color: var(--border-strong);
-    transform: translateY(-1px);
-  }
-  .hot-pill {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: var(--radius-pill);
-    background: var(--hot-soft);
-    color: var(--hot);
-  }
-  .radar-promo-card {
-    background: linear-gradient(135deg, rgba(105, 81, 255, 0.08), rgba(139, 92, 246, 0.04));
-    border-color: rgba(105, 81, 255, 0.28);
-  }
-  .radar-promo-card:hover {
-    border-color: var(--accent);
-    box-shadow: 0 4px 16px rgba(105, 81, 255, 0.18);
-  }
-  .live-pulse-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 6px #10b981;
-    display: inline-block;
-  }
-
   .sidebar-footer {
-    padding: 10px;
+    padding: 10px 12px;
     border-top: 1px solid var(--border);
     display: flex;
     flex-direction: column;
@@ -547,12 +689,20 @@ export const CALM_STUDIO_CSS = `
     cursor: pointer;
     font-size: 11.5px;
     color: var(--ink-secondary);
-    box-shadow: var(--btn-shadow);
-    transition: border-color 0.14s ease, color 0.14s ease;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--duration-fast) var(--ease-spring),
+                border-color var(--duration-fast) ease,
+                color var(--duration-fast) ease,
+                box-shadow var(--duration-fast) ease;
   }
   .skill-badge-btn:hover {
     border-color: var(--border-strong);
     color: var(--ink);
+    transform: translateY(-0.5px);
+    box-shadow: var(--shadow-md);
+  }
+  .skill-badge-btn:active {
+    transform: var(--press-scale);
   }
   .skill-badge-left {
     display: inline-flex;
@@ -570,8 +720,10 @@ export const CALM_STUDIO_CSS = `
     display: flex;
     flex-direction: column;
     background-color: var(--stage-bg);
-    background-image: radial-gradient(var(--stage-dot) 1px, transparent 1px);
-    background-size: 20px 20px;
+    background-image:
+      radial-gradient(ellipse 70% 50% at 50% 30%, transparent 0%, rgba(0, 0, 0, 0.25) 100%),
+      radial-gradient(var(--stage-dot) 1px, transparent 1px);
+    background-size: 100% 100%, 20px 20px;
     overflow: hidden;
   }
 
@@ -581,7 +733,7 @@ export const CALM_STUDIO_CSS = `
     display: flex;
     align-items: stretch;
     justify-content: center;
-    padding: 14px 22px 78px;
+    padding: 14px 22px 76px;
     position: relative;
   }
 
@@ -613,7 +765,8 @@ export const CALM_STUDIO_CSS = `
     color: var(--ink);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity var(--duration-fast) var(--ease-spring),
+                transform var(--duration-fast) var(--ease-spring);
     z-index: 30;
   }
   .live-sync-pill.show {
@@ -626,14 +779,14 @@ export const CALM_STUDIO_CSS = `
     position: absolute;
     top: 14px;
     left: 20px;
-    height: 32px;
+    height: 30px;
     padding: 0 12px;
     border-radius: var(--radius-pill);
     background: var(--chrome-bg);
-    backdrop-filter: blur(24px) saturate(1.6);
-    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
     border: 1px solid var(--border-strong);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-sm), var(--inset-highlight);
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -641,8 +794,9 @@ export const CALM_STUDIO_CSS = `
     pointer-events: auto;
     font-size: 11px;
     color: var(--ink-secondary);
+    font-feature-settings: var(--font-features-numbers);
     user-select: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
   }
   .stage-wrap.fullscreen-mode .stage-status-bar {
     opacity: 0;
@@ -661,11 +815,12 @@ export const CALM_STUDIO_CSS = `
     white-space: nowrap;
   }
   .status-indicator-dot {
-    width: 6px;
-    height: 6px;
+    width: 5.5px;
+    height: 5.5px;
     border-radius: 50%;
     background: var(--live);
     box-shadow: 0 0 6px var(--live);
+    animation: am-breathe 2.4s ease-in-out infinite;
   }
   .status-deck-info {
     font-weight: 550;
@@ -676,6 +831,7 @@ export const CALM_STUDIO_CSS = `
   }
   .status-aspect-badge {
     font-family: var(--font-mono);
+    font-feature-settings: var(--font-features-numbers);
     font-weight: 600;
     color: var(--ink);
     background: var(--surface-hover);
@@ -697,6 +853,7 @@ export const CALM_STUDIO_CSS = `
   }
   .status-slide-counter {
     font-family: var(--font-mono);
+    font-feature-settings: var(--font-features-numbers);
     font-weight: 500;
     color: var(--ink-secondary);
     font-size: 10.5px;
@@ -711,27 +868,33 @@ export const CALM_STUDIO_CSS = `
     height: 12px;
   }
 
-  /* Floating Bottom Filmstrip & Tactile Dock */
+  /* =========================================================================
+     FLOATING TACTILE DOCK (LINEAR ATELIER + APPLE KEYNOTE SPEC)
+     ========================================================================= */
   .stage-dock {
     position: absolute;
-    bottom: 14px;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
-    max-width: calc(100% - 24px);
-    height: 44px;
-    padding: 0 8px 0 9px;
+    max-width: calc(100% - 32px);
+    height: 42px;
+    padding: 0 8px;
     border-radius: var(--radius-pill);
     background: var(--chrome-bg);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid var(--border-strong);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-obsidian-dock);
     display: inline-flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     overflow-x: auto;
     scrollbar-width: none;
-    z-index: 25;
+    z-index: 30;
+    user-select: none;
+    transition: transform var(--duration-fast) var(--ease-spring),
+                opacity var(--duration-fast) ease,
+                box-shadow var(--duration-fast) ease;
   }
   .stage-dock::-webkit-scrollbar { display: none; }
 
@@ -764,23 +927,28 @@ export const CALM_STUDIO_CSS = `
     background: transparent;
     color: var(--ink-secondary);
     font-family: var(--font-mono);
+    font-feature-settings: var(--font-features-numbers);
     font-size: 11px;
     font-weight: 500;
     cursor: pointer;
     position: relative;
-    transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease, transform 0.1s ease;
+    transition: all var(--duration-fast) var(--ease-spring);
   }
   .slide-pill:hover {
     background: var(--surface-hover);
     color: var(--ink);
     border-color: var(--border);
+    transform: translateY(-0.5px);
+  }
+  .slide-pill:active {
+    transform: var(--press-scale);
   }
   .slide-pill.active {
     background: var(--accent);
     color: var(--accent-ink);
     font-weight: 650;
     border-color: var(--accent);
-    box-shadow: 0 1px 4px rgba(20, 20, 19, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     transform: scale(1.04);
   }
   .slide-quick-actions {
@@ -791,6 +959,7 @@ export const CALM_STUDIO_CSS = `
     padding: 2px;
     border-radius: var(--radius-pill);
     margin: 0 2px;
+    border: 1px solid var(--border-subtle);
   }
   .dock-icon-btn-danger:hover {
     background: var(--hot-soft) !important;
@@ -828,53 +997,72 @@ export const CALM_STUDIO_CSS = `
   .dock-icon-btn {
     width: 28px;
     height: 28px;
-    border-radius: var(--radius-pill);
-    border: none;
+    border-radius: 50%;
+    border: 1px solid transparent;
     background: transparent;
     color: var(--ink-secondary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.12s ease, color 0.12s ease, transform 0.1s ease;
+    transition: all var(--duration-fast) var(--ease-spring);
+    flex-shrink: 0;
   }
   .dock-icon-btn:hover {
     background: var(--surface-hover);
     color: var(--ink);
+    transform: translateY(-0.5px);
   }
   .dock-icon-btn:active {
-    transform: scale(0.92);
+    transform: var(--press-scale);
   }
 
   .dock-divider {
     width: 1px;
     height: 18px;
-    background: var(--border-strong);
+    background: linear-gradient(180deg, transparent, var(--border-strong) 25%, var(--border-strong) 75%, transparent);
     flex-shrink: 0;
-    margin: 0 2px;
+    margin: 0 3px;
   }
 
   .dock-chip {
-    height: 30px;
-    padding: 0 11px;
+    height: 28px;
+    padding: 0 10px;
     border-radius: var(--radius-pill);
-    border: none;
+    border: 1px solid transparent;
     background: transparent;
     color: var(--ink);
-    font-size: 12px;
-    font-weight: 550;
+    font-size: 11.5px;
+    font-weight: 500;
     display: inline-flex;
     align-items: center;
     gap: 5px;
     cursor: pointer;
     white-space: nowrap;
-    transition: background 0.12s ease, transform 0.1s ease;
+    transition: all var(--duration-fast) var(--ease-spring);
   }
   .dock-chip:hover {
     background: var(--surface-hover);
+    border-color: var(--border);
+    transform: translateY(-0.5px);
   }
   .dock-chip:active {
-    transform: scale(0.97);
+    transform: var(--press-scale);
+  }
+  .dock-chip-muted {
+    color: var(--ink-secondary);
+    font-family: var(--font-mono);
+    font-feature-settings: var(--font-features-numbers);
+  }
+  .dock-chip-ai {
+    background: var(--accent-soft);
+    border-color: var(--border);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .dock-chip-ai:hover {
+    background: var(--surface-hover);
+    border-color: var(--accent);
   }
   .dock-chip-muted {
     color: var(--ink-secondary);
@@ -1051,11 +1239,11 @@ export const CALM_STUDIO_CSS = `
     position: fixed;
     inset: 46px 0 0 0;
     background: rgba(8, 10, 16, 0.65);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.18s ease;
+    transition: opacity var(--duration-normal) var(--ease-spring);
     z-index: 50;
   }
   .drawer-backdrop.open {
@@ -1072,9 +1260,9 @@ export const CALM_STUDIO_CSS = `
     max-width: 94vw;
     background: var(--surface);
     border-left: 1px solid var(--border);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.65), 0 20px 48px -8px rgba(0, 0, 0, 0.5), -1px 0 0 var(--border);
     transform: translateX(100%);
-    transition: transform 0.24s cubic-bezier(0.2, 0.85, 0.25, 1);
+    transition: transform var(--duration-normal) var(--ease-spring), box-shadow var(--duration-normal) ease;
     z-index: 65;
     display: flex;
     flex-direction: column;
@@ -1092,11 +1280,11 @@ export const CALM_STUDIO_CSS = `
     border-left: none;
     border: 1px solid var(--border-strong);
     border-radius: 16px;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.65), 0 20px 48px -8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.2);
     transform: translate(-50%, -46%) scale(0.97);
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    transition: transform var(--duration-normal) var(--ease-spring), opacity var(--duration-fast) ease;
     z-index: 70;
   }
   .drawer.wide.open {
@@ -1739,10 +1927,11 @@ export const CALM_STUDIO_CSS = `
     height: 100%;
     background: var(--sidebar-bg);
     border-left: 1px solid var(--border);
+    box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.65), 0 20px 48px -8px rgba(0, 0, 0, 0.5), -1px 0 0 var(--border);
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    transition: width var(--duration-normal) var(--ease-spring), opacity var(--duration-normal) ease, box-shadow var(--duration-normal) ease;
     z-index: 10;
     position: relative;
   }
@@ -1752,6 +1941,7 @@ export const CALM_STUDIO_CSS = `
     opacity: 0;
     pointer-events: none;
     border-left-color: transparent;
+    box-shadow: none;
   }
   .chat-panel-head {
     height: 46px;
