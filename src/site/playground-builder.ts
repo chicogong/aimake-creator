@@ -308,6 +308,121 @@ author: Aimake Team
 
 > 真正的效率，是让每一次深度思考都自带多模态传播力。 — Aimake Manifesto
 `,
+
+  'agent-en': `---
+title: 2026 AI Agent Architecture: Monoliths to Closed Loops
+template: apple-bento-launch
+locale: en-US
+aspect: 16:9
+author: Chico Gong
+handle: "@chicogong"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: ARCHITECTURE 2026 -->
+# Why Chatbot Wrappers Are Disappearing Fast
+## From one-off Q&A consumption to deterministic multimodal assets
+
+\`\`\`metric
+- Delivery Latency: < 1.2s (-75%)
+- Local Data Privacy: 100% (Zero-Cloud)
+- Multimodal Outputs: 5 Media (Native Layout)
+\`\`\`
+
+---
+
+<!-- scene: compare | layout: comparison | eyebrow: PARADIGM SHIFT -->
+# Generic LLM Chatbots vs Aimake Studio
+
+\`\`\`compare
+Generic Chatbot :: Ephemeral tabs, lost inspiration | Rigid format, non-editable outputs | Cloud privacy leaks
+Aimake Closed-Loop :: Local Karpathy LLM Wiki compound interest | One draft to WeChat, XHS, PDF & Video | 100% On-Device Sovereignty
+\`\`\`
+
+---
+
+<!-- scene: code | layout: code | eyebrow: ONE COMMAND -->
+# Single Command Driving All AI Coding Assistants
+
+- Native support for Claude Code, OpenCode, Codex & AGY
+- 7 modular production skills directly saved to workspace
+
+\`\`\`bash
+aimake new my-launch --template apple-bento-launch
+aimake render deck.md -f pptx -o launch.pptx
+\`\`\`
+`,
+
+  'deepseek-en': `---
+title: DeepSeek-R1 Local Distillation & Private Knowledge Base
+template: xhs-swiss-grid
+locale: en-US
+aspect: 3:4
+author: Aimake Studio
+handle: "@aimake.cc"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: DEEPSEEK R1 2026 -->
+# Why Every Creator Needs On-Device LLM Distillation
+## Zero cloud dependency · 100% Local data retention · Millisecond latency
+
+\`\`\`metric
+- Distillation Ratio: 92% (Edge Runnable)
+- Single Turn Latency: < 120ms (M4 Max)
+- Privacy Risk: 0% (Fully Offline)
+\`\`\`
+
+- **Eliminate API compute anxiety**: Run quantized DeepSeek-R1 locally via Ollama with 98% reduced costs.
+- **Inject private style DNA**: Transform raw Markdown study notes into personalized visual cards instantly.
+`,
+
+  'podcast-ja': `---
+title: ミッドナイト・ポッドキャスト · AI特有の常套句を脱却する4言語 Style DNA
+template: video-cinema-talk
+locale: ja-JP
+aspect: 9:16
+author: Aimake Studio
+handle: "@aimake.cc"
+fps: 30
+secondsPerSlide: 5
+---
+
+<!-- scene: hook-cover | layout: metrics | eyebrow: VIDEO AS CODE 2026 -->
+# なぜ2026年の動画クリエイターは「ブラックボックス生成」から脱却すべきなのか？
+## CapCut / 剪映 6トラック完全ホワイトボックス編集の自由度
+
+\`\`\`metric
+- 6トラック構成: 100% (映像・字幕・ナレーション・BGM)
+- タイムライン精度: 1 μs (マイクロ秒同期)
+- 再編集の自由度: ロスレス完全調整 (ホワイトボックス)
+\`\`\`
+
+::: speech
+テキストから CapCut のマルチトラックプロジェクトを瞬時にコンパイルし、クリエイターが時間軸の主権を取り戻します。
+:::
+`,
+
+  'flywheel-ko': `---
+title: 1000억 토큰 실전 검증: 슈퍼 인디비주얼을 위한 온디바이스 창작 플라이휠
+template: apple-dark-keynote
+locale: ko-KR
+aspect: 16:9
+author: Chico Gong
+handle: "@chicogong"
+---
+
+<!-- scene: hook | layout: metrics | eyebrow: BENCHMARK 2026 -->
+# 왜 로컬 LLM 위키가 슈퍼 인디비주얼의 가장 강력한 해자일까요?
+## 일회성 대화 소비를 끝내고, 모든 노트를 복리 자산으로 전환
+
+\`\`\`metric
+- 누적 토큰 처리: 1000억+ (대규모 실전 검증)
+- 축적된 지식 카드: 1,840편 (로컬 마크다운)
+- 1회 작성 다채널 출력: 5종 매체 (카드뉴스·PDF·PPT·비디오)
+\`\`\`
+
+- **지식 증류와 복리 효과**: 챗 창을 닫아도 영감이 증발하지 않고 마크다운 지식 그래프로 성장합니다.
+- **클라우드 종속 제로**: 100% 로컬 샌드박스에서 즉각 렌더링되어 프라이버시가 완벽히 보장됩니다.
+`,
 };
 
 STARTER_SAMPLES.creator = STARTER_SAMPLES.token;
@@ -361,6 +476,11 @@ export async function buildWebPlaygroundHtml(
   <title>Aimake 在线工坊 · 零安装交互式体验 (Live Web Playground)</title>
   <meta name="description" content="无需下载安装，在浏览器中直接体验 Aimake（爱创）36 套高颜值设计系统与多模态编译排版。写 Markdown，实时编译幻灯片，一键复制微信公众号富文本或导出作品。" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='113' fill='%2317152D'/%3E%3Cg%3E%3Cpath fill='%23745DFF' d='M117 121 L258 79 Q293 69 286 103 L231 370 Q226 394 205 394 H117 Q93 394 93 370 V148 Q93 130 117 121 Z'/%3E%3Crect fill='%23FFCB49' x='304' y='98' width='156' height='156' rx='28'/%3E%3Cpath fill='%23B7AAFF' d='M292 273 H346 Q364 273 360 296 L345 379 Q342 395 321 395 H276 Q258 395 263 377 L281 295 Q285 273 292 273 Z'/%3E%3Cpath fill='%23FF6B74' d='M460 282 V368 Q460 395 432 395 H361 Q358 395 359 384 C367 316 399 286 448 282 Z'/%3E%3C/g%3E%3C/svg%3E" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <script>
     (function() {
       try {
@@ -373,36 +493,47 @@ export async function buildWebPlaygroundHtml(
   </script>
   <style>
     :root {
-      --bg: #0a0b0f;
-      --sidebar: #11131a;
-      --surface: #171923;
-      --surface-elev: #202331;
+      --bg: #07080c;
+      --sidebar: #0f1118;
+      --surface: #141722;
+      --surface-elev: #1c202e;
       --border: rgba(255, 255, 255, 0.08);
       --border-strong: rgba(255, 255, 255, 0.16);
+      --border-focus: rgba(99, 102, 241, 0.6);
       --ink: #f4f4f6;
       --ink-muted: #94a3b8;
+      --ink-faint: #64748b;
       --accent: #f5f4f0;
-      --accent-ink: #111113;
+      --accent-ink: #0b0c10;
       --brand: #6366f1;
       --brand-hover: #4f46e5;
+      --brand-glow: rgba(99, 102, 241, 0.28);
       --live: #10b981;
-      --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', sans-serif;
-      --font-mono: 'SF Mono', Menlo, Consolas, monospace;
+      --danger: #ef4444;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Monaco, Consolas, monospace;
+      --topbar-height: 46px;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
     }
 
     [data-theme="light"] {
-      --bg: #f1f5f9;
+      --bg: #e9eef5;
       --sidebar: #ffffff;
-      --surface: #f8fafc;
+      --surface: #f4f6fa;
       --surface-elev: #ffffff;
       --border: rgba(15, 23, 42, 0.09);
       --border-strong: rgba(15, 23, 42, 0.18);
+      --border-focus: rgba(79, 70, 229, 0.6);
       --ink: #0f172a;
       --ink-muted: #64748b;
+      --ink-faint: #94a3b8;
       --accent: #0f172a;
       --accent-ink: #ffffff;
       --brand: #4f46e5;
       --brand-hover: #4338ca;
+      --brand-glow: rgba(79, 70, 229, 0.2);
     }
 
     * { box-sizing: border-box; }
@@ -412,106 +543,172 @@ export async function buildWebPlaygroundHtml(
       font-family: var(--font-sans); font-size: 13px;
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     .ic, .lucide-icon {
       width: 13px; height: 13px;
       display: inline-block; vertical-align: middle; flex-shrink: 0;
     }
 
-    /* Topbar */
+    /* 1. Top Chrome (46px Frosted Glass Bar) */
     header.pg-topbar {
-      height: 50px;
-      background: rgba(17, 19, 26, 0.96);
-      backdrop-filter: blur(18px);
+      height: var(--topbar-height);
+      background: rgba(10, 11, 16, 0.82);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
       gap: 8px;
       padding: 0 12px;
-      z-index: 20;
+      z-index: 50;
+      position: relative;
     }
     [data-theme="light"] header.pg-topbar {
-      background: rgba(255, 255, 255, 0.96);
+      background: rgba(255, 255, 255, 0.86);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
     }
+
     .pg-brand-wrap {
-      display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0; min-width: 0;
     }
     .pg-back-home {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 26px; height: 26px; border-radius: 6px;
+      width: 28px; height: 28px; border-radius: var(--radius-md);
       color: var(--ink-muted); text-decoration: none;
       transition: all 0.15s ease;
+      border: 1px solid transparent;
     }
-    .pg-back-home:hover { background: var(--surface-elev); color: var(--ink); }
+    .pg-back-home:hover {
+      background: var(--surface-elev);
+      border-color: var(--border);
+      color: var(--ink);
+    }
     .pg-brand {
       display: flex; align-items: center; gap: 7px;
       text-decoration: none; color: var(--ink);
       white-space: nowrap; flex-shrink: 0;
     }
-    .pg-brand strong { font-size: 13.5px; letter-spacing: -0.02em; white-space: nowrap; }
-    .pg-badge {
-      font-size: 10px; padding: 2px 7px; border-radius: 999px;
-      background: rgba(99, 102, 241, 0.12);
-      border: 1px solid rgba(99, 102, 241, 0.25);
-      color: #a5b4fc; font-weight: 600;
-      white-space: nowrap; flex-shrink: 0;
+    .pg-brand strong {
+      font-size: 13.5px; font-weight: 650; letter-spacing: -0.02em; white-space: nowrap;
     }
-    [data-theme="light"] .pg-badge {
-      background: #eef2ff; border-color: #c7d2fe; color: #4338ca;
+    
+    .pg-crumb-sep {
+      color: var(--ink-faint); font-size: 11px; opacity: 0.6; user-select: none;
     }
-    @media (max-width: 1360px) {
-      .pg-badge { display: none; }
+    .pg-crumb-badge {
+      font-size: 11px; font-weight: 500; color: var(--ink-muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;
     }
 
+    /* Live Studio Status Indicator */
+    .pg-status-indicator {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 999px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.22);
+      font-size: 11px; font-weight: 550; color: #34d399;
+      white-space: nowrap; flex-shrink: 0; user-select: none;
+    }
+    [data-theme="light"] .pg-status-indicator {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #059669;
+    }
+    .pg-status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pgPulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pgPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+
+    @media (max-width: 1360px) {
+      .pg-crumb-sep, .pg-crumb-badge { display: none; }
+    }
+    @media (max-width: 1180px) {
+      .pg-status-indicator { display: none; }
+    }
+
+    /* Top Controls Area */
     .pg-controls {
       display: flex; align-items: center; gap: 5px;
       min-width: 0; flex-wrap: nowrap;
       overflow-x: auto; scrollbar-width: none;
     }
     .pg-controls::-webkit-scrollbar { display: none; }
+
     .pg-control-sep {
       width: 1px; height: 16px;
       background: var(--border);
       flex-shrink: 0; margin: 0 2px;
     }
+
     .pg-select {
       background: var(--surface); color: var(--ink);
-      border: 1px solid var(--border); border-radius: 6px;
+      border: 1px solid var(--border); border-radius: var(--radius-md);
       height: 30px; padding: 0 8px; font-size: 11.5px; outline: none;
-      max-width: 158px; min-width: 82px;
+      max-width: 154px; min-width: 78px;
       white-space: nowrap; text-overflow: ellipsis;
-      transition: border-color 0.15s ease;
-      cursor: pointer;
+      transition: all 0.15s ease;
+      cursor: pointer; box-sizing: border-box;
     }
     [data-theme="light"] .pg-select,
     [data-theme="light"] .pg-btn {
       background: #ffffff; color: #0f172a;
-      border-color: rgba(15, 23, 42, 0.13);
+      border-color: rgba(15, 23, 42, 0.12);
     }
-    .pg-select:hover, .pg-select:focus { border-color: var(--border-strong); }
+    .pg-select:hover, .pg-select:focus {
+      border-color: var(--border-strong);
+      background: var(--surface-elev);
+    }
+    .pg-select:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px var(--brand-glow);
+    }
+
     .pg-btn {
       background: var(--surface); color: var(--ink);
-      border: 1px solid var(--border); border-radius: 6px;
+      border: 1px solid var(--border); border-radius: var(--radius-md);
       height: 30px; padding: 0 9px; font-size: 11.5px; font-weight: 500;
-      cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
       white-space: nowrap; flex-shrink: 0;
-      transition: all 0.15s ease;
-      box-sizing: border-box;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box; user-select: none;
     }
-    .pg-btn:hover { background: var(--surface-elev); border-color: var(--border-strong); color: var(--ink); }
-    [data-theme="light"] .pg-btn:hover { background: #f8fafc; border-color: rgba(15, 23, 42, 0.25); }
-    .pg-btn-icon { width: 30px; padding: 0; }
+    .pg-btn:hover {
+      background: var(--surface-elev);
+      border-color: var(--border-strong);
+      color: var(--ink);
+      transform: translateY(-0.5px);
+    }
+    .pg-btn:active {
+      transform: translateY(0.5px);
+    }
+    [data-theme="light"] .pg-btn:hover {
+      background: #f8fafc;
+      border-color: rgba(15, 23, 42, 0.22);
+    }
+    .pg-btn-icon {
+      width: 30px; padding: 0;
+    }
     .pg-btn-primary {
       background: var(--brand); color: #ffffff !important;
       border-color: var(--brand) !important; font-weight: 600;
-      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.32);
+      box-shadow: 0 2px 8px var(--brand-glow);
     }
     .pg-btn-primary:hover {
-      background: var(--brand-hover); border-color: var(--brand-hover) !important; color: #ffffff !important;
+      background: var(--brand-hover);
+      border-color: var(--brand-hover) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px var(--brand-glow);
     }
     .pg-btn-success {
       background: #10b981 !important; color: #ffffff !important;
       border-color: #10b981 !important;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4) !important;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.45) !important;
     }
     .pg-theme-btn svg { width: 14px; height: 14px; }
     .pg-theme-btn .icon-moon { display: none; }
@@ -533,7 +730,7 @@ export async function buildWebPlaygroundHtml(
     }
     .pg-mobile-tab-btn {
       flex: 1; height: 28px;
-      border-radius: 6px; border: 1px solid transparent;
+      border-radius: var(--radius-sm); border: 1px solid transparent;
       background: transparent; color: var(--ink-muted);
       font-size: 12px; font-weight: 500; cursor: pointer;
     }
@@ -546,8 +743,8 @@ export async function buildWebPlaygroundHtml(
     }
 
     .pg-body {
-      display: grid; grid-template-columns: 420px 1fr;
-      height: calc(100% - 50px);
+      display: grid; grid-template-columns: 430px 1fr;
+      height: calc(100% - var(--topbar-height));
     }
 
     @media (max-width: 860px) {
@@ -568,7 +765,7 @@ export async function buildWebPlaygroundHtml(
       .pg-mobile-nav { display: flex; }
       .pg-body {
         display: block;
-        height: calc(100% - 122px);
+        height: calc(100% - 118px);
         position: relative;
       }
       .editor-pane, .stage-pane {
@@ -585,10 +782,10 @@ export async function buildWebPlaygroundHtml(
         gap: 3px !important;
       }
       .pg-dock-label { display: none !important; }
-      .pg-slide-pills { max-width: 96px !important; }
+      .pg-slide-pills { max-width: 90px !important; }
     }
 
-    /* Left Pane: Dual-Mode Editor */
+    /* Left Pane: Dual-Mode Editor (Markdown & Card) */
     .editor-pane {
       background: var(--sidebar);
       border-right: 1px solid var(--border);
@@ -604,13 +801,13 @@ export async function buildWebPlaygroundHtml(
     }
     .editor-segmented {
       display: inline-flex; padding: 2px; gap: 2px;
-      background: var(--bg); border: 1px solid var(--border); border-radius: 7px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md);
     }
     .editor-tab-btn {
-      height: 24px; padding: 0 9px; border: none; border-radius: 5px;
+      height: 25px; padding: 0 9px; border: none; border-radius: var(--radius-sm);
       background: transparent; color: var(--ink-muted);
       font-size: 11.5px; font-weight: 500; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 4px;
+      display: inline-flex; align-items: center; gap: 5px;
       white-space: nowrap; transition: all 0.15s ease;
     }
     .editor-tab-btn.active {
@@ -619,6 +816,7 @@ export async function buildWebPlaygroundHtml(
     [data-theme="light"] .editor-tab-btn.active {
       background: #ffffff; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
+
     .editor-head {
       height: 36px; padding: 0 12px;
       display: flex; align-items: center; justify-content: space-between;
@@ -627,7 +825,17 @@ export async function buildWebPlaygroundHtml(
       font-size: 11px; color: var(--ink-muted);
       background: var(--sidebar);
     }
-    .editor-head > span { white-space: nowrap; flex-shrink: 0; }
+    .editor-head-left {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .editor-head-title {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-weight: 600; color: var(--ink); font-size: 11.5px;
+    }
+    .editor-line-indicator {
+      font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-faint);
+    }
+
     .snippet-chips {
       display: flex; gap: 4px; flex-wrap: nowrap;
       overflow-x: auto; scrollbar-width: none;
@@ -635,28 +843,62 @@ export async function buildWebPlaygroundHtml(
     .snippet-chips::-webkit-scrollbar { display: none; }
     .chip-btn {
       background: var(--surface); border: 1px solid var(--border);
-      color: var(--ink-muted); border-radius: 5px; padding: 3px 7px;
+      color: var(--ink-muted); border-radius: var(--radius-sm); padding: 3px 7px;
       font-size: 11px; cursor: pointer;
       white-space: nowrap; flex-shrink: 0;
       transition: all 0.14s ease;
     }
-    .chip-btn:hover { color: var(--ink); border-color: var(--border-strong); background: var(--surface-elev); }
-
-    #md-input {
-      flex: 1; width: 100%; background: transparent;
-      color: var(--ink); border: none; outline: none;
-      padding: 14px; font-family: var(--font-mono); font-size: 12.5px;
-      line-height: 1.65; resize: none;
+    .chip-btn:hover {
+      color: var(--ink); border-color: var(--border-strong); background: var(--surface-elev);
     }
+
+    /* Synchronized Code Editor with Line Numbers Gutter */
+    #source-editor-wrap {
+      flex: 1; display: flex; flex-direction: column; min-height: 0;
+    }
+    .editor-code-container {
+      flex: 1; display: flex; min-height: 0; position: relative;
+      background: var(--sidebar); overflow: hidden;
+    }
+    .editor-gutter {
+      width: 44px; flex-shrink: 0; padding: 14px 0;
+      background: rgba(0, 0, 0, 0.16);
+      border-right: 1px solid var(--border);
+      user-select: none; overflow: hidden; text-align: right; box-sizing: border-box;
+      font-family: var(--font-mono); font-size: 12px; line-height: 20px;
+      color: var(--ink-faint); opacity: 0.72;
+    }
+    [data-theme="light"] .editor-gutter {
+      background: rgba(15, 23, 42, 0.03);
+    }
+    .gutter-line {
+      padding-right: 10px; height: 20px; line-height: 20px; box-sizing: border-box;
+      transition: color 0.1s ease;
+    }
+    .gutter-line.active {
+      color: var(--brand); font-weight: 700;
+    }
+
+    .editor-textarea-wrapper {
+      flex: 1; height: 100%; position: relative; min-width: 0; overflow: hidden;
+    }
+    #md-input {
+      width: 100%; height: 100%; background: transparent;
+      color: var(--ink); border: none; outline: none;
+      padding: 14px 14px; font-family: var(--font-mono); font-size: 12px;
+      line-height: 20px; tab-size: 2; resize: none; box-sizing: border-box;
+      white-space: pre; overflow: auto;
+      caret-color: var(--brand);
+      letter-spacing: -0.01em;
+    }
+
+    /* Card Editor Mode */
     #card-editor-pane {
-      flex: 1; overflow-y: auto; padding: 12px 14px;
-      display: flex; flex-direction: column; gap: 11px;
+      flex: 1; overflow-y: auto; padding: 14px 16px;
+      display: flex; flex-direction: column; gap: 12px;
     }
     #card-editor-pane.hidden, #source-editor-wrap.hidden {
       display: none !important;
-    }
-    #source-editor-wrap {
-      flex: 1; display: flex; flex-direction: column; min-height: 0;
     }
     .card-pills-row {
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
@@ -664,7 +906,7 @@ export async function buildWebPlaygroundHtml(
     .card-slide-pills { display: flex; gap: 5px; flex-wrap: wrap; }
     .card-pill {
       height: 25px; min-width: 32px; padding: 0 8px;
-      border-radius: 6px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
       background: var(--surface); color: var(--ink-muted);
       font-family: var(--font-mono); font-size: 11px; font-weight: 600;
       cursor: pointer; transition: all 0.14s ease;
@@ -677,12 +919,15 @@ export async function buildWebPlaygroundHtml(
     }
     .card-input, .card-textarea {
       width: 100%; background: var(--surface); color: var(--ink);
-      border: 1px solid var(--border); border-radius: 7px;
+      border: 1px solid var(--border); border-radius: var(--radius-md);
       padding: 7px 10px; font-family: var(--font-sans); font-size: 12.5px;
-      outline: none; transition: border-color 0.14s ease;
+      outline: none; transition: border-color 0.14s ease, box-shadow 0.14s ease;
     }
     .card-textarea { font-family: var(--font-mono); font-size: 12px; line-height: 1.55; resize: vertical; }
-    .card-input:focus, .card-textarea:focus { border-color: var(--brand); }
+    .card-input:focus, .card-textarea:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px var(--brand-glow);
+    }
 
     .editor-footer {
       height: 32px; padding: 0 12px;
@@ -692,24 +937,28 @@ export async function buildWebPlaygroundHtml(
       background: var(--surface);
     }
 
-    /* Right Pane: Optical Stage */
+    /* 2. Optical Darkroom Live Stage Viewport */
     .stage-pane {
-      background:
-        radial-gradient(circle at 50% 42%, rgba(99, 102, 241, 0.05), transparent 60%),
-        radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-        #08090d;
-      background-size: 100% 100%, 22px 22px, auto;
+      background-color: #07080c;
+      background-image:
+        radial-gradient(circle at 50% 36%, rgba(99, 102, 241, 0.08), transparent 64%),
+        radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 24px 24px, 120px 120px, 120px 120px;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       position: relative; overflow: hidden;
-      padding: 16px 20px 64px;
+      padding: 16px 20px 68px;
     }
     [data-theme="light"] .stage-pane {
-      background:
-        radial-gradient(circle at 50% 42%, rgba(79, 70, 229, 0.04), transparent 60%),
-        radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px),
-        #e5eaf2;
-      background-size: 100% 100%, 22px 22px, auto;
+      background-color: #e6ebf2;
+      background-image:
+        radial-gradient(circle at 50% 36%, rgba(79, 70, 229, 0.05), transparent 64%),
+        radial-gradient(rgba(15, 23, 42, 0.09) 1px, transparent 1px),
+        linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 24px 24px, 120px 120px, 120px 120px;
     }
     .stage-viewport {
       width: 100%; height: 100%;
@@ -717,53 +966,62 @@ export async function buildWebPlaygroundHtml(
     }
     #preview-frame {
       width: 100%; height: 100%;
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
       background: transparent;
-      box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
     }
     [data-theme="light"] #preview-frame {
       border-color: rgba(15, 23, 42, 0.1);
-      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.1);
+      box-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(15, 23, 42, 0.08);
     }
+
+    /* Floating Stage Dock Capsule */
     .pg-stage-dock {
       position: absolute;
-      bottom: 14px;
+      bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
-      height: 38px;
+      height: 40px;
       padding: 0 10px;
       border-radius: 999px;
-      background: rgba(20, 22, 30, 0.94);
-      backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(13, 15, 22, 0.88);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.13);
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      z-index: 25;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.48);
+      z-index: 30;
+      box-shadow: 0 14px 36px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
     }
     [data-theme="light"] .pg-stage-dock {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.9);
       border-color: rgba(15, 23, 42, 0.12);
-      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+      box-shadow: 0 14px 36px -4px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(15, 23, 42, 0.05);
     }
     .pg-dock-btn {
-      height: 26px; padding: 0 8px;
+      height: 28px; padding: 0 9px;
       border-radius: 999px; border: 1px solid transparent;
       background: transparent; color: var(--ink);
-      font-size: 11.5px; cursor: pointer; white-space: nowrap;
+      font-size: 11.5px; font-weight: 500; cursor: pointer; white-space: nowrap;
       display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+      transition: all 0.14s ease;
     }
-    .pg-dock-btn:hover { background: rgba(255, 255, 255, 0.1); }
-    [data-theme="light"] .pg-dock-btn:hover { background: rgba(15, 23, 42, 0.06); }
+    .pg-dock-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    [data-theme="light"] .pg-dock-btn:hover {
+      background: rgba(15, 23, 42, 0.06);
+    }
     .pg-slide-indicator {
-      font-family: var(--font-mono); font-size: 11.5px;
-      color: var(--ink-muted); padding: 0 4px; white-space: nowrap;
+      font-family: var(--font-mono); font-size: 11.5px; font-variant-numeric: tabular-nums;
+      color: var(--ink-muted); padding: 0 4px; white-space: nowrap; user-select: none;
     }
     .pg-slide-pills {
       display: inline-flex; align-items: center; gap: 3px;
-      max-width: 200px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth;
+      max-width: 190px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth;
     }
     .pg-slide-pills::-webkit-scrollbar { display: none; }
     .pg-slide-pill {
@@ -776,15 +1034,19 @@ export async function buildWebPlaygroundHtml(
     }
     .pg-slide-pill:hover { background: rgba(255, 255, 255, 0.1); color: var(--ink); }
     .pg-slide-pill.active {
-      background: #ffffff; color: #111113; font-weight: 700;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+      background: #ffffff; color: #0b0c10; font-weight: 700;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.4);
     }
     [data-theme="light"] .pg-slide-pill.active { background: #0f172a; color: #ffffff; }
-    .pg-quick-actions {
+
+    .pg-quick-actions, .pg-zoom-actions {
       display: inline-flex; align-items: center; gap: 2px;
-      background: rgba(255, 255, 255, 0.06); padding: 1px 2px; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06); padding: 2px; border-radius: 999px;
     }
-    [data-theme="light"] .pg-quick-actions { background: rgba(15, 23, 42, 0.06); }
+    [data-theme="light"] .pg-quick-actions,
+    [data-theme="light"] .pg-zoom-actions {
+      background: rgba(15, 23, 42, 0.06);
+    }
     .pg-dock-icon-btn {
       width: 24px; height: 24px; border-radius: 999px; border: none;
       background: transparent; color: var(--ink-muted); cursor: pointer;
@@ -794,90 +1056,138 @@ export async function buildWebPlaygroundHtml(
     .pg-dock-icon-btn:hover { background: rgba(255, 255, 255, 0.14); color: var(--ink); }
     [data-theme="light"] .pg-dock-icon-btn:hover { background: rgba(15, 23, 42, 0.1); color: #0f172a; }
     .pg-dock-icon-btn-danger:hover {
-      background: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important;
+      background: rgba(239, 68, 68, 0.22) !important; color: #f87171 !important;
     }
+    .pg-dock-pill-btn {
+      height: 22px; padding: 0 7px; border-radius: 999px; border: none;
+      background: transparent; color: var(--ink-muted); font-size: 11px;
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono);
+    }
+    .pg-dock-pill-btn:hover { background: rgba(255, 255, 255, 0.12); color: var(--ink); }
+
     .spin { animation: spin 0.8s linear infinite; }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
     .fullscreen-mode #preview-frame {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       border: none; border-radius: 0; z-index: 9999;
     }
     .fullscreen-mode .pg-stage-dock { z-index: 10001; }
 
-    /* Template Visual Gallery Drawer */
+    /* 3. 36-Template Visual Gallery Drawer (Spring Animation & Linear Style) */
     .drawer-backdrop {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.58); backdrop-filter: blur(4px);
-      z-index: 9000; opacity: 0; pointer-events: none; transition: opacity 0.22s ease;
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 9000; opacity: 0; pointer-events: none;
+      transition: opacity 220ms ease;
     }
     .drawer-backdrop.show { opacity: 1; pointer-events: auto; }
+
     .template-drawer {
-      position: fixed; top: 0; right: -540px; width: 520px; max-width: 94vw; height: 100%;
+      position: fixed; top: 0; right: -560px; width: 540px; max-width: 94vw; height: 100%;
       background: var(--sidebar); border-left: 1px solid var(--border);
-      box-shadow: -12px 0 40px rgba(0, 0, 0, 0.5); z-index: 9001;
-      display: flex; flex-direction: column; transition: right 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -16px 0 48px rgba(0, 0, 0, 0.6); z-index: 9001;
+      display: flex; flex-direction: column;
+      transition: right 240ms cubic-bezier(0.16, 1, 0.3, 1);
     }
     .template-drawer.show { right: 0; }
+
     .drawer-header {
       height: 50px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between;
       border-bottom: 1px solid var(--border);
     }
-    .drawer-header h3 { margin: 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+    .drawer-header-left {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .drawer-header h3 { margin: 0; font-size: 14px; font-weight: 650; color: var(--ink); }
+    .drawer-header-count {
+      font-size: 10.5px; padding: 2px 7px; border-radius: 999px;
+      background: rgba(99, 102, 241, 0.15); color: #a5b4fc; font-weight: 600;
+    }
     .drawer-close {
       background: transparent; border: none; color: var(--ink-muted); font-size: 16px;
-      cursor: pointer; width: 28px; height: 28px; border-radius: 6px;
+      cursor: pointer; width: 28px; height: 28px; border-radius: var(--radius-sm);
       display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.14s ease;
     }
     .drawer-close:hover { color: var(--ink); background: var(--surface); }
+
     .drawer-filter-bar {
-      padding: 10px 14px; border-bottom: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 8px; background: var(--surface);
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 10px; background: var(--surface);
+    }
+    .drawer-search-wrap {
+      position: relative; width: 100%;
     }
     .drawer-search {
-      width: 100%; height: 32px; background: var(--sidebar); border: 1px solid var(--border);
-      border-radius: 6px; padding: 0 10px; color: var(--ink); font-size: 12px; outline: none;
+      width: 100%; height: 34px; background: var(--sidebar); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 0 12px; color: var(--ink); font-size: 12px; outline: none;
+      transition: all 0.15s ease; box-sizing: border-box;
     }
-    .drawer-search:focus { border-color: var(--brand); }
-    .drawer-pills { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; }
+    .drawer-search:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-glow);
+    }
+    
+    .drawer-pills { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
     .drawer-pills::-webkit-scrollbar { display: none; }
     .drawer-pill {
-      height: 25px; padding: 0 10px; font-size: 11px; border-radius: 999px;
+      height: 26px; padding: 0 11px; font-size: 11px; border-radius: 999px;
       border: 1px solid var(--border); background: var(--sidebar); color: var(--ink-muted);
       cursor: pointer; white-space: nowrap; flex-shrink: 0;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .drawer-pill:hover {
+      border-color: var(--border-strong); color: var(--ink);
     }
     .drawer-pill.active {
-      background: var(--ink); color: var(--sidebar); border-color: var(--ink); font-weight: 600;
+      background: #ffffff; color: #0b0c10; border-color: #ffffff; font-weight: 600;
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.25), 0 0 16px var(--brand-glow);
     }
+    [data-theme="light"] .drawer-pill.active {
+      background: #0f172a; color: #ffffff; border-color: #0f172a;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+    }
+
     .drawer-grid {
-      flex: 1; overflow-y: auto; padding: 14px;
-      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
+      flex: 1; overflow-y: auto; padding: 14px 16px;
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
       align-content: start; align-items: stretch;
     }
     @media (max-width: 480px) {
       .drawer-grid { grid-template-columns: minmax(0, 1fr); }
     }
     .drawer-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
       padding: 10px; display: flex; flex-direction: column; gap: 8px; cursor: pointer;
-      transition: all 0.15s ease; text-align: left; min-width: 0; width: 100%;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); text-align: left; min-width: 0; width: 100%;
+      position: relative; box-sizing: border-box;
     }
     .drawer-card:hover {
-      border-color: var(--border-strong); background: var(--surface-elev); transform: translateY(-1px);
+      border-color: rgba(99, 102, 241, 0.5);
+      background: var(--surface-elev);
+      transform: translateY(-3px) scale(1.015);
+      box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.55), 0 0 16px rgba(99, 102, 241, 0.15);
     }
     .drawer-card.active {
-      border-color: var(--brand); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.28);
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px var(--brand), 0 8px 24px -4px var(--brand-glow);
     }
+
     .drawer-thumb-box {
-      position: relative; width: 100%; height: 104px; flex-shrink: 0; border-radius: 8px; overflow: hidden;
-      border: 1px solid rgba(127, 127, 127, 0.2);
+      position: relative; width: 100%; height: 110px; flex-shrink: 0; border-radius: var(--radius-md);
+      overflow: hidden; border: 1px solid rgba(127, 127, 127, 0.2);
       display: flex; align-items: center; justify-content: center;
       background: var(--surface-elev);
     }
     .drawer-thumb-img {
       width: 100%; height: 100%; object-fit: cover; object-position: center 18%;
-      transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1); display: block;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); display: block;
     }
     .drawer-card:hover .drawer-thumb-img {
-      transform: scale(1.05);
+      transform: scale(1.06);
     }
     .drawer-swatch-fallback {
       width: 100%; height: 100%; padding: 8px 10px; position: relative; overflow: hidden;
@@ -886,37 +1196,25 @@ export async function buildWebPlaygroundHtml(
     .drawer-swatch-bar {
       position: absolute; top: 0; left: 0; right: 0; height: 3px;
     }
+
+    /* Refined 3-Color Frosted Glass Palette Strip */
     .drawer-palette-strip {
       position: absolute; bottom: 6px; right: 6px;
-      display: inline-flex; align-items: center; gap: 3px;
-      padding: 2px 4px; border-radius: 999px;
-      background: rgba(10, 12, 18, 0.72);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 6px; border-radius: 999px;
+      background: rgba(10, 12, 18, 0.78);
+      backdrop-filter: blur(14px) saturate(180%);
+      -webkit-backdrop-filter: blur(14px) saturate(180%);
       border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
       z-index: 2;
     }
     .palette-swatch-dot {
       width: 8px; height: 8px; border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.3); flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.35); flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
-    .drawer-swatch {
-      height: 68px; border-radius: 6px; padding: 8px 10px; position: relative; overflow: hidden;
-      border: 1px solid rgba(127, 127, 127, 0.18);
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .drawer-swatch-title {
-      height: 7px; width: 68%; border-radius: 3px; opacity: 0.88;
-    }
-    .drawer-swatch-sub {
-      height: 4px; width: 46%; border-radius: 2px; opacity: 0.35; margin-top: 4px;
-    }
-    .drawer-swatch-tiles {
-      display: flex; gap: 5px; margin-top: auto;
-    }
-    .drawer-swatch-tile {
-      flex: 1; height: 22px; border-radius: 4px; border: 1px solid rgba(127, 127, 127, 0.22);
-    }
+
     .drawer-card-top {
       display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; width: 100%;
     }
@@ -925,8 +1223,8 @@ export async function buildWebPlaygroundHtml(
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .drawer-card-aspect {
-      font-size: 10px; font-family: var(--font-mono); padding: 1px 5px; border-radius: 4px;
-      background: rgba(127, 127, 127, 0.14); color: var(--ink-muted); font-weight: 600; flex-shrink: 0;
+      font-size: 10px; font-family: var(--font-mono); padding: 1px 6px; border-radius: 4px;
+      background: rgba(127, 127, 127, 0.16); color: var(--ink-muted); font-weight: 600; flex-shrink: 0;
     }
     .drawer-card-desc {
       font-size: 11px; color: var(--ink-muted); line-height: 1.4; min-width: 0; width: 100%;
@@ -935,46 +1233,57 @@ export async function buildWebPlaygroundHtml(
 
     /* Toast */
     #toast {
-      position: fixed; top: 60px; left: 50%;
+      position: fixed; top: 58px; left: 50%;
       transform: translateX(-50%) translateY(-8px);
       background: var(--surface-elev); color: var(--ink);
       border: 1px solid var(--border-strong); border-radius: 999px;
-      padding: 8px 16px; font-size: 12px; font-weight: 550;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
-      opacity: 0; transition: all 0.2s ease; pointer-events: none; z-index: 10002;
+      padding: 8px 18px; font-size: 12px; font-weight: 550;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      opacity: 0; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; z-index: 10002;
       white-space: nowrap;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
+  <!-- 1. Top Chrome (46px Frosted Glass) -->
   <header class="pg-topbar">
     <div class="pg-brand-wrap">
-      <div style="display:flex;align-items:center;gap:6px;">
-        <a href="/" class="pg-back-home" title="返回官网首页" aria-label="返回官网首页">
-          ${lucideIcon('chevronLeft')}
-        </a>
-        <a href="/" class="pg-brand" title="返回官网首页">
-          <svg width="20" height="20" viewBox="0 0 32 32" fill="none" style="flex-shrink:0;">
-            <rect width="32" height="32" rx="8" fill="#18181D" stroke="rgba(255,255,255,0.14)"></rect>
-            <path d="M13 6 4 24 20 27Z" fill="#F5F4F0"></path>
-            <path d="M14.5 5.65 21 4 28 25 21.4 26.65Z" fill="#D94E28"></path>
-          </svg>
-          <strong>Aimake 爱创工坊</strong>
-        </a>
-        <span class="pg-badge">Web Studio</span>
+      <a href="/" class="pg-back-home" title="返回官网首页" aria-label="返回官网首页">
+        ${lucideIcon('chevronLeft')}
+      </a>
+      <a href="/" class="pg-brand" title="返回官网首页">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="none" style="flex-shrink:0;">
+          <rect width="32" height="32" rx="8" fill="#18181D" stroke="rgba(255,255,255,0.14)"></rect>
+          <path d="M13 6 4 24 20 27Z" fill="#F5F4F0"></path>
+          <path d="M14.5 5.65 21 4 28 25 21.4 26.65Z" fill="#D94E28"></path>
+        </svg>
+        <strong>Aimake 爱创工坊</strong>
+      </a>
+      <span class="pg-crumb-sep">/</span>
+      <span class="pg-crumb-badge" id="pg-crumb-topic">Web Studio</span>
+      <div class="pg-status-indicator" title="纯前端离线沙盒 · 毫秒级即时编译">
+        <span class="pg-status-dot"></span>
+        <span class="pg-status-text">实时编译</span>
       </div>
     </div>
 
     <div class="pg-controls">
+      <!-- Storyboard Sample Selector -->
       <select class="pg-select" id="sample-select" title="载入示范原稿">
-        <optgroup label="2026 前沿时事实战爆款">
+        <optgroup label="2026 前沿时事实战爆款 (中文)">
           <option value="agent" selected>2026 AI Agent 闭环 (16:9)</option>
           <option value="deepseek">DeepSeek-R1 本地蒸馏 (3:4)</option>
           <option value="token">超级个体千亿飞轮 (微信长文)</option>
           <option value="podcast">午夜播客 6 轨视听 (9:16)</option>
           <option value="mcp">Anthropic MCP 白皮书 (4:5)</option>
           <option value="embodied">具身智能世界模型 (1:1)</option>
+        </optgroup>
+        <optgroup label="Multilingual Showcases (多语言示范)">
+          <option value="agent-en">AI Agent Architecture (16:9 EN)</option>
+          <option value="deepseek-en">DeepSeek-R1 Distillation (3:4 EN)</option>
+          <option value="podcast-ja">ミッドナイト・ポッドキャスト (9:16 JA)</option>
+          <option value="flywheel-ko">슈퍼 인디비주얼 플라이휠 (16:9 KO)</option>
         </optgroup>
         <optgroup label="经典多模态排版示范">
           <option value="architecture">Aimake Mermaid 架构图 (16:9)</option>
@@ -984,6 +1293,7 @@ export async function buildWebPlaygroundHtml(
 
       <button class="pg-btn pg-btn-icon" id="btn-reset-sample" title="重置当前示范原稿" aria-label="重置当前示范原稿">${lucideIcon('rotateCcw')}</button>
 
+      <!-- 36-Template Switcher & Drawer Trigger -->
       <select class="pg-select" id="template-select" title="切换 36 套设计模板">
         ${templates
           .map(
@@ -993,9 +1303,10 @@ export async function buildWebPlaygroundHtml(
           .join('')}
       </select>
 
-      <button class="pg-btn" id="btn-open-templates" title="打开 36 套设计模板视觉画廊">${lucideIcon('layoutGrid')} 模板库</button>
+      <button class="pg-btn" id="btn-open-templates" title="打开 36 套设计系统视觉抽屉">${lucideIcon('layoutGrid')} 36 套模板</button>
 
-      <select class="pg-select" id="aspect-select" style="max-width:96px;min-width:74px;" title="强制指定画幅比例">
+      <!-- Forced Aspect Ratio -->
+      <select class="pg-select" id="aspect-select" style="max-width:92px;min-width:72px;" title="强制指定画幅比例">
         <option value="auto">画幅: 自动</option>
         <option value="16:9">16:9 宽屏</option>
         <option value="3:4">3:4 小红书</option>
@@ -1006,18 +1317,28 @@ export async function buildWebPlaygroundHtml(
 
       <span class="pg-control-sep"></span>
 
+      <!-- AI Humanizer & Locale Switcher -->
       <button class="pg-btn" id="btn-humanize" title="四语种去 AI 套话清洗器">${lucideIcon('wand')} 去AI味</button>
+
+      <select class="pg-select" id="locale-select" style="max-width:88px;min-width:72px;" title="切换幻灯片排版语种">
+        <option value="zh-CN">🇨🇳 中文</option>
+        <option value="en-US">🇺🇸 EN</option>
+        <option value="ja-JP">🇯🇵 日本語</option>
+        <option value="ko-KR">🇰🇷 한국어</option>
+      </select>
 
       <span class="pg-control-sep"></span>
 
+      <!-- Actions & Export -->
       <button class="pg-btn pg-btn-primary" id="btn-copy-wechat" title="一键复制内联富文本，直粘公众号后台">${lucideIcon('copy')} 复制公众号</button>
       <button class="pg-btn" id="btn-export-png" title="将当前页导出为高清 PNG 图片">${lucideIcon('image')} 导图</button>
       <button class="pg-btn" id="btn-print-pdf" title="打印 / 另存为 PDF 演示文稿">${lucideIcon('printer')} PDF</button>
       <button class="pg-btn" id="btn-download-md" title="下载 .deck.md 原稿">${lucideIcon('download')} 下载</button>
-      <button class="pg-btn" id="btn-fullscreen" title="全屏演示 (F)">${lucideIcon('maximize')} 全屏</button>
+      <button class="pg-btn pg-btn-icon" id="btn-fullscreen" title="全屏演示 (F)">${lucideIcon('maximize')}</button>
 
       <span class="pg-control-sep"></span>
 
+      <!-- Theme Switcher -->
       <button type="button" id="theme-toggle-btn" class="pg-btn pg-btn-icon pg-theme-btn" onclick="togglePlaygroundTheme()" aria-label="切换浅色 / 深色模式" title="切换浅色 / 深色模式">
         <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
         <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
@@ -1039,12 +1360,16 @@ export async function buildWebPlaygroundHtml(
           <button class="editor-tab-btn active" id="tab-mode-source" role="tab" aria-selected="true">${lucideIcon('code')} Markdown 源码</button>
           <button class="editor-tab-btn" id="tab-mode-card" role="tab" aria-selected="false">${lucideIcon('layers')} 卡片编辑</button>
         </div>
-        <span style="font-size:11px;color:var(--ink-muted);white-space:nowrap;">本地零延迟编译</span>
+        <span style="font-size:11px;color:var(--ink-muted);white-space:nowrap;">纯前端沙盒运行</span>
       </div>
 
+      <!-- Source Code Editor with Gutter Line Numbers -->
       <div id="source-editor-wrap">
         <div class="editor-head">
-          <span>原稿 (.deck.md)</span>
+          <div class="editor-head-left">
+            <span class="editor-head-title">${lucideIcon('code')} 原稿 (.deck.md)</span>
+            <span class="editor-line-indicator" id="cursor-pos-indicator">Ln 1, Col 1</span>
+          </div>
           <div class="snippet-chips">
             <button class="chip-btn" data-insert="metric">+指标</button>
             <button class="chip-btn" data-insert="mermaid">+流程图</button>
@@ -1054,9 +1379,15 @@ export async function buildWebPlaygroundHtml(
             <button class="chip-btn" data-insert="slide">+加页</button>
           </div>
         </div>
-        <textarea id="md-input" spellcheck="false" placeholder="在此编写或粘贴 Markdown 原稿…"></textarea>
+        <div class="editor-code-container">
+          <div class="editor-gutter" id="editor-gutter" aria-hidden="true"></div>
+          <div class="editor-textarea-wrapper">
+            <textarea id="md-input" wrap="off" spellcheck="false" placeholder="在此编写或粘贴 Markdown 原稿…"></textarea>
+          </div>
+        </div>
       </div>
 
+      <!-- Card Mode Form Editor -->
       <div id="card-editor-pane" class="hidden" aria-label="卡片可视化编辑">
         <div class="card-pills-row">
           <div class="card-slide-pills" id="card-slide-pills"></div>
@@ -1086,7 +1417,7 @@ export async function buildWebPlaygroundHtml(
 
       <div class="editor-footer">
         <span id="char-count">0 字符 · 0 页</span>
-        <span>${lucideIcon('sparkles')} 纯前端沙盒运行</span>
+        <span>${lucideIcon('sparkles')} 毫秒级即时编译</span>
       </div>
     </section>
 
@@ -1095,32 +1426,65 @@ export async function buildWebPlaygroundHtml(
       <div class="stage-viewport">
         <iframe id="preview-frame" title="Aimake 实时视觉舞台"></iframe>
       </div>
-      <div class="pg-stage-dock" role="toolbar" aria-label="幻灯片翻页">
-        <button class="pg-dock-btn" id="pg-prev-slide" title="上一页 (← / PageUp)">${lucideIcon('chevronLeft')}<span class="pg-dock-label"> 上一页</span></button>
+      
+      <!-- Refined Floating Stage Dock Capsule -->
+      <div class="pg-stage-dock" role="toolbar" aria-label="幻灯片翻页与舞台控制">
+        <button class="pg-dock-btn" id="pg-prev-slide" title="上一页 (← / PageUp)">
+          ${lucideIcon('chevronLeft')}
+          <span class="pg-dock-label">上一页</span>
+        </button>
         <div class="pg-slide-pills" id="pg-slide-pills"></div>
         <span class="pg-slide-indicator" id="pg-slide-indicator">01 / 01</span>
-        <button class="pg-dock-btn" id="pg-next-slide" title="下一页 (→ / PageDown / 空格)"><span class="pg-dock-label">下一页 </span>${lucideIcon('chevronRight')}</button>
+        <button class="pg-dock-btn" id="pg-next-slide" title="下一页 (→ / PageDown / 空格)">
+          <span class="pg-dock-label">下一页</span>
+          ${lucideIcon('chevronRight')}
+        </button>
+        
         <span class="pg-control-sep"></span>
+        
+        <!-- Slide Manipulation -->
         <div class="pg-quick-actions">
           <button class="pg-dock-icon-btn" id="pg-add-slide" title="在末尾新增一页">${lucideIcon('plus')}</button>
           <button class="pg-dock-icon-btn" id="pg-dup-slide" title="复制当前页">${lucideIcon('copy')}</button>
           <button class="pg-dock-icon-btn pg-dock-icon-btn-danger" id="pg-del-slide" title="删除当前页">${lucideIcon('trash')}</button>
         </div>
+
         <span class="pg-control-sep"></span>
-        <button class="pg-dock-btn" id="pg-view-mode" title="切换单页聚焦 / 全部平铺">${lucideIcon('layoutGrid')}<span class="pg-dock-label"> 单页视图</span></button>
+
+        <!-- Zoom Controls -->
+        <div class="pg-zoom-actions">
+          <button class="pg-dock-icon-btn" id="pg-zoom-out" title="缩小视图">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" x2="19" y1="12" y2="12"/></svg>
+          </button>
+          <button class="pg-dock-pill-btn" id="pg-zoom-level" title="点击重置自适应比例">自适应</button>
+          <button class="pg-dock-icon-btn" id="pg-zoom-in" title="放大视图">${lucideIcon('plus')}</button>
+        </div>
+
+        <span class="pg-control-sep"></span>
+
+        <!-- View Mode Switcher -->
+        <button class="pg-dock-btn" id="pg-view-mode" title="切换单页聚焦 / 全部平铺">
+          ${lucideIcon('layoutGrid')}
+          <span class="pg-dock-label">单页视图</span>
+        </button>
       </div>
     </section>
   </main>
 
-  <!-- Template Visual Gallery Drawer -->
+  <!-- 3. Template Visual Gallery Drawer (Spring Animation & Linear Style) -->
   <div id="template-drawer-backdrop" class="drawer-backdrop" onclick="closeTemplateDrawer()"></div>
   <aside id="template-drawer" class="template-drawer" aria-label="设计系统与模板库">
     <div class="drawer-header">
-      <h3>36 套参数化设计系统</h3>
-      <button class="drawer-close" onclick="closeTemplateDrawer()" aria-label="关闭">✕</button>
+      <div class="drawer-header-left">
+        <h3>36 套参数化设计系统</h3>
+        <span class="drawer-header-count">36</span>
+      </div>
+      <button class="drawer-close" onclick="closeTemplateDrawer()" aria-label="关闭">${lucideIcon('x')}</button>
     </div>
     <div class="drawer-filter-bar">
-      <input type="search" id="drawer-search" class="drawer-search" placeholder="搜索模板名称、风格或比例..." oninput="filterTemplates()" />
+      <div class="drawer-search-wrap">
+        <input type="search" id="drawer-search" class="drawer-search" placeholder="搜索 36 套模板、风格或比例..." oninput="filterTemplates()" />
+      </div>
       <div class="drawer-pills" id="drawer-pills">
         <button class="drawer-pill active" data-cat="all" onclick="filterCategory('all')">全部 (36)</button>
         <button class="drawer-pill" data-cat="16:9" onclick="filterCategory('16:9')">16:9 演示</button>
@@ -1141,13 +1505,23 @@ export async function buildWebPlaygroundHtml(
     const TEMPLATE_MAP = new Map(TEMPLATES_DATA.map(t => [t.id, t]));
 
     const elInput = document.getElementById('md-input');
+    const elGutter = document.getElementById('editor-gutter');
     const elSample = document.getElementById('sample-select');
     const elTemplate = document.getElementById('template-select');
     const elAspect = document.getElementById('aspect-select');
+    const elLocale = document.getElementById('locale-select');
     const elFrame = document.getElementById('preview-frame');
     const elCharCount = document.getElementById('char-count');
     const elToast = document.getElementById('toast');
     const elBody = document.getElementById('pg-body');
+    const elCrumb = document.getElementById('pg-crumb-topic');
+    const elPosIndicator = document.getElementById('cursor-pos-indicator');
+    const elZoomLevel = document.getElementById('pg-zoom-level');
+
+    let currentSlideIdx = 0;
+    let viewMode = 'single'; // 'single' | 'all'
+    let totalSlides = 1;
+    let userZoomScale = 'auto'; // 'auto' | number
 
     function showToast(msg) {
       elToast.textContent = msg;
@@ -1201,6 +1575,41 @@ export async function buildWebPlaygroundHtml(
     }
     window.togglePlaygroundTheme = togglePlaygroundTheme;
     initPlaygroundTheme();
+
+    // Line Numbers Gutter & Cursor Tracker
+    function updateGutter() {
+      const val = elInput.value || '';
+      const lines = val.split('\\n').length;
+      let html = '';
+      for (let i = 1; i <= lines; i++) {
+        html += '<div class="gutter-line" data-line="' + i + '">' + i + '</div>';
+      }
+      elGutter.innerHTML = html;
+      updateActiveLine();
+    }
+
+    function syncGutterScroll() {
+      elGutter.scrollTop = elInput.scrollTop;
+    }
+    elInput.addEventListener('scroll', syncGutterScroll);
+
+    function updateActiveLine() {
+      const val = elInput.value || '';
+      const selStart = typeof elInput.selectionStart === 'number' ? elInput.selectionStart : 0;
+      const textBefore = val.slice(0, selStart);
+      const lines = textBefore.split('\\n');
+      const curLine = lines.length;
+      const curCol = lines[lines.length - 1].length + 1;
+      if (elPosIndicator) {
+        elPosIndicator.textContent = 'Ln ' + curLine + ', Col ' + curCol;
+      }
+      const gutterLines = elGutter.children;
+      for (let i = 0; i < gutterLines.length; i++) {
+        gutterLines[i].classList.toggle('active', i + 1 === curLine);
+      }
+    }
+    elInput.addEventListener('keyup', updateActiveLine);
+    elInput.addEventListener('click', updateActiveLine);
 
     // Mobile View Switcher
     function setMobileView(view) {
@@ -1285,10 +1694,6 @@ export async function buildWebPlaygroundHtml(
         }
       });
     }
-
-    let currentSlideIdx = 0;
-    let viewMode = 'single'; // 'single' | 'all'
-    let totalSlides = 1;
 
     // Client-side Markdown Parser (never leaks fenced blocks into bullets)
     function parseClientMarkdown(mdText) {
@@ -1460,7 +1865,7 @@ export async function buildWebPlaygroundHtml(
       return { fm, slides, rawSlides };
     }
 
-    // Real Dynamic Client-Side Mermaid Flowchart Renderer
+    // Dynamic Client-Side Mermaid Flowchart Renderer
     function parseClientNodeToken(tok) {
       const t = String(tok || '').trim();
       const roundPill = t.match(/^([A-Za-z0-9_-]+)\\(\\[([^\\]]+)\\]\\)$/);
@@ -1728,7 +2133,7 @@ export async function buildWebPlaygroundHtml(
     let compileTimeout = null;
     function scheduleCompile() {
       if (compileTimeout) clearTimeout(compileTimeout);
-      compileTimeout = setTimeout(compileNow, 120);
+      compileTimeout = setTimeout(compileNow, 100);
     }
 
     let isApplyingFromCard = false;
@@ -1736,6 +2141,8 @@ export async function buildWebPlaygroundHtml(
     function compileNow() {
       const raw = elInput.value;
       try { localStorage.setItem('aimake_playground_md', raw); } catch (_) {}
+
+      updateGutter();
 
       const parsed = parseClientMarkdown(raw);
       totalSlides = Math.max(1, parsed.slides.length);
@@ -1751,6 +2158,15 @@ export async function buildWebPlaygroundHtml(
 
       let aspect = elAspect.value === 'auto' ? (parsed.fm.aspect || tpl.aspect || '16:9') : elAspect.value;
       if (!['16:9', '3:4', '9:16', '1:1', '4:5'].includes(aspect)) aspect = tpl.aspect || '16:9';
+
+      const curLocale = parsed.fm.locale || 'zh-CN';
+      if (elLocale && elLocale.value !== curLocale && Array.from(elLocale.options).some(o => o.value === curLocale)) {
+        elLocale.value = curLocale;
+      }
+
+      if (elCrumb) {
+        elCrumb.textContent = parsed.fm.title || (tpl.name.zh || tpl.id);
+      }
 
       const nativeDims = {
         '16:9': { w: 1920, h: 1080 },
@@ -1768,10 +2184,10 @@ export async function buildWebPlaygroundHtml(
         .join('');
 
       const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-      const frameBg = curTheme === 'light' ? '#e5eaf2' : '#08090d';
+      const frameBg = curTheme === 'light' ? '#e6ebf2' : '#07080c';
 
       const stageScript = '<script>' +
-        'var NATIVE_W = ' + dim.w + '; var NATIVE_H = ' + dim.h + '; var VIEW_MODE = "' + viewMode + '";' +
+        'var NATIVE_W = ' + dim.w + '; var NATIVE_H = ' + dim.h + '; var VIEW_MODE = "' + viewMode + '"; var USER_ZOOM = ' + (typeof userZoomScale === 'number' ? userZoomScale : '"auto"') + ';' +
         'function autoFitSlideOverflow(slideEl) {' +
         '  var zone = slideEl.querySelector(".content-zone");' +
         '  if (!zone || slideEl.style.display === "none") return;' +
@@ -1793,10 +2209,11 @@ export async function buildWebPlaygroundHtml(
         '  if (vw < 40 || vh < 40) return;' +
         '  var padX = vw < 520 ? 20 : 40;' +
         '  var padY = vw < 520 ? 20 : 36;' +
-        '  var scale = VIEW_MODE === "single"' +
+        '  var autoScale = VIEW_MODE === "single"' +
         '    ? Math.min(1, (vw - padX) / NATIVE_W, (vh - padY) / NATIVE_H)' +
         '    : Math.min(0.68, (vw - padX) / NATIVE_W);' +
-        '  root.style.zoom = String(Math.max(0.16, scale).toFixed(4));' +
+        '  var appliedScale = USER_ZOOM === "auto" ? autoScale : USER_ZOOM;' +
+        '  root.style.zoom = String(Math.max(0.16, appliedScale).toFixed(4));' +
         '  document.querySelectorAll(".aimake-slide").forEach(autoFitSlideOverflow);' +
         '}' +
         'window.fitPgStage = fitPgStage;' +
@@ -1804,6 +2221,14 @@ export async function buildWebPlaygroundHtml(
         'window.addEventListener("DOMContentLoaded", fitPgStage);' +
         'fitPgStage();' +
         'setTimeout(fitPgStage, 40);' +
+        'window.addEventListener("message", function(e) {' +
+        '  var d = e.data;' +
+        '  if (!d) return;' +
+        '  if (d.type === "aimake:pg-zoom") {' +
+        '    USER_ZOOM = d.zoom;' +
+        '    fitPgStage();' +
+        '  }' +
+        '});' +
         'window.addEventListener("keydown", function(e) {' +
         '  var t = e.target;' +
         '  if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;' +
@@ -2018,6 +2443,23 @@ export async function buildWebPlaygroundHtml(
       }
     });
 
+    if (elLocale) {
+      elLocale.addEventListener('change', () => {
+        const newLocale = elLocale.value;
+        let raw = elInput.value;
+        if (/^---\\n[\\s\\S]*?locale:\\s*[^\\n]+\\n[\\s\\S]*?---/.test(raw)) {
+          raw = raw.replace(/^locale:\\s*[^\\n]+/m, 'locale: ' + newLocale);
+        } else if (raw.startsWith('---\\n')) {
+          raw = raw.replace('---\\n', '---\\nlocale: ' + newLocale + '\\n');
+        } else {
+          raw = '---\\nlocale: ' + newLocale + '\\n---\\n\\n' + raw;
+        }
+        elInput.value = raw;
+        compileNow();
+        showToast('已切换排版语种为: ' + elLocale.selectedOptions[0].text);
+      });
+    }
+
     function applyTemplateId(newTplId) {
       elTemplate.value = newTplId;
       const tplObj = TEMPLATE_MAP.get(newTplId);
@@ -2058,6 +2500,44 @@ export async function buildWebPlaygroundHtml(
         : '${lucideIcon('layoutGrid')}<span class="pg-dock-label"> 单页视图</span>';
       compileNow();
     });
+
+    // Zoom Controls
+    const btnZoomOut = document.getElementById('pg-zoom-out');
+    const btnZoomIn = document.getElementById('pg-zoom-in');
+    if (btnZoomOut) {
+      btnZoomOut.addEventListener('click', () => {
+        let cur = typeof userZoomScale === 'number' ? userZoomScale : 0.8;
+        cur = Math.max(0.25, Number((cur - 0.1).toFixed(2)));
+        userZoomScale = cur;
+        if (elZoomLevel) elZoomLevel.textContent = Math.round(cur * 100) + '%';
+        sendZoomToFrame(cur);
+      });
+    }
+    if (btnZoomIn) {
+      btnZoomIn.addEventListener('click', () => {
+        let cur = typeof userZoomScale === 'number' ? userZoomScale : 0.8;
+        cur = Math.min(2.0, Number((cur + 0.1).toFixed(2)));
+        userZoomScale = cur;
+        if (elZoomLevel) elZoomLevel.textContent = Math.round(cur * 100) + '%';
+        sendZoomToFrame(cur);
+      });
+    }
+    if (elZoomLevel) {
+      elZoomLevel.addEventListener('click', () => {
+        userZoomScale = 'auto';
+        elZoomLevel.textContent = '自适应';
+        sendZoomToFrame('auto');
+        showToast('已重置为自适应大小');
+      });
+    }
+
+    function sendZoomToFrame(scale) {
+      try {
+        if (elFrame.contentWindow) {
+          elFrame.contentWindow.postMessage({ type: 'aimake:pg-zoom', zoom: scale }, '*');
+        }
+      } catch(_) {}
+    }
 
     // Snippet Inserters (respects active slide index when textarea cursor not focused)
     document.querySelectorAll('[data-insert]').forEach(btn => {
@@ -2361,7 +2841,7 @@ export async function buildWebPlaygroundHtml(
       }
     });
 
-    // Template Visual Gallery Drawer with Real Color-Token Swatches
+    // 36-Template Visual Gallery Drawer with Spring Motion & Linear Filter
     const drawerBackdrop = document.getElementById('template-drawer-backdrop');
     const drawer = document.getElementById('template-drawer');
     const drawerGrid = document.getElementById('drawer-grid');
