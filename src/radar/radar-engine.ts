@@ -97,6 +97,17 @@ export function inferSuggestedTemplate(
     return { template: 'xhs-quote-card', aspectRatio: '3:4' };
   }
 
+  // 6. Visual blueprints, protocols, architecture diagrams -> Zukai Quad
+  if (
+    text.includes('zukai') ||
+    text.includes('図解') ||
+    text.includes('mcp') ||
+    text.includes('protocol') ||
+    text.includes('协议')
+  ) {
+    return { template: 'x-zukai-quad', aspectRatio: '16:9' };
+  }
+
   // Default: Swiss Grid (clean, versatile editorial aesthetic)
   return { template: 'xhs-swiss-grid', aspectRatio: '3:4' };
 }
@@ -169,13 +180,115 @@ export function calcAuthenticityScore(item: Partial<RadarItem>): number {
  */
 export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
+    id: 'radar:x-karpathy-vibe-coding',
+    source: 'X / Twitter',
+    sourceKind: 'x',
+    category: 'creative',
+    title: "Andrej Karpathy: 'Vibe Coding' 与个人软件的全面觉醒",
+    url: 'https://x.com/karpathy/status/1886192184808149383',
+    publishedAt: new Date(Date.now() - 1200 * 1000).toISOString(),
+    summary:
+      'Karpathy 提出「Vibe Coding」新编程范式：完全跟随感觉（vibe），让大模型担任全权编程搭档，无需手写语法甚至无需看底层代码。个人软件（Personal Software）时代全面觉醒，软件受众第一次变成「仅限自己一人」。',
+    score: 42800,
+    hotness: '🔥 42.8k Likes · 4.8M Views · @karpathy',
+    authenticityScore: 98,
+    suggestedTemplate: 'apple-bento-launch',
+    suggestedAspectRatio: '16:9',
+    author: '@karpathy',
+  },
+  {
+    id: 'radar:x-karpathy-llm-wiki',
+    source: 'X / Twitter',
+    sourceKind: 'x',
+    category: 'real-discussion',
+    title: 'Andrej Karpathy: 告别复杂云端 RAG，为什么我转向纯本地「LLM Wiki」',
+    url: 'https://x.com/karpathy/status/1880000000000000000',
+    publishedAt: new Date(Date.now() - 1800 * 1000).toISOString(),
+    summary:
+      '云端向量数据库与碎片化切片（Chunking）经常破坏上下文并产生幻觉。Karpathy 分享第二大脑最佳实践：维护本地纯文本 Markdown 维基库，由 LLM 进行可溯源事实关联与概念沉淀，实现 0 KB 上云与极致确定性。',
+    score: 24500,
+    hotness: '🔥 24.5k Likes · 2.9M Views · @karpathy',
+    authenticityScore: 97,
+    suggestedTemplate: 'xhs-swiss-grid',
+    suggestedAspectRatio: '3:4',
+    author: '@karpathy',
+  },
+  {
+    id: 'radar:x-deepseek-r1-revolution',
+    source: 'X / Twitter',
+    sourceKind: 'x',
+    category: 'ai-tech',
+    title: 'DeepSeek-R1 冲击波：端侧开源权重瓦解硅谷万亿算力护城河',
+    url: 'https://x.com/deepseek_ai/status/1881200000000000000',
+    publishedAt: new Date(Date.now() - 2400 * 1000).toISOString(),
+    summary:
+      '仅耗资约 600 万美元训练的 DeepSeek-R1 彻底瓦解硅谷高算力垄断神话。纯强化学习激发逻辑推理跃迁，多头潜在注意力（MLA）压降显存，开源权重与端侧量化（1.5B-70B）让个人 Mac 本地推理追平闭源顶流。',
+    score: 85200,
+    hotness: '★ 85.2k Stars · 62.1k Retweets · @deepseek_ai',
+    authenticityScore: 99,
+    suggestedTemplate: 'ppt-linear-dark',
+    suggestedAspectRatio: '16:9',
+    author: '@deepseek_ai',
+  },
+  {
+    id: 'radar:x-claude-code-terminal',
+    source: 'X / Twitter',
+    sourceKind: 'x',
+    category: 'dev',
+    title: 'Claude Code 终端原生 Agent：软件工程正式进入自主委托时代',
+    url: 'https://x.com/AnthropicAI/status/1894000000000000000',
+    publishedAt: new Date(Date.now() - 3000 * 1000).toISOString(),
+    summary:
+      'Anthropic 发布终端原生智能体 Claude Code。告别 IDE 侧边栏辅助补全，Agent 直接在终端运行 Bash、调度 Git、执行测试并重构跨文件工程，SWE-bench Verified 达 80.9%，工程师角色由「码农」转向「委托审查者」。',
+    score: 18900,
+    hotness: '⚡ 18.9k Likes · 1.8M Views · @AnthropicAI',
+    authenticityScore: 96,
+    suggestedTemplate: 'linkedin-exec-carousel',
+    suggestedAspectRatio: '4:5',
+    author: '@AnthropicAI',
+  },
+  {
+    id: 'radar:x-local-first-creators',
+    source: 'X / Twitter',
+    sourceKind: 'x',
+    category: 'real-discussion',
+    title: 'Local-First 软件复兴：为什么严肃创作者正在逃离云端订阅陷阱',
+    url: 'https://www.inkandswitch.com/local-first/',
+    publishedAt: new Date(Date.now() - 3600 * 1000).toISOString(),
+    summary:
+      'Ink & Switch 本地优先宣言再度破圈：面对云端 SaaS 订阅泛滥、数据绑架与网络延迟，创作者与开发者全面重返本地文件系统与 CRDT 架构。0 订阅费、0 网络等待、100% 离线数据主权成为创作者核心共识。',
+    score: 14600,
+    hotness: '📜 14.6k Stars · 7 Essential Guarantees · @inkandswitch',
+    authenticityScore: 95,
+    suggestedTemplate: 'xhs-paper-editorial',
+    suggestedAspectRatio: '3:4',
+    author: '@inkandswitch',
+  },
+  {
+    id: 'radar:x-mcp-open-protocol',
+    source: 'X / Twitter',
+    sourceKind: 'x',
+    category: 'dev',
+    title: 'Anthropic MCP 协议普及：本地数据源与工具调用的开放新标准',
+    url: 'https://modelcontextprotocol.io',
+    publishedAt: new Date(Date.now() - 4200 * 1000).toISOString(),
+    summary:
+      'Anthropic 推出的 Model Context Protocol (MCP) 成为 AI 时代的「USB-C 接口」。将 N×M 复杂连接简化为开放统一协议，安全隔离本地文件、SQLite 数据库与 CLI 开发者工具，打通大模型与本地硬件生态。',
+    score: 21400,
+    hotness: '🔌 21.4k Stars · 150+ Open MCP Servers · @modelcontextprotocol',
+    authenticityScore: 96,
+    suggestedTemplate: 'x-zukai-quad',
+    suggestedAspectRatio: '1:1',
+    author: '@modelcontextprotocol',
+  },
+  {
     id: 'radar:polymarket-agi-timeline-2026',
     source: 'Polymarket 预测市场',
     sourceKind: 'polymarket',
     category: 'prediction',
     title: 'Polymarket: 2026 年实现 AGI 预测胜率攀升至 68%（全网资金量超 $4.5M）',
     url: 'https://polymarket.com/event/agi-by-2026',
-    publishedAt: new Date(Date.now() - 1800 * 1000).toISOString(),
+    publishedAt: new Date(Date.now() - 4800 * 1000).toISOString(),
     summary:
       '真实资金博弈过滤 SEO 噪音：全球预测市场关于大模型自监督学习与自主推理架构能否在 2026 年突破 AGI 门槛的下注量突破历史新高。',
     polymarketOdds: 68,
@@ -193,7 +306,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     category: 'real-discussion',
     title: 'r/LocalLLaMA: 为什么我们团队彻底放弃云端 API，全面转向本地 100% 确定性离线工作流？',
     url: 'https://reddit.com/r/LocalLLaMA/comments/2026_local_first_workflow',
-    publishedAt: new Date(Date.now() - 2400 * 1000).toISOString(),
+    publishedAt: new Date(Date.now() - 5400 * 1000).toISOString(),
     summary:
       '超 500 位一线工程师真实复盘：数据安全审查、按 token 计费的云端账单失控与网络抖动，促使严肃创作者全面采用 Local-First 方案。',
     redditComments: 542,
@@ -211,7 +324,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     category: 'prediction',
     title: 'Polymarket: 开源大模型在 2026 年权威代码基准中超越闭源旗舰的概率达 72%',
     url: 'https://polymarket.com/event/open-weights-coding-2026',
-    publishedAt: new Date(Date.now() - 3200 * 1000).toISOString(),
+    publishedAt: new Date(Date.now() - 6000 * 1000).toISOString(),
     summary:
       '真金白银博弈展现的技术共识：随着 MoE 与端侧蒸馏算法进化，开源权重不仅成本优势压倒性，在工程代码与多语言评测中正加速反超。',
     polymarketOdds: 72,
@@ -229,7 +342,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     category: 'real-discussion',
     title: 'r/selfhosted: 零订阅、零云端泄露：超级个体的内容工厂本地自建全套技术栈实测',
     url: 'https://reddit.com/r/selfhosted/comments/2026_creator_studio_stack',
-    publishedAt: new Date(Date.now() - 4200 * 1000).toISOString(),
+    publishedAt: new Date(Date.now() - 6600 * 1000).toISOString(),
     summary:
       '利用 Markdown 事实单源（SSOT）、参数化渲染与本地音频合成，单台 MacBook 支撑每周全渠道高质量多模态发布。',
     redditComments: 328,
@@ -241,30 +354,13 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     author: 'u/selfhosted_guy',
   },
   {
-    id: 'radar:x-karpathy-wiki-pattern',
-    source: 'X / Twitter',
-    sourceKind: 'x',
-    category: 'creative',
-    title: 'Andrej Karpathy: 创作者构建第二大脑的秘密是可溯源的 Grounded LLM Wiki',
-    url: 'https://x.com/karpathy/status/1880000000000000000',
-    publishedAt: new Date(Date.now() - 3600 * 1000).toISOString(),
-    summary:
-      '从碎片化阅读转向高密度事实沉淀。先将推文、论文与音视频转为原子 Markdown 事实卡片，再通过 LLM 生成多格式分发内容，彻底告别白屏创作焦虑。',
-    score: 8940,
-    hotness: '🔥 8.9k Likes · @karpathy',
-    authenticityScore: 93,
-    suggestedTemplate: 'apple-bento-launch',
-    suggestedAspectRatio: '3:4',
-    author: '@karpathy',
-  },
-  {
     id: 'radar:x-sama-local-agents',
     source: 'X / Twitter',
     sourceKind: 'x',
     category: 'ai-tech',
     title: 'Sam Altman: 下一代人机协同的飞跃是端侧自主沉淀、长期复利的 Local Agent',
     url: 'https://x.com/sama/status/1881000000000000000',
-    publishedAt: new Date(Date.now() - 5400 * 1000).toISOString(),
+    publishedAt: new Date(Date.now() - 7200 * 1000).toISOString(),
     summary:
       '未来的个人生产力核心，是拥有本地文件系统读写、确定性排版、音视频渲染与端侧私有执行能力的超级协同副驾驶。',
     score: 14200,
@@ -281,7 +377,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     category: 'ai-tech',
     title: 'Yann LeCun: 开源权重与端侧推理正在重构全球 AI 基础设施成本',
     url: 'https://x.com/ylecun/status/1882000000000000000',
-    publishedAt: new Date(Date.now() - 7200 * 1000).toISOString(),
+    publishedAt: new Date(Date.now() - 7800 * 1000).toISOString(),
     summary:
       '垂直领域的确定性输出与规则编译无需百亿参数大云，小型化专家模型配合结构化编译器，在 MacBook 本地即可打出超越云端大模型的排版精度。',
     score: 6850,
@@ -298,7 +394,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     category: 'creative',
     title: 'Pieter Levels: 为什么 2026 年超级个体创作者全面回归 Local-First 桌面原生应用？',
     url: 'https://x.com/levelsio/status/1883000000000000000',
-    publishedAt: new Date(Date.now() - 9000 * 1000).toISOString(),
+    publishedAt: new Date(Date.now() - 8400 * 1000).toISOString(),
     summary:
       '零月租、零云端排队、零数据泄露。一个人利用现代本地工具链，一天可以完成以往一个 10 人工作室的图文、研报、幻灯片与视频全渠道交付。',
     score: 11800,
@@ -315,7 +411,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     category: 'dev',
     title: 'swyx: AI 工程师时代，纯 Markdown 作为唯一事实源（Single Source of Truth）的威力',
     url: 'https://x.com/swyx/status/1884000000000000000',
-    publishedAt: new Date(Date.now() - 10800 * 1000).toISOString(),
+    publishedAt: new Date(Date.now() - 9000 * 1000).toISOString(),
     summary:
       '告别重型专有排版文件格式。写好结构轻盈的 .deck.md，让代码和编译器去处理微信内联 CSS、微软 PPTX OOXML 与视频时间轴。',
     score: 9540,
@@ -349,7 +445,7 @@ export const CURATED_TREND_FIXTURES: RadarItem[] = [
     category: 'ai-tech',
     title: 'DeepSeek-V3 & Open Weights: 深度剖析开源模型如何重塑全球推理成本结构',
     url: 'https://news.ycombinator.com/item?id=42890001',
-    publishedAt: new Date(Date.now() - 3600 * 1000).toISOString(),
+    publishedAt: new Date(Date.now() - 9600 * 1000).toISOString(),
     summary:
       '通过多头潜在注意力 (MLA) 与专家混合架构 (MoE)，将每百万 Token 训练与运行成本降至行业基准的 1/10，推动本地私有化部署浪潮。',
     score: 2180,

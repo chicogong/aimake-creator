@@ -210,7 +210,7 @@ export const CALM_STUDIO_SCRIPT = `
 
     const statusDeck = $('status-deck-name');
     if (statusDeck) {
-      statusDeck.textContent = (state.deck && state.deck.frontmatter && state.deck.frontmatter.title) || state.activeDeckRel || '当前作品';
+      statusDeck.textContent = (state.deck && state.deck.frontmatter && state.deck.frontmatter.title) || state.activeDeckRel || '演示画布';
     }
     const statusAspect = $('status-aspect-val');
     if (statusAspect && state.deck && state.deck.frontmatter) {
@@ -218,7 +218,7 @@ export const CALM_STUDIO_SCRIPT = `
     }
     const statusSlide = $('status-slide-text');
     if (statusSlide) {
-      statusSlide.textContent = '第 ' + String(slideIndex + 1).padStart(2, '0') + ' / ' + String(Math.max(1, slides.length)).padStart(2, '0') + ' 页';
+      statusSlide.textContent = '第 ' + (slideIndex + 1) + ' / ' + Math.max(1, slides.length) + ' 页';
     }
 
     const frame = $('preview-frame');
@@ -538,7 +538,7 @@ export const CALM_STUDIO_SCRIPT = `
         '<div class="radar-card" data-radar-id="' + esc(it.id) + '">' +
         '<div class="radar-card-head">' +
         '<span class="radar-badge-source">' + esc(it.source) + '</span>' +
-        '<span class="radar-badge-hot">🔥 ' + esc(it.hotness || 'HOT') + '</span>' +
+        '<span class="radar-badge-hot">' + esc(it.hotness || '前沿') + '</span>' +
         '</div>' +
         '<h4 class="radar-title">' + esc(it.title) + '</h4>' +
         '<p class="radar-summary">' + esc(it.summary || '') + '</p>' +
@@ -818,10 +818,10 @@ export const CALM_STUDIO_SCRIPT = `
   // Command Palette (⌘K)
   function getCommands() {
     return [
-      { label: '打开实时灵感雷达（全网热点 · 一键制作）', kbd: 'RADAR', run: () => { switchGalleryTab('radar'); openDrawer('drawer-gallery', 'stage'); } },
+      { label: '打开灵感雷达（实时热点 · 一键制作）', kbd: 'RADAR', run: () => { switchGalleryTab('radar'); openDrawer('drawer-gallery', 'stage'); } },
       { label: '浏览 36 套视觉风格画廊 · 一键做同款', kbd: 'G', run: () => { switchGalleryTab('templates'); openDrawer('drawer-gallery', 'stage'); } },
-      { label: '打开 2026 时事热点示范成品（4 套）', kbd: 'HOT', run: () => { switchGalleryTab('trending'); openDrawer('drawer-gallery', 'stage'); } },
-      { label: '在 AI 工具中创作（选择终端或桌面工具）', kbd: 'A', run: () => togglePopover('popover-ai') },
+      { label: '打开时事热点范例（6 套精选成品）', kbd: 'HOT', run: () => { switchGalleryTab('trending'); openDrawer('drawer-gallery', 'stage'); } },
+      { label: '协同创作（选择终端或图形工具）', kbd: 'A', run: () => togglePopover('popover-ai') },
       { label: '新建创作作品', kbd: '⌘N', run: () => { openModal('modal-new-deck'); setTimeout(() => $('new-deck-title').focus(), 20); } },
       { label: '多模态导出（公众号 / 高清图 / PDF / PPTX / 口播 MP4）', kbd: 'E', run: () => openDrawer('drawer-export', 'deliver') },
       { label: '一键去 AI 味精修（四语种 Humanizer）', kbd: 'H', run: () => { openPolishTab('humanize'); openDrawer('drawer-polish', 'stage'); } },

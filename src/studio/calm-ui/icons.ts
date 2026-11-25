@@ -32,7 +32,9 @@ export type LucideIconName =
   | 'shield'
   | 'loader'
   | 'quote'
-  | 'listOrdered';
+  | 'listOrdered'
+  | 'pencil'
+  | 'messageSquare';
 
 const ICON_PATHS: Record<LucideIconName, string> = {
   panelLeft:
@@ -95,6 +97,10 @@ const ICON_PATHS: Record<LucideIconName, string> = {
     '<path d="M3 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2H4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h4c0 2.5-1 4-3 5v3zm14 0c3 0 7-1 7-8V5c0-1.25-.75-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h4c0 2.5-1 4-3 5v3z"/>',
   listOrdered:
     '<line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>',
+  pencil:
+    '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>',
+  messageSquare:
+    '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
 };
 
 /**

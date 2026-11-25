@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "anti-slop-dictionary",
+  "version": "1.0.0",
+  "description": "Rules for stripping hype and artificial clichés across 4 locales",
+  "locales": {
+    "zh-CN": {
+      "banned": [
+        "AI 颠覆",
+        "颠覆性变革",
+        "AI 拐点",
+        "革命性神器",
+        "一键生成爆款",
+        "赋能",
+        "抓手",
+        "闭环",
+        "打法",
+        "深度下沉",
+        "神仙工具",
+        "宇宙最强",
+        "毫无疑问的是",
+        "让我们一起探索",
+        "随着人工智能的飞速发展"
+      ],
+      "replacements": {
+        "AI 颠覆": "架构重构",
+        "革命性神器": "专业排版工具",
+        "一键生成爆款": "高精度模板渲染",
+        "赋能": "支持",
+        "抓手": "切入点",
+        "闭环": "完整工作流",
+        "在 AI 中创作": "协同创作",
+        "AI 对话": "分镜助手"
+      }
+    },
+    "en": {
+      "banned": [
+        "delve into",
+        "in today's fast-paced world",
+        "game-changer",
+        "unlock the power of",
+        "tapestry",
+        "it's worth noting that",
+        "leverage the synergies",
+        "seamlessly revolutionize",
+        "cutting-edge AI powerhouse",
+        "testament to"
+      ],
+      "replacements": {
+        "delve into": "examine",
+        "game-changer": "major shift",
+        "unlock the power of": "use",
+        "seamlessly": "smoothly",
+        "cutting-edge AI powerhouse": "local-first engine"
+      }
+    },
+    "ja": {
+      "banned": [
+        "言うまでもなく",
+        "革新的なAIパラダイム",
+        "飛躍的に向上させます",
+        "本記事では…を徹底解説します",
+        "驚異的な生成パワー",
+        "〜することができます"
+      ],
+      "replacements": {
+        "革新的なAIパラダイム": "設計アーキテクチャの刷新",
+        "飛躍的に向上させます": "処理時間を半減します",
+        "驚異的な生成パワー": "高速な端側コンパイル"
+      }
+    },
+    "ko": {
+      "banned": [
+        "결론적으로 말씀드리면",
+        "혁신적인 AI 솔루션",
+        "주목할 점은 다음과 같습니다",
+        "다양한 측면에서 폭발적인 반응",
+        "마법 같은 원클릭 생성"
+      ],
+      "replacements": {
+        "혁신적인 AI 솔루션": "로컬 저작 도구",
+        "마법 같은 원클릭 생성": "결정론적 템플릿 컴파일"
+      }
+    }
+  }
+}

@@ -24,29 +24,21 @@ export const CALM_STUDIO_MARKUP = `
 
     <!-- Center: Clean End-to-End Closed-Loop Progress Anchor -->
     <nav class="loop-stepper" aria-label="端到端创作闭环">
-      <button class="loop-step" data-loop-step="intake" title="拖入或粘贴素材，自动沉淀到工作区知识库">
-        素材<span class="step-dot"></span>
-      </button>
+      <button class="loop-step" data-loop-step="intake" title="拖入或粘贴素材，自动沉淀到工作区知识库">素材</button>
       <span class="loop-sep">·</span>
-      <button class="loop-step" data-loop-step="author" title="选择 AI 工具或对话副驾驶，在当前工作区创作">
-        创作<span class="step-dot"></span>
-      </button>
+      <button class="loop-step" data-loop-step="author" title="协同创作与大纲推演">创作</button>
       <span class="loop-sep">·</span>
-      <button class="loop-step active" data-loop-step="stage" title="实时视觉舞台与所见即所得微调">
-        舞台<span class="step-dot"></span>
-      </button>
+      <button class="loop-step active" data-loop-step="stage" title="实时视觉舞台与所见即所得微调">舞台</button>
       <span class="loop-sep">·</span>
-      <button class="loop-step" data-loop-step="deliver" title="多模态成品交付与资产归档回流">
-        交付<span class="step-dot"></span>
-      </button>
+      <button class="loop-step" data-loop-step="deliver" title="多模态成品交付与资产归档回流">交付</button>
     </nav>
 
     <!-- Right: 3 Tactile Primary Actions with Crisp Lucide Icons -->
     <div class="topbar-right">
-      <button class="btn btn-ai-trigger" id="btn-open-ai" title="选择终端或图形 AI 工具，在当前工作区一键开启创作会话">
-        <span class="live-dot" id="live-sync-dot"></span>
-        ${lucideIcon('sparkles')}
-        <span>在 AI 中创作</span>
+      <button class="btn btn-ai-trigger" id="btn-open-ai" title="协同创作与智能改稿 (⌘J / 选择创作工具)">
+        <span class="live-dot" id="live-sync-dot" style="display:none"></span>
+        ${lucideIcon('workflow')}
+        <span>协同创作</span>
         ${lucideIcon('chevronDown', 'ic ic-sm')}
       </button>
 
@@ -78,11 +70,11 @@ export const CALM_STUDIO_MARKUP = `
             <span class="nav-item-main">
               <span class="nav-item-title">
                 <span class="live-pulse-dot"></span>
-                <span id="sidebar-radar-badge">每周灵感雷达 · <span id="sidebar-radar-week">${(() => { const d = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())); d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7)); const y = new Date(Date.UTC(d.getUTCFullYear(), 0, 1)); return 'W' + Math.ceil(((d.getTime() - y.getTime()) / 86400000 + 1) / 7); })()}</span></span>
+                <span id="sidebar-radar-badge">灵感雷达 · <span id="sidebar-radar-week">${(() => { const d = new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())); d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7)); const y = new Date(Date.UTC(d.getUTCFullYear(), 0, 1)); return 'W' + Math.ceil(((d.getTime() - y.getTime()) / 86400000 + 1) / 7); })()}</span></span>
               </span>
-              <span class="nav-item-sub" id="sidebar-radar-sub"><span id="sidebar-radar-count">16</span> 篇 X 前沿推文与时事 · 一键填装</span>
+              <span class="nav-item-sub" id="sidebar-radar-sub"><span id="sidebar-radar-count">16</span> 篇 X 前沿 · 实时更新</span>
             </span>
-            <span class="hot-pill radar-pill">RADAR</span>
+            <span class="sidebar-meta-tag">实时更新</span>
           </button>
           <script>
             (function() {
@@ -106,10 +98,10 @@ export const CALM_STUDIO_MARKUP = `
 
           <button class="trending-promo-btn" id="btn-open-trending" title="浏览 2026 最新科技时事成品，一键导入或做同款">
             <span class="nav-item-main">
-              <span class="nav-item-title">2026 时事灵感成品</span>
+              <span class="nav-item-title">时事灵感成品</span>
               <span class="nav-item-sub">6 套高保真热点成品 · 点一下做同款</span>
             </span>
-            <span class="hot-pill">HOT</span>
+            <span class="sidebar-meta-tag">6 套精选</span>
           </button>
         </div>
 
@@ -159,24 +151,14 @@ export const CALM_STUDIO_MARKUP = `
     <main class="stage-wrap">
       <!-- Floating Glassmorphism Canvas Status Bar -->
       <div class="stage-status-bar" id="stage-status-bar" aria-label="画板状态">
-        <div class="status-item status-deck-info" title="当前作品">
-          <span class="status-indicator-dot pulse"></span>
-          <span class="status-label" id="status-deck-name">当前作品</span>
-        </div>
-        <div class="status-divider"></div>
-        <div class="status-item status-aspect-badge" id="status-aspect-badge" title="当前画幅比例">
-          <svg class="ic ic-sm" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="9" rx="2"/></svg>
-          <span id="status-aspect-val">16:9</span>
-        </div>
-        <div class="status-divider"></div>
-        <div class="status-item status-slide-counter" id="status-slide-counter" title="当前幻灯片页数">
-          <span id="status-slide-text">第 01 / 01 页</span>
-        </div>
-        <div class="status-divider"></div>
-        <div class="status-item status-privacy-badge" title="纯本地隐私保护：无云端回传，100% 数据留存本机">
-          <span class="status-shield">${lucideIcon('shield', 'ic ic-sm')}</span>
-          <span class="status-privacy-text">Zero-Cloud 隐私留存</span>
-        </div>
+        <span class="status-indicator-dot pulse"></span>
+        <span class="status-label" id="status-deck-name">演示画布</span>
+        <span class="status-sep">·</span>
+        <span id="status-aspect-val">16:9</span>
+        <span class="status-sep">·</span>
+        <span id="status-slide-text">第 1 / 4 页</span>
+        <span class="status-sep">·</span>
+        <span class="status-privacy-text" id="status-privacy-text">本地优先</span>
       </div>
       <script>
         (function() {
@@ -189,14 +171,14 @@ export const CALM_STUDIO_MARKUP = `
             var chatBadge = document.getElementById('chat-active-slide-badge');
             var statusSlide = document.getElementById('status-slide-text');
             if (chatBadge && statusSlide && chatBadge.textContent) {
-              var m = chatBadge.textContent.match(/(\d+)\s*\/\s*(\d+)/);
+              var m = chatBadge.textContent.match(/(\d+)\s*[\/|\\]\s*(\d+)/);
               if (m) {
-                statusSlide.textContent = '第 ' + m[1] + ' / ' + m[2] + ' 页';
+                statusSlide.textContent = '第 ' + parseInt(m[1], 10) + ' / ' + parseInt(m[2], 10) + ' 页';
               }
             }
             var statusDeck = document.getElementById('status-deck-name');
-            if (statusDeck && (statusDeck.textContent === '作品加载中' || statusDeck.textContent === '当前作品')) {
-              var activeDeck = document.querySelector('.deck-item.active .deck-name, .deck-item.active');
+            if (statusDeck && (statusDeck.textContent === '作品加载中' || statusDeck.textContent === '当前作品' || statusDeck.textContent === '演示画布')) {
+              var activeDeck = document.querySelector('.deck-item.active .deck-name, .nav-item.active .nav-item-title');
               if (activeDeck && activeDeck.textContent) {
                 statusDeck.textContent = activeDeck.textContent.trim();
               }
@@ -277,10 +259,10 @@ export const CALM_STUDIO_MARKUP = `
 
         <div class="dock-divider" aria-hidden="true"></div>
 
-        <!-- 群组 5: AI 对话副驾驶胶囊 -->
-        <button class="dock-chip dock-chip-ai" id="btn-toggle-chat" title="展开/收起 AI 对话创作副驾驶 (⌘J)">
-          <span class="live-dot" style="margin-right:2px;"></span>
-          <span>AI 对话</span>
+        <!-- 群组 5: 分镜助手胶囊 -->
+        <button class="dock-chip dock-chip-ai" id="btn-toggle-chat" title="展开/收起分镜助手 (⌘J)">
+          ${lucideIcon('pencil', 'ic ic-sm')}
+          <span>分镜助手</span>
         </button>
 
         <!-- 群组 6: 命令面板 (⌘K) -->
@@ -302,11 +284,11 @@ export const CALM_STUDIO_MARKUP = `
     </main>
 
     <!-- Right Collapsible AI Chat Co-Pilot Drawer ("1+1" Real AI + CLI) -->
-    <aside class="chat-panel collapsed" id="chat-panel" aria-label="AI 对话创作副驾驶">
+    <aside class="chat-panel collapsed" id="chat-panel" aria-label="分镜助手与改稿面板">
       <div class="chat-panel-head">
         <div class="chat-title-group">
-          ${lucideIcon('sparkles')}
-          <span class="chat-title-text">AI 对话创作</span>
+          ${lucideIcon('pencil', 'ic ic-sm')}
+          <span class="chat-title-text">分镜助手</span>
           <span class="chat-slide-badge" id="chat-active-slide-badge">当前页 01</span>
         </div>
         <div style="display:flex;align-items:center;gap:4px;">
