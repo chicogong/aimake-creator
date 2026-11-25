@@ -283,9 +283,11 @@ export const CALM_STUDIO_MARKUP = `
           <span>AI 对话</span>
         </button>
 
+        <!-- 群组 6: 命令面板 (⌘K) -->
+        <button class="dock-chip dock-chip-muted" id="btn-open-cmdk" title="打开命令面板 (⌘K)">⌘K</button>
+
         <!-- Secondary preserved elements in DOM for keyboard shortcuts and event listeners -->
         <div class="dock-actions-secondary" style="display:none;" aria-hidden="true">
-          <button class="dock-chip dock-chip-muted" id="btn-open-cmdk" title="打开命令面板 (⌘K)">⌘K</button>
           <button class="dock-chip dock-chip-wechat" id="btn-quick-copy-wechat" title="一键复制微信公众号富文本，直粘后台">
             ${lucideIcon('copy', 'ic ic-sm')}
             <span>复制公众号</span>
