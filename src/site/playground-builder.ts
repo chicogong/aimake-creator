@@ -34,7 +34,7 @@ export function extractTemplatePaletteFromCss(css: string): {
     bg: pick('bg', '#121216'),
     surface: pick('surface', '#1c1e26'),
     ink: pick('ink', '#f4f4f6'),
-    accent: pick('accent', '#6366f1'),
+    accent: pick('accent', '#18181b'),
   };
 }
 
@@ -500,15 +500,15 @@ export async function buildWebPlaygroundHtml(
       --surface-elev: #1c202e;
       --border: rgba(255, 255, 255, 0.08);
       --border-strong: rgba(255, 255, 255, 0.16);
-      --border-focus: rgba(99, 102, 241, 0.6);
+      --border-focus: rgba(255, 255, 255, 0.32);
       --ink: #f4f4f6;
       --ink-muted: #94a3b8;
       --ink-faint: #64748b;
       --accent: #f5f4f0;
       --accent-ink: #0b0c10;
-      --brand: #6366f1;
-      --brand-hover: #4f46e5;
-      --brand-glow: rgba(99, 102, 241, 0.28);
+      --brand: #18181b;
+      --brand-hover: #27272a;
+      --brand-glow: rgba(0, 0, 0, 0.32);
       --live: #10b981;
       --danger: #ef4444;
       --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Segoe UI', Roboto, sans-serif;
@@ -526,15 +526,15 @@ export async function buildWebPlaygroundHtml(
       --surface-elev: #ffffff;
       --border: rgba(15, 23, 42, 0.09);
       --border-strong: rgba(15, 23, 42, 0.18);
-      --border-focus: rgba(79, 70, 229, 0.6);
+      --border-focus: rgba(24, 24, 27, 0.35);
       --ink: #0f172a;
       --ink-muted: #64748b;
       --ink-faint: #94a3b8;
       --accent: #0f172a;
       --accent-ink: #ffffff;
-      --brand: #4f46e5;
-      --brand-hover: #4338ca;
-      --brand-glow: rgba(79, 70, 229, 0.2);
+      --brand: #18181b;
+      --brand-hover: #27272a;
+      --brand-glow: rgba(24, 24, 27, 0.16);
     }
 
     * { box-sizing: border-box; }
@@ -601,36 +601,8 @@ export async function buildWebPlaygroundHtml(
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;
     }
 
-    /* Live Studio Status Indicator */
-    .pg-status-indicator {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 3px 8px; border-radius: 999px;
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.22);
-      font-size: 11px; font-weight: 550; color: #34d399;
-      white-space: nowrap; flex-shrink: 0; user-select: none;
-    }
-    [data-theme="light"] .pg-status-indicator {
-      background: rgba(16, 185, 129, 0.1);
-      border-color: rgba(16, 185, 129, 0.3);
-      color: #059669;
-    }
-    .pg-status-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 8px #10b981;
-      animation: pgPulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-    @keyframes pgPulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.45; transform: scale(0.85); }
-    }
-
-    @media (max-width: 1360px) {
+    @media (max-width: 1200px) {
       .pg-crumb-sep, .pg-crumb-badge { display: none; }
-    }
-    @media (max-width: 1180px) {
-      .pg-status-indicator { display: none; }
     }
 
     /* Top Controls Area */
@@ -650,12 +622,16 @@ export async function buildWebPlaygroundHtml(
     .pg-select {
       background: var(--surface); color: var(--ink);
       border: 1px solid var(--border); border-radius: var(--radius-md);
-      height: 30px; padding: 0 8px; font-size: 11.5px; outline: none;
-      max-width: 154px; min-width: 78px;
+      height: 31px; padding: 0 10px; font-size: 12px; font-weight: 500; outline: none;
       white-space: nowrap; text-overflow: ellipsis;
       transition: all 0.15s ease;
       cursor: pointer; box-sizing: border-box;
+      flex-shrink: 0;
     }
+    #sample-select { min-width: 210px; max-width: 250px; }
+    #template-select { min-width: 175px; max-width: 220px; }
+    #aspect-select { min-width: 105px; max-width: 120px; }
+    #locale-select { min-width: 100px; max-width: 115px; }
     [data-theme="light"] .pg-select,
     [data-theme="light"] .pg-btn {
       background: #ffffff; color: #0f172a;
@@ -673,7 +649,7 @@ export async function buildWebPlaygroundHtml(
     .pg-btn {
       background: var(--surface); color: var(--ink);
       border: 1px solid var(--border); border-radius: var(--radius-md);
-      height: 30px; padding: 0 9px; font-size: 11.5px; font-weight: 500;
+      height: 31px; padding: 0 10px; font-size: 12px; font-weight: 500;
       cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
       white-space: nowrap; flex-shrink: 0;
       transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
@@ -693,18 +669,29 @@ export async function buildWebPlaygroundHtml(
       border-color: rgba(15, 23, 42, 0.22);
     }
     .pg-btn-icon {
-      width: 30px; padding: 0;
+      width: 31px; padding: 0;
     }
     .pg-btn-primary {
-      background: var(--brand); color: #ffffff !important;
-      border-color: var(--brand) !important; font-weight: 600;
-      box-shadow: 0 2px 8px var(--brand-glow);
+      background: #18181b !important; color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important; font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     }
     .pg-btn-primary:hover {
-      background: var(--brand-hover);
-      border-color: var(--brand-hover) !important;
+      background: #27272a !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
       color: #ffffff !important;
-      box-shadow: 0 4px 12px var(--brand-glow);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    }
+    [data-theme="light"] .pg-btn-primary {
+      background: #18181b !important; color: #ffffff !important;
+      border: 1px solid #18181b !important;
+      box-shadow: 0 2px 6px rgba(24, 24, 27, 0.16) !important;
+    }
+    [data-theme="light"] .pg-btn-primary:hover {
+      background: #27272a !important;
+      border-color: #27272a !important;
+      color: #ffffff !important;
+      box-shadow: 0 3px 10px rgba(24, 24, 27, 0.22) !important;
     }
     .pg-btn-success {
       background: #10b981 !important; color: #ffffff !important;
@@ -877,7 +864,7 @@ export async function buildWebPlaygroundHtml(
       transition: color 0.1s ease;
     }
     .gutter-line.active {
-      color: var(--brand); font-weight: 700;
+      color: var(--ink); font-weight: 700;
     }
 
     .editor-textarea-wrapper {
@@ -889,7 +876,7 @@ export async function buildWebPlaygroundHtml(
       padding: 14px 14px; font-family: var(--font-mono); font-size: 12px;
       line-height: 20px; tab-size: 2; resize: none; box-sizing: border-box;
       white-space: pre; overflow: auto;
-      caret-color: var(--brand);
+      caret-color: var(--ink);
       letter-spacing: -0.01em;
     }
 
@@ -926,7 +913,7 @@ export async function buildWebPlaygroundHtml(
     }
     .card-textarea { font-family: var(--font-mono); font-size: 12px; line-height: 1.55; resize: vertical; }
     .card-input:focus, .card-textarea:focus {
-      border-color: var(--brand);
+      border-color: var(--border-focus);
       box-shadow: 0 0 0 2px var(--brand-glow);
     }
 
@@ -942,7 +929,7 @@ export async function buildWebPlaygroundHtml(
     .stage-pane {
       background-color: #07080c;
       background-image:
-        radial-gradient(circle at 50% 36%, rgba(99, 102, 241, 0.08), transparent 64%),
+        radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.02), transparent 64%),
         radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
         linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
@@ -955,7 +942,7 @@ export async function buildWebPlaygroundHtml(
     [data-theme="light"] .stage-pane {
       background-color: #e6ebf2;
       background-image:
-        radial-gradient(circle at 50% 36%, rgba(79, 70, 229, 0.05), transparent 64%),
+        radial-gradient(circle at 50% 36%, rgba(15, 23, 42, 0.02), transparent 64%),
         radial-gradient(rgba(15, 23, 42, 0.09) 1px, transparent 1px),
         linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
@@ -1060,10 +1047,11 @@ export async function buildWebPlaygroundHtml(
       background: rgba(239, 68, 68, 0.22) !important; color: #f87171 !important;
     }
     .pg-dock-pill-btn {
-      height: 22px; padding: 0 7px; border-radius: 999px; border: none;
+      height: 22px; padding: 0 10px; border-radius: 999px; border: none;
       background: transparent; color: var(--ink-muted); font-size: 11px;
       cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
       font-family: var(--font-mono);
+      white-space: nowrap; min-width: max-content;
     }
     .pg-dock-pill-btn:hover { background: rgba(255, 255, 255, 0.12); color: var(--ink); }
 
@@ -1167,14 +1155,14 @@ export async function buildWebPlaygroundHtml(
       position: relative; box-sizing: border-box;
     }
     .drawer-card:hover {
-      border-color: rgba(99, 102, 241, 0.5);
+      border-color: var(--border-strong);
       background: var(--surface-elev);
-      transform: translateY(-3px) scale(1.015);
-      box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.55), 0 0 16px rgba(99, 102, 241, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.45);
     }
     .drawer-card.active {
-      border-color: var(--brand);
-      box-shadow: 0 0 0 2px var(--brand), 0 8px 24px -4px var(--brand-glow);
+      border-color: var(--ink);
+      box-shadow: 0 0 0 1.5px var(--ink), 0 8px 24px -4px rgba(0, 0, 0, 0.35);
     }
 
     .drawer-thumb-box {
@@ -1263,10 +1251,6 @@ export async function buildWebPlaygroundHtml(
       </a>
       <span class="pg-crumb-sep">/</span>
       <span class="pg-crumb-badge" id="pg-crumb-topic">Web Studio</span>
-      <div class="pg-status-indicator" title="纯前端离线沙盒 · 毫秒级即时编译">
-        <span class="pg-status-dot"></span>
-        <span class="pg-status-text">实时编译</span>
-      </div>
     </div>
 
     <div class="pg-controls">
@@ -1307,7 +1291,7 @@ export async function buildWebPlaygroundHtml(
       <button class="pg-btn" id="btn-open-templates" title="打开 36 套设计系统视觉抽屉">${lucideIcon('layoutGrid')} 36 套模板</button>
 
       <!-- Forced Aspect Ratio -->
-      <select class="pg-select" id="aspect-select" style="max-width:92px;min-width:72px;" title="强制指定画幅比例">
+      <select class="pg-select" id="aspect-select" title="强制指定画幅比例">
         <option value="auto">画幅: 自动</option>
         <option value="16:9">16:9 宽屏</option>
         <option value="3:4">3:4 小红书</option>
@@ -1321,7 +1305,7 @@ export async function buildWebPlaygroundHtml(
       <!-- AI Humanizer & Locale Switcher -->
       <button class="pg-btn" id="btn-humanize" title="四语种去 AI 套话清洗器">${lucideIcon('wand')} 去AI味</button>
 
-      <select class="pg-select" id="locale-select" style="max-width:88px;min-width:72px;" title="切换幻灯片排版语种">
+      <select class="pg-select" id="locale-select" title="切换幻灯片排版语种">
         <option value="zh-CN">🇨🇳 中文</option>
         <option value="en-US">🇺🇸 EN</option>
         <option value="ja-JP">🇯🇵 日本語</option>
@@ -1331,8 +1315,7 @@ export async function buildWebPlaygroundHtml(
       <span class="pg-control-sep"></span>
 
       <!-- Actions & Export -->
-      <button class="pg-btn pg-btn-primary" id="btn-copy-wechat" title="一键复制内联富文本，直粘公众号后台">${lucideIcon('copy')} 复制公众号</button>
-      <button class="pg-btn" id="btn-export-png" title="将当前页导出为高清 PNG 图片">${lucideIcon('image')} 导图</button>
+      <button class="pg-btn pg-btn-primary" id="btn-export-png" title="将当前页导出为高清 PNG 图片">${lucideIcon('image')} 导图</button>
       <button class="pg-btn" id="btn-print-pdf" title="打印 / 另存为 PDF 演示文稿">${lucideIcon('printer')} PDF</button>
       <button class="pg-btn" id="btn-download-md" title="下载 .deck.md 原稿">${lucideIcon('download')} 下载</button>
       <button class="pg-btn pg-btn-icon" id="btn-fullscreen" title="全屏演示 (F)">${lucideIcon('maximize')}</button>
@@ -1418,7 +1401,7 @@ export async function buildWebPlaygroundHtml(
 
       <div class="editor-footer">
         <span id="char-count">0 字符 · 0 页</span>
-        <span>${lucideIcon('sparkles')} 毫秒级即时编译</span>
+        <span>本地即时编译</span>
       </div>
     </section>
 
@@ -2255,9 +2238,9 @@ export async function buildWebPlaygroundHtml(
         '.aimake-slide { width:' + dim.w + 'px !important; height:' + dim.h + 'px !important; flex-shrink:0; }\\n' +
         '.hljs-keyword { color:#93c5fd; font-weight:600; } .hljs-string { color:#86efac; } .hljs-comment { color:#64748b; font-style:italic; } .hljs-number { color:#fda4af; }\\n' +
         '/* Metric KPI cards nowrap, fluid clamp, and balance formatting */\\n' +
-        '.metrics-grid, .aimake-metrics-grid { display:grid !important; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)) !important; gap:16px !important; }\\n' +
-        '.metric-card { min-width:0 !important; overflow:hidden !important; }\\n' +
-        '.metric-label { white-space:nowrap !important; text-wrap:balance !important; word-break:keep-all !important; overflow:hidden !important; text-overflow:ellipsis !important; }\\n' +
+        '.metrics-grid, .aimake-metrics-grid { gap:16px !important; }\\n' +
+        '.metric-card { min-width:0 !important; overflow:hidden !important; display:flex !important; flex-direction:column !important; justify-content:center !important; gap:8px !important; }\\n' +
+        '.metric-label { white-space:nowrap !important; text-wrap:balance !important; word-break:keep-all !important; overflow:hidden !important; text-overflow:ellipsis !important; margin:0 !important; }\\n' +
         '.metric-val { white-space:nowrap !important; flex-wrap:nowrap !important; display:flex !important; align-items:baseline !important; gap:8px !important; font-size:clamp(22px, 3.2vw, 44px) !important; font-variant-numeric:tabular-nums !important; }\\n' +
         '.metric-val > span { white-space:nowrap !important; }\\n' +
         '.metric-delta { white-space:nowrap !important; font-size:clamp(12px, 1.2vw, 18px) !important; flex-shrink:0 !important; }\\n' +
@@ -2690,6 +2673,7 @@ export async function buildWebPlaygroundHtml(
 
     // Copy WeChat HTML
     const btnCopyWechat = document.getElementById('btn-copy-wechat');
+    if (btnCopyWechat) {
     btnCopyWechat.addEventListener('click', async () => {
       const origHtml = btnCopyWechat.innerHTML;
       btnCopyWechat.innerHTML = '${lucideIcon('loader', 'ic spin')} 复制中...';
@@ -2788,6 +2772,7 @@ export async function buildWebPlaygroundHtml(
         showToast('复制失败: ' + err.message);
       }
     });
+    }
 
     // Quick Slide Actions in Bottom Dock
     const btnPgAdd = document.getElementById('pg-add-slide');
@@ -2942,7 +2927,7 @@ export async function buildWebPlaygroundHtml(
         const isCur = t.id === currentSelectedTpl;
         const zhName = t.name.zh || t.id;
         const desc = t.description?.zh || t.description?.en || '';
-        const pal = t.palette || { bg: '#121216', surface: '#1c1e26', ink: '#f4f4f6', accent: '#6366f1' };
+        const pal = t.palette || { bg: '#121216', surface: '#1c1e26', ink: '#f4f4f6', accent: '#18181b' };
         return '<button type="button" class="drawer-card' + (isCur ? ' active' : '') + '" onclick="applyTemplateFromDrawer(\\'' + t.id + '\\')">' +
           '<div class="drawer-thumb-box" style="background:' + esc(pal.bg) + ';">' +
             '<img class="drawer-thumb-img" src="../templates/' + esc(t.id) + '/preview.png" loading="lazy" alt="' + esc(zhName) + '" onerror="this.style.display=\\'none\\';this.nextElementSibling.style.display=\\'flex\\';" />' +

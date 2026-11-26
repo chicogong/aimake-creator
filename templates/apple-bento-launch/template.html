@@ -152,31 +152,40 @@
     .metric-card {
       background: var(--surface);
       border: var(--bw) solid var(--border);
-      border-radius: var(--radius);
-      padding: calc(22px * var(--content-scale)) calc(26px * var(--content-scale));
+      border-radius: 22px;
+      padding: calc(24px * var(--content-scale)) calc(28px * var(--content-scale));
       box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: calc(10px * var(--content-scale));
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
     .metric-label {
-      font-size: calc(19px * var(--content-scale));
+      font-size: calc(17px * var(--content-scale));
+      font-weight: 600;
       color: var(--muted);
-      margin-bottom: 8px;
+      margin: 0;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
     }
     .metric-val {
       font-family: var(--mono);
-      font-size: calc(44px * var(--content-scale));
+      font-size: calc(48px * var(--content-scale));
       font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
       color: var(--accent);
       font-variant-numeric: tabular-nums;
       display: flex;
       align-items: baseline;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
     }
     .metric-delta {
       font-family: var(--mono);
-      font-size: calc(18px * var(--content-scale));
+      font-size: calc(16px * var(--content-scale));
       color: var(--ink);
       opacity: 0.85;
     }
@@ -336,38 +345,60 @@
         }
         .metrics-grid {
           display: grid;
-          grid-template-columns: 1.35fr 1fr;
-          gap: 22px;
+          grid-template-columns: 1.25fr 1fr;
+          gap: 18px;
           align-items: stretch;
+          margin-top: calc(8px * var(--content-scale));
         }
         .metrics-grid:has(.metric-card:nth-child(3)) {
-          grid-template-columns: 1.3fr 1fr 1fr;
+          grid-template-columns: 1.2fr 1fr 1fr;
         }
         .metrics-grid:has(.metric-card:nth-child(4)) {
           grid-template-columns: 1fr 1fr;
         }
-        /* When slide has only metric cards, flex harmoniously to fill the vertical canvas */
+        /* When slide has only metric cards, maintain balanced compact height instead of empty stretching */
         .content-zone:not(:has(ul.bullet-list)):not(:has(.compare-grid)):not(:has(.code-box)):not(:has(.quote-box)) .metrics-grid {
-          flex: 1;
-          max-height: 520px;
+          margin-top: calc(16px * var(--content-scale));
+          max-height: 400px;
         }
         .metric-card {
           background: var(--surface);
           border: 1px solid rgba(15, 23, 42, 0.08);
-          border-radius: 26px;
-          padding: calc(32px * var(--content-scale)) calc(36px * var(--content-scale));
+          border-radius: 22px;
+          padding: calc(26px * var(--content-scale)) calc(30px * var(--content-scale));
           box-shadow: var(--card-shadow);
           position: relative;
           overflow: hidden;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
-          min-height: calc(200px * var(--content-scale));
+          justify-content: center;
+          gap: calc(10px * var(--content-scale));
+          min-height: calc(140px * var(--content-scale));
           transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .content-zone:not(:has(ul.bullet-list)):not(:has(.compare-grid)):not(:has(.code-box)):not(:has(.quote-box)) .metric-card {
-          min-height: 280px;
-          padding: calc(42px * var(--content-scale)) calc(46px * var(--content-scale));
+          min-height: calc(150px * var(--content-scale));
+          padding: calc(28px * var(--content-scale)) calc(32px * var(--content-scale));
+        }
+        .metric-label {
+          font-size: calc(17px * var(--content-scale));
+          font-weight: 600;
+          color: var(--muted);
+          margin: 0;
+          line-height: 1.3;
+          letter-spacing: -0.01em;
+        }
+        .metric-val {
+          font-family: var(--mono);
+          font-size: calc(48px * var(--content-scale));
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          line-height: 1.05;
+          font-variant-numeric: tabular-nums;
+          display: flex;
+          align-items: baseline;
+          flex-wrap: wrap;
+          gap: 10px;
         }
         /* Unified Apple-grade frosted neutrals */
         .metric-card:first-child {

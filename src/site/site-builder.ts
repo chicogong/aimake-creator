@@ -138,7 +138,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     navTemplates: '36 套设计模板',
     navCli: '终端 & MCP',
     navEcosystem: '技术架构',
-    heroTag: '✨ AIMAKE 2.0 · 超级个体创作外脑 · 100% 纯本地优先',
+    heroTag: 'AIMAKE 2.0 · 超级个体创作外脑 · 100% 纯本地优先',
     heroTitle: '超级个体的全域创作外脑：从灵感火花到全模态高定交付',
     heroTitleMain: '超级个体的全域创作外脑',
     heroTitleAccent: '从灵感火花，到全模态高定交付',
@@ -337,7 +337,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     navTemplates: '36 Design Systems',
     navCli: 'CLI & MCP',
     navEcosystem: 'Ecosystem',
-    heroTag: '✨ AIMAKE 2.0 · LOCAL-FIRST CREATIVE OS · ZERO-CLOUD PRIVACY',
+    heroTag: 'AIMAKE 2.0 · LOCAL-FIRST CREATIVE OS · ZERO-CLOUD PRIVACY',
     heroTitle: 'The Omni-Channel Creative OS: From Raw Sparks to High-End Deliverables',
     heroTitleMain: 'The Omni-Channel Creative OS',
     heroTitleAccent: 'From Raw Sparks to High-End Deliverables',
@@ -536,7 +536,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     navTemplates: '36 種デザインシステム',
     navCli: 'CLI & MCP',
     navEcosystem: 'エコシステム',
-    heroTag: '✨ AIMAKE 2.0 · スーパー個人の創作OS · 完全ローカル完結',
+    heroTag: 'AIMAKE 2.0 · スーパー個人の創作OS · 完全ローカル完結',
     heroTitle: 'スーパー個人的な創作OS：着想の火花から、高品質マルチモーダル出版へ',
     heroTitleMain: 'スーパー個人のための創作OS',
     heroTitleAccent: '着想の火花から、高品質マルチモーダル出版へ',
@@ -727,7 +727,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     navTemplates: '36 종 디자인 시스템',
     navCli: 'CLI & MCP',
     navEcosystem: '에코시스템',
-    heroTag: '✨ AIMAKE 2.0 · 슈퍼 개인 창작 OS · 100% 로컬 완결형',
+    heroTag: 'AIMAKE 2.0 · 슈퍼 개인 창작 OS · 100% 로컬 완결형',
     heroTitle: '슈퍼 개인을 위한 로컬 창작 OS: 영감의 불꽃에서 고품격 멀티모달 출판까지',
     heroTitleMain: '슈퍼 개인을 위한 로컬 창작 OS',
     heroTitleAccent: '영감의 불꽃에서 고품격 멀티모달 출판까지',
@@ -1428,11 +1428,11 @@ function sharedSiteCss(): string {
       transform: translateY(-1px);
     }
     .filter-chip.active {
-      background: var(--am-violet);
+      background: #18181b;
       color: #ffffff;
-      border-color: var(--am-violet);
+      border-color: rgba(255, 255, 255, 0.28);
       font-weight: 600;
-      box-shadow: var(--inset-highlight-button), 0 2px 10px var(--am-violet-glow);
+      box-shadow: var(--inset-highlight-button), 0 2px 8px rgba(0, 0, 0, 0.35);
     }
     [data-theme="light"] .filter-chip {
       background: #ffffff;
@@ -1567,26 +1567,33 @@ function sharedSiteCss(): string {
       align-items: center;
       gap: 6px;
       height: 32px;
-      padding: 0 13px;
-      background: var(--am-violet);
+      padding: 0 14px;
+      background: #18181b;
       color: #ffffff !important;
       font-size: 12.5px;
       font-weight: 600;
       border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
       text-decoration: none;
-      box-shadow: 0 0 16px var(--am-violet-glow);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
       transition: all var(--duration-fast) var(--ease-spring);
       white-space: nowrap;
     }
     .nav-cta-btn:hover {
-      background: var(--am-violet-hover);
+      background: #27272a;
+      border-color: rgba(255, 255, 255, 0.32);
       transform: translateY(-1px);
-      box-shadow: 0 0 24px rgba(105, 81, 255, 0.48);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
     }
     [data-theme="light"] .nav-cta-btn {
-      background: #141413;
+      background: #18181b;
+      border-color: #18181b;
       color: #ffffff !important;
-      box-shadow: 0 2px 8px rgba(20, 20, 19, 0.18);
+      box-shadow: 0 2px 8px rgba(24, 24, 27, 0.18);
+    }
+    [data-theme="light"] .nav-cta-btn:hover {
+      background: #27272a;
+      border-color: #27272a;
     }
     .theme-toggle-btn {
       background: var(--surface);
@@ -1820,14 +1827,14 @@ function sharedSiteCss(): string {
       align-items: center;
       gap: 8px;
       height: 42px;
-      background: var(--am-violet);
-      color: #fff;
+      background: #18181b;
+      color: #fff !important;
       font-weight: 600;
       font-size: 13.5px;
       padding: 0 20px;
       border-radius: 9px;
       border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: var(--inset-highlight-button), 0 4px 18px var(--am-violet-glow);
+      box-shadow: var(--inset-highlight-button), 0 2px 10px rgba(0, 0, 0, 0.35);
       transition: transform var(--duration-fast) var(--ease-spring),
                   background var(--duration-fast) ease,
                   box-shadow var(--duration-fast) ease;
@@ -1837,11 +1844,22 @@ function sharedSiteCss(): string {
       cursor: pointer;
     }
     .btn-primary:hover {
-      background: var(--am-violet-hover);
+      background: #27272a;
+      border-color: rgba(255, 255, 255, 0.32);
       transform: translateY(-1px);
-      box-shadow: var(--inset-highlight-button), 0 6px 24px rgba(105, 81, 255, 0.42);
+      box-shadow: var(--inset-highlight-button), 0 4px 16px rgba(0, 0, 0, 0.45);
     }
     .btn-primary:active { transform: var(--press-scale); }
+    [data-theme="light"] .btn-primary {
+      background: #18181b;
+      border-color: #18181b;
+      color: #fff !important;
+      box-shadow: 0 2px 8px rgba(24, 24, 27, 0.16);
+    }
+    [data-theme="light"] .btn-primary:hover {
+      background: #27272a;
+      border-color: #27272a;
+    }
     .btn-secondary {
       display: inline-flex;
       align-items: center;
@@ -3225,11 +3243,11 @@ function sharedSiteCss(): string {
       transition: all var(--duration-fast) var(--ease-spring);
     }
     .work-btn:hover {
-      background: var(--am-violet);
-      border-color: var(--am-violet);
+      background: #18181b;
+      border-color: rgba(255, 255, 255, 0.28);
       color: #fff;
       transform: translateY(-1px);
-      box-shadow: var(--inset-highlight-button), 0 4px 12px var(--am-violet-glow);
+      box-shadow: var(--inset-highlight-button), 0 4px 12px rgba(0, 0, 0, 0.35);
     }
     .work-btn:active { transform: var(--press-scale); }
     .work-btn-main {
@@ -3240,18 +3258,19 @@ function sharedSiteCss(): string {
       font-weight: 600;
       padding: 6px 13px;
       border-radius: 8px;
-      background: var(--am-violet);
+      background: #18181b;
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #ffffff;
       text-decoration: none;
       white-space: nowrap;
-      box-shadow: var(--inset-highlight-button), 0 2px 10px var(--am-violet-glow);
+      box-shadow: var(--inset-highlight-button), 0 2px 8px rgba(0, 0, 0, 0.35);
       transition: all var(--duration-fast) var(--ease-spring);
     }
     .work-btn-main:hover {
-      background: var(--am-violet-hover);
+      background: #27272a;
+      border-color: rgba(255, 255, 255, 0.32);
       transform: translateY(-1px);
-      box-shadow: var(--inset-highlight-button), 0 4px 14px rgba(105, 81, 255, 0.45);
+      box-shadow: var(--inset-highlight-button), 0 4px 14px rgba(0, 0, 0, 0.45);
     }
     .work-btn-main:active { transform: var(--press-scale); }
     .work-btn-sub {
@@ -4274,10 +4293,6 @@ function renderLandingHtml(
   <header class="hero">
     <div class="container hero-split">
       <div>
-        <div class="hero-badge-pill">
-          <span class="pulse-dot"></span>
-          <span>${esc(copy.heroTag)}</span>
-        </div>
         <h1 class="hero-headline">
           <span class="hero-headline-main">${esc(copy.heroTitleMain || copy.heroTitle)}</span>
           <span class="hero-headline-accent">${esc(copy.heroTitleAccent || '')}</span>
