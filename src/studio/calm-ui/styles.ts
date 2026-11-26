@@ -364,8 +364,6 @@ export const CALM_STUDIO_CSS = `
     pointer-events: none;
     user-select: none;
   }
-    pointer-events: none;
-  }
 
   /* Right: Tactile Apple-Grade Primary Actions */
   .topbar-right {

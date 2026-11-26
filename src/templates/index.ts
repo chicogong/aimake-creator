@@ -1910,10 +1910,10 @@ export const BUILTIN_TEMPLATES: readonly TemplateDefinition[] = [
         "ko": "애플 키노트 · 벤토 그리드 런칭 데크 (16:9)"
       },
       "description": {
-        "zh": "致敬苹果发布会 Bento 便当盒美学：银灰棉纸底色、非对称圆角纯白与深石墨对比主瓷砖、微妙光感与极简超大数字。",
-        "en": "Apple Keynote Bento Grid system with silver-paper backdrop, asymmetric rounded white & obsidian contrast hero tiles, and SF display hierarchy.",
-        "ja": "銀灰ベースに非対称ベントータイルと深黒コントラストカードを配した製品発表スライド。",
-        "ko": "실버 페이퍼 배경과 비대칭 벤토 타일, 딥 블랙 대비 히어로 카드로 구성된 런칭 프레젠테이션."
+        "zh": "致敬苹果发布会 Bento 便当盒美学：银灰底色、非对称圆角磨砂质感卡片、微妙光感与极简超大 Tabular 数字。",
+        "en": "Apple Keynote Bento Grid system with silver backdrop, asymmetric rounded frosted neutral tiles, subtle light refractions, and clean tabular typography.",
+        "ja": "銀灰ベースに非対称ベントータイルとすりガラス調カードを配した製品発表スライド。",
+        "ko": "실버 배경과 비대칭 벤토 타일, 프로스티드 뉴트럴 카드로 구성된 런칭 프레젠테이션."
       },
       "category": "presentation",
       "defaultLocale": "zh-CN",

@@ -181,6 +181,7 @@ export const CALM_STUDIO_SCRIPT = `
       if (state.zoomMode !== 'fit' && frame.contentWindow) {
         frame.contentWindow.postMessage({ type: 'aimake:zoom', mode: state.zoomMode }, '*');
       }
+      focusSlideInFrame(state.activeSlideIndex);
     };
     frame.src = '/api/preview?t=' + Date.now();
   }
@@ -226,6 +227,10 @@ export const CALM_STUDIO_SCRIPT = `
     try {
       const doc = frame.contentDocument;
       if (!doc) return;
+      const root = doc.getElementById('aimake-deck-root');
+      if (root) {
+        root.classList.add('isolate-active-slide');
+      }
       const slideNodes = doc.querySelectorAll('.aimake-slide');
       slideNodes.forEach((node, idx) => {
         if (idx === slideIndex) {
@@ -234,10 +239,8 @@ export const CALM_STUDIO_SCRIPT = `
           node.classList.remove('aimake-active-focus');
         }
       });
-      const target = slideNodes[slideIndex];
-      if (target && typeof target.scrollIntoView === 'function') {
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+      if (doc.documentElement) doc.documentElement.scrollTop = 0;
+      if (doc.body) doc.body.scrollTop = 0;
     } catch (_) {}
   }
 

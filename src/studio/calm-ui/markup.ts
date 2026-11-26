@@ -200,7 +200,7 @@ export const CALM_STUDIO_MARKUP = `
 
       <div class="live-sync-pill" id="live-sync-banner">
         <span class="live-dot pulse"></span>
-        <span id="live-sync-text">AI 已实时更新工作区作品</span>
+        <span id="live-sync-text">已实时同步更新工作区作品</span>
       </div>
 
       <div class="stage-viewport">
@@ -392,23 +392,23 @@ export const CALM_STUDIO_MARKUP = `
   <!-- Popover 2: Beginner-Friendly AI Studio & Terminal Session Launcher -->
   <div class="popover ai-popover" id="popover-ai">
     <button class="nav-item" id="btn-popover-open-chat" style="background:var(--accent-soft);border-radius:8px;margin-bottom:10px;padding:8px 10px;">
-      <span class="nav-item-title" style="color:var(--accent);font-weight:600;display:inline-flex;align-items:center;gap:6px;">${lucideIcon('sparkles', 'ic ic-sm')} 立即在此窗口开启对话创作 (⌘J)</span>
+      <span class="nav-item-title" style="color:var(--accent);font-weight:600;display:inline-flex;align-items:center;gap:6px;">${lucideIcon('pencil', 'ic ic-sm')} 展开分镜助手面板 (⌘J)</span>
     </button>
     <div class="popover-section-title">
-      <span>① 想让 AI 帮你做什么？（点一下即选好）</span>
+      <span>① 创作需求速选（点一下即选好）</span>
     </div>
     <div class="recipe-grid" id="ai-recipe-grid"></div>
     <input class="search-input" id="ai-custom-goal" style="height:32px;font-size:12px;margin-bottom:6px;" placeholder="或者用一句话补充你的想法（可选，例如：面向职场新人）…" />
 
     <div class="popover-sep"></div>
     <div class="popover-section-title">
-      <span>② 桌面图形 AI 工具（免终端 · 小白推荐）</span>
+      <span>② 桌面图形创作工具（免终端 · 开箱即用）</span>
     </div>
     <div id="agent-gui-list"></div>
 
     <div class="popover-sep"></div>
     <div class="popover-section-title">
-      <span>③ 终端 AI 会话（自动用所选终端打开）</span>
+      <span>③ 终端创作会话（自动用所选终端打开）</span>
     </div>
     <div class="terminal-strip" id="terminal-picker-strip" aria-label="选择偏好的终端"></div>
     <div id="agent-cli-list"></div>
@@ -679,7 +679,7 @@ export const CALM_STUDIO_MARKUP = `
       <div class="drawer-head">
         <div>
           <h3 class="drawer-title" id="title-new-deck">新建创作作品</h3>
-          <p class="drawer-sub">选一个顺手的起步风格，马上在舞台上直接微调或交给 AI 续写</p>
+          <p class="drawer-sub">选一个顺手的起步风格，马上在舞台上直接微调与大纲推演</p>
         </div>
         <button class="icon-btn" data-close-modal aria-label="关闭">
           <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"></path></svg>
@@ -687,7 +687,7 @@ export const CALM_STUDIO_MARKUP = `
       </div>
       <div class="drawer-body">
         <label class="field-label" for="new-deck-title">作品标题</label>
-        <input class="search-input" id="new-deck-title" placeholder="例如：2026 个人创作者 AI 工作流全拆解" />
+        <input class="search-input" id="new-deck-title" placeholder="例如：2026 个人创作者工作流全拆解" />
 
         <label class="field-label">起步视觉风格</label>
         <div class="preset-grid" id="new-deck-style-grid">

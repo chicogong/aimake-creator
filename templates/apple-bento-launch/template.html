@@ -291,8 +291,7 @@
     
         .aimake-slide {
           background:
-            radial-gradient(circle at 86% 12%, rgba(0, 113, 227, 0.08) 0%, transparent 44%),
-            radial-gradient(circle at 12% 88%, rgba(110, 86, 207, 0.07) 0%, transparent 46%),
+            radial-gradient(circle at 86% 12%, rgba(0, 113, 227, 0.05) 0%, transparent 44%),
             #F5F5F7;
           border: none;
           padding: 58px 82px 48px 82px !important;
@@ -337,81 +336,121 @@
         }
         .metrics-grid {
           display: grid;
-          grid-template-columns: 1.38fr 1fr;
-          gap: 20px;
+          grid-template-columns: 1.35fr 1fr;
+          gap: 22px;
+          align-items: stretch;
         }
         .metrics-grid:has(.metric-card:nth-child(3)) {
-          grid-template-columns: 1.35fr 1fr 1fr;
+          grid-template-columns: 1.3fr 1fr 1fr;
+        }
+        .metrics-grid:has(.metric-card:nth-child(4)) {
+          grid-template-columns: 1fr 1fr;
+        }
+        /* When slide has only metric cards, flex harmoniously to fill the vertical canvas */
+        .content-zone:not(:has(ul.bullet-list)):not(:has(.compare-grid)):not(:has(.code-box)):not(:has(.quote-box)) .metrics-grid {
+          flex: 1;
+          max-height: 520px;
         }
         .metric-card {
           background: var(--surface);
-          border: 1px solid var(--border);
+          border: 1px solid rgba(15, 23, 42, 0.08);
           border-radius: 26px;
-          padding: 28px 32px;
+          padding: calc(32px * var(--content-scale)) calc(36px * var(--content-scale));
           box-shadow: var(--card-shadow);
           position: relative;
           overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          min-height: calc(200px * var(--content-scale));
           transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        .content-zone:not(:has(ul.bullet-list)):not(:has(.compare-grid)):not(:has(.code-box)):not(:has(.quote-box)) .metric-card {
+          min-height: 280px;
+          padding: calc(42px * var(--content-scale)) calc(46px * var(--content-scale));
+        }
+        /* Unified Apple-grade frosted neutrals */
         .metric-card:first-child {
-          background: linear-gradient(145deg, var(--surface) 0%, rgba(0, 113, 227, 0.04) 100%);
-          border: 1px solid rgba(0, 113, 227, 0.24);
+          background: linear-gradient(150deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 244, 252, 0.88) 100%);
+          border: 1px solid rgba(0, 113, 227, 0.20);
           color: var(--ink);
-          box-shadow: 0 10px 28px rgba(0, 113, 227, 0.08), 0 0 0 1px rgba(0, 113, 227, 0.10);
+          box-shadow: 0 8px 24px rgba(0, 113, 227, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
         }
         .metric-card:first-child .metric-label {
           color: var(--muted);
         }
         .metric-card:first-child .metric-val {
-          background: linear-gradient(95deg, var(--ink) 20%, var(--accent) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          font-size: calc(52px * var(--content-scale));
+          color: var(--accent);
+          background: none;
+          -webkit-text-fill-color: initial;
         }
         .metric-card:first-child .metric-delta {
           background: var(--accent-soft);
           color: var(--accent);
-          -webkit-text-fill-color: var(--accent);
-          padding: 4px 12px;
+          border: 1px solid rgba(0, 113, 227, 0.16);
+          -webkit-text-fill-color: initial;
+          padding: 4px 14px;
           border-radius: 999px;
           opacity: 1;
+        }
+        [data-theme="dark"] .metric-card,
+        body[data-theme="dark"] .metric-card {
+          background: rgba(26, 30, 41, 0.85);
+          border: 1px solid rgba(255, 255, 255, 0.10);
+          color: #F5F5F7;
+          box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
         }
         [data-theme="dark"] .metric-card:first-child,
         body[data-theme="dark"] .metric-card:first-child {
           background:
-            radial-gradient(circle at 88% 18%, rgba(41, 151, 255, 0.22) 0%, transparent 55%),
-            linear-gradient(145deg, #1F2432 0%, #131620 100%);
-          border: 1px solid rgba(255, 255, 255, 0.14);
+            radial-gradient(circle at 88% 18%, rgba(41, 151, 255, 0.16) 0%, transparent 55%),
+            linear-gradient(145deg, #1F2432 0%, #151822 100%);
+          border: 1px solid rgba(90, 180, 255, 0.30);
           color: #F5F5F7;
-          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
         }
         [data-theme="dark"] .metric-card:first-child .metric-label,
         body[data-theme="dark"] .metric-card:first-child .metric-label {
-          color: #A1A1A6;
+          color: #94A3B8;
         }
         [data-theme="dark"] .metric-card:first-child .metric-val,
         body[data-theme="dark"] .metric-card:first-child .metric-val {
-          background: linear-gradient(95deg, #FFFFFF 10%, #7CC4FF 65%, #A78BFA 100%);
+          background: linear-gradient(95deg, #FFFFFF 10%, #7CC4FF 65%, #5AC8FA 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
         [data-theme="dark"] .metric-card:first-child .metric-delta,
         body[data-theme="dark"] .metric-card:first-child .metric-delta {
-          -webkit-text-fill-color: #E2E8F0;
-          background: rgba(255, 255, 255, 0.12);
+          -webkit-text-fill-color: initial;
+          color: #7CC4FF;
+          background: rgba(41, 151, 255, 0.18);
+          border: 1px solid rgba(41, 151, 255, 0.28);
         }
         .metric-val {
           font-family: var(--font);
-          letter-spacing: -0.03em;
+          font-size: calc(56px * var(--content-scale));
+          font-weight: 800;
+          letter-spacing: -0.035em;
           color: var(--ink);
+          font-variant-numeric: tabular-nums;
+          font-feature-settings: "tnum" 1, "cv02" 1, "cv03" 1, "cv04" 1;
+          display: flex;
+          align-items: baseline;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+        .content-zone:not(:has(ul.bullet-list)):not(:has(.compare-grid)):not(:has(.code-box)):not(:has(.quote-box)) .metric-val {
+          font-size: calc(72px * var(--content-scale));
         }
         .metric-delta {
-          background: rgba(0, 113, 227, 0.10);
+          background: rgba(0, 113, 227, 0.08);
           color: #0071E3;
-          padding: 4px 12px;
+          border: 1px solid rgba(0, 113, 227, 0.12);
+          padding: 4px 14px;
           border-radius: 999px;
-          font-size: calc(16px * var(--content-scale));
-          font-weight: 700;
+          font-size: calc(17px * var(--content-scale));
+          font-weight: 600;
+          font-variant-numeric: tabular-nums;
           opacity: 1;
         }
         ul.bullet-list {
@@ -492,7 +531,7 @@
 <body data-template-id="apple-bento-launch" data-style-variant="apple-bento">
   <div id="aimake-deck-root"></div>
   <script>
-    const EMBEDDED_MANIFEST = {"id":"apple-bento-launch","name":{"zh":"苹果发布会 · Bento 便当盒产品发布 (16:9)","en":"Apple Keynote · Bento Grid Launch Deck (16:9)","ja":"Apple風 · Bentoグリッド製品発表スライド","ko":"애플 키노트 · 벤토 그리드 런칭 데크 (16:9)"},"description":{"zh":"致敬苹果发布会 Bento 便当盒美学：银灰棉纸底色、非对称圆角纯白与深石墨对比主瓷砖、微妙光感与极简超大数字。","en":"Apple Keynote Bento Grid system with silver-paper backdrop, asymmetric rounded white & obsidian contrast hero tiles, and SF display hierarchy.","ja":"銀灰ベースに非対称ベントータイルと深黒コントラストカードを配した製品発表スライド。","ko":"실버 페이퍼 배경과 비대칭 벤토 타일, 딥 블랙 대비 히어로 카드로 구성된 런칭 프레젠테이션."},"category":"presentation","defaultLocale":"zh-CN","aspect":"16:9","width":1920,"height":1080,"supportedFormats":["pptx","pdf","png","html"],"supportsMotion":true,"contributor":{"name":"Aimake Core","handle":"@chicogong","url":"https://aimake.cc"},"tags":["apple","bento","keynote","launch","ppt","pptx","16x9","minimal"]};
+    const EMBEDDED_MANIFEST = {"id":"apple-bento-launch","name":{"zh":"苹果发布会 · Bento 便当盒产品发布 (16:9)","en":"Apple Keynote · Bento Grid Launch Deck (16:9)","ja":"Apple風 · Bentoグリッド製品発表スライド","ko":"애플 키노트 · 벤토 그리드 런칭 데크 (16:9)"},"description":{"zh":"致敬苹果发布会 Bento 便当盒美学：银灰底色、非对称圆角磨砂质感卡片、微妙光感与极简超大 Tabular 数字。","en":"Apple Keynote Bento Grid system with silver backdrop, asymmetric rounded frosted neutral tiles, subtle light refractions, and clean tabular typography.","ja":"銀灰ベースに非対称ベントータイルとすりガラス調カードを配した製品発表スライド。","ko":"실버 배경과 비대칭 벤토 타일, 프로스티드 뉴트럴 카드로 구성된 런칭 프레젠테이션."},"category":"presentation","defaultLocale":"zh-CN","aspect":"16:9","width":1920,"height":1080,"supportedFormats":["pptx","pdf","png","html"],"supportsMotion":true,"contributor":{"name":"Aimake Core","handle":"@chicogong","url":"https://aimake.cc"},"tags":["apple","bento","keynote","launch","ppt","pptx","16x9","minimal"]};
 
     function autoTitleFontSize(text, isCover, isWide) {
       const len = (text || '').length;

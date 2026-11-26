@@ -2590,44 +2590,95 @@ function getVariantCss(variant, manifest, theme) {
         }
         .metrics-grid {
           display: grid;
-          grid-template-columns: 1.38fr 1fr;
-          gap: 20px;
+          grid-template-columns: 1.35fr 1fr;
+          gap: 22px;
+          align-items: stretch;
         }
         .metrics-grid:has(.metric-card:nth-child(3)) {
-          grid-template-columns: 1.35fr 1fr 1fr;
+          grid-template-columns: 1.3fr 1fr 1fr;
+        }
+        .metrics-grid:has(.metric-card:nth-child(4)) {
+          grid-template-columns: 1fr 1fr;
+        }
+        /* When slide has only metric cards, flex harmoniously to fill the vertical canvas */
+        .content-zone:not(:has(ul.bullet-list)):not(:has(.compare-grid)):not(:has(.code-box)):not(:has(.quote-box)) .metrics-grid {
+          flex: 1;
+          max-height: 520px;
         }
         .metric-card {
           background: var(--surface);
-          border: 1px solid var(--border);
+          border: 1px solid rgba(15, 23, 42, 0.08);
           border-radius: 26px;
-          padding: 28px 32px;
+          padding: calc(32px * var(--content-scale)) calc(36px * var(--content-scale));
           box-shadow: var(--card-shadow);
           position: relative;
           overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          min-height: calc(200px * var(--content-scale));
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        .content-zone:not(:has(ul.bullet-list)):not(:has(.compare-grid)):not(:has(.code-box)):not(:has(.quote-box)) .metric-card {
+          min-height: 280px;
+          padding: calc(42px * var(--content-scale)) calc(46px * var(--content-scale));
+        }
+        /* Unified Apple-grade frosted neutrals */
         .metric-card:first-child {
-          background:
-            radial-gradient(circle at 88% 18%, rgba(41, 151, 255, 0.34) 0%, transparent 55%),
-            linear-gradient(145deg, #1D1D1F 0%, #101014 100%);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          color: #F5F5F7;
-          box-shadow: 0 20px 44px rgba(29, 29, 31, 0.18);
+          background: linear-gradient(150deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 244, 252, 0.88) 100%);
+          border: 1px solid rgba(0, 113, 227, 0.20);
+          color: var(--ink);
+          box-shadow: 0 8px 24px rgba(0, 113, 227, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
         }
         .metric-card:first-child .metric-label {
-          color: #A1A1A6;
+          color: var(--muted);
         }
         .metric-card:first-child .metric-val {
-          background: linear-gradient(95deg, #FFFFFF 10%, #7CC4FF 65%, #A78BFA 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          font-size: calc(52px * var(--content-scale));
+          color: var(--accent);
+          background: none;
+          -webkit-text-fill-color: initial;
         }
         .metric-card:first-child .metric-delta {
-          -webkit-text-fill-color: #E2E8F0;
-          background: rgba(255, 255, 255, 0.12);
-          padding: 4px 12px;
+          background: var(--accent-soft);
+          color: var(--accent);
+          border: 1px solid rgba(0, 113, 227, 0.16);
+          -webkit-text-fill-color: initial;
+          padding: 4px 14px;
           border-radius: 999px;
           opacity: 1;
+        }
+        [data-theme="dark"] .metric-card,
+        body[data-theme="dark"] .metric-card {
+          background: rgba(26, 30, 41, 0.85);
+          border: 1px solid rgba(255, 255, 255, 0.10);
+          color: #F5F5F7;
+          box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
+        }
+        [data-theme="dark"] .metric-card:first-child,
+        body[data-theme="dark"] .metric-card:first-child {
+          background:
+            radial-gradient(circle at 88% 18%, rgba(41, 151, 255, 0.16) 0%, transparent 55%),
+            linear-gradient(145deg, #1F2432 0%, #151822 100%);
+          border: 1px solid rgba(90, 180, 255, 0.30);
+          color: #F5F5F7;
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+        }
+        [data-theme="dark"] .metric-card:first-child .metric-label,
+        body[data-theme="dark"] .metric-card:first-child .metric-label {
+          color: #94A3B8;
+        }
+        [data-theme="dark"] .metric-card:first-child .metric-val,
+        body[data-theme="dark"] .metric-card:first-child .metric-val {
+          background: linear-gradient(95deg, #FFFFFF 10%, #7CC4FF 65%, #5AC8FA 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        [data-theme="dark"] .metric-card:first-child .metric-delta,
+        body[data-theme="dark"] .metric-card:first-child .metric-delta {
+          -webkit-text-fill-color: initial;
+          color: #7CC4FF;
+          background: rgba(41, 151, 255, 0.18);
+          border: 1px solid rgba(41, 151, 255, 0.28);
         }
         .metric-val {
           font-family: var(--font);
