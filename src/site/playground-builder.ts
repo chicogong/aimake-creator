@@ -83,50 +83,109 @@ aimake render decks/karpathy-vibe-coding.deck.md -f png -o dist/
 \`\`\`
 `,
 
-  deepseek: `---
-title: "Andrej Karpathy: 为什么纯本地「LLM Wiki」构建永续第二大脑"
-template: xhs-swiss-grid
+  gemini: `---
+title: "Google DeepMind Antigravity (AGY) & Gemini 4 架构演进"
+template: apple-bento-launch
 locale: zh-CN
-aspect: 3:4
-author: Andrej Karpathy (@karpathy)
-handle: "@karpathy"
+aspect: 16:9
+author: Google DeepMind & Aimake
+handle: "@deepmind"
 ---
 
-<!-- scene: intro | layout: metrics | eyebrow: SWISS GRID 2026 -->
-# 为什么纯本地「LLM Wiki」是超级个体的永续第二大脑？
-## 抛弃黑盒向量检索与盲目 RAG · 100% 纯离线端侧数据复利
+<!-- scene: intro | layout: metrics | eyebrow: DEEPMIND 2026 INFLECTION -->
+# Google DeepMind Antigravity (AGY) & Gemini 4: 架构演进与自主 Agentic 时代
+## 从被动聊天问答到全自主 Agentic 操作系统 · 纯本地物理沙盒与集群编排
 
 \`\`\`metric
-- 恒定预算约束: <= 3000t (index.md)
-- 知识蒸馏命中率: 98% (反 AI 假大空)
-- 纯离线隐私留存: 100% (Zero-Cloud)
+- 全量推理上下文: 100M+ Token (全生命周期沉淀)
+- 本地执行权限: 100% 物理隔离安全沙盒 (Zero-Cloud)
+- 自主协作体系: 24h 异步自愈 Swarm 编排
+- 软件交付范式: 纯声明式意图直达交付物
 \`\`\`
 
-- **告别算力盲目攀比**：通过本地 Ollama / vLLM 运行蒸馏版，构建个人高频句式与 Style DNA。
-- **物理级上下文约束**：恒定约束索引页，杜绝上下文无限膨胀与灾难性遗忘。
+- **终生上下文无损保留**：突破传统 128k 窗口遗忘诅咒，将本地代码库与知识脉络融为单体推理图。
+- **物理级零信任沙盒**：所有工具调用与代码生成均限制在本地隔离环境，彻底杜绝数据越权外发。
 
 ---
 
-<!-- scene: compare | layout: comparison | eyebrow: ARCHITECTURE -->
-# 纯云端黑盒 RAG vs 本地版本化 LLM Wiki
+<!-- scene: compare | layout: comparison | eyebrow: PARADIGM SHIFT -->
+# 传统被动聊天 vs AGY 全自主 Agentic 操作系统
 
 \`\`\`compare
-云端黑盒 RAG :: 切片割裂语境 | 向量相似度误判 | 敏感原稿面临云端审计风险
-本地 LLM Wiki :: 维持全局双向链接 | 恒定上下文预算 | 100% 纯净 Markdown 留存本机
+传统聊天问答 :: 单次问答记忆丢失 | 用户频繁充当人肉剪贴板 | 无法触达操作系统真实环境
+AGY 操作系统 :: 持续运行后台工作流 | 自主探索、调试与闭环验证 | 实体工具与本地知识库深度结合
 \`\`\`
 
 ---
 
 <!-- scene: code | layout: code | eyebrow: ONE COMMAND -->
-# 终端一行命令启动本地推理编译
+# 终端一行命令启动 Antigravity 自主编排
 
 \`\`\`bash
-# 启动本地 DeepSeek-R1 蒸馏引擎
-ollama run deepseek-r1:14b
+# 激活本地 AGY Agentic 运行时与知识外脑
+agy session start --workspace ~/Documents/Aimake
 
-# 一键将研究笔记编译为小红书 3:4 视觉图文
-aimake render deepseek-note.deck.md -t xhs-swiss-grid -o output/
+# 自动挂载 36 套设计系统并执行多模态实时渲染
+aimake render decks/gemini-agy-deepmind-inflection.deck.md -f png -o dist/
 \`\`\`
+`,
+
+  blackfriday: `---
+title: "2026 黑五 AI 算力与订阅终极省钱指南"
+template: xhs-swiss-grid
+locale: zh-CN
+aspect: 3:4
+author: Aimake Studio
+handle: "@aimake.cc"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: BLACK FRIDAY 2026 -->
+# 2026 黑五 AI 算力与订阅终极省钱指南
+## 算力平权下的超级个体采购清单 · 告别云端月租杀熟，拥抱纯本地资产
+
+\`\`\`metric
+- 算力成本降幅: 82% (API 通缩大洗牌)
+- 离线硬件折扣: M4 Max / RTX 5090 黑五直降
+- 终身会员红利: 纯本地工具 0 月租复利
+- 规避云端杀熟: 100% 避坑一次性黑盒订阅
+\`\`\`
+
+- **算力通缩大变局**：前沿模型 API 价格一年内下跌超过 80%，盲目续费云端月租已成最大浪费。
+- **投资端侧算力与本地数据**：与其每年支付几千美元租借云端黑盒，不如置办本地高显存主机。
+
+---
+
+<!-- scene: compare | layout: comparison | eyebrow: SPENDING STRATEGY -->
+# 黑五避坑消费策略：租借算力 vs 沉淀资产
+
+\`\`\`compare
+盲目跟风租借 :: 订阅数十个包装壳产品 | 聊天记录四处散落 | 次月停付数据立即失效
+精明超级个体 :: 一次性置办端侧大内存主机 | 核心资料留存纯本地 Markdown | 配合按量结算前沿 API
+\`\`\`
+`,
+
+  gemini_en: `---
+title: "Google DeepMind Antigravity: The Agentic OS Inflection"
+template: apple-bento-launch
+locale: en-US
+aspect: 16:9
+author: Google DeepMind
+handle: "@deepmind"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: DEEPMIND 2026 -->
+# Google DeepMind Antigravity: The Next Frontier in Agentic Systems
+## Moving beyond prompt-response loops into 24/7 autonomous engineering agents
+
+\`\`\`metric
+- Context Capacity: 100M+ Tokens (Zero Context Loss)
+- Local Sandbox Security: 100% Air-Gapped Physical Isolation
+- Subagent Collaboration: 24/7 Self-Healing Swarm Tasks
+- Workflow Speedup: 12x Faster from Idea to Production
+\`\`\`
+
+- **Continuous Cognitive Memory**: Retain your entire repository lifecycle without lossy sliding windows.
+- **Local-First Safety Invariants**: Sandboxed tool evaluation eliminates data exfiltration risks.
 `,
 
   token: `---
@@ -428,6 +487,10 @@ handle: "@chicogong"
 
 STARTER_SAMPLES.creator = STARTER_SAMPLES.token;
 STARTER_SAMPLES.poster = STARTER_SAMPLES.embodied;
+STARTER_SAMPLES.deepseek = STARTER_SAMPLES.gemini;
+STARTER_SAMPLES['deepseek-en'] = STARTER_SAMPLES.gemini_en;
+STARTER_SAMPLES['gemini-agy'] = STARTER_SAMPLES.gemini;
+STARTER_SAMPLES['black-friday'] = STARTER_SAMPLES.blackfriday;
 
 export async function buildWebPlaygroundHtml(
   templates: MarketplaceTemplateEntry[],
@@ -1257,16 +1320,17 @@ export async function buildWebPlaygroundHtml(
       <!-- Storyboard Sample Selector -->
       <select class="pg-select" id="sample-select" title="载入示范原稿">
         <optgroup label="2026 前沿时事实战爆款 (中文)">
-          <option value="agent" selected>2026 AI Agent 闭环 (16:9)</option>
-          <option value="deepseek">DeepSeek-R1 本地蒸馏 (3:4)</option>
+          <option value="gemini" selected>Google Antigravity & Gemini 4 (16:9)</option>
+          <option value="blackfriday">2026 黑五 AI 算力与订阅指南 (3:4)</option>
+          <option value="agent">Karpathy Vibe Coding 个人软件 (16:9)</option>
           <option value="token">超级个体千亿飞轮 (微信长文)</option>
           <option value="podcast">午夜播客 6 轨视听 (9:16)</option>
           <option value="mcp">Anthropic MCP 白皮书 (4:5)</option>
           <option value="embodied">具身智能世界模型 (1:1)</option>
         </optgroup>
         <optgroup label="Multilingual Showcases (多语言示范)">
+          <option value="gemini-en">Google DeepMind Antigravity (16:9 EN)</option>
           <option value="agent-en">AI Agent Architecture (16:9 EN)</option>
-          <option value="deepseek-en">DeepSeek-R1 Distillation (3:4 EN)</option>
           <option value="podcast-ja">ミッドナイト・ポッドキャスト (9:16 JA)</option>
           <option value="flywheel-ko">슈퍼 인디비주얼 플라이휠 (16:9 KO)</option>
         </optgroup>
@@ -1651,7 +1715,7 @@ export async function buildWebPlaygroundHtml(
     } else {
       let saved = null;
       try { saved = localStorage.getItem('aimake_playground_md'); } catch (_) {}
-      initialMarkdown = (saved && saved.trim()) || SAMPLES.agent;
+      initialMarkdown = (saved && saved.trim()) || SAMPLES.gemini || SAMPLES.agent;
       for (const [k, sText] of Object.entries(SAMPLES)) {
         if (k === 'creator' || k === 'poster') continue;
         const firstLine = (sText.match(/^title:\\s*(.+)$/m) || [])[1];

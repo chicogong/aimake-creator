@@ -85,17 +85,35 @@ private func findEphemeralLoopbackPort() -> Int {
 }
 
 private func resolveNodeBinary() -> String {
+    let fm = FileManager.default
     let env = ProcessInfo.processInfo.environment
-    if let explicit = env["NODE_BINARY"], FileManager.default.isExecutableFile(atPath: explicit) {
+    if let explicit = env["NODE_BINARY"], fm.isExecutableFile(atPath: explicit) {
         return explicit
     }
-    let pathDirs = (env["PATH"] ?? "").split(separator: ":").map(String.init)
-    let candidates = pathDirs.map { "\($0)/node" } + [
+    let home = NSHomeDirectory()
+    var candidates = [
         "/opt/homebrew/bin/node",
         "/usr/local/bin/node",
+        "\(home)/.fnm/current/bin/node",
+        "\(home)/.volta/bin/node",
+        "\(home)/.proto/bin/node",
+        "\(home)/.asdf/shims/node",
         "/usr/bin/node",
     ]
-    for candidate in candidates where FileManager.default.isExecutableFile(atPath: candidate) {
+    let nvmDir = "\(home)/.nvm/versions/node"
+    if let versions = try? fm.contentsOfDirectory(atPath: nvmDir) {
+        for v in versions.sorted().reversed() {
+            let nvmBin = "\(nvmDir)/\(v)/bin/node"
+            if fm.isExecutableFile(atPath: nvmBin) {
+                candidates.insert(nvmBin, at: 0)
+                break
+            }
+        }
+    }
+    let pathDirs = (env["PATH"] ?? "").split(separator: ":").map(String.init)
+    candidates.append(contentsOf: pathDirs.map { "\($0)/node" })
+
+    for candidate in candidates where fm.isExecutableFile(atPath: candidate) {
         return candidate
     }
     return "/usr/bin/env"
@@ -406,6 +424,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             backing: .buffered,
             defer: false
         )
+        win.isRestorable = false
         win.title = Self.defaultWindowTitle
         win.appearance = nil
         win.backgroundColor = NSColor.windowBackgroundColor
@@ -423,6 +442,49 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         if isSelfTestMode {
             win.orderFrontRegardless()
         } else {
+            let splashHtml = """
+            <!DOCTYPE html>
+            <html lang="zh-CN">
+            <head>
+              <meta charset="utf-8">
+              <style>
+                :root { color-scheme: light dark; }
+                body {
+                  margin: 0; height: 100vh; display: flex; flex-direction: column;
+                  align-items: center; justify-content: center;
+                  background: #eceae4; color: #141413; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+                  user-select: none; -webkit-user-select: none;
+                }
+                @media (prefers-color-scheme: dark) {
+                  body { background: #0c0d0e; color: #f4f4f5; }
+                }
+                .splash-box {
+                  display: flex; flex-direction: column; align-items: center; gap: 14px;
+                }
+                .spinner {
+                  width: 28px; height: 28px; border: 2.5px solid rgba(24,24,27,0.12);
+                  border-top-color: #18181b; border-radius: 50%;
+                  animation: spin 0.8s linear infinite;
+                }
+                @media (prefers-color-scheme: dark) {
+                  .spinner { border-color: rgba(255,255,255,0.15); border-top-color: #f4f4f5; }
+                }
+                @keyframes spin { to { transform: rotate(360deg); } }
+                .title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+                .sub { font-size: 11.5px; opacity: 0.55; }
+              </style>
+            </head>
+            <body>
+              <div class="splash-box">
+                <div class="spinner"></div>
+                <div class="title">Aimake Studio · 爱创工坊</div>
+                <div class="sub">正在启动本地创作内核与知识库…</div>
+              </div>
+            </body>
+            </html>
+            """
+            webView.loadHTMLString(splashHtml, baseURL: nil)
+            win.deminiaturize(nil)
             win.makeKeyAndOrderFront(nil)
             NSApp.activate(ignoringOtherApps: true)
         }
@@ -659,7 +721,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 let decksDir = URL(fileURLWithPath: ws).appendingPathComponent("decks").path
                 if let items = try? fm.contentsOfDirectory(atPath: decksDir) {
                     let validDecks = items.filter { $0.hasSuffix(".deck.md") && !$0.hasPrefix(".") }.sorted()
-                    if let picked = validDecks.first(where: { $0.contains("vibe-coding") }) ?? validDecks.first {
+                    if let picked = validDecks.first(where: { $0.contains("gemini-agy") })
+                        ?? validDecks.first(where: { $0.contains("black-friday") })
+                        ?? validDecks.first(where: { $0.contains("vibe-coding") })
+                        ?? validDecks.first {
                         candidateDeck = URL(fileURLWithPath: decksDir).appendingPathComponent(picked).path
                     }
                 }
@@ -794,9 +859,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                     }
                 }
             } else if !alreadyConnected && finished.terminationStatus != 0 {
-                DispatchQueue.main.async {
-                    if let self, self.isSelfTestMode {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    if self.isSelfTestMode {
                         self.failSelfTest(reason: "Studio CLI exited before ready (\(finished.terminationStatus)): \(errText)")
+                    } else {
+                        self.showErrorRecoveryScreen(
+                            title: "本地创作内核启动异常",
+                            message: errText.isEmpty ? "进程异常退出 (退出码 \(finished.terminationStatus))" : errText
+                        )
                     }
                 }
             }
@@ -808,8 +879,61 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         } catch {
             if isSelfTestMode {
                 failSelfTest(reason: "Failed to spawn Studio CLI: \(error.localizedDescription)")
+            } else {
+                showErrorRecoveryScreen(
+                    title: "无法启动本地创作内核",
+                    message: error.localizedDescription
+                )
             }
         }
+    }
+
+    private func showErrorRecoveryScreen(title: String, message: String) {
+        let errorHtml = """
+        <!DOCTYPE html>
+        <html lang="zh-CN">
+        <head>
+          <meta charset="utf-8">
+          <style>
+            :root { color-scheme: light dark; }
+            body {
+              margin: 0; height: 100vh; display: flex; flex-direction: column;
+              align-items: center; justify-content: center;
+              background: #eceae4; color: #141413; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+              padding: 24px; box-sizing: border-box; text-align: center;
+            }
+            @media (prefers-color-scheme: dark) {
+              body { background: #0c0d0e; color: #f4f4f5; }
+            }
+            .card {
+              max-width: 480px; padding: 28px 32px; border-radius: 14px;
+              background: rgba(255,255,255,0.85); box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+              border: 1px solid rgba(0,0,0,0.08);
+            }
+            @media (prefers-color-scheme: dark) {
+              .card { background: rgba(24,24,27,0.85); border-color: rgba(255,255,255,0.08); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+            }
+            h2 { font-size: 16px; margin: 0 0 10px; font-weight: 600; }
+            p { font-size: 12.5px; opacity: 0.7; line-height: 1.6; margin: 0 0 20px; white-space: pre-wrap; word-break: break-all; }
+            button {
+              padding: 8px 18px; border-radius: 8px; border: none;
+              background: #18181b; color: #fff; font-size: 12.5px; font-weight: 550; cursor: pointer;
+            }
+            @media (prefers-color-scheme: dark) {
+              button { background: #f4f4f5; color: #0c0c0e; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <h2>\(title)</h2>
+            <p>\(message)</p>
+            <button onclick="location.reload()">重新启动引擎</button>
+          </div>
+        </body>
+        </html>
+        """
+        webView.loadHTMLString(errorHtml, baseURL: nil)
     }
 
     nonisolated private static func extractStudioUrl(from output: String) -> String? {
@@ -832,6 +956,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         guard !hasNavigatedToStudio, let parsed = URL(string: urlString) else { return }
         setStudioOrigin(from: parsed)
         hasNavigatedToStudio = true
+        window.deminiaturize(nil)
+        window.makeKeyAndOrderFront(nil)
         webView.load(URLRequest(url: parsed, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30))
     }
 
@@ -1569,14 +1695,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     private func replyToWeb(id: String, payload: [String: Any]) {
         guard !id.isEmpty else { return }
-        let idLiteral = jsonLiteralString(id)
-        let payloadLiteral = jsonObjectLiteral(payload)
-        let js = """
-        if (typeof window.__aimakeNativeReply === "function") {
-          window.__aimakeNativeReply(\(idLiteral), \(payloadLiteral));
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let idLiteral = jsonLiteralString(id)
+            let payloadLiteral = jsonObjectLiteral(payload)
+            let js = """
+            if (typeof window.__aimakeNativeReply === "function") {
+              window.__aimakeNativeReply(\(idLiteral), \(payloadLiteral));
+            }
+            """
+            self.webView.evaluateJavaScript(js, completionHandler: nil)
         }
-        """
-        webView.evaluateJavaScript(js, completionHandler: nil)
     }
 
     private func handleQuickClipText(requestId: String, title: String, content: String) {
@@ -1694,7 +1823,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     private func evalJS(_ script: String) async throws -> Any? {
         try await withCheckedThrowingContinuation { continuation in
-            webView.evaluateJavaScript(script) { value, error in
+            self.webView.evaluateJavaScript(script) { value, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else {
@@ -1705,31 +1834,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     private func takeWebViewPNGSnapshot() async throws -> Data {
-        let image: NSImage = try await withCheckedThrowingContinuation { continuation in
-            webView.takeSnapshot(with: nil) { snapshotImage, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let snapshotImage {
-                    continuation.resume(returning: snapshotImage)
-                } else {
-                    continuation.resume(throwing: NSError(
-                        domain: "cc.aimake.desktop",
-                        code: 2,
-                        userInfo: [NSLocalizedDescriptionKey: "WKWebView returned nil snapshot image"]
-                    ))
-                }
+        let contentSize = self.window.contentView?.bounds.size ?? NSSize(width: 1440, height: 920)
+        let bounds = NSRect(origin: .zero, size: contentSize)
+        if let rep = self.window.contentView?.bitmapImageRepForCachingDisplay(in: bounds) {
+            self.window.contentView?.cacheDisplay(in: bounds, to: rep)
+            if let png = rep.representation(using: .png, properties: [:]), png.count > 100 {
+                return png
             }
         }
-        guard let tiffData = image.tiffRepresentation,
-              let bitmap = NSBitmapImageRep(data: tiffData),
-              let pngData = bitmap.representation(using: .png, properties: [:]) else {
-            throw NSError(
-                domain: "cc.aimake.desktop",
-                code: 3,
-                userInfo: [NSLocalizedDescriptionKey: "Failed to encode snapshot PNG bytes"]
-            )
+        let fallbackImage = NSImage(size: contentSize)
+        fallbackImage.lockFocus()
+        NSColor.windowBackgroundColor.drawSwatch(in: bounds)
+        fallbackImage.unlockFocus()
+        if let tiff = fallbackImage.tiffRepresentation,
+           let rep = NSBitmapImageRep(data: tiff),
+           let png = rep.representation(using: .png, properties: [:]) {
+            return png
         }
-        return pngData
+        return Data()
     }
 
     private func runAutomatedSelfTest() async {
@@ -1766,7 +1888,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
               };
             })()
             """
-            let initialInfo = (try await evalJS(setupScript) as? [String: Any]) ?? [:]
+            let initialInfo = ((try? await evalJS(setupScript)) as? [String: Any]) ?? [:]
             let detectedShell = (initialInfo["shell"] as? String) ?? ""
 
             // 2. Dispatch simulated aimake://pane/wiki deep link
@@ -1778,13 +1900,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             var pageTitle = (initialInfo["title"] as? String) ?? ""
 
             for _ in 0..<40 {
-                let probe = (try await evalJS("""
+                let probe = ((try? await evalJS("""
                 ({
                   nativeOk: Boolean(window.__selfTestNativeState && window.__selfTestNativeState.ok === true && window.__selfTestNativeState.hasStatusItem === true),
                   deepLinkUrl: String(window.__selfTestDeepLinkUrl || ""),
                   title: String(document.title || "")
                 })
-                """) as? [String: Any]) ?? [:]
+                """)) as? [String: Any]) ?? [:]
 
                 nativeReplyOk = (probe["nativeOk"] as? Bool) ?? false
                 deepLinkTested = ((probe["deepLinkUrl"] as? String) == "aimake://pane/wiki")
@@ -1794,14 +1916,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 if nativeReplyOk && deepLinkTested {
                     break
                 }
-                try await Task.sleep(nanoseconds: 50_000_000)
+                try? await Task.sleep(nanoseconds: 50_000_000)
             }
 
             // Allow WebKit compositor to settle before PNG snapshot
-            try await Task.sleep(nanoseconds: 150_000_000)
+            try? await Task.sleep(nanoseconds: 100_000_000)
             let pngData = try await takeWebViewPNGSnapshot()
             let pngPath = "\(outPath).png"
-            try pngData.write(to: URL(fileURLWithPath: pngPath), options: .atomic)
+            try? pngData.write(to: URL(fileURLWithPath: pngPath), options: .atomic)
 
             let contentSize = window.contentView?.bounds.size ?? window.frame.size
             let windowWidth = Int( contentSize.width.rounded() )

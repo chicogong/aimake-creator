@@ -222,36 +222,58 @@ export const CALM_STUDIO_SCRIPT = `
       statusSlide.textContent = '第 ' + (slideIndex + 1) + ' / ' + Math.max(1, slides.length) + ' 页';
     }
 
-    const frame = $('preview-frame');
-    if (!frame || !frame.contentWindow) return;
-    try {
-      const doc = frame.contentDocument;
-      if (!doc) return;
-      if (!doc.getElementById('aimake-calm-frame-overrides')) {
-        const style = doc.createElement('style');
-        style.id = 'aimake-calm-frame-overrides';
-        style.textContent =
-          'html,body{overflow:hidden!important;scrollbar-width:none!important;background:transparent!important;margin:0!important;padding:0!important;width:100%!important;height:100%!important;}' +
-          '::-webkit-scrollbar{display:none!important;}' +
-          '#aimake-deck-root.isolate-active-slide{height:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:16px 0!important;box-sizing:border-box!important;}' +
-          '.aimake-slide.aimake-active-focus{margin:0 auto!important;}';
-        (doc.head || doc.documentElement).appendChild(style);
-      }
-      const root = doc.getElementById('aimake-deck-root');
-      if (root) {
-        root.classList.add('isolate-active-slide');
-      }
-      const slideNodes = doc.querySelectorAll('.aimake-slide');
-      slideNodes.forEach((node, idx) => {
-        if (idx === slideIndex) {
-          node.classList.add('aimake-active-focus');
-        } else {
-          node.classList.remove('aimake-active-focus');
+    const applyFocusToDoc = () => {
+      const frame = $('preview-frame');
+      if (!frame || !frame.contentWindow) return false;
+      try {
+        const doc = frame.contentDocument;
+        if (!doc) return false;
+        let slideNodes = doc.querySelectorAll('.aimake-slide');
+        if (!slideNodes || slideNodes.length === 0) {
+          if (frame.contentWindow && typeof frame.contentWindow.renderDeck === 'function' && frame.contentWindow.__AIMAKE_PAYLOAD__) {
+            frame.contentWindow.renderDeck(frame.contentWindow.__AIMAKE_PAYLOAD__.deck, frame.contentWindow.__AIMAKE_PAYLOAD__.options);
+            slideNodes = doc.querySelectorAll('.aimake-slide');
+          }
         }
-      });
-      if (doc.documentElement) doc.documentElement.scrollTop = 0;
-      if (doc.body) doc.body.scrollTop = 0;
-    } catch (_) {}
+        if (!slideNodes || slideNodes.length === 0) return false;
+
+        if (!doc.getElementById('aimake-calm-frame-overrides')) {
+          const style = doc.createElement('style');
+          style.id = 'aimake-calm-frame-overrides';
+          style.textContent =
+            'html,body{overflow:hidden!important;scrollbar-width:none!important;background:transparent!important;margin:0!important;padding:0!important;width:100%!important;height:100%!important;}' +
+            '::-webkit-scrollbar{display:none!important;}' +
+            '#aimake-deck-root.isolate-active-slide{height:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:16px 0!important;box-sizing:border-box!important;}' +
+            '.aimake-slide.aimake-active-focus{margin:0 auto!important;}';
+          (doc.head || doc.documentElement).appendChild(style);
+        }
+        const root = doc.getElementById('aimake-deck-root');
+        if (root) {
+          root.classList.add('isolate-active-slide');
+        }
+        slideNodes.forEach((node, idx) => {
+          if (idx === slideIndex) {
+            node.classList.add('aimake-active-focus');
+          } else {
+            node.classList.remove('aimake-active-focus');
+          }
+        });
+        if (frame.contentWindow && typeof frame.contentWindow.fitStage === 'function') {
+          frame.contentWindow.fitStage();
+        }
+        if (doc.documentElement) doc.documentElement.scrollTop = 0;
+        if (doc.body) doc.body.scrollTop = 0;
+        return true;
+      } catch (_) {
+        return false;
+      }
+    };
+
+    if (!applyFocusToDoc()) {
+      setTimeout(applyFocusToDoc, 50);
+      setTimeout(applyFocusToDoc, 150);
+      setTimeout(applyFocusToDoc, 350);
+    }
   }
 
   function renderSlidePills() {
@@ -548,14 +570,27 @@ export const CALM_STUDIO_SCRIPT = `
     renderSlidePills();
 
     const slides = (state.deck && state.deck.slides) || [];
+    const idx = Math.min(state.activeSlideIndex, Math.max(0, slides.length - 1));
     const badge = $('chat-active-slide-badge');
     if (badge) {
-      const idx = Math.min(state.activeSlideIndex, Math.max(0, slides.length - 1));
       badge.textContent =
         '当前页 ' +
         String(idx + 1).padStart(2, '0') +
         '/' +
         String(Math.max(1, slides.length)).padStart(2, '0');
+    }
+
+    const statusDeck = $('status-deck-name');
+    if (statusDeck) {
+      statusDeck.textContent = (state.deck && state.deck.frontmatter && state.deck.frontmatter.title) || state.activeDeckRel || '演示画布';
+    }
+    const statusAspect = $('status-aspect-val');
+    if (statusAspect) {
+      statusAspect.textContent = aspect;
+    }
+    const statusSlide = $('status-slide-text');
+    if (statusSlide) {
+      statusSlide.textContent = '第 ' + (idx + 1) + ' / ' + Math.max(1, slides.length) + ' 页';
     }
   }
 

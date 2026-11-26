@@ -172,48 +172,6 @@ export const CALM_STUDIO_MARKUP = `
           <span id="context-moat-text">资料与上下文壁垒</span>
         </button>
       </div>
-      <script>
-        (function() {
-          function syncStatusCapsule() {
-            var aspectLabel = document.getElementById('active-aspect-label');
-            var statusAspect = document.getElementById('status-aspect-val');
-            if (aspectLabel && statusAspect && aspectLabel.textContent && statusAspect.textContent !== aspectLabel.textContent) {
-              statusAspect.textContent = aspectLabel.textContent;
-            }
-            var chatBadge = document.getElementById('chat-active-slide-badge');
-            var statusSlide = document.getElementById('status-slide-text');
-            if (chatBadge && statusSlide && chatBadge.textContent) {
-              var txt = chatBadge.textContent.replace(/[^0-9/]/g, '');
-              var parts = txt.split('/');
-              if (parts.length === 2) {
-                var cur = parseInt(parts[0], 10);
-                var tot = parseInt(parts[1], 10);
-                if (!isNaN(cur) && !isNaN(tot)) {
-                  statusSlide.textContent = '第 ' + cur + ' / ' + tot + ' 页';
-                }
-              }
-            }
-            var statusDeck = document.getElementById('status-deck-name');
-            if (statusDeck && (statusDeck.textContent === '作品加载中' || statusDeck.textContent === '当前作品' || statusDeck.textContent === '演示画布')) {
-              var activeDeck = document.querySelector('.deck-item.active .deck-name, .nav-item.active .nav-item-title');
-              if (activeDeck && activeDeck.textContent) {
-                statusDeck.textContent = activeDeck.textContent.trim();
-              }
-            }
-          }
-          if (typeof MutationObserver !== 'undefined') {
-            var obs = new MutationObserver(syncStatusCapsule);
-            if (document.body) {
-              obs.observe(document.body, { childList: true, subtree: true, characterData: true });
-            } else {
-              window.addEventListener('DOMContentLoaded', function() {
-                obs.observe(document.body, { childList: true, subtree: true, characterData: true });
-                syncStatusCapsule();
-              });
-            }
-          }
-        })();
-      </script>
 
       <div class="live-sync-pill" id="live-sync-banner">
         <span class="live-dot pulse"></span>
