@@ -268,20 +268,28 @@ export async function compileDeckToHtml(
     });
     if (window.__AIMAKE_PAYLOAD__.options.editable || window.self !== window.top) {
       let zoomMode = 'fit';
+      let lastScale = -1;
+      let rafId = 0;
       const fitStage = () => {
-        const availW = document.documentElement.clientWidth || window.innerWidth;
-        const availH = document.documentElement.clientHeight || window.innerHeight;
-        const root = document.getElementById('aimake-deck-root');
-        if (!root || availW < 100 || availH < 100) return;
-        let scale = 1;
-        if (zoomMode === 'fit') {
-          const scaleW = (availW - 44) / ${effectiveW};
-          const scaleH = (availH - 44) / ${effectiveH};
-          scale = Math.max(0.18, Math.min(1, scaleW, scaleH));
-        } else {
-          scale = Number(zoomMode) || 1;
-        }
-        root.style.zoom = String(scale.toFixed(3));
+        if (typeof cancelAnimationFrame !== 'undefined') cancelAnimationFrame(rafId);
+        rafId = (typeof requestAnimationFrame !== 'undefined' ? requestAnimationFrame : (fn: () => void) => setTimeout(fn, 16))(() => {
+          const availW = document.documentElement.clientWidth || window.innerWidth;
+          const availH = document.documentElement.clientHeight || window.innerHeight;
+          const root = document.getElementById('aimake-deck-root');
+          if (!root || availW < 100 || availH < 100) return;
+          let scale = 1;
+          if (zoomMode === 'fit') {
+            const scaleW = (availW - 44) / ${effectiveW};
+            const scaleH = (availH - 44) / ${effectiveH};
+            scale = Math.max(0.18, Math.min(1, scaleW, scaleH));
+          } else {
+            scale = Number(zoomMode) || 1;
+          }
+          if (Math.abs(scale - lastScale) > 0.003) {
+            lastScale = scale;
+            root.style.zoom = String(scale.toFixed(3));
+          }
+        });
       };
       fitStage();
       window.addEventListener('resize', fitStage);

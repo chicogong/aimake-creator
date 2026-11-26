@@ -478,11 +478,6 @@ async function main() {
     filter: (src) => !src.includes('.aimake'),
   });
   await fs.copyFile(path.join(repoRoot, 'package.json'), path.join(resourcesDir, 'package.json'));
-  try {
-    await fs.symlink(path.join(repoRoot, 'node_modules'), path.join(resourcesDir, 'node_modules'));
-  } catch {
-    // Ignore if already exists or fallback
-  }
 
   // 2. Write & lint Contents/Info.plist
   await fs.writeFile(infoPlistPath, buildInfoPlistXml(appVersion), 'utf8');

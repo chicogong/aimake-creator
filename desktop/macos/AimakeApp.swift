@@ -624,7 +624,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 .deletingLastPathComponent()
                 .deletingLastPathComponent()
                 .path
+            let repoDevCli = "/Users/haorangong/Github/chicogong/products/aimake/dist/cli.js"
             let guesses = [
+                fm.fileExists(atPath: repoDevCli) ? repoDevCli : nil,
                 resourceCli,
                 "\(cwd)/dist/cli.js",
                 "\(bundleParent)/dist/cli.js",
@@ -657,8 +659,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 let decksDir = URL(fileURLWithPath: ws).appendingPathComponent("decks").path
                 if let items = try? fm.contentsOfDirectory(atPath: decksDir) {
                     let validDecks = items.filter { $0.hasSuffix(".deck.md") && !$0.hasPrefix(".") }.sorted()
-                    if let first = validDecks.first {
-                        candidateDeck = URL(fileURLWithPath: decksDir).appendingPathComponent(first).path
+                    if let picked = validDecks.first(where: { $0.contains("vibe-coding") }) ?? validDecks.first {
+                        candidateDeck = URL(fileURLWithPath: decksDir).appendingPathComponent(picked).path
                     }
                 }
             }
