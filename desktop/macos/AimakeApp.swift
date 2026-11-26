@@ -434,7 +434,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         if let rawUrl = options.url, let parsed = URL(string: rawUrl) {
             setStudioOrigin(from: parsed)
             hasNavigatedToStudio = true
-            webView.load(URLRequest(url: parsed))
+            webView.load(URLRequest(url: parsed, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30))
             return
         }
 
@@ -641,34 +641,46 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             raw.hasPrefix("/") ? raw : URL(fileURLWithPath: cwd).appendingPathComponent(raw).standardized.path
         }
 
+        var effectiveWorkspace = workspace
+        if effectiveWorkspace == nil {
+            let userDocs = URL(fileURLWithPath: NSHomeDirectory())
+                .appendingPathComponent("Documents")
+                .appendingPathComponent("Aimake")
+            try? FileManager.default.createDirectory(at: userDocs, withIntermediateDirectories: true)
+            effectiveWorkspace = userDocs.path
+        }
+
         var candidateDeck = options.deckPath
         if candidateDeck == nil {
-            let resourceDeck = Bundle.main.resourceURL?.appendingPathComponent("examples/zh-creator-flywheel.deck.md").path
-            let repoGuess = URL(fileURLWithPath: absCli)
-                .deletingLastPathComponent()
-                .deletingLastPathComponent()
-                .path
-            let deckGuesses = [
-                workspace.map { "\($0)/deck.deck.md" },
-                resourceDeck,
-                "\(cwd)/examples/zh-creator-flywheel.deck.md",
-                "\(repoGuess)/examples/zh-creator-flywheel.deck.md",
-            ].compactMap { $0 }
-            candidateDeck = deckGuesses.first { fm.fileExists(atPath: $0) }
+            // Prioritize opening an active or first existing .deck.md from the workspace
+            if let ws = effectiveWorkspace {
+                let decksDir = URL(fileURLWithPath: ws).appendingPathComponent("decks").path
+                if let items = try? fm.contentsOfDirectory(atPath: decksDir) {
+                    let validDecks = items.filter { $0.hasSuffix(".deck.md") && !$0.hasPrefix(".") }.sorted()
+                    if let first = validDecks.first {
+                        candidateDeck = URL(fileURLWithPath: decksDir).appendingPathComponent(first).path
+                    }
+                }
+            }
+
+            if candidateDeck == nil {
+                let resourceDeck = Bundle.main.resourceURL?.appendingPathComponent("examples/zh-creator-flywheel.deck.md").path
+                let repoGuess = URL(fileURLWithPath: absCli)
+                    .deletingLastPathComponent()
+                    .deletingLastPathComponent()
+                    .path
+                let deckGuesses = [
+                    effectiveWorkspace.map { "\($0)/deck.deck.md" },
+                    resourceDeck,
+                    "\(cwd)/examples/zh-creator-flywheel.deck.md",
+                    "\(repoGuess)/examples/zh-creator-flywheel.deck.md",
+                ].compactMap { $0 }
+                candidateDeck = deckGuesses.first { fm.fileExists(atPath: $0) }
+            }
         }
         guard let deck = candidateDeck else { return nil }
         let absDeck = deck.hasPrefix("/") ? deck : URL(fileURLWithPath: cwd).appendingPathComponent(deck).standardized.path
 
-        var effectiveWorkspace = workspace
-        if effectiveWorkspace == nil {
-            if absDeck.contains(".app/Contents/Resources") {
-                let userDocs = URL(fileURLWithPath: NSHomeDirectory())
-                    .appendingPathComponent("Documents")
-                    .appendingPathComponent("Aimake")
-                try? FileManager.default.createDirectory(at: userDocs, withIntermediateDirectories: true)
-                effectiveWorkspace = userDocs.path
-            }
-        }
         return (absCli, absDeck, effectiveWorkspace)
     }
 
@@ -818,7 +830,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         guard !hasNavigatedToStudio, let parsed = URL(string: urlString) else { return }
         setStudioOrigin(from: parsed)
         hasNavigatedToStudio = true
-        webView.load(URLRequest(url: parsed))
+        webView.load(URLRequest(url: parsed, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30))
     }
 
     private func setStudioOrigin(from url: URL) {
@@ -858,7 +870,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     @objc private func reloadStudioWebView(_ sender: Any?) {
-        webView.reload()
+        webView.reloadFromOrigin()
     }
 
     @objc private func triggerQuickClipMenu(_ sender: Any?) {

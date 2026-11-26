@@ -471,12 +471,18 @@ async function main() {
   // 1c. Bundle standalone assets into Contents/Resources for zero-dependency portability
   await fs.cp(path.join(repoRoot, 'dist'), path.join(resourcesDir, 'dist'), { recursive: true });
   await fs.cp(path.join(repoRoot, 'templates'), path.join(resourcesDir, 'templates'), { recursive: true });
+  await fs.cp(path.join(repoRoot, 'skills'), path.join(resourcesDir, 'skills'), { recursive: true });
   await fs.cp(path.join(repoRoot, 'assets'), path.join(resourcesDir, 'assets'), { recursive: true });
   await fs.cp(path.join(repoRoot, 'examples'), path.join(resourcesDir, 'examples'), {
     recursive: true,
     filter: (src) => !src.includes('.aimake'),
   });
   await fs.copyFile(path.join(repoRoot, 'package.json'), path.join(resourcesDir, 'package.json'));
+  try {
+    await fs.symlink(path.join(repoRoot, 'node_modules'), path.join(resourcesDir, 'node_modules'));
+  } catch {
+    // Ignore if already exists or fallback
+  }
 
   // 2. Write & lint Contents/Info.plist
   await fs.writeFile(infoPlistPath, buildInfoPlistXml(appVersion), 'utf8');
