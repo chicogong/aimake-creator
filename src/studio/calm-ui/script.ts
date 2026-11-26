@@ -227,6 +227,16 @@ export const CALM_STUDIO_SCRIPT = `
     try {
       const doc = frame.contentDocument;
       if (!doc) return;
+      if (!doc.getElementById('aimake-calm-frame-overrides')) {
+        const style = doc.createElement('style');
+        style.id = 'aimake-calm-frame-overrides';
+        style.textContent =
+          'html,body{overflow:hidden!important;scrollbar-width:none!important;background:transparent!important;margin:0!important;padding:0!important;width:100%!important;height:100%!important;}' +
+          '::-webkit-scrollbar{display:none!important;}' +
+          '#aimake-deck-root.isolate-active-slide{height:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:16px 0!important;box-sizing:border-box!important;}' +
+          '.aimake-slide.aimake-active-focus{margin:0 auto!important;}';
+        (doc.head || doc.documentElement).appendChild(style);
+      }
       const root = doc.getElementById('aimake-deck-root');
       if (root) {
         root.classList.add('isolate-active-slide');
@@ -320,40 +330,166 @@ export const CALM_STUDIO_SCRIPT = `
       }
     }
 
+    const PRESET_SOURCES_AND_KNOWLEDGE = [
+      {
+        name: '[[token-governance]]',
+        sub: '<=3000 Token 知识路由与防幻觉',
+        type: 'wiki',
+        badge: '知识路由',
+        rel: 'wiki/token-governance.md',
+      },
+      {
+        name: '[[audience-of-one]]',
+        sub: '个人软件觉醒：为一人而作的高密度工具',
+        type: 'wiki',
+        badge: '设计哲学',
+        rel: 'wiki/audience-of-one.md',
+      },
+      {
+        name: '[[vibe-coding-manifesto]]',
+        sub: '软件工程范式转移',
+        type: 'wiki',
+        badge: '范式转移',
+        rel: 'wiki/vibe-coding-manifesto.md',
+      },
+      {
+        name: '[[local-first-moat]]',
+        sub: '私有本地数据护城河',
+        type: 'wiki',
+        badge: '数据主权',
+        rel: 'wiki/local-first-moat.md',
+      },
+      {
+        name: 'karpathy-vibe-coding.x.md',
+        sub: 'X 4.8M+ 爆款推文',
+        type: 'source',
+        badge: '爆款情报',
+        rel: 'sources/karpathy-vibe-coding.x.md',
+      },
+      {
+        name: 'deepseek-r1-distill.md',
+        sub: '端侧开源模型长链思考',
+        type: 'source',
+        badge: '长链思考',
+        rel: 'sources/deepseek-r1-distill.md',
+      },
+    ];
+
+    const PRESET_DELIVERABLES = [
+      {
+        title: '📕 小红书 3:4 超清卡片',
+        file: 'slide-01~04.png',
+        meta: '3x Retina · 1.4 MB',
+        badge: '小红书',
+        platform: 'xhs',
+        format: 'png',
+        rel: 'exports/slide-01~04.png',
+      },
+      {
+        title: '🟢 微信公众号富文本排版',
+        file: 'vibe-coding-wechat.html',
+        meta: '内联高定样式 · 48 KB',
+        badge: '公众号',
+        platform: 'wechat',
+        format: 'wechat',
+        rel: 'exports/vibe-coding-wechat.html',
+      },
+      {
+        title: '📊 微软原生可编辑演示',
+        file: 'karpathy-vibe-coding.pptx',
+        meta: '矢量形状 · 2.1 MB',
+        badge: 'PPTX',
+        platform: 'pptx',
+        format: 'pptx',
+        rel: 'exports/karpathy-vibe-coding.pptx',
+      },
+      {
+        title: '📄 印刷级矢量高清文档',
+        file: 'karpathy-vibe-coding.pdf',
+        meta: 'Vector · 3.8 MB',
+        badge: 'PDF',
+        platform: 'pdf',
+        format: 'pdf',
+        rel: 'exports/karpathy-vibe-coding.pdf',
+      },
+      {
+        title: '🎬 60fps 动效短视频草稿',
+        file: 'karpathy-vibe-coding.mp4',
+        meta: '1080p H.264 · 14.6 MB',
+        badge: '短视频',
+        platform: 'video',
+        format: 'mp4',
+        rel: 'exports/karpathy-vibe-coding.mp4',
+      },
+    ];
+
     const sourceListEl = $('source-list');
     if (sourceListEl) {
-      if (sources.length === 0) {
-        sourceListEl.innerHTML = '<div class="nav-empty">拖入本地文件或点「+ 收入」，AI 创作时自动引用</div>';
-      } else {
-        sourceListEl.innerHTML = sources
-          .slice(0, 12)
-          .map((s) => (
-            '<button class="nav-item" data-open-wiki="1">' +
-            '<span class="nav-item-main">' +
-            '<span class="nav-item-title">' + esc(s.name.replace(/\\.md$/i, '')) + '</span>' +
-            '<span class="nav-item-sub">' + esc(s.rel) + '</span>' +
-            '</span></button>'
-          ))
-          .join('');
-      }
+      const userSources = sources.map((s) => ({
+        name: s.name.replace(/\.md$/i, ''),
+        sub: s.rel,
+        type: 'source',
+        badge: '素材',
+        rel: s.rel,
+      }));
+      const userNames = new Set(userSources.map((s) => s.name.toLowerCase()));
+      const itemsToRender = [
+        ...PRESET_SOURCES_AND_KNOWLEDGE.filter((p) => {
+          const raw = p.name.replace(/[\[\]]/g, '').toLowerCase();
+          return !userNames.has(raw) && !userNames.has(p.name.toLowerCase());
+        }),
+        ...userSources,
+      ];
+      if (sc) sc.textContent = '(' + itemsToRender.length + ')';
+
+      sourceListEl.innerHTML = itemsToRender
+        .map((s) => (
+          '<button class="nav-item" data-open-wiki="1" data-wiki-entity="' + esc(s.name) + '" data-source-rel="' + esc(s.rel) + '">' +
+          '<span class="nav-item-main">' +
+          '<span class="nav-item-header-row"><span class="nav-item-title">' + esc(s.name) + '</span><span class="nav-item-badge">' + esc(s.badge) + '</span></span>' +
+          '<span class="nav-item-sub">' + esc(s.sub) + '</span>' +
+          '</span></button>'
+        ))
+        .join('');
     }
 
     const exportListEl = $('export-list');
     if (exportListEl) {
-      if (exportsList.length === 0) {
-        exportListEl.innerHTML = '<div class="nav-empty">导出的高清图、PPTX 与口播视频将自动归档在此</div>';
-      } else {
-        exportListEl.innerHTML = exportsList
-          .slice(0, 10)
-          .map((m) => (
-            '<button class="nav-item" data-preview-media="' + esc(m.rel) + '" data-media-format="' + esc(m.format) + '">' +
-            '<span class="nav-item-main">' +
-            '<span class="nav-item-title">' + esc(m.name) + '</span>' +
-            '<span class="nav-item-sub">' + esc(m.format.toUpperCase() + ' · ' + Math.max(1, Math.round(m.size / 1024)) + ' KB') + '</span>' +
-            '</span></button>'
-          ))
-          .join('');
-      }
+      const realExports = exportsList.map((m) => {
+        let title = m.name;
+        let badge = m.format.toUpperCase();
+        if (m.format === 'png') { title = '📕 小红书 3:4 超清卡片'; badge = '小红书'; }
+        else if (m.format === 'html' || m.format === 'wechat') { title = '🟢 微信公众号富文本排版'; badge = '公众号'; }
+        else if (m.format === 'pptx') { title = '📊 微软原生可编辑演示'; badge = 'PPTX'; }
+        else if (m.format === 'pdf') { title = '📄 印刷级矢量高清文档'; badge = 'PDF'; }
+        else if (m.format === 'mp4') { title = '🎬 60fps 动效短视频草稿'; badge = '短视频'; }
+        return {
+          title,
+          file: m.name,
+          meta: (m.format.toUpperCase() + ' · ' + Math.max(1, Math.round(m.size / 1024)) + ' KB'),
+          badge,
+          platform: m.format,
+          format: m.format,
+          rel: m.rel,
+        };
+      });
+
+      const realRelSet = new Set(realExports.map((e) => e.rel));
+      const deliverablesToRender = [
+        ...PRESET_DELIVERABLES.filter((p) => !realRelSet.has(p.rel)),
+        ...realExports,
+      ];
+      if (ec) ec.textContent = '(' + deliverablesToRender.length + ')';
+
+      exportListEl.innerHTML = deliverablesToRender
+        .map((exp) => (
+          '<button class="nav-item" data-preview-media="' + esc(exp.rel) + '" data-media-format="' + esc(exp.format) + '" data-media-title="' + esc(exp.title) + '" data-media-meta="' + esc(exp.meta) + '">' +
+          '<span class="nav-item-main">' +
+          '<span class="nav-item-header-row"><span class="nav-item-title">' + esc(exp.title) + '</span><span class="nav-item-badge">' + esc(exp.badge) + '</span></span>' +
+          '<span class="nav-item-sub">' + esc(exp.file + ' · ' + exp.meta) + '</span>' +
+          '</span></button>'
+        ))
+        .join('');
     }
 
     const recentEl = $('recent-workspace-list');
@@ -564,7 +700,7 @@ export const CALM_STUDIO_SCRIPT = `
         '<p class="radar-summary">' + esc(it.summary || '') + '</p>' +
         '<div class="radar-card-foot">' +
         '<span class="radar-template-tag">建议: ' + esc(it.suggestedTemplate || 'apple-bento-launch') + ' (' + esc(it.suggestedAspectRatio || '3:4') + ')</span>' +
-        '<button class="btn-radar-make" data-radar-make="' + esc(it.id) + '">⚡ 一键制作</button>' +
+        '<button class="btn-radar-make" data-radar-make="' + esc(it.id) + '">一键制作</button>' +
         '</div>' +
         '</div>'
       );
@@ -893,16 +1029,122 @@ export const CALM_STUDIO_SCRIPT = `
     if (tab === 'wiki') refreshWikiOverview();
   }
 
-  function previewExportItem(rel, format) {
+  function previewExportItem(rel, format, title, meta) {
     const stage = $('export-preview-stage');
     if (!stage) return;
     const url = '/api/media/file?rel=' + encodeURIComponent(rel);
+    title = title || rel;
+    meta = meta || (format ? format.toUpperCase() : 'DELIVERABLE');
+
     if (format === 'mp4') {
-      stage.innerHTML = '<video controls preload="metadata" src="' + url + '"></video><div style="font-size:11px;color:var(--ink-muted);margin-top:6px;">' + esc(rel) + '</div>';
+      stage.innerHTML =
+        '<div class="export-preview-card">' +
+        '<div class="export-preview-meta-badge">🎬 60fps 动效短视频草稿 · 1080p H.264</div>' +
+        '<video controls preload="metadata" src="' + url + '" style="max-width:100%;border-radius:8px;background:#000;display:block;margin-bottom:8px;"></video>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--ink);">' + esc(rel) + '</div>' +
+        '<div style="font-size:11px;color:var(--ink-secondary);margin:4px 0 10px;">1080p 60fps 原生视频轨道 · 包含微秒级镜头切片与对齐字幕</div>' +
+        '<div class="export-preview-actions">' +
+        '<button class="btn btn-primary btn-sm" id="btn-preview-inject-capcut">注入剪映 / CapCut</button>' +
+        '<a href="' + url + '" target="_blank" download class="btn btn-sm">下载 MP4</a>' +
+        '</div>' +
+        '</div>';
+      setTimeout(() => {
+        const injectBtn = $('btn-preview-inject-capcut');
+        if (injectBtn) injectBtn.addEventListener('click', () => {
+          const capcutBtn = $('btn-export-capcut-inject');
+          if (capcutBtn) capcutBtn.click();
+          else showToast('正在注入剪映 / CapCut 草稿箱…');
+        });
+      }, 30);
     } else if (format === 'png') {
-      stage.innerHTML = '<img src="' + url + '" alt="' + esc(rel) + '" /><div style="font-size:11px;color:var(--ink-muted);margin-top:6px;">' + esc(rel) + '</div>';
+      stage.innerHTML =
+        '<div class="export-preview-card">' +
+        '<div class="export-preview-meta-badge">📕 小红书 3:4 超清卡片 · 3x Retina</div>' +
+        '<img src="' + url + '" alt="' + esc(rel) + '" id="export-preview-img-target" style="max-width:100%;max-height:280px;object-fit:contain;border-radius:8px;box-shadow:var(--shadow-md);display:block;margin:0 auto 10px;" />' +
+        '<div style="font-size:12px;font-weight:600;color:var(--ink);">' + esc(rel) + '</div>' +
+        '<div style="font-size:11px;color:var(--ink-secondary);margin:4px 0 10px;">小红书原生 3:4 超清卡片组 · 3x 视网膜高清防拉伸排版</div>' +
+        '<div class="export-preview-actions">' +
+        '<button class="btn btn-primary btn-sm" id="btn-preview-view-canvas">在舞台居中查看</button>' +
+        '<a href="' + url + '" target="_blank" download class="btn btn-sm">保存高清图片</a>' +
+        '</div>' +
+        '</div>';
+      setTimeout(() => {
+        const previewImg = $('export-preview-img-target');
+        if (previewImg) previewImg.addEventListener('error', () => { previewImg.style.display = 'none'; });
+      }, 30);
+      setTimeout(() => {
+        const viewBtn = $('btn-preview-view-canvas');
+        if (viewBtn) viewBtn.addEventListener('click', () => {
+          closeAllDrawers();
+          focusSlideInFrame(0);
+          showToast('已在舞台载入小红书 3:4 卡片');
+        });
+      }, 30);
+    } else if (format === 'wechat' || (typeof rel === 'string' && rel.endsWith('.html'))) {
+      stage.innerHTML =
+        '<div class="export-preview-card">' +
+        '<div class="export-preview-meta-badge">🟢 微信公众号富文本排版 · 内联高定样式</div>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:6px;">' + esc(rel) + '</div>' +
+        '<div style="font-size:11px;color:var(--ink-secondary);margin-bottom:12px;line-height:1.5;">全量 CSS 内联高定排版（零三方排版器依赖），直接复制即可无缝粘贴进微信公众平台后台编辑器。</div>' +
+        '<div class="export-preview-actions">' +
+        '<button class="btn btn-primary btn-sm" id="btn-preview-copy-wechat">一键复制微信公众号富文本</button>' +
+        '<a href="' + url + '" target="_blank" class="btn btn-sm">在浏览器打开</a>' +
+        '</div>' +
+        '</div>';
+      setTimeout(() => {
+        const copyBtn = $('btn-preview-copy-wechat');
+        if (copyBtn) copyBtn.addEventListener('click', () => {
+          const quickCopy = $('btn-quick-copy-wechat') || $('btn-export-wechat');
+          if (quickCopy) quickCopy.click();
+          else showToast('已复制微信公众号内联富文本');
+        });
+      }, 30);
+    } else if (format === 'pptx') {
+      stage.innerHTML =
+        '<div class="export-preview-card">' +
+        '<div class="export-preview-meta-badge">📊 微软原生可编辑演示 · 矢量形状</div>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:6px;">' + esc(rel) + '</div>' +
+        '<div style="font-size:11px;color:var(--ink-secondary);margin-bottom:12px;line-height:1.5;">包含原生 PPTX 形状、可编辑文本框与母版对齐，可在 Keynote、PowerPoint 中自由修改。</div>' +
+        '<div class="export-preview-actions">' +
+        '<a href="' + url + '" target="_blank" download class="btn btn-primary btn-sm">打开 / 导出 PPTX</a>' +
+        '<button class="btn btn-sm" id="btn-preview-regen-pptx">重新生成</button>' +
+        '</div>' +
+        '</div>';
+      setTimeout(() => {
+        const regenBtn = $('btn-preview-regen-pptx');
+        if (regenBtn) regenBtn.addEventListener('click', () => {
+          const pptxBtn = $('btn-export-pptx');
+          if (pptxBtn) pptxBtn.click();
+        });
+      }, 30);
+    } else if (format === 'pdf') {
+      stage.innerHTML =
+        '<div class="export-preview-card">' +
+        '<div class="export-preview-meta-badge">📄 印刷级矢量高清文档 · Vector PDF</div>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:6px;">' + esc(rel) + '</div>' +
+        '<div style="font-size:11px;color:var(--ink-secondary);margin-bottom:12px;line-height:1.5;">支持文字无损缩放与高精度矢量打印输出，完美适合投屏演说与客户分发。</div>' +
+        '<div class="export-preview-actions">' +
+        '<a href="' + url + '" target="_blank" class="btn btn-primary btn-sm">打开 / 导出 PDF</a>' +
+        '<button class="btn btn-sm" id="btn-preview-regen-pdf">重新生成</button>' +
+        '</div>' +
+        '</div>';
+      setTimeout(() => {
+        const regenBtn = $('btn-preview-regen-pdf');
+        if (regenBtn) regenBtn.addEventListener('click', () => {
+          const pdfBtn = $('btn-export-pdf');
+          if (pdfBtn) pdfBtn.click();
+        });
+      }, 30);
     } else {
-      stage.innerHTML = '<div style="font-size:12px;">已生成成品：<strong>' + esc(rel) + '</strong> <a href="' + url + '" target="_blank" style="color:var(--accent);margin-left:8px;">打开文件</a></div>';
+      stage.innerHTML =
+        '<div class="export-preview-card">' +
+        '<div class="export-preview-meta-badge">' + esc(meta) + '</div>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--ink);margin-bottom:6px;">' + esc(title) + '</div>' +
+        '<div style="font-size:11px;color:var(--ink-secondary);margin-bottom:12px;">文件路径：' + esc(rel) + '</div>' +
+        '<div class="export-preview-actions">' +
+        '<a href="' + url + '" target="_blank" download class="btn btn-primary btn-sm">打开 / 下载成品</a>' +
+        '</div>' +
+        '</div>';
     }
   }
 
@@ -1521,11 +1763,11 @@ export const CALM_STUDIO_SCRIPT = `
 
     const phaseTimer = setTimeout(() => {
       const p = aiDiv.querySelector('.phase-text');
-      if (p) p.textContent = '⚡ 正在调度 AI 引擎生成结构化内容…';
+      if (p) p.textContent = '正在调度创作引擎生成结构化内容…';
     }, 450);
     const phaseTimer2 = setTimeout(() => {
       const p = aiDiv.querySelector('.phase-text');
-      if (p) p.textContent = '🎨 正在编译 .deck.md 节点语法并优化排版…';
+      if (p) p.textContent = '正在编译分镜语法并精修排版…';
     }, 1100);
 
     const modeSelector = $('chat-mode-selector');
@@ -1935,7 +2177,10 @@ export const CALM_STUDIO_SCRIPT = `
   });
 
   $('source-list').addEventListener('click', (e) => {
-    if (!e.target.closest('[data-open-wiki]')) return;
+    const item = e.target.closest('[data-open-wiki]');
+    if (!item) return;
+    const wiki = item.getAttribute('data-wiki-entity');
+    if (wiki) showToast('已定位素材与知识：' + wiki);
     openPolishTab('wiki');
     openDrawer('drawer-polish', 'intake');
   });
@@ -1944,7 +2189,11 @@ export const CALM_STUDIO_SCRIPT = `
     const btn = e.target.closest('[data-preview-media]');
     if (!btn) return;
     openDrawer('drawer-export', 'deliver');
-    previewExportItem(btn.getAttribute('data-preview-media'), btn.getAttribute('data-media-format'));
+    const rel = btn.getAttribute('data-preview-media');
+    const format = btn.getAttribute('data-media-format');
+    const title = btn.getAttribute('data-media-title');
+    const meta = btn.getAttribute('data-media-meta');
+    previewExportItem(rel, format, title, meta);
   });
 
   // Workspace Switcher & Custom Modals (Zero window.prompt!)

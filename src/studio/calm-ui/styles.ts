@@ -3,14 +3,14 @@ export const CALM_STUDIO_CSS = `
     color-scheme: light dark;
 
     /* ==========================================================================
-       1. Brand & Core Accent Tokens (Aimake 2026 Unified Spec)
+       1. Brand & Core Accent Tokens (Aimake 2026 Unified Spec - Obsidian Black)
        ========================================================================== */
-    --am-violet: #6951ff;
-    --am-violet-hover: #553af5;
-    --am-violet-active: #472be6;
-    --am-violet-glow: rgba(105, 81, 255, 0.28);
-    --am-violet-soft: rgba(105, 81, 255, 0.10);
-    --am-violet-hairline: rgba(105, 81, 255, 0.35);
+    --am-violet: #18181b;
+    --am-violet-hover: #27272a;
+    --am-violet-active: #09090b;
+    --am-violet-glow: rgba(24, 24, 27, 0.14);
+    --am-violet-soft: rgba(24, 24, 27, 0.06);
+    --am-violet-hairline: rgba(24, 24, 27, 0.2);
 
     --am-emerald: #10b981;
     --am-emerald-soft: rgba(16, 185, 129, 0.12);
@@ -130,6 +130,13 @@ export const CALM_STUDIO_CSS = `
       --live-soft: rgba(52, 211, 153, 0.14);
       --hot: #f97316;
       --hot-soft: rgba(249, 115, 22, 0.13);
+
+      --am-violet: #f4f4f5;
+      --am-violet-hover: #ffffff;
+      --am-violet-active: #e4e4e7;
+      --am-violet-glow: rgba(255, 255, 255, 0.2);
+      --am-violet-soft: rgba(255, 255, 255, 0.1);
+      --am-violet-hairline: rgba(255, 255, 255, 0.2);
 
       --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.35);
       --btn-primary-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.45);
@@ -412,17 +419,32 @@ export const CALM_STUDIO_CSS = `
     border-color: transparent;
   }
   .btn-primary {
-    background: var(--am-violet);
-    border-color: transparent;
+    background: #18181b;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     color: #ffffff;
     font-weight: 600;
-    box-shadow: var(--inset-highlight-button), 0 2px 8px var(--am-violet-glow);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
   .btn-primary:hover {
-    background: var(--am-violet-hover);
+    background: #27272a;
     color: #ffffff;
-    border-color: transparent;
-    box-shadow: var(--inset-highlight-button), 0 4px 14px var(--am-violet-glow);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  }
+  :root[data-theme="dark"] .btn-primary,
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .btn-primary {
+      background: #f4f4f5;
+      color: #0c0c0e;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+    :root:not([data-theme="light"]) .btn-primary:hover {
+      background: #ffffff;
+      color: #000000;
+      border-color: rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+    }
   }
   .btn-ai-trigger {
     background: var(--surface);
@@ -704,7 +726,7 @@ export const CALM_STUDIO_CSS = `
     bottom: 5px;
     width: 2.5px;
     border-radius: 999px;
-    background: var(--am-violet);
+    background: var(--ink);
   }
   .nav-item-main {
     min-width: 0;
@@ -712,6 +734,33 @@ export const CALM_STUDIO_CSS = `
     display: flex;
     flex-direction: column;
     gap: 2px;
+  }
+  .nav-item-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+  }
+  .nav-item-badge {
+    font-size: 10px;
+    font-weight: 550;
+    padding: 1px 5px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-subtle);
+    color: var(--ink-muted);
+    line-height: 1.3;
+    flex-shrink: 0;
+  }
+  .nav-item:hover .nav-item-badge {
+    color: var(--ink-secondary);
+    border-color: var(--border);
+  }
+  .nav-item.active .nav-item-badge {
+    background: var(--surface);
+    color: var(--ink);
+    border-color: var(--border-strong);
   }
   .nav-item-title {
     font-size: 12.5px;
@@ -784,10 +833,8 @@ export const CALM_STUDIO_CSS = `
     display: flex;
     flex-direction: column;
     background-color: var(--stage-bg);
-    background-image:
-      radial-gradient(ellipse 70% 50% at 50% 30%, transparent 0%, rgba(0, 0, 0, 0.25) 100%),
-      radial-gradient(var(--stage-dot) 1px, transparent 1px);
-    background-size: 100% 100%, 20px 20px;
+    background-image: radial-gradient(var(--stage-dot) 1px, transparent 1px);
+    background-size: 20px 20px;
     overflow: hidden;
   }
 
@@ -795,18 +842,39 @@ export const CALM_STUDIO_CSS = `
     flex: 1;
     min-height: 0;
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
-    padding: 14px 22px 76px;
+    padding: 16px 20px 76px;
     position: relative;
+    overflow: hidden;
   }
 
   #preview-frame {
     width: 100%;
     height: 100%;
-    max-width: 1200px;
+    max-width: 1280px;
+    margin: 0 auto;
     border: none;
     border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    display: block;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #preview-frame::-webkit-scrollbar {
+    display: none;
+  }
+
+  #preview-container,
+  .preview-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    border: none;
     background: transparent;
     box-shadow: none;
   }
@@ -946,15 +1014,21 @@ export const CALM_STUDIO_CSS = `
     backdrop-filter: blur(28px) saturate(180%);
     -webkit-backdrop-filter: blur(28px) saturate(180%);
     border-left: 1px solid var(--border-strong);
-    box-shadow: -12px 0 36px rgba(0, 0, 0, 0.18);
+    box-shadow: none;
     display: flex;
     flex-direction: column;
     z-index: 50;
     transform: translateX(100%);
-    transition: transform var(--duration-normal) var(--ease-spring);
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform var(--duration-normal) var(--ease-spring), visibility 0s var(--duration-normal);
   }
   .context-drawer.open {
     transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+    box-shadow: -12px 0 36px rgba(0, 0, 0, 0.18);
+    transition: transform var(--duration-normal) var(--ease-spring), visibility 0s;
   }
   .context-drawer-header {
     height: 46px;
@@ -1008,13 +1082,14 @@ export const CALM_STUDIO_CSS = `
   }
   .context-action-btn {
     font-size: 10.5px;
-    color: var(--am-violet);
+    color: var(--ink-secondary);
     background: transparent;
     border: none;
     cursor: pointer;
     font-weight: 500;
   }
   .context-action-btn:hover {
+    color: var(--ink);
     text-decoration: underline;
   }
   .context-card-list {
@@ -1888,12 +1963,12 @@ export const CALM_STUDIO_CSS = `
     justify-content: center;
   }
   .capcut-export-card {
-    background: linear-gradient(135deg, rgba(105, 81, 255, 0.08), rgba(24, 28, 40, 0.6));
-    border: 1px solid rgba(105, 81, 255, 0.32);
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
     border-radius: 12px;
     padding: 16px;
     margin-bottom: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-sm);
   }
   .capcut-card-badge-installed {
     background: rgba(16, 185, 129, 0.15) !important;
@@ -2099,6 +2174,36 @@ export const CALM_STUDIO_CSS = `
     object-fit: contain;
   }
 
+  .export-preview-card {
+    padding: 14px;
+    background: var(--surface);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-top: 8px;
+    text-align: left;
+    box-shadow: var(--shadow-sm);
+  }
+  .export-preview-meta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-strong);
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .export-preview-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
   /* Top-Center Floating HUD Toast (never overlaps bottom dock or chat input) */
   #toast {
     position: fixed;
@@ -2146,12 +2251,15 @@ export const CALM_STUDIO_CSS = `
     position: relative;
   }
   .chat-panel.collapsed {
-    width: 0;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-    border-left-color: transparent;
-    box-shadow: none;
+    width: 0 !important;
+    min-width: 0 !important;
+    border-left: none !important;
+    border-left-width: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    box-shadow: none !important;
   }
   .chat-panel-head {
     height: 46px;

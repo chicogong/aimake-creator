@@ -183,9 +183,14 @@ export const CALM_STUDIO_MARKUP = `
             var chatBadge = document.getElementById('chat-active-slide-badge');
             var statusSlide = document.getElementById('status-slide-text');
             if (chatBadge && statusSlide && chatBadge.textContent) {
-              var m = chatBadge.textContent.match(/(\d+)\s*[\/|\\]\s*(\d+)/);
-              if (m) {
-                statusSlide.textContent = '第 ' + parseInt(m[1], 10) + ' / ' + parseInt(m[2], 10) + ' 页';
+              var txt = chatBadge.textContent.replace(/[^0-9/]/g, '');
+              var parts = txt.split('/');
+              if (parts.length === 2) {
+                var cur = parseInt(parts[0], 10);
+                var tot = parseInt(parts[1], 10);
+                if (!isNaN(cur) && !isNaN(tot)) {
+                  statusSlide.textContent = '第 ' + cur + ' / ' + tot + ' 页';
+                }
               }
             }
             var statusDeck = document.getElementById('status-deck-name');
@@ -234,7 +239,7 @@ export const CALM_STUDIO_MARKUP = `
           <!-- Section 1: Knowledge Extraction (Wiki) -->
           <div class="context-section">
             <div class="context-section-head">
-              <span class="context-section-title">🧠 知识库萃取 (Wiki)</span>
+              <span class="context-section-title">知识库萃取 · Wiki</span>
               <span class="context-badge" id="drawer-wiki-count">沉淀中</span>
             </div>
             <div class="context-card-list" id="drawer-wiki-list">
@@ -254,7 +259,7 @@ export const CALM_STUDIO_MARKUP = `
           <!-- Section 2: Grounded News & Sources -->
           <div class="context-section">
             <div class="context-section-head">
-              <span class="context-section-title">📡 一线情报与时事 (Radar)</span>
+              <span class="context-section-title">一线情报与时事 · Radar</span>
               <button class="context-action-btn" id="drawer-btn-refresh-radar">更新雷达</button>
             </div>
             <div class="context-card-list" id="drawer-sources-list">
@@ -274,7 +279,7 @@ export const CALM_STUDIO_MARKUP = `
           <!-- Section 3: Multimodal Artifacts -->
           <div class="context-section">
             <div class="context-section-head">
-              <span class="context-section-title">📦 全域多模态同款交付</span>
+              <span class="context-section-title">全域多模态同款交付</span>
               <span class="context-badge">5 大介质</span>
             </div>
             <div class="context-artifacts-grid" id="drawer-artifacts-list">
@@ -540,10 +545,10 @@ export const CALM_STUDIO_MARKUP = `
     </div>
     <div class="drawer-body">
       <div class="segmented-tabs" id="gallery-mode-tabs">
-        <button class="seg-tab active" data-gallery-tab="templates">🎨 全部模板（<span id="gallery-total-badge">36</span>）</button>
-        <button class="seg-tab" data-gallery-tab="radar">🔥 实时灵感雷达（<span id="radar-total-badge">16</span>）</button>
-        <button class="seg-tab" data-gallery-tab="trending">✨ 2026 时事范例（<span id="trending-total-badge">6</span>）</button>
-        <button class="seg-tab" data-gallery-tab="packs">📦 行业套件（<span id="packs-total-badge">7</span>）</button>
+        <button class="seg-tab active" data-gallery-tab="templates">全部模板（<span id="gallery-total-badge">36</span>）</button>
+        <button class="seg-tab" data-gallery-tab="radar">实时灵感雷达（<span id="radar-total-badge">16</span>）</button>
+        <button class="seg-tab" data-gallery-tab="trending">2026 时事范例（<span id="trending-total-badge">6</span>）</button>
+        <button class="seg-tab" data-gallery-tab="packs">行业套件（<span id="packs-total-badge">7</span>）</button>
       </div>
 
       <!-- Tab 1: All 36 Visual Templates -->
@@ -581,11 +586,11 @@ export const CALM_STUDIO_MARKUP = `
       <!-- Tab 4: Live Inspiration Radar (实时灵感雷达) -->
       <div id="gallery-panel-radar" style="display:none;">
         <p style="margin:0 0 14px;font-size:12.5px;color:var(--ink-secondary);line-height:1.55;">
-          聚合全球 X/Twitter、GitHub Trending、知乎、36Kr 实时热点事实。点击卡片右下角<strong>「⚡ 一键制作」</strong>，系统自动匹配最佳模板并在 1 秒内生成完整文稿。
+          聚合全球 X/Twitter、GitHub Trending、知乎、36Kr 实时热点事实。点击卡片右下角<strong>「一键制作」</strong>，系统自动匹配最佳模板并在 1 秒内生成完整文稿。
         </p>
         <div class="filter-bar" style="margin-bottom:14px;">
           <div class="chip-row" id="radar-category-chips">
-            <button class="filter-chip active" data-radar-cat="all">🔥 全网热榜</button>
+            <button class="filter-chip active" data-radar-cat="all">全网热点</button>
             <button class="filter-chip" data-radar-cat="real-discussion">🎯 真实讨论 (last30days)</button>
             <button class="filter-chip" data-radar-cat="prediction">📈 预测市场</button>
             <button class="filter-chip" data-radar-cat="x">𝕏 前沿爆款</button>
@@ -648,7 +653,6 @@ export const CALM_STUDIO_MARKUP = `
       <div class="capcut-export-card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
           <h4 style="margin:0;display:flex;align-items:center;gap:6px;font-size:13.5px;">
-            <span>🎬</span>
             <span>剪映 / CapCut 视频草稿工程</span>
           </h4>
           <span class="status-pill-tiny" id="capcut-install-badge">检测中...</span>
@@ -658,7 +662,7 @@ export const CALM_STUDIO_MARKUP = `
         </p>
         <div class="export-grid">
           <button class="btn btn-primary btn-wide" id="btn-export-capcut-inject">
-            ⚡ 一键注入剪映 / CapCut 草稿箱
+            一键注入剪映 / CapCut 草稿箱
           </button>
           <button class="btn btn-wide" id="btn-export-capcut-folder">
             📁 导出草稿工程目录至 exports/
