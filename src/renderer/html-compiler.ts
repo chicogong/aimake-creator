@@ -272,7 +272,7 @@ export async function compileDeckToHtml(
       let rafId = 0;
       const fitStage = () => {
         if (typeof cancelAnimationFrame !== 'undefined') cancelAnimationFrame(rafId);
-        rafId = (typeof requestAnimationFrame !== 'undefined' ? requestAnimationFrame : (fn: () => void) => setTimeout(fn, 16))(() => {
+        rafId = (typeof requestAnimationFrame !== 'undefined' ? requestAnimationFrame : function(fn) { return setTimeout(fn, 16); })(() => {
           const availW = document.documentElement.clientWidth || window.innerWidth;
           const availH = document.documentElement.clientHeight || window.innerHeight;
           const root = document.getElementById('aimake-deck-root');

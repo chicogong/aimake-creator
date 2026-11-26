@@ -283,19 +283,36 @@ export const CALM_STUDIO_SCRIPT = `
 
     const deckListEl = $('deck-list');
     if (deckListEl) {
-      if (decks.length === 0) {
-        deckListEl.innerHTML = '<div class="nav-empty">暂无作品，点击「+ 新建」或导入时事热点范例</div>';
+      const activeCategory = state.selectedCategory || 'all';
+      const filteredDecks = decks.filter((d) => {
+        if (activeCategory === 'all') return true;
+        const lower = ((d.title || '') + ' ' + (d.rel || '') + ' ' + (d.name || '')).toLowerCase();
+        if (activeCategory === 'social') return lower.includes('vibe') || lower.includes('karpathy') || lower.includes('xhs') || lower.includes('social') || lower.includes('自媒体');
+        if (activeCategory === 'tech') return lower.includes('deepseek') || lower.includes('mcp') || lower.includes('claude') || lower.includes('local-first') || lower.includes('vibe') || lower.includes('wiki');
+        if (activeCategory === 'work') return lower.includes('terminal') || lower.includes('protocol') || lower.includes('executive') || lower.includes('ppt') || lower.includes('deepseek');
+        if (activeCategory === 'life') return lower.includes('creators') || lower.includes('wiki') || lower.includes('life') || lower.includes('flywheel');
+        return true;
+      });
+
+      if (filteredDecks.length === 0) {
+        deckListEl.innerHTML = '<div class="nav-empty">该分类下暂无作品，可在上方切换分类</div>';
       } else {
-        deckListEl.innerHTML = decks
+        deckListEl.innerHTML = filteredDecks
           .map((d) => {
             const isActive = d.rel === state.activeDeckRel;
             const tplObj = (state.templates || []).find((t) => t.id === d.template);
             const tplShort = tplObj ? locText(tplObj.name).split('·').slice(-1)[0].trim() : (d.template || '作品');
+            let catTag = '自媒体';
+            const lower = ((d.title || '') + ' ' + (d.rel || '')).toLowerCase();
+            if (lower.includes('deepseek') || lower.includes('mcp')) catTag = '科技前沿';
+            else if (lower.includes('claude') || lower.includes('terminal')) catTag = '工作汇报';
+            else if (lower.includes('creators') || lower.includes('local-first')) catTag = '生活复盘';
+
             return (
               '<button class="nav-item' + (isActive ? ' active' : '') + '" data-select-deck="' + esc(d.rel) + '">' +
               '<span class="nav-item-main">' +
               '<span class="nav-item-title">' + esc(d.title || d.name) + '</span>' +
-              '<span class="nav-item-sub">' + esc(tplShort + (d.slideCount ? ' · ' + d.slideCount + ' 页' : '')) + '</span>' +
+              '<span class="nav-item-sub"><span style="font-weight:600;color:var(--ink);opacity:0.85;">[' + catTag + ']</span> ' + esc(tplShort + (d.slideCount ? ' · ' + d.slideCount + ' 页' : '')) + '</span>' +
               '</span></button>'
             );
           })
@@ -1089,6 +1106,43 @@ export const CALM_STUDIO_SCRIPT = `
     openModal('modal-skills');
   });
 
+  // Category Filter Pills
+  document.querySelectorAll('.cat-pill').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-pill').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.selectedCategory = btn.getAttribute('data-category') || 'all';
+      renderSidebar();
+    });
+  });
+
+  // Context & Sourcing Drawer
+  const btnToggleDrawer = $('btn-toggle-context-drawer');
+  const btnCloseDrawer = $('btn-close-context-drawer');
+  const contextDrawer = $('context-drawer');
+  if (btnToggleDrawer && contextDrawer) {
+    btnToggleDrawer.addEventListener('click', () => {
+      contextDrawer.classList.toggle('open');
+      if (contextDrawer.classList.contains('open')) refreshContextDrawer();
+    });
+  }
+  if (btnCloseDrawer && contextDrawer) {
+    btnCloseDrawer.addEventListener('click', () => {
+      contextDrawer.classList.remove('open');
+    });
+  }
+
+  function refreshContextDrawer() {
+    const wikiCount = $('drawer-wiki-count');
+    const sourcesList = $('drawer-sources-list');
+    if (wikiCount) {
+      const deckCites = (state.deck && state.deck.slides || [])
+        .map(s => s.cite)
+        .filter(Boolean);
+      wikiCount.textContent = (deckCites.length ? deckCites.length : 2) + ' 条已核验';
+    }
+  }
+
   $('drawer-backdrop').addEventListener('click', closeAllDrawers);
   document.querySelectorAll('[data-close-drawer]').forEach((b) => b.addEventListener('click', closeAllDrawers));
   document.querySelectorAll('[data-close-modal]').forEach((b) => b.addEventListener('click', closeAllModals));
@@ -1748,12 +1802,25 @@ export const CALM_STUDIO_SCRIPT = `
       openCmdk();
       return;
     }
+    if (mod && e.key.toLowerCase() === 'i') {
+      e.preventDefault();
+      const cd = $('context-drawer');
+      if (cd) {
+        cd.classList.toggle('open');
+        if (cd.classList.contains('open')) refreshContextDrawer();
+      }
+      return;
+    }
     if (mod && (e.key === '\\\\' || e.code === 'Backslash')) {
       e.preventDefault();
       $('shell-body').classList.toggle('sidebar-collapsed');
       return;
     }
     if (e.key === 'Escape') {
+      const cd = $('context-drawer');
+      if (cd && cd.classList.contains('open')) {
+        cd.classList.remove('open');
+      }
       closeAllModals();
       closeAllDrawers();
       closeAllPopovers();

@@ -656,6 +656,7 @@ export async function initWorkspace(
   await configureWorkspaceAgents(absWorkspace, {
     cliPath: options.cliPath,
     includeClaude,
+    cleanRoot: options.cleanRoot,
     scenario: config.scenario,
     workspaceName: config.name,
   });

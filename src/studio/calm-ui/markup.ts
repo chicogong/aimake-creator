@@ -105,6 +105,15 @@ export const CALM_STUDIO_MARKUP = `
           </button>
         </div>
 
+        <!-- Claude-Style Unified Category Filter Pills -->
+        <div class="category-pills" id="category-pills" role="tablist" aria-label="项目分类">
+          <button class="cat-pill active" data-category="all" role="tab" aria-selected="true">全部</button>
+          <button class="cat-pill" data-category="social" role="tab" aria-selected="false">自媒体</button>
+          <button class="cat-pill" data-category="tech" role="tab" aria-selected="false">前沿科技</button>
+          <button class="cat-pill" data-category="work" role="tab" aria-selected="false">工作汇报</button>
+          <button class="cat-pill" data-category="life" role="tab" aria-selected="false">生活复盘</button>
+        </div>
+
         <div class="nav-group">
           <div class="nav-group-head">
             <span>作品集 <span id="decks-count"></span></span>
@@ -152,13 +161,16 @@ export const CALM_STUDIO_MARKUP = `
       <!-- Floating Glassmorphism Canvas Status Bar -->
       <div class="stage-status-bar" id="stage-status-bar" aria-label="画板状态">
         <span class="status-indicator-dot pulse"></span>
-        <span class="status-label" id="status-deck-name">演示画布</span>
+        <span class="status-label" id="status-deck-name">作品加载中</span>
         <span class="status-sep">·</span>
         <span id="status-aspect-val">16:9</span>
         <span class="status-sep">·</span>
         <span id="status-slide-text">第 1 / 4 页</span>
         <span class="status-sep">·</span>
-        <span class="status-privacy-text" id="status-privacy-text">本地优先</span>
+        <button class="context-moat-pill" id="btn-toggle-context-drawer" title="查看当前作品引用的知识库萃取、素材溯源与上下文壁垒 (⌘I)">
+          <svg class="ic ic-sm" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6"/><path d="M8 5v3m0 2.5h.01"/></svg>
+          <span id="context-moat-text">资料与上下文壁垒</span>
+        </button>
       </div>
       <script>
         (function() {
@@ -206,6 +218,75 @@ export const CALM_STUDIO_MARKUP = `
       <div class="stage-viewport">
         <iframe id="preview-frame" title="Aimake 实时视觉舞台"></iframe>
       </div>
+
+      <!-- Right Context & Sourcing Drawer (资料与上下文壁垒抽屉) -->
+      <aside class="context-drawer" id="context-drawer" aria-label="资料与上下文抽屉">
+        <div class="context-drawer-header">
+          <div class="context-drawer-title">
+            <svg class="ic ic-sm" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 3.5h11v9H2.5z"/><path d="M5.5 3.5v9M2.5 7h11"/></svg>
+            <span>资料与上下文壁垒</span>
+          </div>
+          <button class="icon-btn" id="btn-close-context-drawer" title="关闭抽屉 (Esc)">
+            <svg class="ic ic-sm" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+          </button>
+        </div>
+        <div class="context-drawer-body">
+          <!-- Section 1: Knowledge Extraction (Wiki) -->
+          <div class="context-section">
+            <div class="context-section-head">
+              <span class="context-section-title">🧠 知识库萃取 (Wiki)</span>
+              <span class="context-badge" id="drawer-wiki-count">沉淀中</span>
+            </div>
+            <div class="context-card-list" id="drawer-wiki-list">
+              <div class="context-card">
+                <span class="context-card-title">[[token-governance]]</span>
+                <span class="context-card-desc"><=3000 Token 上下文路由与防幻觉实体地图</span>
+                <span class="context-card-meta"><span>知识复利</span><span>·</span><span>私有留存</span></span>
+              </div>
+              <div class="context-card">
+                <span class="context-card-title">[[audience-of-one]]</span>
+                <span class="context-card-desc">个人软件觉醒：为一人而做的本地高密度工具</span>
+                <span class="context-card-meta"><span>Karpathy 原则</span><span>·</span><span>已核验</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Grounded News & Sources -->
+          <div class="context-section">
+            <div class="context-section-head">
+              <span class="context-section-title">📡 一线情报与时事 (Radar)</span>
+              <button class="context-action-btn" id="drawer-btn-refresh-radar">更新雷达</button>
+            </div>
+            <div class="context-card-list" id="drawer-sources-list">
+              <div class="context-card">
+                <span class="context-card-title">@karpathy: Vibe Coding 软件范式转移</span>
+                <span class="context-card-desc">X 4.8M+ 浏览爆款，敲击代码行数归零，跟随机感对话</span>
+                <span class="context-card-meta"><span>4.8M views</span><span>·</span><span>已沉淀到素材库</span></span>
+              </div>
+              <div class="context-card">
+                <span class="context-card-title">DeepSeek-R1: 开源物理学突破</span>
+                <span class="context-card-desc">1200 万曝光技术风暴，端侧蒸馏与算力护城河解构</span>
+                <span class="context-card-meta"><span>开源权重</span><span>·</span><span>已关联当前作品</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Multimodal Artifacts -->
+          <div class="context-section">
+            <div class="context-section-head">
+              <span class="context-section-title">📦 全域多模态同款交付</span>
+              <span class="context-badge">5 大介质</span>
+            </div>
+            <div class="context-artifacts-grid" id="drawer-artifacts-list">
+              <div class="artifact-tile"><span class="artifact-icon">📱</span><span class="artifact-name">小红书 3:4 卡片</span></div>
+              <div class="artifact-tile"><span class="artifact-icon">📄</span><span class="artifact-name">微信排版富文本</span></div>
+              <div class="artifact-tile"><span class="artifact-icon">📊</span><span class="artifact-name">可编辑 PPTX</span></div>
+              <div class="artifact-tile"><span class="artifact-icon">📑</span><span class="artifact-name">矢量高清 PDF</span></div>
+              <div class="artifact-tile"><span class="artifact-icon">🎬</span><span class="artifact-name">60fps 动效短视频</span></div>
+            </div>
+          </div>
+        </div>
+      </aside>
 
       <!-- Floating Bottom Filmstrip & Tactile Dock (Linear / Apple Keynote Restrained 5 Core Control Groups) -->
       <div class="stage-dock" role="toolbar" aria-label="舞台快捷栏">

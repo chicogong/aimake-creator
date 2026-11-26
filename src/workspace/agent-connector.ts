@@ -513,10 +513,12 @@ export async function configureWorkspaceAgents(
   await fs.mkdir(absWorkspace, { recursive: true });
 
   const cliPath = resolveAimakeCliPath(options.cliPath);
-  const hosts = new Set<AgentHostId>(options.hosts ?? AGENT_HOST_PRIORITY);
+  const hosts = new Set<AgentHostId>(
+    options.hosts ?? (options.cleanRoot ? ['agy', 'cursor'] : AGENT_HOST_PRIORITY)
+  );
   const includeClaude =
     options.includeClaude ??
-    (hosts.has('claude') || hosts.has('claude-desktop') || options.hosts === undefined);
+    (!options.cleanRoot && (hosts.has('claude') || hosts.has('claude-desktop')));
 
   // 1. Materialize all 7 preset skills as real independent files (NO symlinks)
   const materializedSkills = await materializeWorkspaceSkills(absWorkspace, {

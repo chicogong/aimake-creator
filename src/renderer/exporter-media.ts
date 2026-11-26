@@ -709,12 +709,28 @@ export async function exportDeckBundle(
   }
   if (format === 'capcut') {
     const slidesDir = path.join(outTarget, 'slides');
-    const slideImages =
-      (options as any)?.slideImages && Array.isArray((options as any).slideImages)
-        ? (options as any).slideImages
-        : await exportDeckToPngs(doc, slidesDir, {
-            customTemplatesDir: options?.customTemplatesDir,
-          });
+    let slideImages: string[] = [];
+    if ((options as any)?.slideImages && Array.isArray((options as any).slideImages)) {
+      slideImages = (options as any).slideImages;
+    } else {
+      try {
+        const existing = await fs.readdir(slidesDir);
+        const pngs = existing
+          .filter((f) => f.endsWith('.png'))
+          .sort()
+          .map((f) => path.join(slidesDir, f));
+        if (pngs.length >= doc.slides.length && pngs.length > 0) {
+          slideImages = pngs;
+        }
+      } catch {
+        // ignore
+      }
+      if (slideImages.length === 0) {
+        slideImages = await exportDeckToPngs(doc, slidesDir, {
+          customTemplatesDir: options?.customTemplatesDir,
+        });
+      }
+    }
     const res = await buildCapCutDraft(doc, {
       outputDir: outTarget,
       installLocal: options?.installLocal,

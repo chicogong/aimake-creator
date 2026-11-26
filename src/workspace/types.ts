@@ -224,6 +224,7 @@ export interface ConfigureWorkspaceAgentsOptions {
   cliPath?: string;
   hosts?: AgentHostId[];
   includeClaude?: boolean;
+  cleanRoot?: boolean;
   force?: boolean;
   scenario?: WorkspaceScenarioPreset;
   workspaceName?: string;
@@ -301,6 +302,8 @@ export interface InitWorkspaceOptions {
   locale?: SupportedLocale;
   seedStarterDeck?: boolean;
   includeClaude?: boolean;
+  includeClaudeSkills?: boolean;
+  cleanRoot?: boolean;
   cliPath?: string;
   author?: string;
   handle?: string;
