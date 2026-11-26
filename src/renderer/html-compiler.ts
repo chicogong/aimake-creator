@@ -236,6 +236,9 @@ export async function compileDeckToHtml(
     line-height: 1.5;
     color: var(--ink, #141413);
     white-space: pre-wrap;
+  }
+  html, body {
+    background: transparent !important;
   }${aspectOverrideCss}
 </style>`;
 

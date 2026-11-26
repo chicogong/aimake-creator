@@ -1014,21 +1014,25 @@ export const CALM_STUDIO_CSS = `
     backdrop-filter: blur(28px) saturate(180%);
     -webkit-backdrop-filter: blur(28px) saturate(180%);
     border-left: 1px solid var(--border-strong);
-    box-shadow: none;
+    box-shadow: none !important;
     display: flex;
     flex-direction: column;
     z-index: 50;
     transform: translateX(100%);
     visibility: hidden;
     pointer-events: none;
-    transition: transform var(--duration-normal) var(--ease-spring), visibility 0s var(--duration-normal);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.24s ease,
+                visibility 0s 0.28s;
   }
   .context-drawer.open {
     transform: translateX(0);
     visibility: visible;
     pointer-events: auto;
-    box-shadow: -12px 0 36px rgba(0, 0, 0, 0.18);
-    transition: transform var(--duration-normal) var(--ease-spring), visibility 0s;
+    box-shadow: -1px 0 0 rgba(0, 0, 0, 0.08), -10px 0 24px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.24s ease,
+                visibility 0s;
   }
   .context-drawer-header {
     height: 46px;
@@ -1523,17 +1527,25 @@ export const CALM_STUDIO_CSS = `
   .drawer-backdrop {
     position: fixed;
     inset: 46px 0 0 0;
-    background: rgba(8, 10, 16, 0.65);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity var(--duration-normal) var(--ease-spring);
+    transition: opacity 0.22s ease, visibility 0s 0.22s;
     z-index: 50;
   }
   .drawer-backdrop.open {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
+    transition: opacity 0.22s ease, visibility 0s;
+  }
+  body.has-wide-drawer .drawer-backdrop.open {
+    background: rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .drawer {
@@ -1545,12 +1557,16 @@ export const CALM_STUDIO_CSS = `
     max-width: 94vw;
     background: var(--surface);
     border-left: 1px solid var(--border);
-    box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.65), 0 20px 48px -8px rgba(0, 0, 0, 0.5), -1px 0 0 var(--border);
+    box-shadow: none !important;
     transform: translateX(100%);
-    transition: transform var(--duration-normal) var(--ease-spring), box-shadow var(--duration-normal) ease;
-    z-index: 65;
+    visibility: hidden;
+    pointer-events: none;
     display: flex;
     flex-direction: column;
+    z-index: 65;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.24s ease,
+                visibility 0s 0.28s;
   }
   .drawer.wide {
     position: fixed;
@@ -1565,20 +1581,35 @@ export const CALM_STUDIO_CSS = `
     border-left: none;
     border: 1px solid var(--border-strong);
     border-radius: 16px;
-    box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.65), 0 20px 48px -8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: none !important;
     transform: translate(-50%, -46%) scale(0.97);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: transform var(--duration-normal) var(--ease-spring), opacity var(--duration-fast) ease;
+    display: flex;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.2s ease,
+                visibility 0s 0.28s;
     z-index: 70;
   }
   .drawer.wide.open {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
+    box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.2s ease,
+                visibility 0s;
   }
   .drawer.open:not(.wide) {
     transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+    box-shadow: -1px 0 0 rgba(0, 0, 0, 0.08), -12px 0 32px rgba(0, 0, 0, 0.06) !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.24s ease,
+                visibility 0s;
   }
 
   .drawer-head {

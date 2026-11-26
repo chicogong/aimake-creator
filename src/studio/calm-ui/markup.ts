@@ -127,21 +127,77 @@ export const CALM_STUDIO_MARKUP = `
 
         <div class="nav-group">
           <div class="nav-group-head">
-            <span>素材与知识 <span id="sources-count"></span></span>
+            <span>素材与知识 <span id="sources-count">(4)</span></span>
             <button class="nav-add-btn" id="btn-add-source">
               <svg class="ic ic-sm" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 3.2v9.6M3.2 8h9.6"></path></svg>
               <span>收入</span>
             </button>
           </div>
-          <div class="nav-list" id="source-list"></div>
+          <div class="nav-list" id="source-list">
+            <button class="nav-item" data-open-wiki="1" data-wiki-entity="[Wiki] 超级个体 Token 治理" data-source-rel="wiki/token-governance.md">
+              <span class="nav-item-main">
+                <span class="nav-item-header-row"><span class="nav-item-title">[Wiki] 超级个体 Token 治理</span><span class="nav-item-badge">知识库</span></span>
+                <span class="nav-item-sub">wiki/token-governance.md</span>
+              </span>
+            </button>
+            <button class="nav-item" data-open-wiki="1" data-wiki-entity="Google Antigravity & Gemini 4 架构" data-source-rel="sources/gemini-agy-deepmind.md">
+              <span class="nav-item-main">
+                <span class="nav-item-header-row"><span class="nav-item-title">Google Antigravity & Gemini 4 架构</span><span class="nav-item-badge">素材</span></span>
+                <span class="nav-item-sub">sources/gemini-agy-deepmind.md</span>
+              </span>
+            </button>
+            <button class="nav-item" data-open-wiki="1" data-wiki-entity="2026 黑五 AI 算力与订阅指南" data-source-rel="sources/black-friday-2026-ai-deals.md">
+              <span class="nav-item-main">
+                <span class="nav-item-header-row"><span class="nav-item-title">2026 黑五 AI 算力与订阅指南</span><span class="nav-item-badge">素材</span></span>
+                <span class="nav-item-sub">sources/black-friday-2026-ai-deals.md</span>
+              </span>
+            </button>
+            <button class="nav-item" data-open-wiki="1" data-wiki-entity="Andrej Karpathy Vibe Coding 原理" data-source-rel="sources/karpathy-vibe-coding.x.md">
+              <span class="nav-item-main">
+                <span class="nav-item-header-row"><span class="nav-item-title">Andrej Karpathy Vibe Coding 原理</span><span class="nav-item-badge">素材</span></span>
+                <span class="nav-item-sub">sources/karpathy-vibe-coding.x.md</span>
+              </span>
+            </button>
+          </div>
         </div>
 
         <div class="nav-group">
           <div class="nav-group-head">
-            <span>已导出成品 <span id="exports-count"></span></span>
+            <span>已导出成品 <span id="exports-count">(5)</span></span>
             <button class="nav-add-btn" id="btn-refresh-exports">刷新</button>
           </div>
-          <div class="nav-list" id="export-list"></div>
+          <div class="nav-list" id="export-list">
+            <button class="nav-item" data-preview-media="exports/slide-01.png" data-media-format="png" data-media-title="📕 小红书 3:4 超清卡片" data-media-meta="PNG · 246 KB">
+              <span class="nav-item-main">
+                <span class="nav-item-header-row"><span class="nav-item-title">📕 小红书 3:4 超清卡片</span><span class="nav-item-badge">小红书</span></span>
+                <span class="nav-item-sub">slide-01.png · PNG · 246 KB</span>
+              </span>
+            </button>
+            <button class="nav-item" data-preview-media="exports/karpathy-vibe-coding.wechat.html" data-media-format="wechat" data-media-title="🟢 微信公众号富文本排版" data-media-meta="HTML · 11 KB">
+              <span class="nav-item-main">
+                <span class="nav-item-header-row"><span class="nav-item-title">🟢 微信公众号富文本排版</span><span class="nav-item-badge">公众号</span></span>
+                <span class="nav-item-sub">karpathy-vibe-coding.wechat.html · HTML · 11 KB</span>
+              </span>
+            </button>
+            <button class="nav-item" data-preview-media="exports/karpathy-vibe-coding.pptx" data-media-format="pptx" data-media-title="📊 微软原生可编辑演示" data-media-meta="PPTX · 45 KB">
+              <span class="nav-item-main">
+                <span class="nav-item-header-row"><span class="nav-item-title">📊 微软原生可编辑演示</span><span class="nav-item-badge">PPTX</span></span>
+                <span class="nav-item-sub">karpathy-vibe-coding.pptx · PPTX · 45 KB</span>
+              </span>
+            </button>
+            <button class="nav-item" data-preview-media="exports/karpathy-vibe-coding.pdf" data-media-format="pdf" data-media-title="📄 印刷级矢量高清文档" data-media-meta="PDF · 800 KB">
+              <span class="nav-item-main">
+                <span class="nav-item-header-row"><span class="nav-item-title">📄 印刷级矢量高清文档</span><span class="nav-item-badge">PDF</span></span>
+                <span class="nav-item-sub">karpathy-vibe-coding.pdf · PDF · 800 KB</span>
+              </span>
+            </button>
+            <button class="nav-item" data-preview-media="exports/karpathy-vibe-coding.mp4" data-media-format="mp4" data-media-title="🎬 60fps 动效短视频草稿" data-media-meta="MP4 · 483 KB">
+              <span class="nav-item-main">
+                <span class="nav-item-header-row"><span class="nav-item-title">🎬 60fps 动效短视频草稿</span><span class="nav-item-badge">短视频</span></span>
+                <span class="nav-item-sub">karpathy-vibe-coding.mp4 · MP4 · 483 KB</span>
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 

@@ -2545,14 +2545,13 @@ function getVariantCss(variant, manifest, theme) {
         .aimake-slide {
           background:
             radial-gradient(circle at 86% 12%, rgba(0, 113, 227, 0.08) 0%, transparent 44%),
-            radial-gradient(circle at 12% 88%, rgba(110, 86, 207, 0.07) 0%, transparent 46%),
             #F5F5F7;
           border: none;
           padding: 58px 82px 48px 82px !important;
         }
         .progress-track {
           height: 5px;
-          background: linear-gradient(90deg, #0071E3 0%, #5856D6 55%, #AF52DE 100%);
+          background: var(--accent);
         }
         .top-bar {
           border-bottom: 1px solid rgba(29, 29, 31, 0.09);
@@ -4562,10 +4561,13 @@ function buildStandaloneTemplateHtml(manifest, theme) {
       --grid-line: ${lightTheme.gridLine || 'rgba(0, 0, 0, 0.06)'};
     }
     * { box-sizing: border-box; }
+    html {
+      background: var(--bg);
+    }
     body {
       margin: 0;
       padding: 32px;
-      background: #090B0F;
+      background: transparent;
       font-family: var(--font);
       color: var(--ink);
       display: flex;
@@ -4783,7 +4785,7 @@ function buildStandaloneTemplateHtml(manifest, theme) {
       top: 0;
       left: 0;
       height: 4px;
-      background: linear-gradient(90deg, var(--accent) 0%, rgba(99, 102, 241, 0.9) 100%);
+      background: var(--accent);
       width: 100%;
       transform-origin: left center;
       z-index: 3;

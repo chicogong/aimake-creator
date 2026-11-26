@@ -483,11 +483,44 @@ handle: "@chicogong"
 - **지식 증류와 복리 효과**: 챗 창을 닫아도 영감이 증발하지 않고 마크다운 지식 그래프로 성장합니다.
 - **클라우드 종속 제로**: 100% 로컬 샌드박스에서 즉각 렌더링되어 프라이버시가 완벽히 보장됩니다.
 `,
+  karpathy_wiki: `---
+title: "Andrej Karpathy: 为什么纯本地 LLM Wiki 是超级个体第二大脑？"
+template: xhs-swiss-grid
+locale: zh-CN
+aspect: 3:4
+author: Andrej Karpathy (@karpathy)
+handle: "@karpathy"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: 知识护城河 2026 -->
+# 为什么纯本地 LLM Wiki 是超级个体最深的护城河？
+## 告别一次性聊天消耗，让每一篇笔记在本地产生永久复利
+
+\`\`\`metric
+- 上下文沉淀: 100% (终生记忆无遗忘)
+- 知识检索延迟: 0 ms (零网络物理端侧)
+- 云端订阅月费: $0.00 (纯本地物理私有)
+- 一稿多渠道分发: 5 种 (图文·PPT·视频·长文)
+\`\`\`
+
+- **告别云端黑盒租赁**：将知识、灵感与上下文固化在纯本地 Markdown，形成自主可控的资产飞轮。
+- **端侧模型即时唤醒**：配合本地 Agent 与参数化设计引擎，秒级编译全渠道交付物料。
+
+---
+
+<!-- scene: compare | layout: comparison | eyebrow: PARADIGM SHIFT -->
+# 传统云端聊天 vs 纯本地 LLM Wiki
+
+\`\`\`compare
+传统云端聊天 :: 聊天记录随窗口关闭蒸发 | 频繁遭遇月租与限额 | 数据留存云端存在隐私隐患
+本地 LLM Wiki :: 每一轮思考自动沉淀为卡片 | 纯本地端侧零等待 | 实体化 Skill 伴随终生
+\`\`\`
+`,
 };
 
 STARTER_SAMPLES.creator = STARTER_SAMPLES.token;
 STARTER_SAMPLES.poster = STARTER_SAMPLES.embodied;
-STARTER_SAMPLES.deepseek = STARTER_SAMPLES.gemini;
+STARTER_SAMPLES.deepseek = STARTER_SAMPLES.karpathy_wiki;
 STARTER_SAMPLES['deepseek-en'] = STARTER_SAMPLES.gemini_en;
 STARTER_SAMPLES['gemini-agy'] = STARTER_SAMPLES.gemini;
 STARTER_SAMPLES['black-friday'] = STARTER_SAMPLES.blackfriday;
@@ -1069,6 +1102,11 @@ export async function buildWebPlaygroundHtml(
     .pg-slide-indicator {
       font-family: var(--font-mono); font-size: 11.5px; font-variant-numeric: tabular-nums;
       color: var(--ink-muted); padding: 0 4px; white-space: nowrap; user-select: none;
+      display: none;
+    }
+    @media (max-width: 640px) {
+      .pg-slide-pills { display: none !important; }
+      .pg-slide-indicator { display: inline-block !important; }
     }
     .pg-slide-pills {
       display: inline-flex; align-items: center; gap: 3px;
@@ -1093,6 +1131,7 @@ export async function buildWebPlaygroundHtml(
     .pg-quick-actions, .pg-zoom-actions {
       display: inline-flex; align-items: center; gap: 2px;
       background: rgba(255, 255, 255, 0.06); padding: 2px; border-radius: 999px;
+      flex-shrink: 0;
     }
     [data-theme="light"] .pg-quick-actions,
     [data-theme="light"] .pg-zoom-actions {
@@ -1103,6 +1142,7 @@ export async function buildWebPlaygroundHtml(
       background: transparent; color: var(--ink-muted); cursor: pointer;
       display: inline-flex; align-items: center; justify-content: center;
       transition: all 0.12s ease;
+      flex-shrink: 0;
     }
     .pg-dock-icon-btn:hover { background: rgba(255, 255, 255, 0.14); color: var(--ink); }
     [data-theme="light"] .pg-dock-icon-btn:hover { background: rgba(15, 23, 42, 0.1); color: #0f172a; }
@@ -1114,7 +1154,7 @@ export async function buildWebPlaygroundHtml(
       background: transparent; color: var(--ink-muted); font-size: 11px;
       cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
       font-family: var(--font-mono);
-      white-space: nowrap; min-width: max-content;
+      white-space: nowrap; word-break: keep-all; flex-shrink: 0; min-width: 48px;
     }
     .pg-dock-pill-btn:hover { background: rgba(255, 255, 255, 0.12); color: var(--ink); }
 
@@ -1379,6 +1419,7 @@ export async function buildWebPlaygroundHtml(
       <span class="pg-control-sep"></span>
 
       <!-- Actions & Export -->
+      <button class="pg-btn" id="btn-copy-wechat" title="一键复制微信公众号富文本 (支持直粘微信后台)">${lucideIcon('copy')} 公众号</button>
       <button class="pg-btn pg-btn-primary" id="btn-export-png" title="将当前页导出为高清 PNG 图片">${lucideIcon('image')} 导图</button>
       <button class="pg-btn" id="btn-print-pdf" title="打印 / 另存为 PDF 演示文稿">${lucideIcon('printer')} PDF</button>
       <button class="pg-btn" id="btn-download-md" title="下载 .deck.md 原稿">${lucideIcon('download')} 下载</button>
@@ -1688,34 +1729,10 @@ export async function buildWebPlaygroundHtml(
     if (paramSample && SAMPLES[paramSample]) {
       initialMarkdown = SAMPLES[paramSample];
       initialSampleKey = paramSample === 'creator' ? 'token' : paramSample === 'poster' ? 'embodied' : paramSample;
-    } else if (paramTemplate || paramTitle) {
-      let matchedKey = 'agent';
-      for (const [k, sText] of Object.entries(SAMPLES)) {
-        if (k === 'creator' || k === 'poster') continue;
-        if (paramTemplate && sText.includes('template: ' + paramTemplate)) {
-          matchedKey = k;
-          break;
-        }
-      }
-      initialSampleKey = matchedKey;
-      initialMarkdown = SAMPLES[matchedKey];
-      if (paramTemplate) {
-        const targetTpl = TEMPLATE_MAP.get(paramTemplate);
-        initialMarkdown = initialMarkdown.replace(/^template:.*$/m, 'template: ' + paramTemplate);
-        if (targetTpl && targetTpl.aspect) {
-          initialMarkdown = initialMarkdown.replace(/^aspect:.*$/m, 'aspect: ' + targetTpl.aspect);
-        }
-        if (elTemplate) elTemplate.value = paramTemplate;
-      }
-      if (paramTitle) {
-        const cleanTitle = paramTitle.replace(/^[《「]|[》」]$/g, '');
-        initialMarkdown = initialMarkdown.replace(/^title:.*$/m, 'title: ' + cleanTitle);
-        initialMarkdown = initialMarkdown.replace(/^# .*$/m, '# ' + cleanTitle);
-      }
     } else {
       let saved = null;
       try { saved = localStorage.getItem('aimake_playground_md'); } catch (_) {}
-      initialMarkdown = (saved && saved.trim()) || SAMPLES.gemini || SAMPLES.agent;
+      initialMarkdown = (saved && saved.trim()) || SAMPLES.agent || SAMPLES.gemini;
       for (const [k, sText] of Object.entries(SAMPLES)) {
         if (k === 'creator' || k === 'poster') continue;
         const firstLine = (sText.match(/^title:\\s*(.+)$/m) || [])[1];
@@ -1724,6 +1741,21 @@ export async function buildWebPlaygroundHtml(
           break;
         }
       }
+    }
+
+    if (paramTemplate) {
+      const targetTpl = TEMPLATE_MAP.get(paramTemplate);
+      initialMarkdown = initialMarkdown.replace(/^template:.*$/m, 'template: ' + paramTemplate);
+      if (targetTpl && targetTpl.aspect) {
+        initialMarkdown = initialMarkdown.replace(/^aspect:.*$/m, 'aspect: ' + targetTpl.aspect);
+      }
+      if (elTemplate) elTemplate.value = paramTemplate;
+      if (elAspect && targetTpl && targetTpl.aspect) elAspect.value = targetTpl.aspect;
+    }
+    if (paramTitle) {
+      const cleanTitle = paramTitle.replace(/^[《「]|[》」]$/g, '');
+      initialMarkdown = initialMarkdown.replace(/^title:.*$/m, 'title: ' + cleanTitle);
+      initialMarkdown = initialMarkdown.replace(/^# .*$/m, '# ' + cleanTitle);
     }
     elInput.value = initialMarkdown;
     if (elSample && Array.from(elSample.options).some(o => o.value === initialSampleKey)) {
@@ -2281,7 +2313,7 @@ export async function buildWebPlaygroundHtml(
         '});' +
         'window.addEventListener("keydown", function(e) {' +
         '  var t = e.target;' +
-        '  if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;' +
+        '  if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.tagName === "OPTION" || t.isContentEditable)) return;' +
         '  if (e.key === "ArrowLeft" || e.key === "PageUp" || e.key === "ArrowUp") {' +
         '    e.preventDefault(); window.parent.postMessage({ type: "aimake:pg-nav", action: "prev" }, "*");' +
         '  } else if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === "ArrowDown" || e.key === " ") {' +
@@ -2930,7 +2962,7 @@ export async function buildWebPlaygroundHtml(
         document.body.classList.remove('fullscreen-mode');
         return;
       }
-      if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || tag === 'BUTTON' || (e.target && e.target.isContentEditable) || (e.target && e.target.getAttribute && e.target.getAttribute('role') === 'button')) return;
+      if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || tag === 'OPTION' || tag === 'BUTTON' || (e.target && e.target.isContentEditable) || (e.target && e.target.getAttribute && e.target.getAttribute('role') === 'button')) return;
       if (e.key.toLowerCase() === 'f') {
         document.body.classList.toggle('fullscreen-mode');
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'ArrowUp') {

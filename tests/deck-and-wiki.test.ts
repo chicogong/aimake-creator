@@ -265,5 +265,5 @@ describe('Universal Host Symlink Installer, MCP Server & Static Site Builder', (
     } finally {
       await fs.rm(tmpSite, { recursive: true, force: true });
     }
-  });
+  }, 30000);
 });

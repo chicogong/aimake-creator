@@ -4439,7 +4439,7 @@ function renderLandingHtml(
                 <span style="font-family:var(--mono);background:#0f172a;color:#fff;padding:1px 6px;border-radius:3px;font-size:10px;">CH-8001</span>
                 瑞士国际主义网格 · 严谨排版无孤字断行 · 3x Retina PNG
               </span>
-              <a href="/playground/?sample=deepseek&template=xhs-swiss-grid&title=Andrej%20Karpathy%3A%20%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%AF%E6%9C%AC%E5%9C%B0%E3%80%8CLM%20Wiki%E3%80%8D%E6%9E%84%E5%BB%BA%E7%AC%AC%E4%BA%8C%E5%A4%A7%E8%84%91" class="stage-remix-btn stage-remix-btn-dark">做同款图文 ↗</a>
+              <a href="/playground/?sample=karpathy_wiki&template=xhs-swiss-grid&aspect=3:4&title=Andrej%20Karpathy%3A%20%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%AF%E6%9C%AC%E5%9C%B0%E3%80%8CLM%20Wiki%E3%80%8D%E6%9E%84%E5%BB%BA%E7%AC%AC%E4%BA%8C%E5%A4%A7%E8%84%91" class="stage-remix-btn stage-remix-btn-dark">做同款图文 ↗</a>
             </div>
           </div>
 

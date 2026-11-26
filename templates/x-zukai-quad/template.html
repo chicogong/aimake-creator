@@ -62,10 +62,13 @@
       --grid-line: rgba(0, 0, 0, 0.06);
     }
     * { box-sizing: border-box; }
+    html {
+      background: var(--bg);
+    }
     body {
       margin: 0;
       padding: 32px;
-      background: #090B0F;
+      background: transparent;
       font-family: var(--font);
       color: var(--ink);
       display: flex;
@@ -283,7 +286,7 @@
       top: 0;
       left: 0;
       height: 4px;
-      background: linear-gradient(90deg, var(--accent) 0%, rgba(99, 102, 241, 0.9) 100%);
+      background: var(--accent);
       width: 100%;
       transform-origin: left center;
       z-index: 3;

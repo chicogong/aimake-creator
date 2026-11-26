@@ -1712,8 +1712,16 @@ export async function startStudioServer(
 
       if (req.method === 'POST' && url.pathname === '/api/markdown') {
         const body = await readJsonBody(req);
-        await writeDeckFileInternally(String(body.rawMarkdown || ''));
-        sendJson(res, 200, { ok: true });
+        let targetAbsPath = absDeckPath;
+        if (body.deckRel && typeof body.deckRel === 'string') {
+          const resolved = path.resolve(workspaceDir, body.deckRel);
+          if (resolved.startsWith(workspaceDir) && fsSync.existsSync(resolved)) {
+            targetAbsPath = resolved;
+            absDeckPath = resolved;
+          }
+        }
+        await fs.writeFile(targetAbsPath, String(body.rawMarkdown || ''), 'utf8');
+        sendJson(res, 200, { ok: true, deckPath: targetAbsPath });
         return;
       }
 
@@ -1746,6 +1754,8 @@ export async function startStudioServer(
           | 'capcut';
         const rawMarkdown = await fs.readFile(absDeckPath, 'utf8');
         const deck = parseDeckMarkdown(rawMarkdown, absDeckPath);
+        const deckSlug =
+          path.basename(absDeckPath, '.deck.md').replace(/\.deck$/, '').replace(/\.md$/, '') || 'deck';
         const fps = typeof body.fps === 'number' && Number.isFinite(body.fps) ? body.fps : undefined;
         const secondsPerSlide =
           typeof body.secondsPerSlide === 'number' && Number.isFinite(body.secondsPerSlide)
@@ -1783,7 +1793,7 @@ export async function startStudioServer(
         }
 
         if (format === 'mp4' && body.narrate === 'offline-fixture') {
-          const speechRunDir = path.join(exportBase, 'speech', `run-${Date.now()}`);
+          const speechRunDir = path.join(exportBase, 'speech', `${deckSlug}-${Date.now()}`);
           const speechRes = await synthesizeDeckSpeech(deck, speechRunDir, {
             provider: offlineFixtureSpeechProvider(),
           });
@@ -1793,7 +1803,7 @@ export async function startStudioServer(
           const slideDurationsMs = deck.slides.map(
             (slide) => speechRes.slideDurationsMs[slide.id] ?? fallbackMs
           );
-          const target = path.join(exportBase, 'deck-narrated.mp4');
+          const target = path.join(exportBase, `${deckSlug}-narrated.mp4`);
           const artifacts = await exportDeckBundle(deck, 'mp4', target, {
             fps,
             secondsPerSlide,
@@ -1816,8 +1826,8 @@ export async function startStudioServer(
 
         const target =
           format === 'png'
-            ? path.join(exportBase, 'png')
-            : path.join(exportBase, `deck.${format === 'wechat' ? 'wechat.html' : format}`);
+            ? path.join(exportBase, `${deckSlug}-slides`)
+            : path.join(exportBase, `${deckSlug}.${format === 'wechat' ? 'wechat.html' : format}`);
         const artifacts = await exportDeckBundle(deck, format, target, {
           fps,
           secondsPerSlide,

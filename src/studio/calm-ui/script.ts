@@ -128,10 +128,26 @@ export const CALM_STUDIO_SCRIPT = `
     document.querySelectorAll('.drawer.open').forEach((el) => el.classList.remove('open'));
     const target = $(drawerId);
     const bd = $('drawer-backdrop');
-    if (target) target.classList.add('open');
+    if (target) {
+      target.classList.add('open');
+      if (target.classList.contains('wide')) {
+        document.body.classList.add('has-wide-drawer');
+      } else {
+        document.body.classList.remove('has-wide-drawer');
+      }
+    }
     if (bd) bd.classList.add('open');
     if (loopStep) setActiveLoopStep(loopStep);
     if (drawerId === 'drawer-export') checkCapCutStatus();
+  }
+
+  function closeAllDrawers() {
+    document.querySelectorAll('.drawer.open').forEach((el) => el.classList.remove('open'));
+    const cd = $('context-drawer');
+    if (cd) cd.classList.remove('open');
+    const bd = $('drawer-backdrop');
+    if (bd) bd.classList.remove('open');
+    document.body.classList.remove('has-wide-drawer');
   }
 
   function closeAllModals() {
@@ -1185,22 +1201,27 @@ export const CALM_STUDIO_SCRIPT = `
 
   function triggerButtonFeedback(btn, tempHtml, duration = 2200) {
     if (!btn) return;
-    const oldHtml = btn.innerHTML;
+    const restoreHtml = btn.dataset.origHtml || btn.innerHTML;
     btn.innerHTML = tempHtml;
     btn.classList.add('btn-success-anim');
+    btn.classList.remove('btn-loading-anim');
     btn.disabled = true;
     setTimeout(() => {
-      btn.innerHTML = oldHtml;
+      btn.innerHTML = restoreHtml;
       btn.classList.remove('btn-success-anim');
+      btn.classList.remove('btn-loading-anim');
       btn.disabled = false;
+      delete btn.dataset.origHtml;
     }, duration);
   }
 
   async function copyWeChatRichText(triggerBtn) {
-    const origHtml = triggerBtn ? triggerBtn.innerHTML : null;
+    const origHtml = triggerBtn ? (triggerBtn.dataset.origHtml || triggerBtn.innerHTML) : null;
     if (triggerBtn) {
+      triggerBtn.dataset.origHtml = origHtml;
       triggerBtn.innerHTML = '${lucideIcon('loader', 'ic ic-sm spin')} 正在排版…';
       triggerBtn.classList.add('btn-loading-anim');
+      triggerBtn.disabled = true;
     }
     try {
       const res = await apiJson('/api/wechat');
@@ -1228,6 +1249,8 @@ export const CALM_STUDIO_SCRIPT = `
       if (triggerBtn) {
         triggerBtn.classList.remove('btn-loading-anim');
         if (origHtml) triggerBtn.innerHTML = origHtml;
+        triggerBtn.disabled = false;
+        delete triggerBtn.dataset.origHtml;
       }
       showToast('公众号复制失败：' + err.message);
       throw err;
@@ -1235,17 +1258,24 @@ export const CALM_STUDIO_SCRIPT = `
   }
 
   async function runExport(format, narrate) {
-    const btnMap = {
-      png: $('btn-export-png'),
-      pdf: $('btn-export-pdf'),
-      pptx: $('btn-export-pptx'),
-      mp4: $('btn-export-mp4'),
-    };
-    const activeBtn = btnMap[format];
-    const origHtml = activeBtn ? activeBtn.innerHTML : null;
+    let activeBtn = null;
+    if (format === 'mp4' && narrate) {
+      activeBtn = $('btn-export-narrate-mp4') || $('btn-export-mp4');
+    } else {
+      const btnMap = {
+        png: $('btn-export-png'),
+        pdf: $('btn-export-pdf'),
+        pptx: $('btn-export-pptx'),
+        mp4: $('btn-export-mp4'),
+      };
+      activeBtn = btnMap[format];
+    }
+    const origHtml = activeBtn ? (activeBtn.dataset.origHtml || activeBtn.innerHTML) : null;
     if (activeBtn) {
+      activeBtn.dataset.origHtml = origHtml;
       activeBtn.innerHTML = '${lucideIcon('loader', 'ic ic-sm spin')} 正在生成…';
       activeBtn.classList.add('btn-loading-anim');
+      activeBtn.disabled = true;
     }
     showToast('正在生成 ' + format.toUpperCase() + ' 成品…');
     try {
@@ -1268,6 +1298,8 @@ export const CALM_STUDIO_SCRIPT = `
       if (activeBtn) {
         activeBtn.classList.remove('btn-loading-anim');
         if (origHtml) activeBtn.innerHTML = origHtml;
+        activeBtn.disabled = false;
+        delete activeBtn.dataset.origHtml;
       }
       showToast('导出失败：' + err.message);
     }
@@ -1399,13 +1431,19 @@ export const CALM_STUDIO_SCRIPT = `
   const contextDrawer = $('context-drawer');
   if (btnToggleDrawer && contextDrawer) {
     btnToggleDrawer.addEventListener('click', () => {
-      contextDrawer.classList.toggle('open');
-      if (contextDrawer.classList.contains('open')) refreshContextDrawer();
+      const willOpen = !contextDrawer.classList.contains('open');
+      closeAllDrawers();
+      if (willOpen) {
+        contextDrawer.classList.add('open');
+        const bd = $('drawer-backdrop');
+        if (bd) bd.classList.add('open');
+        refreshContextDrawer();
+      }
     });
   }
   if (btnCloseDrawer && contextDrawer) {
     btnCloseDrawer.addEventListener('click', () => {
-      contextDrawer.classList.remove('open');
+      closeAllDrawers();
     });
   }
 
@@ -2060,7 +2098,13 @@ export const CALM_STUDIO_SCRIPT = `
     const target = e.target;
     const isInput =
       target &&
-      (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+      (target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'SELECT' ||
+        target.tagName === 'OPTION' ||
+        target.isContentEditable ||
+        target.getAttribute('role') === 'combobox' ||
+        target.getAttribute('role') === 'listbox');
     const mod = e.metaKey || e.ctrlKey;
 
     if (mod && e.key.toLowerCase() === 'j') {
@@ -2082,9 +2126,15 @@ export const CALM_STUDIO_SCRIPT = `
     if (mod && e.key.toLowerCase() === 'i') {
       e.preventDefault();
       const cd = $('context-drawer');
+      const bd = $('drawer-backdrop');
       if (cd) {
-        cd.classList.toggle('open');
-        if (cd.classList.contains('open')) refreshContextDrawer();
+        const willOpen = !cd.classList.contains('open');
+        closeAllDrawers();
+        if (willOpen) {
+          cd.classList.add('open');
+          if (bd) bd.classList.add('open');
+          refreshContextDrawer();
+        }
       }
       return;
     }
@@ -2094,10 +2144,6 @@ export const CALM_STUDIO_SCRIPT = `
       return;
     }
     if (e.key === 'Escape') {
-      const cd = $('context-drawer');
-      if (cd && cd.classList.contains('open')) {
-        cd.classList.remove('open');
-      }
       closeAllModals();
       closeAllDrawers();
       closeAllPopovers();
@@ -2114,8 +2160,10 @@ export const CALM_STUDIO_SCRIPT = `
         target.tagName === 'TEXTAREA' ||
         target.tagName === 'BUTTON' ||
         target.tagName === 'SELECT' ||
+        target.tagName === 'OPTION' ||
         target.isContentEditable ||
-        target.getAttribute('role') === 'button');
+        target.getAttribute('role') === 'button' ||
+        target.getAttribute('role') === 'combobox');
 
     if (!isInput) {
       if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'ArrowUp') {
@@ -2127,7 +2175,7 @@ export const CALM_STUDIO_SCRIPT = `
       } else if (e.key === ' ' && !isControl) {
         e.preventDefault();
         focusSlideInFrame(state.activeSlideIndex + 1);
-      } else if (e.key.toLowerCase() === 'f') {
+      } else if (e.key.toLowerCase() === 'f' && !isControl) {
         e.preventDefault();
         toggleFullscreenStage();
       }
@@ -2724,7 +2772,10 @@ export const CALM_STUDIO_SCRIPT = `
     try {
       await apiJson('/api/markdown', {
         method: 'POST',
-        body: JSON.stringify({ rawMarkdown: $('markdown-editor').value }),
+        body: JSON.stringify({
+          rawMarkdown: $('markdown-editor').value,
+          deckRel: state.deckRel,
+        }),
       });
       await refreshState(true);
       showToast('已保存 .deck.md 源码');
@@ -2833,6 +2884,18 @@ export const CALM_STUDIO_SCRIPT = `
       openDrawer('drawer-export', 'deliver');
       if (rawUrl.indexOf('capcut') >= 0) {
         checkCapCutStatus();
+        const btn = $('btn-export-capcut-inject') || $('btn-export-capcut-folder');
+        if (btn) btn.click();
+      } else if (rawUrl.indexOf('png') >= 0) {
+        runExport('png');
+      } else if (rawUrl.indexOf('pptx') >= 0) {
+        runExport('pptx');
+      } else if (rawUrl.indexOf('pdf') >= 0) {
+        runExport('pdf');
+      } else if (rawUrl.indexOf('wechat') >= 0) {
+        copyWechatRichText($('btn-quick-copy-wechat') || $('btn-export-wechat'));
+      } else if (rawUrl.indexOf('mp4') >= 0) {
+        runExport('mp4');
       }
     } else if (rawUrl.indexOf('wiki') >= 0) {
       openPolishTab('wiki');

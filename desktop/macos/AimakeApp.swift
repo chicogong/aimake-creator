@@ -686,9 +686,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 .deletingLastPathComponent()
                 .deletingLastPathComponent()
                 .path
-            let repoDevCli = "/Users/haorangong/Github/chicogong/products/aimake/dist/cli.js"
+            let envDevCli = ProcessInfo.processInfo.environment["AIMAKE_DEV_CLI"]
             let guesses = [
-                fm.fileExists(atPath: repoDevCli) ? repoDevCli : nil,
+                envDevCli,
                 resourceCli,
                 "\(cwd)/dist/cli.js",
                 "\(bundleParent)/dist/cli.js",
@@ -783,7 +783,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         var env = ProcessInfo.processInfo.environment
         if let ws = workspaceDir {
             env["AIMAKE_WORKSPACE"] = ws
-            proc.currentDirectoryURL = URL(fileURLWithPath: ws)
         }
         proc.environment = env
 
@@ -793,26 +792,56 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         proc.standardError = stderrPipe
 
         final class OutputAccumulator: @unchecked Sendable {
-            let lock = NSLock()
-            var stdout = ""
-            var stderr = ""
-            var matchedUrl: String?
+            private let lock = NSLock()
+            private var _stdout = ""
+            private var _stderr = ""
+            private var _matchedUrl: String?
+
+            var matchedUrl: String? {
+                lock.lock()
+                defer { lock.unlock() }
+                return _matchedUrl
+            }
+
+            var stderrText: String {
+                lock.lock()
+                defer { lock.unlock() }
+                return _stderr
+            }
+
+            func appendStdout(_ text: String) -> String? {
+                lock.lock()
+                defer { lock.unlock() }
+                _stdout += text
+                if _matchedUrl == nil, let found = AppDelegate.extractStudioUrl(from: _stdout) {
+                    _matchedUrl = found
+                    return found
+                }
+                return nil
+            }
+
+            func appendStderr(_ text: String) {
+                lock.lock()
+                defer { lock.unlock() }
+                _stderr += text
+            }
+
+            func setMatchedUrlIfNil(_ url: String) -> Bool {
+                lock.lock()
+                defer { lock.unlock() }
+                if _matchedUrl == nil {
+                    _matchedUrl = url
+                    return true
+                }
+                return false
+            }
         }
         let acc = OutputAccumulator()
 
         stdoutPipe.fileHandleForReading.readabilityHandler = { [weak self] handle in
             let data = handle.availableData
             guard !data.isEmpty, let chunk = String(data: data, encoding: .utf8) else { return }
-            var discovered: String?
-            acc.lock.lock()
-            acc.stdout += chunk
-            if acc.matchedUrl == nil, let found = Self.extractStudioUrl(from: acc.stdout) {
-                acc.matchedUrl = found
-                discovered = found
-            }
-            acc.lock.unlock()
-
-            if let urlStr = discovered {
+            if let urlStr = acc.appendStdout(chunk) {
                 DispatchQueue.main.async {
                     self?.connectToSpawnedStudio(urlStr)
                 }
@@ -822,18 +851,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         stderrPipe.fileHandleForReading.readabilityHandler = { handle in
             let data = handle.availableData
             guard !data.isEmpty, let chunk = String(data: data, encoding: .utf8) else { return }
-            acc.lock.lock()
-            acc.stderr += chunk
-            acc.lock.unlock()
+            acc.appendStderr(chunk)
         }
 
         proc.terminationHandler = { [weak self] finished in
             stdoutPipe.fileHandleForReading.readabilityHandler = nil
             stderrPipe.fileHandleForReading.readabilityHandler = nil
-            acc.lock.lock()
-            let errText = acc.stderr
+            let errText = acc.stderrText
             let alreadyConnected = acc.matchedUrl != nil
-            acc.lock.unlock()
 
             if !alreadyConnected && finished.terminationStatus != 0 && errText.contains("unknown option") {
                 DispatchQueue.main.async {
@@ -876,6 +901,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         do {
             try proc.run()
             self.childProcess = proc
+
+            let expectedUrl = "http://127.0.0.1:\(port)"
+            Task { [weak self] in
+                for _ in 0..<60 {
+                    try? await Task.sleep(nanoseconds: 100_000_000)
+                    guard let self else { return }
+                    if acc.matchedUrl != nil { break }
+
+                    if let probeUrl = URL(string: expectedUrl),
+                       let (data, response) = try? await URLSession.shared.data(from: probeUrl),
+                       let httpRes = response as? HTTPURLResponse,
+                       httpRes.statusCode == 200, !data.isEmpty {
+                        let shouldNavigate = acc.setMatchedUrlIfNil(expectedUrl)
+                        if shouldNavigate {
+                            await MainActor.run {
+                                self.connectToSpawnedStudio(expectedUrl)
+                            }
+                        }
+                        break
+                    }
+                }
+            }
         } catch {
             if isSelfTestMode {
                 failSelfTest(reason: "Failed to spawn Studio CLI: \(error.localizedDescription)")
