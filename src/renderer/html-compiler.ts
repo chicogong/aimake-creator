@@ -16,6 +16,7 @@ import langTypescript from 'highlight.js/lib/languages/typescript';
 import langXml from 'highlight.js/lib/languages/xml';
 import langYaml from 'highlight.js/lib/languages/yaml';
 import type { DeckDocument, TemplateManifest } from '../schema/types.js';
+import { readCoverImage } from './cover-image.js';
 import { renderMermaidSvg } from './mermaid-svg.js';
 
 hljs.registerLanguage('typescript', langTypescript);
@@ -141,14 +142,17 @@ export async function compileDeckToHtml(
 
   const highlightedCodeMap: Record<number, string> = {};
   const diagramSvgMap: Record<number, string> = {};
-  doc.slides.forEach((s, idx) => {
+  const coverImages: Record<number, string> = {};
+  await Promise.all(doc.slides.map(async (s, idx) => {
     if (s.code) {
       highlightedCodeMap[idx] = highlightCodeHtml(s.code.code, s.code.lang);
     }
     if (s.diagram) {
       diagramSvgMap[idx] = renderMermaidSvg(s.diagram.code);
     }
-  });
+    const image = await readCoverImage(doc, s);
+    if (image) coverImages[idx] = image;
+  }));
 
   const payload = {
     deck: doc,
@@ -160,6 +164,7 @@ export async function compileDeckToHtml(
     enhancements: {
       highlightedCodeMap,
       diagramSvgMap,
+      coverImages,
     },
   };
 

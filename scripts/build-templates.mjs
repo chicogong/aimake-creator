@@ -2542,6 +2542,50 @@ function getVariantCss(variant, manifest, theme) {
 
     case 'apple-bento':
       return `
+        .aimake-slide.cover-with-photo {
+          background: #14302a;
+          color: #f7f0dd;
+          --muted: #c4ccb9;
+          --accent: #e6a571;
+        }
+        .cover-with-photo .top-bar,
+        .cover-with-photo .footer-bar {
+          border-color: rgba(247, 240, 221, 0.23);
+        }
+        .cover-with-photo .eyebrow,
+        .cover-with-photo .page-index {
+          background: rgba(247, 240, 221, 0.08);
+          color: #f2d1a7;
+        }
+        .cover-with-photo .content-zone {
+          display: grid;
+          grid-template-columns: minmax(0, 1.07fr) minmax(0, 1fr);
+          align-items: stretch;
+          gap: 62px;
+        }
+        .cover-copy {
+          align-self: center;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: calc(25px * var(--content-scale));
+        }
+        .cover-with-photo h1.slide-title {
+          color: #f7f0dd;
+          font-family: Georgia, 'Songti SC', serif;
+          font-weight: 400;
+          line-height: 0.98;
+        }
+        .cover-with-photo p.slide-subtitle {
+          color: var(--muted);
+        }
+        .cover-photo {
+          width: 100%;
+          height: 100%;
+          min-height: 0;
+          object-fit: cover;
+          border-radius: 16px;
+        }
         .aimake-slide {
           background:
             radial-gradient(circle at 86% 12%, rgba(0, 113, 227, 0.08) 0%, transparent 44%),
@@ -4496,6 +4540,24 @@ function buildStandaloneTemplateHtml(manifest, theme) {
   const padTop = is9x16 ? 130 : is16x9 ? 64 : 74;
   const padBottom = is9x16 ? 250 : is16x9 ? 54 : 68;
   const variantCss = getVariantCss(theme.styleVariant, manifest, theme);
+  const coverLayout = manifest.id === 'apple-bento-launch' ? `
+        const imageData = window.__AIMAKE_PAYLOAD__?.enhancements?.coverImages?.[idx];
+        if (isWide && imageData) {
+          const zone = el.querySelector('.content-zone');
+          const copy = document.createElement('div');
+          copy.className = 'cover-copy';
+          copy.append(...zone.childNodes);
+          const image = document.createElement('img');
+          image.className = 'cover-photo';
+          image.src = imageData;
+          image.alt = slide.imagePrompt || '';
+          el.classList.add('cover-with-photo');
+          zone.replaceChildren(copy, image);
+          const title = copy.querySelector('.slide-title');
+          const coverTitlePx = slide.title.length < 22 ? 128 : titlePx;
+          title.dataset.basePx = String(coverTitlePx);
+          title.style.fontSize = coverTitlePx + 'px';
+        }` : '';
 
   return `<!DOCTYPE html>
 <html lang="${manifest.defaultLocale}">
@@ -4971,7 +5033,7 @@ function buildStandaloneTemplateHtml(manifest, theme) {
             '<span>' + citeLabel + '</span>' +
             '<span>' + wmLabel + '</span>' +
           '</div>';
-
+${coverLayout}
         root.appendChild(el);
         autoFitSlideOverflow(el);
       });

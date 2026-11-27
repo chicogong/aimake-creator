@@ -1,15 +1,18 @@
-# Aimake Studio · 文档全景索引 (`docs/DOCS_INDEX.md`)
+# Aimake Studio 文档索引
 
-本索引统一维护 `products/aimake` 仓库的治理审计、设计系统、技术提案、开源调研、开发规范与多 Agent 任务队列。所有公开文档均严格遵守「零内部运维信息泄露」与「正面肯定直叙文风」准则。
+## 桌面端与样稿
 
----
+- [桌面端快速上手](../README.zh-CN.md#开始使用)说明安装方式、工作区和导出依赖。
+- [Open Bench 样稿](../examples/open-bench/README.md)包含演示文稿、竖版借用卡、封面素材和来源笔记。
+- [桌面端体验讨论](https://github.com/chicogong/aimake-creator/discussions/47)汇总桌面实测与原生窗口截图。
+- [采集与分发方案](https://github.com/chicogong/aimake-creator/discussions/58)跟踪定时采集、分平台草稿与发布回执的规划。[项目看板](https://github.com/users/chicogong/projects/3)
 
 ## 一、 治理、审计与任务看板 (Governance, Audit & Backlog)
 
 | 文档 | 核心内容与用途 | 当前状态 |
 | :--- | :--- | :--- |
 | [**NORTH_STAR_TOP_TIER_BLUEPRINT.md**](./NORTH_STAR_TOP_TIER_BLUEPRINT.md) | **顶流项目北极星蓝图**：UI 视觉工艺实测复盘、Deck AST v2、Visual IR 与平台化架构 | `Active` |
-| [**AGENTS.md**](../AGENTS.md) | 仓库核心架构不变量、MIT 开源安全守则与 `pnpm verify` 11 步门禁 | `Active` |
+| [**AGENTS.md**](../AGENTS.md) | 仓库核心架构不变量、MIT 开源安全守则与 `pnpm verify` 验证流程 | `Active` |
 | [**PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md**](./PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md) | **全栈产品审计报告**：P0/P1 代码缺陷定位、模块化债务盘点、开源对标与演进蓝图 | `Active` |
 | [**BACKLOG_AND_AGENT_TASKS.md**](./BACKLOG_AND_AGENT_TASKS.md) | **多 Agent 可认领任务总看板**：按 `v2.0.1`–`v2.3.0` 分排的 TODO、精确目标文件与验收命令 | `Active` |
 | [**ROADMAP-2.0.md**](./ROADMAP-2.0.md) | 对齐 GitHub 4 大里程碑（`v2.0.1` → `v2.3.0`）的开源演进路线图 | `Active` |
@@ -53,7 +56,7 @@
 | 文档 | 调研对象与核心洞察 | 关联 Issue / 状态 |
 | :--- | :--- | :--- |
 | [**research/2026-11-23-ai-video-motion-landscape.md**](./research/2026-11-23-ai-video-motion-landscape.md) | AI 动效引擎与开源视频合成技术版图调研（Remotion / Motion Canvas 等） | `Reference` |
-| [**research/2026-11-24-capcut-draft-and-timeline-engine.md**](./research/2026-11-24-capcut-draft-and-timeline-engine.md) | 剪映 / CapCut `draft_content.json` 多轨草稿工程结构与时间轴引擎设计 | [#10](https://github.com/chicogong/aimake-creator/issues/10) · `In Progress` |
+| [**research/2026-11-24-capcut-draft-and-timeline-engine.md**](./research/2026-11-24-capcut-draft-and-timeline-engine.md) | 剪映 / CapCut `draft_content.json` 多轨草稿工程结构与时间轴引擎设计 | [#10](https://github.com/chicogong/aimake-creator/issues/10) · `Reference` |
 | [**research/2026-11-24-super-individual-creator-wiki-persona-assets.md**](./research/2026-11-24-super-individual-creator-wiki-persona-assets.md) | 超级个体 Knowledge Vault 与风格 DNA (`personas/`) 私有数字资产架构 | [#11](https://github.com/chicogong/aimake-creator/issues/11) · `Proposed` |
 | [**research/2026-11-24-autoclip-deep-dive-and-cross-pollination.md**](./research/2026-11-24-autoclip-deep-dive-and-cross-pollination.md) | `zhouxiaoka/autoclip` 架构、MCP 服务与 158 条短视频驱动因素实证拆解 | [#14](https://github.com/chicogong/aimake-creator/issues/14) · `Proposed` |
 | [**research/2026-11-24-agent-native-ecosystem-and-tools-research.md**](./research/2026-11-24-agent-native-ecosystem-and-tools-research.md) | `Ghost-Downloader-3`、`last30days-skill` 与港大 `HKUDS/CLI-Anything` 协同方案 | [#15](https://github.com/chicogong/aimake-creator/issues/15) · [#16](https://github.com/chicogong/aimake-creator/issues/16) · [#22](https://github.com/chicogong/aimake-creator/issues/22) |

@@ -4,6 +4,7 @@ import fsSync from 'node:fs';
 import type { Browser } from 'playwright';
 import type { DeckDocument, DeckSlide, AspectRatio } from '../schema/types.js';
 import { getTemplateById } from '../templates/index.js';
+import { readCoverImage } from './cover-image.js';
 import { renderMermaidSvg } from './mermaid-svg.js';
 import { launchSmartBrowser } from './exporter-media.js';
 
@@ -863,6 +864,8 @@ export async function addSlideContent(
 
   // Image assets (URLs, base64, or local files)
   if (slide.imageUrl && cursorY < currentDims.height - 1.2) {
+    const coverImage = await readCoverImage(doc, slide);
+    const imageSource = coverImage ?? slide.imageUrl;
     const availW = currentDims.contentWidth;
     const availH = Math.max(1.8, currentDims.height - 0.7 - cursorY);
     const imgH = Math.min(3.2, availH);
@@ -870,16 +873,17 @@ export async function addSlideContent(
     const imgX = currentDims.margin.x + (availW - imgW) / 2;
 
     if (
-      slide.imageUrl.startsWith('data:image/') ||
-      slide.imageUrl.startsWith('http://') ||
-      slide.imageUrl.startsWith('https://')
+      imageSource.startsWith('data:image/') ||
+      imageSource.startsWith('http://') ||
+      imageSource.startsWith('https://')
     ) {
       s.addImage({
-        [slide.imageUrl.startsWith('data:') ? 'data' : 'path']: slide.imageUrl,
+        [imageSource.startsWith('data:') ? 'data' : 'path']: imageSource,
         x: imgX,
         y: cursorY,
         w: imgW,
         h: imgH,
+        ...(coverImage ? { sizing: { type: 'cover' as const, w: imgW, h: imgH } } : {}),
       });
       cursorY += imgH + 0.3;
     } else if (fsSync.existsSync(slide.imageUrl)) {
