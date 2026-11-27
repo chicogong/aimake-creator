@@ -14,7 +14,9 @@
 
 ---
 
-## Active Issue Priority Matrix (P0 / P1 / P2)
+## Engineering Priorities and Acceptance References
+
+The linked issues record current status and evidence. The [creator strategy and visual roadmap (中文)](./CREATOR_STRATEGY.zh-CN.md) connects this engineering work to a complete creator session.
 
 | Level | Issue / Topic | Impact Domain | Delivery Target & Acceptance Criteria |
 | :---: | :--- | :--- | :--- |
@@ -29,26 +31,13 @@
 
 ---
 
-## Phased Execution Roadmap
+## Proposed Creator Milestones
 
-```
-Phase 1: Stability & Anti-Loss (Current · 1-2 Days)
-  ├── #54 Workspace isolation & conflict prevention
-  ├── #55 WeChat Mermaid SVG/PNG inline rasterization
-  ├── #52 Context drawer live citation audit
-  └── #56 Studio AI co-pilot timeout retry & draft retention
+1. **Finish a first issue on desktop.** Starting with a real news source, a creator checks the facts, edits a common manuscript and exports a mobile article and a portrait carousel. Validate this flow on the distributed installer and repeat it with a second story to check file isolation.
+2. **Reopen a WeChat draft.** The creator follows a receipt to the correct account and checks the saved text and images. A retry resolves to the same draft. The creator makes the final publishing decision.
+3. **Make the next issue easier.** Observe which sources, layouts and editorial choices returning creators reuse. Extend verified draft delivery to Zhihu and Juejin one channel at a time. Track time to a usable first export, successful draft reopens and second issues completed within seven days.
 
-Phase 2: Live Intelligence Radar & Self-Healing Setup (Next · 3-5 Days)
-  ├── #59 Cron-based RSS / Hacker News intake scheduler
-  ├── #53 Headless Playwright / FFmpeg runtime self-healing
-  ├── #44 One-click creation from live source entries
-  └── #43 / #39 Export concurrency lock and queue hardening
-
-Phase 3: Multi-Platform Draft Syndication & Knowledge Flywheel (1-2 Weeks)
-  ├── Discussion #58 Draft Box Syndication (WeChat, Zhihu, Juejin, Xiaohongshu, Feishu Bot)
-  ├── Sparkle 2.x automated delta updates for macOS desktop app
-  └── Local LLM Wiki auto-distillation flywheel
-```
+The [implementation plan](https://github.com/chicogong/aimake-creator/discussions/58) covers scheduling, draft adapters and recovery. The [engineering backlog](./BACKLOG_AND_AGENT_TASKS.md) tracks desktop updates, local knowledge tools and media work.
 
 ---
 
