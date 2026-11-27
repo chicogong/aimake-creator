@@ -8,7 +8,7 @@
 
 | 文档 | 核心内容与用途 | 当前状态 |
 | :--- | :--- | :--- |
-| [**Aimake Studio 产品战略与路线图**](./CREATOR_STRATEGY.zh-CN.md) | 多来源与原创灵感进入 Studio 创作，再按各平台交付，含战略图与试点验收 | `Proposed` |
+| [**Aimake Studio 产品战略与路线图**](./CREATOR_STRATEGY.zh-CN.md) | 多来源与灵感、Studio 的 AI 工具协作、预制资源与知识库、自动采集和分发 | `Proposed` |
 | [**NORTH_STAR_TOP_TIER_BLUEPRINT.md**](./NORTH_STAR_TOP_TIER_BLUEPRINT.md) | **顶流项目北极星蓝图**：UI 视觉工艺实测复盘、Deck AST v2、Visual IR 与平台化架构 | `Active` |
 | [**AGENTS.md**](../AGENTS.md) | 仓库核心架构不变量、MIT 开源安全守则与 `pnpm verify` 11 步门禁 | `Active` |
 | [**PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md**](./PRODUCT_AUDIT_AND_ARCHITECTURE_2026.md) | **全栈产品审计报告**：P0/P1 代码缺陷定位、模块化债务盘点、开源对标与演进蓝图 | `Active` |
