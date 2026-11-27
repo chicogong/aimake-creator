@@ -2,13 +2,19 @@ import matter from 'gray-matter';
 import YAML from 'yaml';
 import type {
   AspectRatio,
+  ChartBlock,
+  ChartItem,
   ComparisonBlock,
   DeckDocument,
   DeckFrontmatter,
   DeckSlide,
+  GridItem,
   MetricItem,
+  ParsedGfmTable,
   SlideLayout,
+  StepItem,
   SupportedLocale,
+  TimelineItem,
 } from '../schema/types.js';
 
 const DEFAULT_FRONTMATTER: DeckFrontmatter = {
@@ -144,6 +150,153 @@ function parseCompareFence(content: string): ComparisonBlock | undefined {
   };
 }
 
+function parseChartFence(content: string, focus?: string): ChartBlock | undefined {
+  let chartType: ChartBlock['type'] = 'bar';
+  let title: string | undefined;
+
+  if (focus) {
+    const typeMatch = focus.match(/type\s*[:=]\s*([a-zA-Z]+)/i);
+    if (typeMatch) {
+      const t = typeMatch[1].toLowerCase();
+      if (t === 'line' || t === 'radar' || t === 'pie' || t === 'bar') {
+        chartType = t;
+      }
+    }
+    const titleMatch = focus.match(/title\s*[:=]\s*["']?([^"';}]+)["']?/i);
+    if (titleMatch) title = titleMatch[1].trim();
+  }
+
+  const items: ChartItem[] = [];
+  for (const rawLine of content.split('\n')) {
+    const line = rawLine.replace(/^[-*]\s*/, '').trim();
+    if (!line) continue;
+    if (/^type\s*[:=]/i.test(line)) {
+      const val = line.split(/[:=]/)[1].trim().toLowerCase();
+      if (val === 'line' || val === 'radar' || val === 'pie' || val === 'bar') {
+        chartType = val;
+      }
+      continue;
+    }
+    if (/^title\s*[:=]/i.test(line)) {
+      title = line.split(/[:=]/)[1].trim();
+      continue;
+    }
+    const separatorMatch = line.match(/^([^:=]+)[:=](.+)$/);
+    if (separatorMatch) {
+      const label = separatorMatch[1].trim();
+      const valStr = separatorMatch[2].trim();
+      const num = parseFloat(valStr.replace(/[^0-9.-]/g, ''));
+      if (!isNaN(num)) {
+        items.push({ label, value: num });
+      }
+    }
+  }
+
+  if (items.length === 0) return undefined;
+  return { type: chartType, title, data: items };
+}
+
+function parseStepsFence(content: string): StepItem[] {
+  const steps: StepItem[] = [];
+  for (const rawLine of content.split('\n')) {
+    const line = rawLine.trim();
+    if (!line) continue;
+    const match = line.match(/^(\d+\.?|[-*+])\s*(.*?)(?:::|\|)(.*)$/);
+    if (match) {
+      const stepNum = match[1].replace(/\.$/, '').trim() || String(steps.length + 1);
+      const title = match[2].trim();
+      const desc = match[3].trim();
+      steps.push({ step: stepNum, title, desc: desc || undefined });
+    } else {
+      const clean = line.replace(/^(\d+\.?|[-*+])\s*/, '').trim();
+      steps.push({ step: String(steps.length + 1), title: clean });
+    }
+  }
+  return steps;
+}
+
+function parseTimelineFence(content: string): TimelineItem[] {
+  const items: TimelineItem[] = [];
+  for (const rawLine of content.split('\n')) {
+    const line = rawLine.trim();
+    if (!line) continue;
+    const parts = line.split(/::|\|/).map((s) => s.trim());
+    if (parts.length >= 2) {
+      items.push({
+        time: parts[0].replace(/^[-*+]\s*/, '').trim(),
+        event: parts[1],
+        detail: parts[2] || undefined,
+      });
+    }
+  }
+  return items;
+}
+
+function parseGridFence(content: string): GridItem[] {
+  const items: GridItem[] = [];
+  for (const rawLine of content.split('\n')) {
+    const line = rawLine.trim();
+    if (!line) continue;
+    const parts = line.split(/::|\|/).map((s) => s.trim());
+    if (parts.length >= 2) {
+      items.push({
+        title: parts[0].replace(/^[-*+]\s*/, '').trim(),
+        content: parts[1],
+        tag: parts[2] || undefined,
+      });
+    }
+  }
+  return items;
+}
+
+export function extractTableBlockFromLines(lines: string[]): { table: ParsedGfmTable; tableLines: Set<number> } | null {
+  let startIdx = -1;
+  for (let i = 0; i < lines.length - 1; i++) {
+    const curr = lines[i].trim();
+    const next = lines[i + 1].trim();
+    if (curr.includes('|') && /^\|?(\s*:?-+:?\s*\|)+\s*:?-+:?\s*\|?$/.test(next)) {
+      startIdx = i;
+      break;
+    }
+  }
+  if (startIdx === -1) return null;
+
+  const splitCells = (line: string): string[] => {
+    const trimmed = line.trim().replace(/^\|/, '').replace(/\|$/, '');
+    return trimmed.split('|').map((c) => c.trim());
+  };
+
+  const headerLine = lines[startIdx];
+  const delimiterLine = lines[startIdx + 1];
+  const rawHeaders = splitCells(headerLine);
+  const rawDelims = splitCells(delimiterLine);
+
+  const numCols = Math.min(rawHeaders.length, rawDelims.length);
+  if (numCols === 0) return null;
+
+  const headers = rawHeaders.slice(0, numCols);
+  const alignments: ('left' | 'center' | 'right')[] = rawDelims.slice(0, numCols).map((d) => {
+    const hasLeft = d.startsWith(':');
+    const hasRight = d.endsWith(':');
+    if (hasLeft && hasRight) return 'center';
+    if (hasRight) return 'right';
+    return 'left';
+  });
+
+  const tableLines = new Set<number>([startIdx, startIdx + 1]);
+  const rows: string[][] = [];
+  for (let i = startIdx + 2; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line.includes('|')) break;
+    tableLines.add(i);
+    const cells = splitCells(line);
+    const row = headers.map((_, cIdx) => cells[cIdx] || '');
+    rows.push(row);
+  }
+
+  return { table: { headers, alignments, rows }, tableLines };
+}
+
 function parseSingleSlide(rawChunk: string, index: number, total: number): DeckSlide {
   const { meta, cleaned } = parseSceneComment(rawChunk);
   let working = cleaned;
@@ -162,6 +315,10 @@ function parseSingleSlide(rawChunk: string, index: number, total: number): DeckS
   let comparison: ComparisonBlock | undefined;
   let code: DeckSlide['code'];
   let diagram: DeckSlide['diagram'];
+  let chart: ChartBlock | undefined;
+  let steps: StepItem[] | undefined;
+  let timeline: TimelineItem[] | undefined;
+  let grid: GridItem[] | undefined;
 
   working = working.replace(/```([a-zA-Z0-9_-]*)(?:\s+\{([^}]+)\})?\n([\s\S]*?)```/g, (_m, lang: string, focus: string | undefined, inner: string) => {
     const normalizedLang = (lang || '').toLowerCase();
@@ -171,6 +328,22 @@ function parseSingleSlide(rawChunk: string, index: number, total: number): DeckS
     }
     if (normalizedLang === 'compare' || normalizedLang === 'comparison') {
       comparison = parseCompareFence(inner);
+      return '';
+    }
+    if (normalizedLang === 'chart') {
+      chart = parseChartFence(inner, focus);
+      return '';
+    }
+    if (normalizedLang === 'steps' || normalizedLang === 'step') {
+      steps = parseStepsFence(inner);
+      return '';
+    }
+    if (normalizedLang === 'timeline') {
+      timeline = parseTimelineFence(inner);
+      return '';
+    }
+    if (normalizedLang === 'grid' || normalizedLang === 'bento') {
+      grid = parseGridFence(inner);
       return '';
     }
     if (normalizedLang === 'mermaid') {
@@ -208,8 +381,18 @@ function parseSingleSlide(rawChunk: string, index: number, total: number): DeckS
   const bodyParagraphs: string[] = [];
   const quoteLines: string[] = [];
 
-  for (const rawLine of working.split('\n')) {
-    const line = rawLine.trim();
+  let table: ParsedGfmTable | undefined;
+  const rawLines = working.split('\n');
+  const tableResult = extractTableBlockFromLines(rawLines);
+  if (tableResult) {
+    table = tableResult.table;
+  }
+
+  for (let lineIdx = 0; lineIdx < rawLines.length; lineIdx++) {
+    if (tableResult && tableResult.tableLines.has(lineIdx)) {
+      continue;
+    }
+    const line = rawLines[lineIdx].trim();
     if (!line) continue;
 
     if (line.startsWith('# ') && !title) {
@@ -253,6 +436,11 @@ function parseSingleSlide(rawChunk: string, index: number, total: number): DeckS
     code,
     diagram,
     comparison,
+    table,
+    chart,
+    steps,
+    timeline,
+    grid,
     quote,
     bullets,
   };
@@ -290,6 +478,11 @@ function parseSingleSlide(rawChunk: string, index: number, total: number): DeckS
     code,
     diagram,
     comparison,
+    table,
+    chart,
+    steps,
+    timeline,
+    grid,
     imagePrompt,
     imageUrl,
     cite: meta.cite,
@@ -375,6 +568,35 @@ export function serializeDeckMarkdown(doc: DeckDocument): string {
     if (s.metrics.length > 0) {
       const mLines = s.metrics.map((m) => `- ${m.label}: ${m.value}${m.delta ? ` (${m.delta})` : ''}`);
       parts.push(['```metric', ...mLines, '```'].join('\n'));
+    }
+    if (s.chart) {
+      const typeOpt = `type: ${s.chart.type}`;
+      const titleOpt = s.chart.title ? `, title: "${s.chart.title}"` : '';
+      const cLines = s.chart.data.map((d) => `- ${d.label}: ${d.value}`);
+      parts.push([`\`\`\`chart {${typeOpt}${titleOpt}}`, ...cLines, '```'].join('\n'));
+    }
+    if (s.table) {
+      const headerRow = `| ${s.table.headers.join(' | ')} |`;
+      const sepRow = `| ${s.table.headers.map((_, i) => {
+        const align = s.table?.alignments?.[i] || 'left';
+        if (align === 'center') return ':---:';
+        if (align === 'right') return '---:';
+        return '---';
+      }).join(' | ')} |`;
+      const bodyRows = s.table.rows.map((r) => `| ${r.join(' | ')} |`);
+      parts.push([headerRow, sepRow, ...bodyRows].join('\n'));
+    }
+    if (s.steps && s.steps.length > 0) {
+      const sLines = s.steps.map((st) => st.desc ? `${st.step}. ${st.title} :: ${st.desc}` : `${st.step}. ${st.title}`);
+      parts.push(['```steps', ...sLines, '```'].join('\n'));
+    }
+    if (s.timeline && s.timeline.length > 0) {
+      const tLines = s.timeline.map((t) => t.detail ? `${t.time} :: ${t.event} :: ${t.detail}` : `${t.time} :: ${t.event}`);
+      parts.push(['```timeline', ...tLines, '```'].join('\n'));
+    }
+    if (s.grid && s.grid.length > 0) {
+      const gLines = s.grid.map((g) => g.tag ? `${g.title} :: ${g.content} :: ${g.tag}` : `${g.title} :: ${g.content}`);
+      parts.push(['```grid', ...gLines, '```'].join('\n'));
     }
     if (s.comparison) {
       parts.push(

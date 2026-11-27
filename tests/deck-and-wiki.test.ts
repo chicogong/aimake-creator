@@ -7,6 +7,9 @@ import {
   parseDeckMarkdown,
   serializeDeckMarkdown,
 } from '../src/renderer/deck-parser.js';
+import { renderChartSvg } from '../src/renderer/chart-svg.js';
+import { renderMermaidSvg } from '../src/renderer/mermaid-svg.js';
+import { compileDeckToHtml } from '../src/renderer/html-compiler.js';
 import { renderWeChatInlineHtml } from '../src/renderer/wechat-inliner.js';
 import {
   auditAiSlop,
@@ -80,6 +83,192 @@ export default divider;
     const reparsed = parseDeckMarkdown(serialized);
     expect(reparsed.slides[0].title).toBe('Updated Headline');
     expect(reparsed.slides).toHaveLength(2);
+  });
+
+  it('Issue #25: parses and roundtrips Deck AST v2 blocks (GFM tables, charts, steps, timeline, grid)', () => {
+    const markdown = `---
+title: Deck AST v2 Specimen
+template: apple-bento-launch
+locale: en
+aspect: 16:9
+---
+
+<!-- scene: s1 | layout: bullets -->
+# Architecture Overview
+
+| Component | Status | Latency |
+| :--- | :---: | ---: |
+| Vector Parser | Ready | 1.2ms |
+| Chart Renderer | Ready | 0.8ms |
+
+\`\`\`chart {type: bar, title: "Q4 Performance Benchmarks"}
+- Parser: 120
+- Compiler: 240
+- Bundler: 310
+\`\`\`
+
+---
+
+<!-- scene: s2 | layout: bullets -->
+# Workflow and Milestones
+
+\`\`\`steps
+1. Ingest Raw Notes :: Auto-fetch RSS & notes
+2. Compile Visual IR :: Deterministic layout
+3. Multi-Channel Export :: PPTX, Wechat, Video
+\`\`\`
+
+\`\`\`timeline
+2024 :: Foundation & Zero-Cloud Core :: Complete local isolation
+2025 :: 36 Design System Market :: Cross-locale templates
+2026 :: Multimodal Agentic Flywheel :: Autonomous compilation
+\`\`\`
+
+\`\`\`grid
+Card 1 :: High density layout :: Featured
+Card 2 :: Responsive bento columns :: Pro
+\`\`\`
+`;
+
+    const doc = parseDeckMarkdown(markdown);
+    expect(doc.slides).toHaveLength(2);
+
+    // Slide 1 checks
+    const s1 = doc.slides[0];
+    expect(s1.table).toBeDefined();
+    expect(s1.table?.headers).toEqual(['Component', 'Status', 'Latency']);
+    expect(s1.table?.alignments).toEqual(['left', 'center', 'right']);
+    expect(s1.table?.rows).toHaveLength(2);
+    expect(s1.table?.rows[0]).toEqual(['Vector Parser', 'Ready', '1.2ms']);
+
+    expect(s1.chart).toBeDefined();
+    expect(s1.chart?.type).toBe('bar');
+    expect(s1.chart?.title).toBe('Q4 Performance Benchmarks');
+    expect(s1.chart?.data).toEqual([
+      { label: 'Parser', value: 120 },
+      { label: 'Compiler', value: 240 },
+      { label: 'Bundler', value: 310 },
+    ]);
+
+    // Slide 2 checks
+    const s2 = doc.slides[1];
+    expect(s2.steps).toHaveLength(3);
+    expect(s2.steps?.[0]).toEqual({
+      step: '1',
+      title: 'Ingest Raw Notes',
+      desc: 'Auto-fetch RSS & notes',
+    });
+
+    expect(s2.timeline).toHaveLength(3);
+    expect(s2.timeline?.[0]).toEqual({
+      time: '2024',
+      event: 'Foundation & Zero-Cloud Core',
+      detail: 'Complete local isolation',
+    });
+
+    expect(s2.grid).toHaveLength(2);
+    expect(s2.grid?.[0]).toEqual({
+      title: 'Card 1',
+      content: 'High density layout',
+      tag: 'Featured',
+    });
+
+    // Roundtrip verification
+    const serialized = serializeDeckMarkdown(doc);
+    const reparsed = parseDeckMarkdown(serialized);
+    expect(reparsed.slides[0].table?.headers).toEqual(s1.table?.headers);
+    expect(reparsed.slides[0].chart?.data).toEqual(s1.chart?.data);
+    expect(reparsed.slides[1].steps).toEqual(s2.steps);
+    expect(reparsed.slides[1].timeline).toEqual(s2.timeline);
+    expect(reparsed.slides[1].grid).toEqual(s2.grid);
+  });
+
+  it('Issue #25: renders deterministic offline vector SVG charts (bar, line, radar, pie)', () => {
+    const barSvg = renderChartSvg({
+      type: 'bar',
+      title: 'Metrics',
+      data: [
+        { label: 'Q1', value: 100 },
+        { label: 'Q2', value: 250 },
+      ],
+    });
+    expect(barSvg).toContain('<svg class="aimake-chart-svg"');
+    expect(barSvg).toContain('Metrics');
+    expect(barSvg).toContain('Q1');
+    expect(barSvg).toContain('Q2');
+
+    const lineSvg = renderChartSvg({
+      type: 'line',
+      title: 'Growth',
+      data: [
+        { label: 'Jan', value: 10 },
+        { label: 'Feb', value: 45 },
+      ],
+    });
+    expect(lineSvg).toContain('<polyline');
+    expect(lineSvg).toContain('Jan');
+
+    const radarSvg = renderChartSvg({
+      type: 'radar',
+      data: [
+        { label: 'Speed', value: 95 },
+        { label: 'Quality', value: 90 },
+        { label: 'Privacy', value: 100 },
+      ],
+    });
+    expect(radarSvg).toContain('<polygon');
+    expect(radarSvg).toContain('Privacy');
+
+    const pieSvg = renderChartSvg({
+      type: 'pie',
+      title: 'Distribution',
+      data: [
+        { label: 'Direct', value: 60 },
+        { label: 'Referral', value: 40 },
+      ],
+    });
+    expect(pieSvg).toContain('<path');
+    expect(pieSvg).toContain('Direct');
+  });
+
+  it('Issue #25: auto-reflows Mermaid flowcharts from horizontal LR to vertical TD on narrow aspect ratios', () => {
+    const flowchart = `flowchart LR
+    A[Raw Notes] --> B[Visual IR] --> C[Publish]`;
+
+    // Wide 16:9 preserves horizontal LR
+    const wideSvg = renderMermaidSvg(flowchart, { aspect: '16:9' });
+    expect(wideSvg).toContain('Raw Notes');
+
+    // Narrow 3:4 auto-reflows to vertical TD
+    const narrowSvg = renderMermaidSvg(flowchart, { aspect: '3:4' });
+    expect(narrowSvg).toContain('Raw Notes');
+    expect(narrowSvg).toContain('data-diagram-engine="mermaid"');
+  });
+
+  it('Issue #25: compiles Deck AST v2 elements into rich standalone HTML presentation', async () => {
+    const doc = parseDeckMarkdown(`---
+title: Standalone HTML Compiler Test
+template: apple-bento-launch
+locale: en
+aspect: 16:9
+---
+
+# Feature Showcase
+
+| Metric | Target | Result |
+| :--- | :--- | :--- |
+| Zero-Cloud | 100% | Pass |
+
+\`\`\`chart {type: bar}
+- A: 10
+- B: 20
+\`\`\`
+`);
+
+    const result = await compileDeckToHtml(doc);
+    expect(result.html).toContain('aimake-chart-svg');
+    expect(result.html).toContain('aimake-table');
+    expect(result.html).toContain('Zero-Cloud');
   });
 });
 
@@ -266,4 +455,60 @@ describe('Universal Host Symlink Installer, MCP Server & Static Site Builder', (
       await fs.rm(tmpSite, { recursive: true, force: true });
     }
   }, 30000);
+
+  it('verifies Issue #42: Operations recap specimen with dual aspect and evidence mapping', async () => {
+    const specimenPath = path.resolve(__dirname, '../templates/ppt-consulting-matrix/sample.deck.md');
+    const content = await fs.readFile(specimenPath, 'utf8');
+
+    // 1. Parse AST
+    const doc = parseDeckMarkdown(content);
+    expect(doc.frontmatter.title).toContain('2026 Q1 线下创作者沙龙暨多模态生产力试点项目深度复盘');
+    expect(doc.frontmatter.template).toBe('ppt-consulting-matrix');
+    expect(doc.frontmatter.tags).toContain('operations-recap');
+    expect(doc.slides.length).toBe(4);
+
+    // Slide 1: metrics
+    const coverSlide = doc.slides[0];
+    expect(coverSlide.layout).toBe('metrics');
+    expect(coverSlide.metrics).toHaveLength(3);
+    expect(coverSlide.metrics[0].label).toBe('报名人数');
+    expect(coverSlide.metrics[0].value).toBe('48 人');
+    expect(coverSlide.metrics[1].value).toBe('36 人');
+    expect(coverSlide.metrics[2].value).toBe('27 组');
+    expect(coverSlide.cite).toContain('2026-01-10 至 2026-03-25');
+
+    // Slide 2: comparison (Observations -> Actions)
+    const compSlide = doc.slides[1];
+    expect(compSlide.layout).toBe('comparison');
+    expect(compSlide.comparison).toBeDefined();
+    expect(compSlide.comparison?.leftItems).toHaveLength(3);
+    expect(compSlide.comparison?.rightItems).toHaveLength(3);
+    expect(compSlide.comparison?.leftTitle).toContain('现场观察到的痛点反馈');
+    expect(compSlide.comparison?.rightTitle).toContain('下月明确推进的改善动作');
+
+    // Slide 3: GFM table
+    const tableSlide = doc.slides[2];
+    expect(tableSlide.table).toBeDefined();
+    expect(tableSlide.table?.headers).toEqual(['优先级', '核心改进事项', '交付目标', '负责人', '截止时间', '验证来源']);
+    expect(tableSlide.table?.rows).toHaveLength(3);
+    expect(tableSlide.table?.rows[0][0]).toBe('P0');
+    expect(tableSlide.table?.rows[0][3]).toBe('@chico');
+
+    // Slide 4: Outro summary
+    const outroSlide = doc.slides[3];
+    expect(outroSlide.layout).toBe('outro');
+    expect(outroSlide.bullets).toHaveLength(3);
+
+    // 2. Dual-aspect compilation: 16:9 vs 3:4
+    const html16x9 = await compileDeckToHtml(doc);
+    expect(html16x9.html).toContain('2026 Q1 线下创作者沙龙暨多模态生产力试点项目深度复盘');
+    expect(html16x9.html).not.toContain('.compare-grid { grid-template-columns: 1fr !important; }');
+
+    const doc3x4 = {
+      ...doc,
+      frontmatter: { ...doc.frontmatter, aspect: '3:4' as const },
+    };
+    const html3x4 = await compileDeckToHtml(doc3x4);
+    expect(html3x4.html).toContain('.compare-grid { grid-template-columns: 1fr !important; }');
+  });
 });

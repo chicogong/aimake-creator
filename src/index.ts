@@ -2,6 +2,7 @@ export * from './schema/types.js';
 export * from './renderer/deck-parser.js';
 export * from './renderer/html-compiler.js';
 export * from './renderer/mermaid-svg.js';
+export * from './renderer/chart-svg.js';
 export * from './renderer/importers.js';
 export * from './renderer/wechat-inliner.js';
 export * from './renderer/exporter-pptx.js';

@@ -1516,7 +1516,9 @@ export const BUILTIN_TEMPLATES: readonly TemplateDefinition[] = [
         "strategy",
         "kpi",
         "pptx",
-        "16x9"
+        "16x9",
+        "recap",
+        "operations-recap"
       ]
     },
     "theme": {
@@ -1560,7 +1562,7 @@ export const BUILTIN_TEMPLATES: readonly TemplateDefinition[] = [
         "gridLine": "rgba(0, 0, 0, 0.06)"
       }
     },
-    "sampleDeckMd": "---\ntitle: 战略咨询 · 16:9 麦肯锡/BCG 行动结论看板 · 2026 旗舰排版样本\ntemplate: ppt-consulting-matrix\nlocale: zh-CN\naspect: 16:9\nauthor: Aimake Studio\nhandle: \"@aimake.cc\"\nwatermark: true\nfps: 30\nsecondsPerSlide: 3\ntags:\n  - 2026-Trending\n  - presentation\n---\n\n<!-- scene: cover | layout: metrics | eyebrow: PRESENTATION | cite: aimake.cc/templates/ppt-consulting-matrix -->\n\n# 战略咨询 · 16:9 麦肯锡/BCG 行动结论看板：高质量内容呈现规范\n\n## 对标顶级管理咨询公司（McKinsey/BCG）汇报标准：深藏蓝顶栏、高对比度行动标题带、结构化 KPI 矩阵与底部信源栏。\n\n```metric\n- 上下文节省率: 95% (确定性 AST 编译)\n- 云端数据上传: 0 KB (100% 本地隐私安全)\n- 多端介质直出: 5 种 (图集 · PDF · PPTX · 视频)\n```\n\n- **结构化排版原则**：字距、行高与留白严格遵循黄金比例视觉节奏\n- **原生支持暗黑与明亮双主题**：根据阅读场景与载体自由切换\n\n---\n\n<!-- scene: breakdown | layout: comparison | eyebrow: 核心框架对比 -->\n\n# 传统创作流 vs Aimake 多模态编译飞轮\n\n```compare\n传统繁琐排版 :: 各平台手动粘贴格式错乱 | 素材分散各处难以归档 | 隐私存在泄露风险\nAimake 确定性体系 :: 单一 Markdown 原稿秒级编译 | 36 套旗舰视觉系统开箱即用 | 资产沉淀在本地工作区\n```\n\n- **一稿多出生态兼容**：无缝打通 OpenCode、WorkBuddy、Codex 与 Claude Code\n- **Mermaid 向量图表离线直出**：高保真流程图与时序图，零网络依赖\n\n---\n\n<!-- scene: quote | layout: quote | eyebrow: 创作者宣言 -->\n\n# 让每一次思考都自带多模态传播力\n\n> “最好的排版不是堆砌花哨特效，而是用清晰的物理秩序，让思想的重力自然下沉。” — Aimake 设计宣言\n"
+    "sampleDeckMd": "---\ntitle: 2026 Q1 线下创作者沙龙暨多模态生产力试点项目深度复盘与下一步行动规划\ntemplate: ppt-consulting-matrix\nlocale: zh-CN\naspect: 16:9\nauthor: Aimake Studio\nhandle: \"@aimake.cc\"\nwatermark: true\nfps: 30\nsecondsPerSlide: 4\ntags:\n  - 2026-Trending\n  - presentation\n  - operations-recap\n---\n\n<!-- scene: cover | layout: metrics | eyebrow: OPERATIONS RECAP | cite: 来源：活动签到系统与问卷统计 (2026-01-10 至 2026-03-25) -->\n\n# 2026 Q1 线下创作者沙龙暨多模态生产力试点项目深度复盘与下一步行动规划\n\n## 基于 3 场线下工作坊的签到记录与问卷回溯 · 数据口径：覆盖上海与杭州两地实到创作者\n\n```metric\n- 报名人数: 48 人 (超额报名 160%)\n- 实际到场: 36 人 (现场全勤率 75%)\n- 方案采纳: 27 组 (试点满意度 92%)\n```\n\n- **数据口径说明**：统计区间 2026-01-10 至 2026-03-25，排除测试账号与重复报名\n- **核心结论先行**：多模态排版工具链实测降低 72% 重复复制时间，但在跨画幅切换与大文件导出时仍有摩擦\n\n---\n\n<!-- scene: feedback-actions | layout: comparison | eyebrow: 观察反馈与下月动作 -->\n\n# 现场关键反馈到下月迭代动作的逐项映射\n\n```compare\n现场观察到的痛点反馈 :: 模板切换画幅时部分长标题折行跳动 | 导出 4K 高清 PDF 时偶现 1.2s 界面挂起 | 创作者希望直接复制现成经过验证的提示词\n下月明确推进的改善动作 :: 引入 AST 级不可变状态与画幅自适应安全区 | 优化无头渲染后台任务队列并接入持久化缓存 | 内置项目复盘与创作者增长等新手任务配方\n```\n\n- **即时响应闭环**：所有现场提出的痛点均已建立 GitHub Issue 跟踪，每周同步交付进展\n- **数据与行动溯源**：每一项改进均映射到唯一的业务指标与负责人\n\n---\n\n<!-- scene: roadmap | layout: bullets | eyebrow: 行动计划与责任矩阵 | cite: 详见：RFC-42 与研发跟踪看板 -->\n\n# 核心改进事项、交付负责人与里程碑排期\n\n| 优先级 | 核心改进事项 | 交付目标 | 负责人 | 截止时间 | 验证来源 |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| P0 | 渲染流水线提速 | 端到端构建耗时 < 400ms | @chico | 2026-04-15 | [测试基准报告](https://aimake.cc/wiki/benchmarks) |\n| P0 | 双画幅自适应重排 | 16:9 与 3:4 切换零数据丢失 | @devon | 2026-04-20 | [规范 RFC-42](https://aimake.cc/wiki/rfc-42) |\n| P1 | 移动端预览优化 | 390px 视口无横向溢出 | @alex | 2026-04-28 | [E2E 验收表](https://aimake.cc/wiki/mobile-e2e) |\n\n- **里程碑核验机制**：每周五下午 16:00 进行集成测试与构建基准跑分核验\n- **对外发布同步**：关键交付随当周版本发布 Notes 同步发布至讨论区与用户群\n\n---\n\n<!-- scene: summary | layout: outro | eyebrow: 复盘备忘总结 -->\n\n# 沉淀复利资产，持续加速多模态创作飞轮\n\n- **单一事实源**：原始素材与复盘纪要统一归档于本地工作区，拒绝资产分散\n- **全格式原生交付**：同一套复盘源稿，一键导出 16:9 原生 PPTX 汇报与 3:4 高清长图\n- **持续行动追踪**：以数据为证据，以行动为抓手，下阶段复盘按排期逐项验收\n"
   },
   {
     "manifest": {

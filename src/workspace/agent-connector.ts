@@ -77,6 +77,15 @@ export const BEGINNER_TASK_RECIPES: BeginnerTaskRecipe[] = [
     promptZh:
       '请结合本工作区的知识库素材与当前行业热点，先梳理独特切入点与逻辑主线，再写成一篇扎实有温度的公众号深度拆解（使用 wechat-editorial-article 模板）：包含引人入胜的开篇案例、3 个递进式拆解小节与可落地建议，全程去 AI 味精修并同步到 Aimake 舞台。',
   },
+  {
+    id: 'operations-recap',
+    titleZh: '项目复盘 · 证据与行动',
+    subtitleZh: '面向周报、活动回顾与小型试点，输出 16:9 汇报与 3:4 读者卡，数据与行动可溯源',
+    badgeZh: '项目复盘',
+    recommendedTemplate: 'ppt-consulting-matrix',
+    promptZh:
+      '请根据本工作区提供的活动与运营纪要，编写一套「项目复盘 · 证据与行动」演示稿（使用 ppt-consulting-matrix 模板，适配 16:9 汇报与 3:4 读者卡）：首屏呈现长中文标题与 3 项关键数据指标，中间页呈现「观察到的反馈 → 下月动作」对应关系，尾页集中具体行动、负责人与截止日，严格标注数据口径与来源引用。',
+  },
 ];
 
 export const COPILOT_TASK_RECIPES: BeginnerTaskRecipe[] = [

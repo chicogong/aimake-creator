@@ -15,9 +15,17 @@ import langSwift from 'highlight.js/lib/languages/swift';
 import langTypescript from 'highlight.js/lib/languages/typescript';
 import langXml from 'highlight.js/lib/languages/xml';
 import langYaml from 'highlight.js/lib/languages/yaml';
-import type { DeckDocument, TemplateManifest } from '../schema/types.js';
+import type {
+  DeckDocument,
+  GridItem,
+  ParsedGfmTable,
+  StepItem,
+  TemplateManifest,
+  TimelineItem,
+} from '../schema/types.js';
 import { readCoverImage } from './cover-image.js';
 import { renderMermaidSvg } from './mermaid-svg.js';
+import { renderChartSvg } from './chart-svg.js';
 
 hljs.registerLanguage('typescript', langTypescript);
 hljs.registerLanguage('ts', langTypescript);
@@ -121,6 +129,66 @@ const ASPECT_DIMENSIONS: Record<string, [number, number]> = {
  * Injects locale-aware typography rules (JP strict kinsoku, KR keep-all Pretendard, EN auto-fit)
  * and optional WYSIWYG [data-editable] bridge for Aimake Studio.
  */
+function renderTableHtml(table: ParsedGfmTable): string {
+  const alignStyle = (align?: 'left' | 'center' | 'right') =>
+    align === 'center' ? ' style="text-align:center"' : align === 'right' ? ' style="text-align:right"' : ' style="text-align:left"';
+
+  const ths = table.headers.map((h, i) => `<th${alignStyle(table.alignments?.[i])}>${escapeHtmlBasic(h)}</th>`).join('');
+  const trs = table.rows.map((row) => {
+    const tds = row.map((cell, i) => `<td${alignStyle(table.alignments?.[i])}>${escapeHtmlBasic(cell)}</td>`).join('');
+    return `<tr>${tds}</tr>`;
+  }).join('');
+
+  return `
+<div class="aimake-table-box">
+  <table class="aimake-table">
+    <thead><tr>${ths}</tr></thead>
+    <tbody>${trs}</tbody>
+  </table>
+</div>`.trim();
+}
+
+function renderStepsHtml(steps: StepItem[]): string {
+  const items = steps.map((s) => `
+    <div class="aimake-step-item">
+      <div class="aimake-step-badge">${escapeHtmlBasic(s.step)}</div>
+      <div class="aimake-step-body">
+        <div class="aimake-step-title">${escapeHtmlBasic(s.title)}</div>
+        ${s.desc ? `<div class="aimake-step-desc">${escapeHtmlBasic(s.desc)}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  return `<div class="aimake-steps-box">${items}</div>`.trim();
+}
+
+function renderTimelineHtml(timeline: TimelineItem[]): string {
+  const items = timeline.map((t) => `
+    <div class="aimake-timeline-item">
+      <div class="aimake-timeline-marker"></div>
+      <div class="aimake-timeline-time">${escapeHtmlBasic(t.time)}</div>
+      <div class="aimake-timeline-event">${escapeHtmlBasic(t.event)}</div>
+      ${t.detail ? `<div class="aimake-timeline-detail">${escapeHtmlBasic(t.detail)}</div>` : ''}
+    </div>
+  `).join('');
+
+  return `<div class="aimake-timeline-box">${items}</div>`.trim();
+}
+
+function renderGridHtml(grid: GridItem[]): string {
+  const items = grid.map((g) => `
+    <div class="aimake-grid-card">
+      <div class="aimake-grid-head">
+        <span class="aimake-grid-title">${escapeHtmlBasic(g.title)}</span>
+        ${g.tag ? `<span class="aimake-grid-tag">${escapeHtmlBasic(g.tag)}</span>` : ''}
+      </div>
+      <div class="aimake-grid-content">${escapeHtmlBasic(g.content)}</div>
+    </div>
+  `).join('');
+
+  return `<div class="aimake-grid-box">${items}</div>`.trim();
+}
+
 export async function compileDeckToHtml(
   doc: DeckDocument,
   options: CompileHtmlOptions = {}
@@ -142,13 +210,37 @@ export async function compileDeckToHtml(
 
   const highlightedCodeMap: Record<number, string> = {};
   const diagramSvgMap: Record<number, string> = {};
+  const chartSvgMap: Record<number, string> = {};
+  const tableHtmlMap: Record<number, string> = {};
+  const stepsHtmlMap: Record<number, string> = {};
+  const timelineHtmlMap: Record<number, string> = {};
+  const gridHtmlMap: Record<number, string> = {};
   const coverImages: Record<number, string> = {};
+
   await Promise.all(doc.slides.map(async (s, idx) => {
     if (s.code) {
       highlightedCodeMap[idx] = highlightCodeHtml(s.code.code, s.code.lang);
     }
     if (s.diagram) {
-      diagramSvgMap[idx] = renderMermaidSvg(s.diagram.code);
+      diagramSvgMap[idx] = renderMermaidSvg(s.diagram.code, { aspect: doc.frontmatter.aspect });
+    }
+    if (s.chart) {
+      chartSvgMap[idx] = renderChartSvg(s.chart, {
+        isDark: Boolean(effectiveManifest.tags?.includes('dark') || doc.frontmatter.template.includes('dark')),
+        accentColor: doc.frontmatter.accentColor,
+      });
+    }
+    if (s.table) {
+      tableHtmlMap[idx] = renderTableHtml(s.table);
+    }
+    if (s.steps && s.steps.length > 0) {
+      stepsHtmlMap[idx] = renderStepsHtml(s.steps);
+    }
+    if (s.timeline && s.timeline.length > 0) {
+      timelineHtmlMap[idx] = renderTimelineHtml(s.timeline);
+    }
+    if (s.grid && s.grid.length > 0) {
+      gridHtmlMap[idx] = renderGridHtml(s.grid);
     }
     const image = await readCoverImage(doc, s);
     if (image) coverImages[idx] = image;
@@ -164,12 +256,21 @@ export async function compileDeckToHtml(
     enhancements: {
       highlightedCodeMap,
       diagramSvgMap,
+      chartSvgMap,
+      tableHtmlMap,
+      stepsHtmlMap,
+      timelineHtmlMap,
+      gridHtmlMap,
       coverImages,
     },
   };
 
+  const isPortrait = effectiveH > effectiveW;
   const aspectOverrideCss = overrideDims
     ? `\n  .aimake-slide { width: ${effectiveW}px !important; height: ${effectiveH}px !important; }`
+    : '';
+  const portraitOverrideCss = isPortrait
+    ? `\n  .compare-grid { grid-template-columns: 1fr !important; }`
     : '';
 
   const localeCss = `
@@ -242,9 +343,180 @@ export async function compileDeckToHtml(
     color: var(--ink, #141413);
     white-space: pre-wrap;
   }
+  /* Offline Vector Charts */
+  .aimake-chart-box {
+    margin-top: 10px;
+    padding: 18px 22px;
+    border-radius: var(--radius, 14px);
+    background: var(--surface, #ffffff);
+    border: var(--bw, 1px) solid var(--border, rgba(0, 0, 0, 0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .aimake-chart-svg {
+    width: 100%;
+    max-height: 480px;
+    height: auto;
+    display: block;
+  }
+  /* GFM Table */
+  .aimake-table-box {
+    margin-top: 10px;
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius, 10px);
+    border: var(--bw, 1px) solid var(--border, rgba(0, 0, 0, 0.1));
+    background: var(--surface, #ffffff);
+  }
+  .aimake-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .aimake-table th {
+    background: rgba(0, 0, 0, 0.04);
+    font-weight: 700;
+    color: var(--ink, #141413);
+    padding: 12px 14px;
+    border-bottom: 2px solid var(--border, rgba(0, 0, 0, 0.1));
+  }
+  .aimake-table td {
+    padding: 10px 14px;
+    color: var(--ink, #141413);
+    border-bottom: 1px solid var(--border, rgba(0, 0, 0, 0.06));
+  }
+  .aimake-table tr:last-child td {
+    border-bottom: none;
+  }
+  /* Steps Flow */
+  .aimake-steps-box {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  .aimake-step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: var(--radius, 10px);
+    background: var(--surface, #ffffff);
+    border: var(--bw, 1px) solid var(--border, rgba(0, 0, 0, 0.08));
+  }
+  .aimake-step-badge {
+    background: var(--accent, #3B82F6);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .aimake-step-body {
+    flex: 1;
+  }
+  .aimake-step-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink, #141413);
+  }
+  .aimake-step-desc {
+    font-size: 13px;
+    color: var(--muted, #64748B);
+    margin-top: 2px;
+  }
+  /* Timeline */
+  .aimake-timeline-box {
+    margin-top: 12px;
+    position: relative;
+    padding-left: 20px;
+    border-left: 2px solid var(--accent, #3B82F6);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+  }
+  .aimake-timeline-item {
+    position: relative;
+  }
+  .aimake-timeline-marker {
+    position: absolute;
+    left: -26px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent, #3B82F6);
+    border: 2px solid var(--surface, #ffffff);
+  }
+  .aimake-timeline-time {
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent, #3B82F6);
+  }
+  .aimake-timeline-event {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink, #141413);
+  }
+  .aimake-timeline-detail {
+    font-size: 13px;
+    color: var(--muted, #64748B);
+    margin-top: 2px;
+  }
+  /* Bento Grid */
+  .aimake-grid-box {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    width: 100%;
+  }
+  .aimake-grid-card {
+    padding: 14px 16px;
+    border-radius: var(--radius, 12px);
+    background: var(--surface, #ffffff);
+    border: var(--bw, 1px) solid var(--border, rgba(0, 0, 0, 0.08));
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .aimake-grid-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .aimake-grid-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink, #141413);
+  }
+  .aimake-grid-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--muted, #64748B);
+  }
+  .aimake-grid-content {
+    font-size: 13px;
+    color: var(--muted, #64748B);
+    line-height: 1.4;
+  }
   html, body {
     background: transparent !important;
-  }${aspectOverrideCss}
+  }${aspectOverrideCss}${portraitOverrideCss}
 </style>`;
 
   const bootstrapScript = `
@@ -272,6 +544,42 @@ export async function compileDeckToHtml(
         box.innerHTML = diagSvg;
         const zone = slideEl.querySelector('.content-zone') || slideEl;
         zone.appendChild(box);
+      }
+      const chartSvg = enh.chartSvgMap && enh.chartSvgMap[targetIdx];
+      if (chartSvg && !slideEl.querySelector('.aimake-chart-box')) {
+        const box = document.createElement('div');
+        box.className = 'aimake-chart-box';
+        box.innerHTML = chartSvg;
+        const zone = slideEl.querySelector('.content-zone') || slideEl;
+        zone.appendChild(box);
+      }
+      const tableHtml = enh.tableHtmlMap && enh.tableHtmlMap[targetIdx];
+      if (tableHtml && !slideEl.querySelector('.aimake-table-box')) {
+        const box = document.createElement('div');
+        box.innerHTML = tableHtml;
+        const zone = slideEl.querySelector('.content-zone') || slideEl;
+        if (box.firstElementChild) zone.appendChild(box.firstElementChild);
+      }
+      const stepsHtml = enh.stepsHtmlMap && enh.stepsHtmlMap[targetIdx];
+      if (stepsHtml && !slideEl.querySelector('.aimake-steps-box')) {
+        const box = document.createElement('div');
+        box.innerHTML = stepsHtml;
+        const zone = slideEl.querySelector('.content-zone') || slideEl;
+        if (box.firstElementChild) zone.appendChild(box.firstElementChild);
+      }
+      const timelineHtml = enh.timelineHtmlMap && enh.timelineHtmlMap[targetIdx];
+      if (timelineHtml && !slideEl.querySelector('.aimake-timeline-box')) {
+        const box = document.createElement('div');
+        box.innerHTML = timelineHtml;
+        const zone = slideEl.querySelector('.content-zone') || slideEl;
+        if (box.firstElementChild) zone.appendChild(box.firstElementChild);
+      }
+      const gridHtml = enh.gridHtmlMap && enh.gridHtmlMap[targetIdx];
+      if (gridHtml && !slideEl.querySelector('.aimake-grid-box')) {
+        const box = document.createElement('div');
+        box.innerHTML = gridHtml;
+        const zone = slideEl.querySelector('.content-zone') || slideEl;
+        if (box.firstElementChild) zone.appendChild(box.firstElementChild);
       }
     });
     if (window.__AIMAKE_PAYLOAD__.options.editable || window.self !== window.top) {

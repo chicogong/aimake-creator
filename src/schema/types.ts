@@ -35,6 +35,42 @@ export interface ComparisonBlock {
   rightItems: string[];
 }
 
+export interface ParsedGfmTable {
+  headers: string[];
+  alignments?: ('left' | 'center' | 'right')[];
+  rows: string[][];
+}
+
+export interface ChartItem {
+  label: string;
+  value: number;
+  color?: string;
+}
+
+export interface ChartBlock {
+  type: 'bar' | 'line' | 'radar' | 'pie';
+  title?: string;
+  data: ChartItem[];
+}
+
+export interface StepItem {
+  step: string;
+  title: string;
+  desc?: string;
+}
+
+export interface TimelineItem {
+  time: string;
+  event: string;
+  detail?: string;
+}
+
+export interface GridItem {
+  title: string;
+  content: string;
+  tag?: string;
+}
+
 export interface DeckSlide {
   index: number;
   id: string;
@@ -55,6 +91,11 @@ export interface DeckSlide {
     code: string;
   };
   comparison?: ComparisonBlock;
+  table?: ParsedGfmTable;
+  chart?: ChartBlock;
+  steps?: StepItem[];
+  timeline?: TimelineItem[];
+  grid?: GridItem[];
   imagePrompt?: string;
   imageUrl?: string;
   cite?: string;
