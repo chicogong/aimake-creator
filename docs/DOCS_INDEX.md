@@ -7,6 +7,8 @@
 
 ## 桌面端与样稿
 
+- [桌面与网页创作体验对照（英文）](./research/2026-11-28-desktop-playground-creator-review.md)记录了同一份竖屏科技稿在三个入口的预览、分类、AI 改稿和视频交付结果。
+
 - [桌面端快速上手](../README.zh-CN.md#开始使用)说明安装方式、工作区和导出依赖。
 - [黑五 AI 比价社交稿](../examples/news-ai-shopping/README.md)包含四页社交图文、短帖、富文本、事实卡和授权实拍。
 - [Bonsai 2.5 新闻样稿](../examples/news-bonsai-27b/README.md)包含来源核对、公众号正文、小红书图文和视频分镜。
