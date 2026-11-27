@@ -1,68 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="698" viewBox="0 0 1080 698" role="img" aria-labelledby="title desc" lang="zh-CN">
-  <title id="title">Aimake 产品战略：从一条科技新闻，到下一期</title>
-  <desc id="desc">先用真实来源核对事实，制作可编辑的社媒原稿，再交付能重开的公众号草稿，由作者发布。将来源、模板和改稿经验留给下一期。扩展渠道前观察首次成品用时、草稿重开成功率和七天内完成第二期的人数。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="594" viewBox="0 0 1120 594" role="img" aria-labelledby="title desc" lang="zh-CN">
+  <title id="title">多来源 + 灵感 → Aimake Studio → 多平台分发</title>
+  <desc id="desc">订阅、网页、文件等素材与随手记、读者提问等灵感分别进入 Aimake Studio。创作者整理素材、发展观点、编辑作品并生成平台版本，再向公众号、小红书、知乎、掘金及后续视频渠道分发。各渠道独立验证草稿，由作者确认发布。</desc>
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6.2" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <path d="M1 1 L6 4 L1 7" fill="none" stroke="#38685b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    </marker>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L7 4.5 L1 8" fill="none" stroke="#457360" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
     <style>
-      text { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; fill: #183930; }
-      .kicker { font-size: 16px; font-weight: 600; fill: #356356; letter-spacing: 1px; }
-      .title { font-size: 43px; font-weight: 700; }
-      .subtitle { font-size: 20px; fill: #415f54; }
-      .stage { font-size: 16px; font-weight: 600; fill: #356356; }
-      .card-title { font-size: 27px; font-weight: 650; }
-      .body { font-size: 19px; fill: #38564c; }
-      .caption { font-size: 16px; fill: #50685e; }
-      .metric { font-size: 23px; font-weight: 650; fill: #fffdf7; }
-      .metric-caption { font-size: 17px; fill: #ddede3; }
-      .line { stroke: #38685b; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      text { font-family: "PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif; fill: #163c30; }
+      .kicker { font-size: 16px; font-weight: 650; fill: #426853; letter-spacing: 1px; }
+      .title { font-size: 38px; font-weight: 700; }
+      .section { font-size: 17px; font-weight: 600; fill: #4c6857; }
+      .name { font-size: 24px; font-weight: 650; }
+      .body { font-size: 17px; fill: #395849; }
+      .channel { font-size: 20px; font-weight: 650; }
+      .line { stroke: #457360; stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .on-dark { fill: #fafff7; }
+      .muted-dark { fill: #d6e9d8; }
     </style>
   </defs>
-  <rect width="1080" height="698" rx="18" fill="#f8f8f1"/>
-  <g aria-label="战略方向">
-    <rect x="44" y="38" width="28" height="5" rx="2.5" fill="#d17945"/>
-    <text class="kicker" x="83" y="47">AIMAKE  /  产品战略</text>
-    <text class="caption" x="1036" y="47" text-anchor="end">试点提案 · 2026.11</text>
-    <text class="title" x="44" y="113">从一条科技新闻，到下一期</text>
-    <text class="subtitle" x="46" y="156">服务持续更新的科技作者，让每期的来源、成品和编辑经验都能复用。</text>
-  </g>
-  <g aria-label="创作者的一次交付">
-    <rect x="44" y="201" width="302" height="180" rx="14" fill="#e6eee5"/>
-    <text class="stage" x="65" y="235">采集与核对</text>
-    <text class="card-title" x="65" y="278">选一条真实新闻</text>
-    <text class="body" x="65" y="322">订阅或贴链接，找到原文</text>
-    <text class="body" x="65" y="351">把数字、日期连回出处</text>
-    <path class="line" d="M351 291 H381" marker-end="url(#arrow)"/>
+  <rect width="1120" height="594" rx="18" fill="#f8f8f1"/>
+  <rect x="40" y="34" width="27" height="5" rx="2.5" fill="#c87546"/>
+  <text class="kicker" x="80" y="42">AIMAKE  /  产品战略</text>
+  <text class="title" x="39" y="103">多来源 + 灵感 → Aimake Studio → 多平台分发</text>
 
-    <rect x="389" y="201" width="302" height="180" rx="14" fill="#e1eee9"/>
-    <text class="stage" x="410" y="235">创作与编排</text>
-    <text class="card-title" x="410" y="278">改好一份社交稿</text>
-    <text class="body" x="410" y="322">作者选角度、换图、改标题</text>
-    <text class="body" x="410" y="351">输出公众号富文本与竖版图组</text>
-    <path class="line" d="M696 291 H726" marker-end="url(#arrow)"/>
+  <g aria-label="两条独立入口">
+    <text class="section" x="40" y="159">创作从哪里开始</text>
+    <rect x="40" y="196" width="256" height="110" rx="13" fill="#e2ece2"/>
+    <text class="name" x="61" y="236">多来源素材</text>
+    <text class="body" x="61" y="265">订阅、网页、研究和文件</text>
+    <text class="body" x="61" y="290">照片、截图、访谈与数据</text>
+    <rect x="40" y="339" width="256" height="110" rx="13" fill="#f3e6d6"/>
+    <text class="name" x="61" y="379">创作者的灵感</text>
+    <text class="body" x="61" y="408">随手记、观察、读者提问</text>
+    <text class="body" x="61" y="433">先记想法，随时补充材料</text>
+    <path class="line" d="M302 251 H322 Q330 251 330 259 V388 Q330 394 322 394 H302 M330 320 H373" marker-end="url(#arrow)"/>
+  </g>
 
-    <rect x="734" y="201" width="302" height="180" rx="14" fill="#f4e5d3"/>
-    <text class="stage" x="755" y="235" style="fill:#89522e">平台交付 · 先验公众号</text>
-    <text class="card-title" x="755" y="278">重开同一篇草稿</text>
-    <text class="body" x="755" y="322">按账号与标题找到已存草稿</text>
-    <text class="body" x="755" y="351">检查图文，由作者点击发布</text>
+  <g aria-label="本地创作工作台">
+    <text class="section" x="384" y="159">怎样做成作品</text>
+    <rect x="384" y="196" width="315" height="253" rx="15" fill="#174b3a"/>
+    <text class="on-dark" x="409" y="247" style="font-size:32px;font-weight:650">Aimake Studio</text>
+    <path d="M409 267 H674" stroke="#54816b"/>
+    <text class="on-dark" x="409" y="306" style="font-size:20px">关联素材与灵感，核对出处</text>
+    <text class="on-dark" x="409" y="342" style="font-size:20px">写稿、配图、画图、排版</text>
+    <text class="on-dark" x="409" y="378" style="font-size:20px">为各平台调整标题与表达</text>
+    <text class="muted-dark" x="409" y="426" style="font-size:16px">本地工作区 · 作者主编 · 可选 AI 协作</text>
   </g>
-  <g aria-label="创作经验回流">
-    <path class="line" d="M885 389 V412 Q885 426 871 426 H209 Q195 426 195 412 V390" marker-end="url(#arrow)"/>
-    <rect x="337" y="405" width="406" height="41" rx="20" fill="#f8f8f1"/>
-    <text class="body" x="540" y="433" text-anchor="middle">把来源、版式与人工修改带入下一期</text>
+
+  <g aria-label="多平台成品与分发目标">
+    <text class="section" x="789" y="159">为哪些平台创作</text>
+    <path class="line" d="M705 320 H744 M744 214 V430"/>
+    <path class="line" d="M744 214 H779 M744 286 H779 M744 358 H779 M744 430 H779" />
+    <g class="line" marker-end="url(#arrow)">
+      <path d="M772 214 H779"/><path d="M772 286 H779"/><path d="M772 358 H779"/><path d="M772 430 H779"/>
+    </g>
+    <g fill="#e6eee5">
+      <rect x="789" y="184" width="291" height="60" rx="11"/><rect x="789" y="256" width="291" height="60" rx="11"/><rect x="789" y="328" width="291" height="60" rx="11"/>
+    </g>
+    <rect x="789" y="400" width="291" height="60" rx="11" fill="#f0eee2"/>
+    <text class="channel" x="806" y="209">微信公众号</text><text class="body" x="806" y="231">富文本长文、封面与插图</text>
+    <text class="channel" x="806" y="281">小红书</text><text class="body" x="806" y="303">竖版图组、配文与标签</text>
+    <text class="channel" x="806" y="353">知乎 / 掘金</text><text class="body" x="806" y="375">问题解答、技术文章</text>
+    <text class="channel" x="806" y="425">抖音 / B 站等</text><text class="body" x="806" y="447">视频、字幕与封面 · 后续方向</text>
   </g>
-  <g aria-label="扩平台的判断依据">
-    <rect x="44" y="481" width="992" height="169" rx="14" fill="#184538"/>
-    <text x="68" y="519" style="fill:#c0dbca;font-size:17px;font-weight:600">何时值得扩到知乎、掘金？</text>
-    <path d="M68 537 H1012" stroke="#4d7364"/>
-    <path d="M373 555 V625 M700 555 V625" stroke="#4d7364"/>
-    <text class="metric" x="68" y="578">首份成品用时</text>
-    <text class="metric-caption" x="68" y="613">从放入原文到作者愿意使用</text>
-    <text class="metric" x="395" y="578">草稿重开成功率</text>
-    <text class="metric-caption" x="395" y="613">同一账号、同一篇、图文齐全</text>
-    <text class="metric" x="722" y="578">七天内做第二期的人数</text>
-    <text class="metric-caption" x="722" y="613">用新选题观察真实复用</text>
-  </g>
+
+  <path d="M40 497 H1080" stroke="#cbd7c8"/>
+  <text class="section" x="40" y="533">交付方式</text>
+  <text class="body" x="149" y="533">按平台提供本地成品包，或经验证可重开的平台草稿，由作者确认发布。</text>
+  <text class="section" x="40" y="564">持续复用</text>
+  <text class="body" x="149" y="564">素材、未完成的灵感、模板和改稿记录留在 Studio，供下一件作品使用。</text>
 </svg>

@@ -33,9 +33,12 @@ The linked issues record current status and evidence. The [creator strategy and 
 
 ## Proposed Creator Milestones
 
-1. **Finish a first issue on desktop.** Starting with a real news source, a creator checks the facts, edits a common manuscript and exports a mobile article and a portrait carousel. Validate this flow on the distributed installer and repeat it with a second story to check file isolation.
-2. **Reopen a WeChat draft.** The creator follows a receipt to the correct account and checks the saved text and images. A retry resolves to the same draft. The creator makes the final publishing decision.
-3. **Make the next issue easier.** Observe which sources, layouts and editorial choices returning creators reuse. Extend verified draft delivery to Zhihu and Juejin one channel at a time. Track time to a usable first export, successful draft reopens and second issues completed within seven days.
+**Multiple sources + original ideas → Aimake Studio → multi-platform distribution.** A creator can start with several materials or capture an idea first and attach evidence later. In Studio, the creator selects sources, develops a point of view and adapts one work for different audiences.
+
+1. **Bring materials and ideas into the same workspace.** Test an idea without a URL as well as a project assembled from links, local files and images. Reopen the workspace and add evidence without losing the author's original note.
+2. **Create distinct channel editions.** Deliver a WeChat article and a Xiaohongshu carousel from one work. Preserve citations and channel-specific edits when a fact changes in the shared draft.
+3. **Verify delivery per platform.** Start native draft checks with WeChat, then validate Zhihu and Juejin independently. Xiaohongshu starts with an ordered image and caption package. The author reopens saved drafts in the target account and confirms final publication.
+4. **Make creative assets reusable.** Track time to two usable channel editions, verified draft reopens by channel and whether creators return to reuse a source, idea or layout in their next work.
 
 The [implementation plan](https://github.com/chicogong/aimake-creator/discussions/58) covers scheduling, draft adapters and recovery. The [engineering backlog](./BACKLOG_AND_AGENT_TASKS.md) tracks desktop updates, local knowledge tools and media work.
 
