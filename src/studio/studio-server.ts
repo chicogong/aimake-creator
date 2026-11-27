@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import type {
   AspectRatio,
   DeckDocument,
+  RadarItem,
   SupportedLocale,
   TemplateCategory,
 } from '../schema/types.js';
@@ -50,6 +51,12 @@ import {
   generateDeckFromRadarItem,
   runTrendRadar,
 } from '../radar/radar-engine.js';
+import {
+  loadSchedulerState,
+  saveSchedulerState,
+  pollSubscription,
+  runCatchUpPoll,
+} from '../radar/feed-scheduler.js';
 import {
   detectOpenCodeStatus,
   runOpenCodeTask,
@@ -1103,16 +1110,71 @@ export async function startStudioServer(
         return;
       }
 
+      if (req.method === 'GET' && url.pathname === '/api/radar/feeds') {
+        const state = await loadSchedulerState(workspaceDir);
+        sendJson(res, 200, {
+          ok: true,
+          subscriptions: state.subscriptions,
+          items: state.items,
+          lastCatchUpAt: state.lastCatchUpAt,
+        });
+        return;
+      }
+
+      if (req.method === 'POST' && url.pathname === '/api/radar/feeds/refresh') {
+        const body = (await readJsonBody(req).catch(() => ({}))) as Record<string, unknown>;
+        const subId = body.subId ? String(body.subId).trim() : undefined;
+        if (subId) {
+          const result = await pollSubscription(workspaceDir, subId);
+          sendJson(res, 200, { ok: true, result });
+        } else {
+          const results = await runCatchUpPoll(workspaceDir);
+          sendJson(res, 200, { ok: true, results });
+        }
+        return;
+      }
+
+      if (req.method === 'POST' && url.pathname === '/api/radar/feeds/subscribe') {
+        const body = (await readJsonBody(req).catch(() => ({}))) as Record<string, unknown>;
+        const name = String(body.name || '').trim();
+        const feedUrl = String(body.url || '').trim();
+        const type = (body.type === 'hackernews' ? 'hackernews' : 'rss') as 'hackernews' | 'rss';
+        const intervalMinutes = Math.max(5, Number(body.intervalMinutes) || 30);
+        const id = body.id ? String(body.id).trim() : `feed-${Date.now().toString(36)}`;
+
+        const state = await loadSchedulerState(workspaceDir);
+        state.subscriptions.push({
+          id,
+          type,
+          name: name || (type === 'hackernews' ? 'Hacker News' : 'Custom RSS Feed'),
+          url: feedUrl || undefined,
+          intervalMinutes,
+          itemCount: 0,
+        });
+        await saveSchedulerState(workspaceDir, state);
+
+        pollSubscription(workspaceDir, id).catch(() => {});
+        sendJson(res, 200, { ok: true, id, name });
+        return;
+      }
+
       if (req.method === 'POST' && url.pathname === '/api/radar/make') {
-        const body = await readJsonBody(req);
+        const body = (await readJsonBody(req).catch(() => ({}))) as Record<string, unknown>;
         const itemId = String(body.id || '').trim();
         const customTemplate = body.template ? String(body.template).trim() : undefined;
         const customAspect = body.aspectRatio ? String(body.aspectRatio).trim() : undefined;
 
-        const items = await runTrendRadar({ limit: 50 });
-        const targetItem = items.find((it) => it.id === itemId) || items[0] || CURATED_TREND_FIXTURES[0];
+        let targetItem = body.item as RadarItem | undefined;
+        if (!targetItem && itemId) {
+          const feedState = await loadSchedulerState(workspaceDir);
+          targetItem = feedState.items.find((it) => it.id === itemId);
+        }
+        if (!targetItem) {
+          const items = await runTrendRadar({ limit: 50 }).catch(() => CURATED_TREND_FIXTURES);
+          targetItem = items.find((it) => it.id === itemId) || items[0] || CURATED_TREND_FIXTURES[0];
+        }
 
-        const { deckMarkdown, template, aspectRatio, title } = generateDeckFromRadarItem(targetItem, {
+        const { deckMarkdown, template, aspectRatio, title } = generateDeckFromRadarItem(targetItem as any, {
           template: customTemplate,
           aspectRatio: customAspect as '3:4' | '16:9' | undefined,
         });
@@ -1120,10 +1182,17 @@ export async function startStudioServer(
         const slug = slugify(title).slice(0, 36) || `radar-${Date.now().toString(36).slice(-4)}`;
         const decksDir = path.join(workspaceDir, 'decks');
         await fs.mkdir(decksDir, { recursive: true });
-        const targetPath = await resolveContainedWriteTarget(decksDir, `${slug}.deck.md`);
-        await fs.writeFile(targetPath, deckMarkdown, 'utf8');
 
-        absDeckPath = targetPath;
+        let deckFilename = `${slug}.deck.md`;
+        let targetPath = path.join(decksDir, deckFilename);
+        if (fsSync.existsSync(targetPath)) {
+          deckFilename = `${slug}-${Date.now().toString(36).slice(-4)}.deck.md`;
+          targetPath = path.join(decksDir, deckFilename);
+        }
+        const writePath = await resolveContainedWriteTarget(decksDir, deckFilename);
+        await fs.writeFile(writePath, deckMarkdown, 'utf8');
+
+        absDeckPath = writePath;
         setupWatchers();
         await writeRuntimeDiscoveryFile();
 
@@ -2323,6 +2392,9 @@ export async function startStudioServer(
 
   setupWatchers();
   await writeRuntimeDiscoveryFile();
+
+  // Issue #59: Trigger background catch-up poll without blocking server boot
+  runCatchUpPoll(workspaceDir).catch(() => {});
 
   return {
     url: `http://127.0.0.1:${actualPort}`,

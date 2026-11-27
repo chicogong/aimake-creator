@@ -17,12 +17,12 @@ Aimake 采用聚焦高效的模块化架构：
        ┌───────────────────────────┴───────────────────────────┐
        ▼                                                       ▼
 【旗舰主创工坊 · 交付门户】                                 【底层核心引擎 · 媒体内核】
- Aimake Studio (爱创工坊)                                   Aimake Engine (核心引擎)
+ Aimake Studio (爱创工坊)                                   Aimake Engine (核心内核)
  ───────────────────────                                    ───────────────────────
- • npm: aimake-studio                                       • npm: @aimake/engine
- • CLI: aimake                                              • CLI: aimake-engine
+ • npm: aimake-studio                                       • 模块: 内置于 aimake-studio
+ • CLI: aimake                                              • CLI: aimake render
  • 门户: aimake.cc                                          • 协议: aimake acp / mcp
- • 交付: 36 套设计模板、5+1 全渠道直出、Calm Studio 画布       • 定位: 确定性媒体收据、Whisper 词级对齐、剪映草稿导出
+ • 交付: 36 套设计模板、7 大全渠道直出、Calm Studio 画布       • 定位: 确定性媒体收据、Whisper 词级对齐、剪映草稿导出
 ```
 
 ---
@@ -57,7 +57,7 @@ products/aimake/
 │   ├── cli.ts                  # 全局 CLI 命令行总入口 (aimake)
 │   ├── desktop/                # OpenCode / Swift 桥接层
 │   ├── importers/              # Markdown / PPTX / HTML 逆向解析器
-│   ├── renderer/               # 5+1 全介质渲染器 (PNG/PDF/PPTX/MP4/HTML)
+│   ├── renderer/               # 7 大全介质渲染器 (PNG/PDF/PPTX/MP4/CapCut/WeChat/HTML)
 │   ├── scrapers/               # 多平台抓取器 (WeChat/X/Bilibili/知乎/即刻)
 │   ├── site/                   # 官方静态站与 Playground 免安装沙盒构建器
 │   ├── studio/                 # 本地实时编辑器 (Koa/SSE 热重载服务)
@@ -90,16 +90,17 @@ flowchart LR
 
 ---
 
-## 4. 交付介质渲染管线 (5+1 Deliverables)
+## 4. 交付介质渲染管线 (7 Omnichannel Deliverables)
 
-从一份声明式的 `deck.md` 故事板文件，确定性编译为五种专业交付介质：
+从一份声明式的 `deck.md` 故事板文件，确定性编译为七种专业交付介质：
 
 | 介质格式 | 渲染核心 | 特性与保障 |
 | :--- | :--- | :--- |
 | **Retina PNG** | Puppeteer Chromium | 2x / 3x 像素密度，支持长图拼合与逐页切图 |
 | **微信富文本** | Inline CSS 编译器 | 完全内联样式，兼容微信公众号编辑排版限制 |
 | **矢量 PDF** | Chromium Print PDF | 高清矢量文字，支持打印与离线分发 |
-| **可编辑 PPTX** | PptxGenJS | 真实的文本框、形状与色彩变量，支持 PowerPoint/Keynote 二次编辑 |
+| **可编辑 PPTX** | PptxGenJS + Visual IR | 真实的文本框、形状、高分屏 Mermaid 矢量图与色彩变量，支持 PowerPoint/Keynote 二次编辑 |
+| **剪映工程** | CapCut Draft Engine | 6 轨白盒化时间轴草稿工程（画面·字幕·人声·BGM），支持无损二次精剪 |
 | **60fps MP4** | Remotion + FFmpeg | 逐帧时间线编排，支持本地离线 Edge TTS / Whisper 词级字幕对齐 |
 | **免安装沙盒** | Web Playground | 纯前端 WebAssembly/Canvas 模拟，零环境依赖即开即用 |
 

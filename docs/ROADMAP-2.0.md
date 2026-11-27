@@ -14,7 +14,9 @@
 
 ---
 
-## Active Issue Priority Matrix (P0 / P1 / P2)
+## Engineering Priorities and Acceptance References
+
+The linked issues record current status and evidence. The [creator strategy and visual roadmap (中文)](./CREATOR_STRATEGY.zh-CN.md) connects this engineering work to a complete creator session.
 
 | Level | Issue / Topic | Impact Domain | Delivery Target & Acceptance Criteria |
 | :---: | :--- | :--- | :--- |
@@ -29,26 +31,16 @@
 
 ---
 
-## Phased Execution Roadmap
+## Proposed Creator Milestones
 
-```
-Phase 1: Stability & Anti-Loss (Current · 1-2 Days)
-  ├── #54 Workspace isolation & conflict prevention
-  ├── #55 WeChat Mermaid SVG/PNG inline rasterization
-  ├── #52 Context drawer live citation audit
-  └── #56 Studio AI co-pilot timeout retry & draft retention
+**Multiple sources + original ideas → Aimake Studio → multi-platform distribution.** A creator can start with several materials or capture an idea first and attach evidence later. In Studio, the creator selects sources, develops a point of view and adapts one work for different audiences.
 
-Phase 2: Live Intelligence Radar & Self-Healing Setup (Next · 3-5 Days)
-  ├── #59 Cron-based RSS / Hacker News intake scheduler
-  ├── #53 Headless Playwright / FFmpeg runtime self-healing
-  ├── #44 One-click creation from live source entries
-  └── #43 / #39 Export concurrency lock and queue hardening
+1. **Bring materials and ideas into the same workspace.** Test an idea without a URL as well as a project assembled from links, local files and images. Reopen the workspace and add evidence without losing the author's original note.
+2. **Create distinct channel editions.** Deliver a WeChat article and a Xiaohongshu carousel from one work. Preserve citations and channel-specific edits when a fact changes in the shared draft.
+3. **Verify delivery per platform.** Start native draft checks with WeChat, then validate Zhihu and Juejin independently. Xiaohongshu starts with an ordered image and caption package. The author reopens saved drafts in the target account and confirms final publication.
+4. **Make creative assets reusable.** Track time to two usable channel editions, verified draft reopens by channel and whether creators return to reuse a source, idea or layout in their next work.
 
-Phase 3: Multi-Platform Draft Syndication & Knowledge Flywheel (1-2 Weeks)
-  ├── Discussion #58 Draft Box Syndication (WeChat, Zhihu, Juejin, Xiaohongshu, Feishu Bot)
-  ├── Sparkle 2.x automated delta updates for macOS desktop app
-  └── Local LLM Wiki auto-distillation flywheel
-```
+The [implementation plan](https://github.com/chicogong/aimake-creator/discussions/58) covers scheduling, draft adapters and recovery. The [engineering backlog](./BACKLOG_AND_AGENT_TASKS.md) tracks desktop updates, local knowledge tools and media work.
 
 ---
 

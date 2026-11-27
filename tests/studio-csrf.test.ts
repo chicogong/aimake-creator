@@ -346,6 +346,63 @@ Security test content
         expect(sseRes.status).toBe(200);
         expect(sseRes.headers.get('content-type')).toContain('text/event-stream');
         sseController.abort(); // simulate immediate client disconnect
+
+        // 15. Issue #53: /api/export/doctor returns zero-dependency statuses
+        const doctorRes = await fetch(`${studio.url}/api/export/doctor`, {
+          headers: { host: `127.0.0.1:${port}` },
+        });
+        expect(doctorRes.status).toBe(200);
+        const doctorJson = (await doctorRes.json()) as {
+          ok: boolean;
+          wechat: { ready: boolean };
+          pptx: { ready: boolean };
+          browser: { ready: boolean };
+        };
+        expect(doctorJson.ok).toBe(true);
+        expect(doctorJson.wechat.ready).toBe(true);
+        expect(doctorJson.pptx.ready).toBe(true);
+
+        // 16. Issue #59 & #44: Feed Scheduler & 1-Click Deck Creation from Source
+        const feedsRes = await fetch(`${studio.url}/api/radar/feeds`, {
+          headers: { host: `127.0.0.1:${port}` },
+        });
+        expect(feedsRes.status).toBe(200);
+        const feedsJson = (await feedsRes.json()) as {
+          ok: boolean;
+          subscriptions: Array<{ id: string; type: string }>;
+        };
+        expect(feedsJson.ok).toBe(true);
+        expect(feedsJson.subscriptions.length).toBeGreaterThanOrEqual(2);
+
+        // Create deck directly from custom source item with citation provenance (#44)
+        const makeRes = await fetch(`${studio.url}/api/radar/make`, {
+          method: 'POST',
+          headers: {
+            host: `127.0.0.1:${port}`,
+            origin: validOrigin,
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            item: {
+              id: 'custom:source-1',
+              title: '物理实体机器人世界模型突破',
+              url: 'https://deepmind.google/robotics',
+              source: 'Google DeepMind Robotics',
+              publishedAt: '2026-11-27T00:00:00.000Z',
+            },
+          }),
+        });
+        expect(makeRes.status).toBe(200);
+        const makeJson = (await makeRes.json()) as {
+          ok: boolean;
+          rel: string;
+          title: string;
+        };
+        expect(makeJson.ok).toBe(true);
+        expect(makeJson.rel).toContain('decks/');
+        const createdMd = await fs.readFile(path.join(tmpDir, makeJson.rel), 'utf8');
+        expect(createdMd).toContain('物理实体机器人世界模型突破');
+        expect(createdMd).toContain('Google DeepMind Robotics');
       } finally {
         await studio.close();
         await fs.rm(tmpDir, { recursive: true, force: true }).catch(() => {});
