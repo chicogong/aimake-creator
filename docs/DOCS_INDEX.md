@@ -3,6 +3,7 @@
 ## 桌面端与样稿
 
 - [桌面端快速上手](../README.zh-CN.md#开始使用)说明安装方式、工作区和导出依赖。
+- [Bonsai 2.5 新闻样稿](../examples/news-bonsai-27b/README.md)包含来源核对、公众号正文、小红书图文和视频分镜。
 - [Open Bench 样稿](../examples/open-bench/README.md)包含演示文稿、竖版借用卡、封面素材和来源笔记。
 - [桌面端体验讨论](https://github.com/chicogong/aimake-creator/discussions/47)汇总桌面实测与原生窗口截图。
 - [采集与分发方案](https://github.com/chicogong/aimake-creator/discussions/58)跟踪定时采集、分平台草稿与发布回执的规划。[项目看板](https://github.com/users/chicogong/projects/3)

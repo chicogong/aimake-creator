@@ -6,9 +6,9 @@ A local workspace for turning research, notes, and Markdown into slide decks, so
 
 [Download for macOS](https://github.com/chicogong/aimake-creator/releases/latest) · [Try the web playground](https://aimake.cc/playground/) · [Documentation](./docs/DOCS_INDEX.md) · [Discussions](https://github.com/chicogong/aimake-creator/discussions)
 
-![The Open Bench illustrated cover in the Aimake macOS app](./docs/assets/desktop-open-bench.jpg)
+![A model-size comparison from the Bonsai news brief in the Aimake macOS app](./docs/assets/desktop-news-bonsai.jpg)
 
-*The Open Bench opening-week report in the native macOS app, captured from a source build. [Open the editable example](./examples/open-bench/).*
+*A November 2026 AI news brief in the native macOS app, captured from a source build. [Read the story and reuse the drafts](./examples/news-bonsai-27b/).*
 
 ## Get started
 
@@ -35,9 +35,9 @@ The [desk-lighting creator kit](./examples/desk-lighting/) includes a video cove
 | Create | Start from one of 36 templates, edit slides on the stage or in Markdown, and add metrics, tables, code, or Mermaid diagrams. AI-assisted editing is optional and uses the model provider or local agent you configure. |
 | Deliver | Export files from the app, or use `aimake publish` to build local bundles for WeChat, Zhihu, Juejin, and Xiaohongshu. Verified platform drafts and scheduled collection are tracked in the [distribution and intake plan](https://github.com/chicogong/aimake-creator/discussions/58). |
 
-![The Aimake macOS export panel with open-bench.pptx ready to open](./docs/assets/desktop-open-bench-export.jpg)
+![The Aimake macOS export panel with the news storyboard PPTX ready to open](./docs/assets/desktop-news-bonsai-export.jpg)
 
-*The native delivery panel after exporting the Open Bench presentation to an editable PowerPoint file.*
+*The native delivery panel after exporting the news storyboard to an editable PowerPoint file.*
 
 ### Export formats
 

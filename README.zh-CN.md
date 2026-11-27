@@ -6,9 +6,9 @@
 
 [下载 macOS 版](https://github.com/chicogong/aimake-creator/releases/latest) · [在线工坊](https://aimake.cc/playground/) · [文档](./docs/DOCS_INDEX.md) · [讨论区](https://github.com/chicogong/aimake-creator/discussions)
 
-![Aimake macOS 原生窗口中的 Open Bench 插图封面](./docs/assets/desktop-open-bench.jpg)
+![Aimake macOS 原生窗口中的 Bonsai 新闻数据对照页](./docs/assets/desktop-news-bonsai.jpg)
 
-*Open Bench 是一个虚构社区工具图书馆的开业周报告。画面来自源码构建的 macOS 原生 App。[打开可编辑样稿](./examples/open-bench/)。*
+*2026 年 11 月的 AI 新闻样稿在 macOS 原生 App 中的实际画面。[打开正文、图文和分镜](./examples/news-bonsai-27b/)。*
 
 ## 开始使用
 
@@ -35,9 +35,9 @@ aimake studio --demo
 | 创作 | 从 36 套模板选版式，在舞台或 Markdown 中修改内容，加入指标、表格、代码和 Mermaid 图解。AI 改稿可选，接入你配置的模型服务或本机代理。 |
 | 交付 | 从桌面端导出，或用 `aimake publish` 为微信、知乎、掘金和小红书生成本地交付包。平台草稿回执和定时采集进度见[采集与分发方案](https://github.com/chicogong/aimake-creator/discussions/58)。 |
 
-![Aimake macOS 原生交付面板显示已生成的 open-bench.pptx](./docs/assets/desktop-open-bench-export.jpg)
+![Aimake macOS 原生交付面板显示已生成的新闻分镜 PPTX](./docs/assets/desktop-news-bonsai-export.jpg)
 
-*在原生桌面端导出后，交付面板可以打开刚生成的可编辑 PPTX。*
+*原生交付面板中的新闻分镜 PPTX，包含可编辑的标题和数据。*
 
 ### 导出格式
 
