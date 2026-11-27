@@ -2,11 +2,12 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { adaptContentForPlatforms } from './markdown-adapter.js';
 import { attemptBrowserPublish } from './browser-publisher.js';
-import type {
-  PlatformPublishResult,
-  PublishOptions,
-  PublishPlatform,
-  PublishSummary,
+import {
+  VALID_PUBLISH_PLATFORMS,
+  type PlatformPublishResult,
+  type PublishOptions,
+  type PublishPlatform,
+  type PublishSummary,
 } from './types.js';
 
 function slugify(text: string): string {
@@ -65,6 +66,28 @@ export async function publishContent(
   sourceFile: string,
   options: PublishOptions = {}
 ): Promise<PublishSummary> {
+  // Validate targets before creating any directories or touching disk
+  const rawTargets = options.targets && options.targets.length > 0 ? options.targets : ['all'];
+  const unsupportedTargets: string[] = [];
+
+  for (const t of rawTargets) {
+    if (t !== 'all' && !VALID_PUBLISH_PLATFORMS.includes(t as any)) {
+      unsupportedTargets.push(String(t));
+    }
+  }
+
+  if (unsupportedTargets.length > 0) {
+    const errorMsg = `Unsupported publish target(s): ${unsupportedTargets.map((t) => `"${t}"`).join(', ')}. Supported targets: ${VALID_PUBLISH_PLATFORMS.join(', ')} (or 'all').`;
+    const err = new Error(errorMsg) as any;
+    err.code = 'INVALID_ARGUMENTS';
+    err.exitCode = 2;
+    throw err;
+  }
+
+  const targets: PublishPlatform[] = rawTargets.includes('all')
+    ? [...VALID_PUBLISH_PLATFORMS]
+    : (rawTargets as PublishPlatform[]);
+
   const absSource = path.resolve(process.cwd(), sourceFile);
   const rawContent = await fs.readFile(absSource, 'utf-8');
 
@@ -80,10 +103,6 @@ export async function publishContent(
     : path.resolve(process.cwd(), 'exports', 'publish', timeSlug);
 
   await fs.mkdir(baseOutDir, { recursive: true });
-
-  const targets: PublishPlatform[] = options.targets && options.targets.length > 0 && !options.targets.includes('all')
-    ? options.targets
-    : ['wechat', 'zhihu', 'juejin', 'xiaohongshu', 'pack'];
 
   const results: PlatformPublishResult[] = [];
 
@@ -111,38 +130,87 @@ export async function publishContent(
     );
   }
 
-  // Generate README in bundle
-  const readmeContent = [
+  // Generate README in bundle describing only generated artifacts
+  const artifactDescriptions: Record<string, string> = {
+    wechat: '- **微信公众号 (WeChat)**: `wechat.html` (100% inline-styled CSS, copy and paste into WeChat Official Account editor)',
+    zhihu: '- **知乎专栏 (Zhihu)**: `zhihu.md` (clean markdown with LaTeX formula support and topic suggestions)',
+    juejin: '- **稀土掘金 (Juejin)**: `juejin.md` (Bytemd frontmatter, categories, and tags included)',
+    xiaohongshu: '- **小红书 (Xiaohongshu)**: `xiaohongshu.txt` (high-engagement bullet summary with emojis and hashtags)',
+    pack: '- **跨平台同步清单**: `manifest.json` (compatible with Wechatsync / OpenWrite / PostBot)',
+  };
+
+  const channelInstructions: Record<string, string[]> = {
+    wechat: [
+      '### 1. 微信公众号',
+      '打开 `wechat.html`，在浏览器中打开全选复制，或直接粘贴入微信后台富文本编辑器中，排版即可直接生效。',
+      '',
+    ],
+    zhihu: [
+      '### 2. 知乎专栏',
+      '打开 [https://zhuanlan.zhihu.com/write](https://zhuanlan.zhihu.com/write)，复制 `zhihu.md` 内容直接粘贴。',
+      '',
+    ],
+    juejin: [
+      '### 3. 稀土掘金',
+      '打开 [https://juejin.cn/editor/drafts/new](https://juejin.cn/editor/drafts/new)，将 `juejin.md` 内容粘贴至编辑器，标签已自动配置。',
+      '',
+    ],
+    xiaohongshu: [
+      '### 4. 小红书',
+      '复制 `xiaohongshu.txt` 内容发布至小红书创作者服务平台。',
+      '',
+    ],
+    pack: [
+      '### 5. 跨平台分发清单',
+      '使用 `manifest.json` 配合多平台同步插件或自动化分发工具进行一键同步。',
+      '',
+    ],
+  };
+
+  const activeArtifactLines = results
+    .map((r) => artifactDescriptions[r.platform])
+    .filter(Boolean);
+
+  const activeInstructionBlocks: string[] = [];
+  let stepIndex = 1;
+  for (const r of results) {
+    const rawLines = channelInstructions[r.platform];
+    if (rawLines && rawLines.length > 0) {
+      const renumbered = rawLines.map((line, idx) =>
+        idx === 0 ? line.replace(/^### \d+\.\s*/, `### ${stepIndex}. `) : line
+      );
+      activeInstructionBlocks.push(...renumbered);
+      stepIndex++;
+    }
+  }
+
+  const readmeLines = [
     `# ${title} — Multi-Platform Publication Kit`,
     '',
     `*Generated on: ${now.toISOString()} via [Aimake.cc](https://aimake.cc)*`,
     '',
     '## 📦 Generated Artifacts',
     '',
-    '- **微信公众号 (WeChat)**: `wechat.html` (100% inline-styled CSS, copy and paste into WeChat Official Account editor)',
-    '- **知乎专栏 (Zhihu)**: `zhihu.md` (clean markdown with LaTeX formula support and topic suggestions)',
-    '- **稀土掘金 (Juejin)**: `juejin.md` (Bytemd frontmatter, categories, and tags included)',
-    '- **小红书 (Xiaohongshu)**: `xiaohongshu.txt` (high-engagement bullet summary with emojis and hashtags)',
-    '- **跨平台同步清单**: `manifest.json` (compatible with Wechatsync / OpenWrite / PostBot)',
+    ...activeArtifactLines,
     '',
-    '## 🚀 Fast Publishing Instructions',
-    '',
-    '### 1. 微信公众号',
-    '打开 `wechat.html`，在浏览器中打开全选复制，或直接粘贴入微信后台富文本编辑器中，排版即可直接生效。',
-    '',
-    '### 2. 知乎专栏',
-    '打开 [https://zhuanlan.zhihu.com/write](https://zhuanlan.zhihu.com/write)，复制 `zhihu.md` 内容直接粘贴。',
-    '',
-    '### 3. 稀土掘金',
-    '打开 [https://juejin.cn/editor/drafts/new](https://juejin.cn/editor/drafts/new)，将 `juejin.md` 内容粘贴至编辑器，标签已自动配置。',
-    '',
-    '### 4. 自动化分发 (Wechatsync / CLI)',
+  ];
+
+  if (activeInstructionBlocks.length > 0) {
+    readmeLines.push(
+      '## 🚀 Fast Publishing Instructions',
+      '',
+      ...activeInstructionBlocks
+    );
+  }
+
+  readmeLines.push(
+    '### 自动化分发 (Wechatsync / CLI)',
     '```bash',
     `aimake publish "${path.relative(process.cwd(), absSource)}" --browser`,
-    '```',
-  ].join('\n');
+    '```'
+  );
 
-  await fs.writeFile(path.join(baseOutDir, 'README.md'), readmeContent, 'utf-8');
+  await fs.writeFile(path.join(baseOutDir, 'README.md'), readmeLines.join('\n'), 'utf-8');
 
   const summary: PublishSummary = {
     sourceFile: path.relative(process.cwd(), absSource),

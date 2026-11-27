@@ -49,8 +49,30 @@ const DEFAULT_SUBSCRIPTIONS: FeedSubscription[] = [
   },
 ];
 
-// Single in-flight poll lock per subscription to guarantee deduplicated concurrent runs
+// Single in-flight poll lock per (workspace + subscription) to guarantee deduplicated concurrent runs
 const inFlightPolls = new Map<string, Promise<PollResult>>();
+
+// Per-workspace serialization lock to protect state file against concurrent mutation races
+const workspaceMutationLocks = new Map<string, Promise<void>>();
+
+async function withWorkspaceLock<T>(workspaceDir: string, fn: () => Promise<T>): Promise<T> {
+  const wsKey = path.resolve(workspaceDir);
+  const prevLock = workspaceMutationLocks.get(wsKey) || Promise.resolve();
+  let release: () => void;
+  const currentLock = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  workspaceMutationLocks.set(wsKey, prevLock.then(() => currentLock));
+  await prevLock;
+  try {
+    return await fn();
+  } finally {
+    release!();
+    if (workspaceMutationLocks.get(wsKey) === currentLock) {
+      workspaceMutationLocks.delete(wsKey);
+    }
+  }
+}
 
 async function fetchFeedWithTimeout(url: string, timeoutMs: number): Promise<Response> {
   const controller = new AbortController();
@@ -121,24 +143,25 @@ export async function pollSubscription(
   subId: string,
   timeoutMs = 12000
 ): Promise<PollResult> {
-  // 1. Re-use existing in-flight poll if one is currently active
-  if (inFlightPolls.has(subId)) {
-    return inFlightPolls.get(subId)!;
+  const inFlightKey = `${path.resolve(workspaceDir)}::${subId}`;
+
+  // 1. Re-use existing in-flight poll if one is currently active for this workspace and subscription
+  if (inFlightPolls.has(inFlightKey)) {
+    return inFlightPolls.get(inFlightKey)!;
   }
 
   const pollPromise = (async () => {
-    const state = await loadSchedulerState(workspaceDir);
-    const sub = state.subscriptions.find((s) => s.id === subId);
-    if (!sub) {
+    const initialState = await loadSchedulerState(workspaceDir);
+    const subConfig = initialState.subscriptions.find((s) => s.id === subId);
+    if (!subConfig) {
       throw new Error(`Feed subscription '${subId}' not found.`);
     }
 
     const now = new Date().toISOString();
-    sub.lastAttemptAt = now;
 
     let fetchedItems: RadarItem[] = [];
     try {
-      if (sub.type === 'hackernews') {
+      if (subConfig.type === 'hackernews') {
         fetchedItems = await runTrendRadar({
           sources: ['hackernews'],
           limit: 8,
@@ -146,13 +169,13 @@ export async function pollSubscription(
         });
         const hnItems = fetchedItems.filter((i) => i.source === 'Hacker News' || i.sourceKind === 'hackernews');
         if (hnItems.length > 0) fetchedItems = hnItems;
-      } else if (sub.type === 'rss' && sub.url) {
-        const res = await fetchFeedWithTimeout(sub.url, timeoutMs);
+      } else if (subConfig.type === 'rss' && subConfig.url) {
+        const res = await fetchFeedWithTimeout(subConfig.url, timeoutMs);
         if (!res.ok) {
           throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         }
         const xml = await res.text();
-        fetchedItems = parseFeedXml(xml, sub.name);
+        fetchedItems = parseFeedXml(xml, subConfig.name);
         if (fetchedItems.length === 0) {
           throw new Error('未在该 RSS/Atom 订阅源解析出有效文章条目');
         }
@@ -165,54 +188,68 @@ export async function pollSubscription(
         (item as any).subscriptionId = subId;
       }
 
-      // Deduplicate against existing stored items by item ID & Canonical URL
-      const existingIds = new Set(state.items.map((i) => i.id));
-      const existingUrls = new Set(state.items.map((i) => (i.url || '').toLowerCase()).filter(Boolean));
-      const newItems: RadarItem[] = [];
+      // Serialize state update under workspace lock, reading freshest disk state
+      return await withWorkspaceLock(workspaceDir, async () => {
+        const latestState = await loadSchedulerState(workspaceDir);
+        const sub = latestState.subscriptions.find((s) => s.id === subId) || subConfig;
 
-      for (const item of fetchedItems) {
-        const urlKey = (item.url || '').toLowerCase();
-        if (!existingIds.has(item.id) && (!urlKey || !existingUrls.has(urlKey))) {
-          newItems.push(item);
-          existingIds.add(item.id);
-          if (urlKey) existingUrls.add(urlKey);
+        // Deduplicate against existing stored items by item ID & Canonical URL
+        const existingIds = new Set(latestState.items.map((i) => i.id));
+        const existingUrls = new Set(latestState.items.map((i) => (i.url || '').toLowerCase()).filter(Boolean));
+        const newItems: RadarItem[] = [];
+
+        for (const item of fetchedItems) {
+          const urlKey = (item.url || '').toLowerCase();
+          if (!existingIds.has(item.id) && (!urlKey || !existingUrls.has(urlKey))) {
+            newItems.push(item);
+            existingIds.add(item.id);
+            if (urlKey) existingUrls.add(urlKey);
+          }
         }
-      }
 
-      // Prepend newest items, keep at most 100 items in cache
-      state.items = [...newItems, ...state.items].slice(0, 100);
+        // Prepend newest items, keep at most 100 items in cache
+        latestState.items = [...newItems, ...latestState.items].slice(0, 100);
 
-      sub.lastSuccessAt = now;
-      sub.lastError = undefined;
-      sub.itemCount = state.items.filter((i: any) => i.subscriptionId === subId).length;
-      sub.nextCheckAt = new Date(Date.now() + sub.intervalMinutes * 60 * 1000).toISOString();
+        sub.lastAttemptAt = now;
+        sub.lastSuccessAt = now;
+        sub.lastError = undefined;
+        sub.itemCount = latestState.items.filter((i: any) => i.subscriptionId === subId).length;
+        sub.nextCheckAt = new Date(Date.now() + sub.intervalMinutes * 60 * 1000).toISOString();
 
-      await saveSchedulerState(workspaceDir, state);
+        await saveSchedulerState(workspaceDir, latestState);
 
-      return {
-        subscriptionId: subId,
-        newItemsCount: newItems.length,
-        totalItemsCount: sub.itemCount,
-        success: true,
-      };
+        return {
+          subscriptionId: subId,
+          newItemsCount: newItems.length,
+          totalItemsCount: sub.itemCount,
+          success: true,
+        };
+      });
     } catch (err: any) {
-      sub.lastError = err.message || '上游请求超时或网络不可用';
-      sub.nextCheckAt = new Date(Date.now() + Math.min(sub.intervalMinutes, 5) * 60 * 1000).toISOString();
-      await saveSchedulerState(workspaceDir, state);
+      return await withWorkspaceLock(workspaceDir, async () => {
+        const latestState = await loadSchedulerState(workspaceDir);
+        const sub = latestState.subscriptions.find((s) => s.id === subId);
+        if (sub) {
+          sub.lastAttemptAt = now;
+          sub.lastError = err.message || '上游请求超时或网络不可用';
+          sub.nextCheckAt = new Date(Date.now() + Math.min(sub.intervalMinutes, 5) * 60 * 1000).toISOString();
+          await saveSchedulerState(workspaceDir, latestState);
+        }
 
-      return {
-        subscriptionId: subId,
-        newItemsCount: 0,
-        totalItemsCount: sub.itemCount,
-        success: false,
-        error: sub.lastError,
-      };
+        return {
+          subscriptionId: subId,
+          newItemsCount: 0,
+          totalItemsCount: sub ? sub.itemCount : 0,
+          success: false,
+          error: sub ? sub.lastError : err.message,
+        };
+      });
     } finally {
-      inFlightPolls.delete(subId);
+      inFlightPolls.delete(inFlightKey);
     }
   })();
 
-  inFlightPolls.set(subId, pollPromise);
+  inFlightPolls.set(inFlightKey, pollPromise);
   return pollPromise;
 }
 
@@ -251,9 +288,11 @@ export async function runCatchUpPoll(
     }
   }
 
-  const updatedState = await loadSchedulerState(workspaceDir);
-  updatedState.lastCatchUpAt = new Date().toISOString();
-  await saveSchedulerState(workspaceDir, updatedState);
+  await withWorkspaceLock(workspaceDir, async () => {
+    const updatedState = await loadSchedulerState(workspaceDir);
+    updatedState.lastCatchUpAt = new Date().toISOString();
+    await saveSchedulerState(workspaceDir, updatedState);
+  });
 
   return results;
 }

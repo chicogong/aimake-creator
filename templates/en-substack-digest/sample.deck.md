@@ -10,14 +10,16 @@ fps: 30
 secondsPerSlide: 3
 tags:
   - 2026-Trending
-  - linkedin
+  - substack
+  - newsletter
+  - editorial
 ---
 
-<!-- scene: cover | layout: metrics | eyebrow: LINKEDIN | cite: aimake.cc -->
+<!-- scene: cover | layout: metrics | eyebrow: SUBSTACK | cite: aimake.cc -->
 
 # Global · Substack & New Yorker Essay Digest (4:5)
 
-## 经典欧美纸媒与 Substack 专栏美学：米白新闻纸底、粗细双顶线、衬线标题与克制的边栏序号。
+## Classic New Yorker / Substack newsletter card on archival newsprint with double top rule and Georgia serif display.
 
 ```metric
 - Context Overhead: -95% (Deterministic AST)

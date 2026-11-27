@@ -10,14 +10,16 @@ fps: 30
 secondsPerSlide: 3
 tags:
   - 2026-Trending
-  - presentation
+  - linear
+  - dark
+  - product-launch
 ---
 
-<!-- scene: cover | layout: metrics | eyebrow: PRESENTATION | cite: aimake.cc -->
+<!-- scene: cover | layout: metrics | eyebrow: LINEAR DARK | cite: aimake.cc -->
 
 # Linear Dark · Precision Product Launch Deck (16:9)
 
-## 深受硅谷开发者追捧的 Linear 暗黑美学：深碳黑画布、1px 极细高光边框、靛紫顶部柔光晕与等宽技术元数据。
+## Deep carbon #08090C canvas with razor-sharp 1px specular borders, soft indigo-violet halo glow, Inter display, and JetBrains Mono metadata.
 
 ```metric
 - Context Overhead: -95% (Deterministic AST)

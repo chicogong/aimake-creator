@@ -10,14 +10,16 @@ fps: 30
 secondsPerSlide: 3
 tags:
   - 2026-Trending
-  - linkedin
+  - whiteboard
+  - blueprint
+  - engineering
 ---
 
-<!-- scene: cover | layout: metrics | eyebrow: LINKEDIN | cite: aimake.cc -->
+<!-- scene: cover | layout: metrics | eyebrow: WHITEBOARD BLUEPRINT | cite: aimake.cc -->
 
 # Global · Founder Whiteboard Blueprint (4:5)
 
-## 面向欧美科技创始人与工程师的浅蓝白板方格蓝图风，配马克笔重点下划线与虚线结构框。
+## Engineering & startup whiteboard blueprint with architectural grid, marker accent underline, and crisp dashed callouts.
 
 ```metric
 - Context Overhead: -95% (Deterministic AST)

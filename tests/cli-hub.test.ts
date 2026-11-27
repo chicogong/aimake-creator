@@ -351,5 +351,75 @@ locale: "zh-CN"
       expect(res.stderr).toContain('Error: Deck file not found');
       expect(res.stdout).toBe('');
     });
+
+    describe('Issue #82: Publish target validation & bundle artifact integrity', () => {
+      it('Case 1 (unknown-only): exits with code 2 for unsupported targets, names them, prints supported values, and leaves destination untouched', async () => {
+        const articlePath = path.join(tmpDir, 'issue82-case1.md');
+        await fs.writeFile(articlePath, '# Case 1 Article\nContent here.', 'utf8');
+        const customOut = path.join(tmpDir, 'case1-out');
+
+        const res = await runCli(
+          ['publish', articlePath, '--target', 'linkedin,medium', '--out', customOut],
+          { cwd: tmpDir }
+        );
+        expect(res.exitCode).toBe(EXIT_CODES.INVALID_ARGUMENTS);
+        expect(res.stderr).toContain('Unsupported publish target(s): "linkedin", "medium"');
+        expect(res.stderr).toContain('Supported targets: wechat, zhihu, juejin, xiaohongshu, pack');
+
+        // Verify destination and wiki/published.md untouched
+        await expect(fs.access(customOut)).rejects.toThrow();
+        await expect(fs.access(path.join(tmpDir, 'wiki', 'published.md'))).rejects.toThrow();
+      });
+
+      it('Case 2 (mixed supported + unsupported): exits with code 2 and leaves destination untouched', async () => {
+        const articlePath = path.join(tmpDir, 'issue82-case2.md');
+        await fs.writeFile(articlePath, '# Case 2 Article\nContent here.', 'utf8');
+        const customOut = path.join(tmpDir, 'case2-out');
+
+        const res = await runCli(
+          ['publish', articlePath, '--target', 'wechat,linkedin', '--out', customOut],
+          { cwd: tmpDir }
+        );
+        expect(res.exitCode).toBe(EXIT_CODES.INVALID_ARGUMENTS);
+        expect(res.stderr).toContain('Unsupported publish target(s): "linkedin"');
+
+        await expect(fs.access(customOut)).rejects.toThrow();
+      });
+
+      it('Case 3 (supported subset): exits with 0 and README.md lists only the files actually created', async () => {
+        const articlePath = path.join(tmpDir, 'issue82-case3.md');
+        await fs.writeFile(articlePath, '# Case 3 Article\nContent here.', 'utf8');
+        const customOut = path.join(tmpDir, 'case3-out');
+
+        const res = await runCli(
+          ['publish', articlePath, '--target', 'wechat,zhihu', '--out', customOut],
+          { cwd: tmpDir }
+        );
+        expect(res.exitCode).toBe(EXIT_CODES.SUCCESS);
+
+        // Verify created files
+        const wechatExists = await fs.stat(path.join(customOut, 'wechat.html'));
+        expect(wechatExists.isFile()).toBe(true);
+        const zhihuExists = await fs.stat(path.join(customOut, 'zhihu.md'));
+        expect(zhihuExists.isFile()).toBe(true);
+
+        // Verify non-targeted files NOT created
+        await expect(fs.access(path.join(customOut, 'juejin.md'))).rejects.toThrow();
+        await expect(fs.access(path.join(customOut, 'xiaohongshu.txt'))).rejects.toThrow();
+        await expect(fs.access(path.join(customOut, 'manifest.json'))).rejects.toThrow();
+
+        // Verify README only describes created channels
+        const readme = await fs.readFile(path.join(customOut, 'README.md'), 'utf8');
+        expect(readme).toContain('wechat.html');
+        expect(readme).toContain('zhihu.md');
+        expect(readme).not.toContain('juejin.md');
+        expect(readme).not.toContain('xiaohongshu.txt');
+        expect(readme).not.toContain('manifest.json');
+        expect(readme).toContain('微信公众号');
+        expect(readme).toContain('知乎专栏');
+        expect(readme).not.toContain('稀土掘金');
+        expect(readme).not.toContain('小红书');
+      });
+    });
   });
 });

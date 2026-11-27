@@ -1,4 +1,5 @@
-export type PublishPlatform = 'wechat' | 'zhihu' | 'juejin' | 'xiaohongshu' | 'pack' | 'all';
+export const VALID_PUBLISH_PLATFORMS = ['wechat', 'zhihu', 'juejin', 'xiaohongshu', 'pack'] as const;
+export type PublishPlatform = typeof VALID_PUBLISH_PLATFORMS[number] | 'all';
 
 export interface PublishOptions {
   targets?: PublishPlatform[];
