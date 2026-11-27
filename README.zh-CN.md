@@ -24,6 +24,8 @@ aimake studio --demo
 
 **Open Bench 样稿。** 仓库里有四页报告、3:4 借用卡、引用笔记和原创封面图。要复现上图的 Bento 插图版式，可从源码构建并打开样稿。[样稿与复用说明](./examples/open-bench/README.md)。
 
+[台灯布光创作包](./examples/desk-lighting/)包含视频封面与分镜、3:4 小红书图文、4:5 LinkedIn 文档和可替换图片素材。
+
 ## 从资料到成品
 
 | 阶段 | 现在可以做什么 |
@@ -44,7 +46,7 @@ aimake studio --demo
 | PNG | 高清卡片、幻灯片图片 | Playwright 和 Chromium |
 | PDF | 文档、轮播图 | Playwright 和 Chromium |
 | PPTX | PowerPoint 可编辑文本和形状 | Node.js。Mermaid 图解转为图片还需要 Playwright 和 Chromium。 |
-| 微信 HTML | 复制排版后粘贴至公众号编辑器 | Node.js · [Mermaid 导出问题](https://github.com/chicogong/aimake-creator/issues/55) |
+| 微信 HTML | 复制排版后粘贴至公众号编辑器 | Node.js |
 | MP4 | 幻灯片视频 | Playwright、Chromium、FFmpeg |
 | 剪映 / CapCut 草稿 | 导出到本地后继续剪辑 | Playwright 和 Chromium |
 
@@ -68,7 +70,7 @@ pnpm verify
 
 - 了解命令行、渲染引擎和 AI 接入。[架构](./docs/ARCHITECTURE.md) · [文档索引](./docs/DOCS_INDEX.md)
 - 贡献模板、样稿或可复现的问题。[贡献指南](./CONTRIBUTING.md) · [Issue 列表](https://github.com/chicogong/aimake-creator/issues)
-- 跟进桌面端、采集和发布工作。[项目看板](https://github.com/users/chicogong/projects/3) · [桌面端体验讨论](https://github.com/chicogong/aimake-creator/discussions/47)
+- 跟进桌面端、采集和发布工作。[项目看板](https://github.com/users/chicogong/projects/3) · [桌面端体验讨论](https://github.com/chicogong/aimake-creator/discussions/47) · [当前进展](https://github.com/chicogong/aimake-creator/discussions/63)
 - 查看资料采集、依赖和项目规范。[采集调研](./docs/INTAKE_ECOSYSTEM_RESEARCH.md) · [第三方声明](./THIRD_PARTY_NOTICES.md) · [安全](./SECURITY.md) · [行为准则](./CODE_OF_CONDUCT.md)
 
 [MIT 许可证](./LICENSE) © 2026 Aimake Labs / Chico Gong.

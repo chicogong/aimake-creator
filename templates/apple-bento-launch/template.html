@@ -722,7 +722,7 @@
           '</div>';
 
         const imageData = window.__AIMAKE_PAYLOAD__?.enhancements?.coverImages?.[idx];
-        if (isWide && imageData) {
+        if (imageData) {
           const zone = el.querySelector('.content-zone');
           const copy = document.createElement('div');
           copy.className = 'cover-copy';
@@ -733,10 +733,11 @@
           image.alt = slide.imagePrompt || '';
           el.classList.add('cover-with-photo');
           zone.replaceChildren(copy, image);
-          const title = copy.querySelector('.slide-title');
-          const coverTitlePx = slide.title.length < 22 ? 128 : titlePx;
-          title.dataset.basePx = String(coverTitlePx);
-          title.style.fontSize = coverTitlePx + 'px';
+          if (isWide && slide.title.length < 22) {
+            const title = copy.querySelector('.slide-title');
+            title.dataset.basePx = '128';
+            title.style.fontSize = '128px';
+          }
         }
         root.appendChild(el);
         autoFitSlideOverflow(el);

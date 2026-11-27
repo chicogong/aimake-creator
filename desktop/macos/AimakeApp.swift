@@ -1,6 +1,7 @@
 import AppKit
 import Darwin
 import Foundation
+import UniformTypeIdentifiers
 import WebKit
 
 struct LaunchOptions {
@@ -154,7 +155,7 @@ private func jsonObjectLiteral(_ dict: [String: Any]) -> String {
 }
 
 @MainActor
-final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKScriptMessageHandler, NSWindowDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler, NSWindowDelegate {
     private let options: LaunchOptions
     private var window: NSWindow!
     private var webView: WKWebView!
@@ -415,6 +416,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let webView = WKWebView(frame: initialRect, configuration: config)
         webView.autoresizingMask = [.width, .height]
         webView.navigationDelegate = self
+        webView.uiDelegate = self
         webView.setValue(false, forKey: "drawsBackground")
 
         let styleMask: NSWindow.StyleMask = [.titled, .closable, .miniaturizable, .resizable]
@@ -1827,6 +1829,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     // MARK: - WKNavigationDelegate & Automated Self-Test
+
+    func webView(
+        _ webView: WKWebView,
+        runOpenPanelWith parameters: WKOpenPanelParameters,
+        initiatedByFrame frame: WKFrameInfo,
+        completionHandler: @escaping ([URL]?) -> Void
+    ) {
+        guard frame.isMainFrame, let url = frame.request.url,
+              url.host == "127.0.0.1" || url.host == "localhost",
+              let window = webView.window else {
+            completionHandler(nil)
+            return
+        }
+
+        let picker = NSOpenPanel()
+        picker.allowedContentTypes = [.jpeg, .png]
+        picker.canChooseDirectories = false
+        picker.allowsMultipleSelection = false
+        picker.beginSheetModal(for: window) { response in
+            completionHandler(response == .OK ? picker.urls : nil)
+        }
+    }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         hasFinishedInitialLoad = true

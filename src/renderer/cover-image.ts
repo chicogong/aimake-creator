@@ -8,12 +8,18 @@ const imageTypes: Readonly<Record<string, string>> = {
   '.png': 'image/png',
 };
 
+const illustratedCoverTemplates = new Set([
+  'apple-bento-launch',
+  'xhs-warm-magazine',
+  'linkedin-exec-carousel',
+]);
+
 /** Embeds a raster cover image stored alongside its deck. */
 export async function readCoverImage(
   deck: DeckDocument,
   slide: DeckSlide
 ): Promise<string | undefined> {
-  if (deck.frontmatter.template !== 'apple-bento-launch' || slide.layout !== 'cover') return;
+  if (!illustratedCoverTemplates.has(deck.frontmatter.template) || slide.layout !== 'cover') return;
   if (!deck.sourcePath || !slide.imageUrl?.startsWith('./')) return;
   const type = imageTypes[path.extname(slide.imageUrl).toLowerCase()];
   if (!type) return;

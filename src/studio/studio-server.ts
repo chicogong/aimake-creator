@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import childProcess from 'node:child_process';
 import http from 'node:http';
 import fsSync from 'node:fs';
 import fs from 'node:fs/promises';
@@ -229,13 +230,16 @@ export function getCurrentWeekString(d = new Date()): string {
   return `W${weekNo}`;
 }
 
-async function readJsonBody(req: http.IncomingMessage): Promise<Record<string, unknown>> {
-  const contentLengthHeader = req.headers['content-length'];
-  if (contentLengthHeader !== undefined) {
-    const declared = Number(contentLengthHeader);
-    if (Number.isFinite(declared) && declared > MAX_JSON_BODY_BYTES) {
-      throw new HttpError(413, `JSON body exceeds maximum size of ${MAX_JSON_BODY_BYTES} bytes`);
-    }
+const MAX_COVER_IMAGE_BYTES = 10 * 1024 * 1024;
+
+async function readBody(
+  req: http.IncomingMessage,
+  maxBytes: number,
+  label: string
+): Promise<Buffer> {
+  const declared = Number(req.headers['content-length']);
+  if (Number.isFinite(declared) && declared > maxBytes) {
+    throw new HttpError(413, `${label} exceeds maximum size of ${maxBytes} bytes`);
   }
 
   const chunks: Buffer[] = [];
@@ -243,13 +247,16 @@ async function readJsonBody(req: http.IncomingMessage): Promise<Record<string, u
   for await (const chunk of req) {
     const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
     totalBytes += buf.length;
-    if (totalBytes > MAX_JSON_BODY_BYTES) {
-      throw new HttpError(413, `JSON body exceeds maximum size of ${MAX_JSON_BODY_BYTES} bytes`);
+    if (totalBytes > maxBytes) {
+      throw new HttpError(413, `${label} exceeds maximum size of ${maxBytes} bytes`);
     }
     chunks.push(buf);
   }
+  return Buffer.concat(chunks);
+}
 
-  const str = Buffer.concat(chunks).toString('utf8');
+async function readJsonBody(req: http.IncomingMessage): Promise<Record<string, unknown>> {
+  const str = (await readBody(req, MAX_JSON_BODY_BYTES, 'JSON body')).toString('utf8');
   if (!str.trim()) return {};
   try {
     const parsed = JSON.parse(str) as unknown;
@@ -1710,18 +1717,81 @@ export async function startStudioServer(
         return;
       }
 
+      if (req.method === 'POST' && url.pathname === '/api/deck/cover-image') {
+        const activeWorkspace = workspaceDir;
+        const activeDeck = absDeckPath;
+        const requestedDeck = url.searchParams.get('deck');
+        const requestedWorkspace = url.searchParams.get('workspace');
+        if (requestedWorkspace !== activeWorkspace || requestedDeck !== toRelPosix(activeWorkspace, activeDeck)) {
+          throw new HttpError(409, '作品已切换，请重新选择图片');
+        }
+        const realDeck = await resolveContainedExistingFile(activeWorkspace, requestedDeck);
+        const image = await readBody(req, MAX_COVER_IMAGE_BYTES, 'Image');
+        const png = image.subarray(0, 8).equals(Buffer.from('89504e470d0a1a0a', 'hex'));
+        const jpeg = image.subarray(0, 3).equals(Buffer.from('ffd8ff', 'hex'));
+        if (!png && !jpeg) throw new HttpError(415, '请选择 JPEG 或 PNG 图片');
+        if (activeWorkspace !== workspaceDir || activeDeck !== absDeckPath) {
+          throw new HttpError(409, '作品已切换，请重新选择图片');
+        }
+
+        const hash = crypto.createHash('sha256').update(image).digest('hex').slice(0, 24);
+        const relativePath = `assets/cover-${hash}.${png ? 'png' : 'jpg'}`;
+        const target = await resolveContainedWriteTarget(path.dirname(realDeck), relativePath);
+        const temp = `${target}.${crypto.randomUUID()}.tmp`;
+        try {
+          await fs.writeFile(temp, image, { flag: 'wx' });
+          await fs.rename(temp, target);
+        } finally {
+          await fs.rm(temp, { force: true });
+        }
+        sendJson(res, 200, { relativePath: './' + relativePath });
+        return;
+      }
+
       if (req.method === 'POST' && url.pathname === '/api/markdown') {
         const body = await readJsonBody(req);
+        // Bind to target workspace: if body.workspaceDir is explicitly provided and valid, resolve against it
+        const targetWs =
+          body.workspaceDir &&
+          typeof body.workspaceDir === 'string' &&
+          fsSync.existsSync(body.workspaceDir) &&
+          !isForbiddenSystemPath(path.resolve(body.workspaceDir))
+            ? path.resolve(body.workspaceDir)
+            : workspaceDir;
+
         let targetAbsPath = absDeckPath;
         if (body.deckRel && typeof body.deckRel === 'string') {
-          const resolved = path.resolve(workspaceDir, body.deckRel);
-          if (resolved.startsWith(workspaceDir) && fsSync.existsSync(resolved)) {
-            targetAbsPath = resolved;
+          const resolved = path.resolve(targetWs, body.deckRel);
+          if (!resolved.startsWith(targetWs)) {
+            throw new HttpError(403, 'Path traversal forbidden: deck must reside within workspace');
+          }
+          targetAbsPath = resolved;
+          if (targetWs === workspaceDir) {
             absDeckPath = resolved;
           }
+        } else if (targetWs !== workspaceDir) {
+          const currentRel = toRelPosix(workspaceDir, absDeckPath);
+          targetAbsPath = path.resolve(targetWs, currentRel);
         }
+
+        // Optional baseHash optimistic lock conflict detection (Issue #54)
+        if (body.baseHash && typeof body.baseHash === 'string' && fsSync.existsSync(targetAbsPath)) {
+          const currentContent = await fs.readFile(targetAbsPath, 'utf8');
+          const currentHash = crypto.createHash('sha256').update(currentContent).digest('hex');
+          if (currentHash !== body.baseHash && body.force !== true) {
+            sendJson(res, 409, {
+              ok: false,
+              conflict: true,
+              message: '目标文件已在外部被修改，请核对或强制覆盖',
+              targetPath: targetAbsPath,
+              currentHash,
+            });
+            return;
+          }
+        }
+
         await fs.writeFile(targetAbsPath, String(body.rawMarkdown || ''), 'utf8');
-        sendJson(res, 200, { ok: true, deckPath: targetAbsPath });
+        sendJson(res, 200, { ok: true, deckPath: targetAbsPath, workspaceDir: targetWs });
         return;
       }
 
@@ -1738,6 +1808,55 @@ export async function startStudioServer(
           appType,
           appName,
           draftRoot: localPaths.preferred || null,
+        });
+        return;
+      }
+
+      if (req.method === 'GET' && url.pathname === '/api/export/doctor') {
+        const localPaths = detectLocalDraftDirectories();
+        const hasJianying = Boolean(localPaths.jianying && fsSync.existsSync(localPaths.jianying));
+        const hasCapcut = Boolean(localPaths.capcut && fsSync.existsSync(localPaths.capcut));
+
+        // Check browser availability
+        const chromeApp = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+        const edgeApp = '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge';
+        const hasSystemBrowser = fsSync.existsSync(chromeApp) || fsSync.existsSync(edgeApp);
+
+        let hasPlaywright = false;
+        try {
+          require.resolve('playwright');
+          hasPlaywright = true;
+        } catch {
+          hasPlaywright = false;
+        }
+
+        // Check ffmpeg availability
+        let hasFfmpeg = false;
+        try {
+          const check = childProcess.spawnSync('ffmpeg', ['-version'], { timeout: 1500 });
+          hasFfmpeg = check.status === 0;
+        } catch {
+          hasFfmpeg = false;
+        }
+
+        sendJson(res, 200, {
+          ok: true,
+          wechat: { ready: true, zeroDependency: true },
+          pptx: { ready: true, zeroDependency: true },
+          browser: {
+            ready: hasPlaywright || hasSystemBrowser,
+            hasPlaywright,
+            hasSystemBrowser,
+            installHint: 'npm i -g playwright && npx playwright install chromium',
+          },
+          ffmpeg: {
+            ready: hasFfmpeg,
+            installHint: 'brew install ffmpeg',
+          },
+          capcut: {
+            ready: hasJianying || hasCapcut,
+            appName: hasJianying ? '剪映专业版' : hasCapcut ? 'CapCut Desktop' : '未检测到',
+          },
         });
         return;
       }

@@ -110,3 +110,62 @@ flowchart LR
 - **零数据上报**：除用户显式配置的大模型 API Endpoint（如 DeepSeek/OpenAI/Ollama），绝不向任何外部遥测服务器发送请求。
 - **本地状态持久化**：所有的草稿、知识库、导出产物均以纯文本 Markdown 和标准媒体格式存储在本地文件系统中。
 - **密钥安全防线**：内置 `pnpm audit:secrets`，在提交前全面扫描源码、防止任何密钥与敏感路径泄露。
+
+---
+
+## 6. Local-First 统一工作区拓扑与 .agents 规范
+
+为了解决多工作区切换混乱与跨平台 Agent 协作割裂的问题，Aimake 确立了统一的根目录结构（默认位于 `~/Documents/Aimake/`，可通过 `--workspace` 自定义）：
+
+```
+~/Documents/Aimake/
+├── .aimake/                      # 【系统状态与运行配置】
+│   ├── config.json               # 创作者偏好、默认画幅、选定引擎配置
+│   ├── radar-feeds.json          # 订阅源配置 (RSS, Hacker News, 自定义源)
+│   ├── queue/                    # 导出渲染与定时抓取任务队列 (支持断点续传)
+│   └── cache/                    # 外部依赖与临时快照缓存
+│
+├── .agents/                      # 【跨 Agent 协作规范 (AI-Native 标准)】
+│   ├── skills/                   # 跨平台 Skill 工具包 (aimake-create / cite-verifier / style-guard)
+│   ├── prompts/                  # 提示词库 (金句提炼、Bento 结构化拆解)
+│   └── rules/                    # 规范 (兼容 Claude Code / Cursor / Codex / OpenCode / AGY)
+│
+├── wiki/                         # 【超级个体沉淀的知识壁垒 (真实护城河)】
+│   ├── token-governance.md       # 本地沉淀的高价值认知笔记
+│   ├── inflection.md             # 科技拐点事实库
+│   └── index.md                  # 知识路由索引，为 AI 提供精准检索与出处定位
+│
+├── sources/                      # 【灵感与前沿资讯库 (雷达采集与手动投喂)】
+│   ├── gemini-agy-inflection.md   # 最新科技资讯
+│   ├── black-friday-2026.md      # 商业/优惠/算力资讯
+│   └── karpathy-vibe-coding.md   # 行业一手文章
+│
+├── projects/                     # 【创作者的多项目作品集 (打破单一 Deck 束缚)】
+│   ├── work/                     # 商业提案与工作项目 (支持多版本、多格式)
+│   ├── life/                     # 个人生活与复盘记录
+│   ├── media/                    # 社交媒体矩阵 (小红书、微信公众号、X)
+│   └── tech/                     # 深度技术布道文章与幻灯片
+│
+└── deliverables/                 # 【全格式交付成品归档】
+    ├── xhs-cards/                # 导出的 3:4 小红书超清切片图
+    ├── wechat-html/              # 带内联样式的公众号富文本 HTML (含 Mermaid SVG)
+    ├── pptx/                     # 可编辑的 Office 演示文稿
+    └── clips/                    # 剪映草稿工程与 60fps MP4 口播视频
+```
+
+### 跨 Agent 标准互通
+在 `~/Documents/Aimake/` 下，任何遵循 `.agents/` 规范的外部 Agent（Claude Code、Cursor Composer、Codex CLI、OpenCode、Google Antigravity）均可无缝读取 Skills 与规则，并通过 CLI 原生执行：
+```bash
+# 外部 Agent 直接调起 Aimake 渲染引擎
+aimake create --from sources/gemini-agy-inflection.md --template apple-bento --ratio 3:4 --out deliverables/xhs-cards/
+```
+
+---
+
+## 7. Anti-Hallucination 知识引用与上下文壁垒 (Context Moat)
+
+排版工具易被复制，但超级个体在本地积累的资料与上下文无可替代：
+1. **真实来源可追溯 (Grounding & Provenance)**：每一张 Slide 卡片均通过 `cite:` 锚点与 `wiki/` 或 `sources/` 具体行号绑定（如 `wiki/token-governance.md#L34`），前端严谨区分 `已核验`、`待核验` 与 `失效引用`。
+2. **知识资产复利**：每次创作完成后，系统支持提取核心论点与数据结构化反哺至 `wiki/`，通过 `index.md` 索引供下一次创作引用，实现个人认知的复利滚雪球。
+3. **Mermaid 流程图无损直出**：在微信排版流水线中，通过离线无头或 SVG 转码引擎，将声明式 Mermaid 流程图内联编译为自适应 SVG/Base64 图片，并保留结构化卡片降级兜底，彻底杜绝图表丢失。
+

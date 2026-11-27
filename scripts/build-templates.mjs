@@ -4540,9 +4540,38 @@ function buildStandaloneTemplateHtml(manifest, theme) {
   const padTop = is9x16 ? 130 : is16x9 ? 64 : 74;
   const padBottom = is9x16 ? 250 : is16x9 ? 54 : 68;
   const variantCss = getVariantCss(theme.styleVariant, manifest, theme);
-  const coverLayout = manifest.id === 'apple-bento-launch' ? `
+  const portraitPhotoCover = ['xhs-warm-magazine', 'linkedin-exec-carousel'].includes(manifest.id);
+  const portraitCoverCss = portraitPhotoCover ? `
+    .cover-with-photo .content-zone {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      align-items: stretch;
+      gap: 32px;
+    }
+    .cover-with-photo .cover-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .cover-with-photo .cover-photo {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    body[data-style-variant="warm-magazine"] .cover-with-photo::before {
+      content: none;
+    }
+    body[data-style-variant="warm-magazine"] .cover-with-photo .content-zone {
+      grid-template-rows: minmax(0, 1fr) auto;
+    }
+    body[data-style-variant="warm-magazine"] .cover-with-photo .cover-photo {
+      grid-row: 1;
+    }` : '';
+  const coverLayout = manifest.id === 'apple-bento-launch' || portraitPhotoCover ? `
         const imageData = window.__AIMAKE_PAYLOAD__?.enhancements?.coverImages?.[idx];
-        if (isWide && imageData) {
+        if (imageData) {
           const zone = el.querySelector('.content-zone');
           const copy = document.createElement('div');
           copy.className = 'cover-copy';
@@ -4553,10 +4582,11 @@ function buildStandaloneTemplateHtml(manifest, theme) {
           image.alt = slide.imagePrompt || '';
           el.classList.add('cover-with-photo');
           zone.replaceChildren(copy, image);
-          const title = copy.querySelector('.slide-title');
-          const coverTitlePx = slide.title.length < 22 ? 128 : titlePx;
-          title.dataset.basePx = String(coverTitlePx);
-          title.style.fontSize = coverTitlePx + 'px';
+          if (isWide && slide.title.length < 22) {
+            const title = copy.querySelector('.slide-title');
+            title.dataset.basePx = '128';
+            title.style.fontSize = '128px';
+          }
         }` : '';
 
   return `<!DOCTYPE html>
@@ -4852,7 +4882,7 @@ function buildStandaloneTemplateHtml(manifest, theme) {
       transform-origin: left center;
       z-index: 3;
     }
-    ${variantCss}
+    ${variantCss}${portraitCoverCss}
   </style>
 </head>
 <body data-template-id="${manifest.id}" data-style-variant="${theme.styleVariant}">

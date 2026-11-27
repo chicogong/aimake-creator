@@ -24,6 +24,8 @@ aimake studio --demo
 
 **Open Bench example.** The repository includes a four-slide report, a 3:4 borrowing card, source notes, and a cover image. Build from source to try the illustrated Bento cover shown here. [Example and reuse instructions](./examples/open-bench/README.md).
 
+The [desk-lighting creator kit](./examples/desk-lighting/) includes a video cover and storyboard, a 3:4 social guide, a 4:5 document carousel, and reusable image assets.
+
 ## From source material to a deliverable
 
 | Stage | What you can do |
@@ -44,7 +46,7 @@ aimake studio --demo
 | PNG | High-resolution social cards and slide images | Playwright and Chromium |
 | PDF | Documents and carousels | Playwright and Chromium |
 | PPTX | Editable text and shapes for PowerPoint | Node.js. Mermaid diagram images also use Playwright and Chromium. |
-| WeChat HTML | Copy formatted content to the WeChat editor | Node.js · [Mermaid export issue](https://github.com/chicogong/aimake-creator/issues/55) |
+| WeChat HTML | Copy formatted content to the WeChat editor | Node.js |
 | MP4 | A rendered slide video | Playwright, Chromium, and FFmpeg |
 | CapCut draft | A local draft project to continue editing | Playwright and Chromium |
 
@@ -68,7 +70,7 @@ pnpm verify
 
 - Learn about the CLI, renderer, and agent integrations. [Architecture](./docs/ARCHITECTURE.md) · [Document index](./docs/DOCS_INDEX.md)
 - Contribute a template, sample, or reproducible fix. [Contributing guide](./CONTRIBUTING.md) · [Issue tracker](https://github.com/chicogong/aimake-creator/issues)
-- Follow work on the desktop app and publishing workflows. [Project board](https://github.com/users/chicogong/projects/3) · [Desktop feedback](https://github.com/chicogong/aimake-creator/discussions/47)
+- Follow work on the desktop app and publishing workflows. [Project board](https://github.com/users/chicogong/projects/3) · [Desktop feedback](https://github.com/chicogong/aimake-creator/discussions/47) · [Current development](https://github.com/chicogong/aimake-creator/discussions/63)
 - Read about data collection, dependencies, and project policies. [Intake research](./docs/INTAKE_ECOSYSTEM_RESEARCH.md) · [Third-party notices](./THIRD_PARTY_NOTICES.md) · [Security](./SECURITY.md) · [Code of conduct](./CODE_OF_CONDUCT.md)
 
 [MIT License](./LICENSE) © 2026 Aimake Labs / Chico Gong.
