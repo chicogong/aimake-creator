@@ -6,9 +6,9 @@ A local workspace for turning research, notes, and Markdown into slide decks, so
 
 [Download for macOS](https://github.com/chicogong/aimake-creator/releases/latest) · [Try the web playground](https://aimake.cc/playground/) · [Documentation](./docs/DOCS_INDEX.md) · [Discussions](https://github.com/chicogong/aimake-creator/discussions)
 
-![A model-size comparison from the Bonsai news brief in the Aimake macOS app](./docs/assets/desktop-news-bonsai.jpg)
+![A four-card AI shopping story in the Aimake macOS app](./docs/assets/desktop-ai-shopping.jpg)
 
-*A November 2026 AI news brief in the native macOS app, captured from a source build. [Read the story and reuse the drafts](./examples/news-bonsai-27b/).*
+*A social story about an AI update, captured in the native macOS app. [Open the carousel and platform copy](./examples/news-ai-shopping/).*
 
 ## Get started
 
@@ -35,9 +35,7 @@ The [desk-lighting creator kit](./examples/desk-lighting/) includes a video cove
 | Create | Start from one of 36 templates, edit slides on the stage or in Markdown, and add metrics, tables, code, or Mermaid diagrams. AI-assisted editing is optional and uses the model provider or local agent you configure. |
 | Deliver | Export files from the app, or use `aimake publish` to build local bundles for WeChat, Zhihu, Juejin, and Xiaohongshu. Verified platform drafts and scheduled collection are tracked in the [distribution and intake plan](https://github.com/chicogong/aimake-creator/discussions/58). |
 
-![The Aimake macOS export panel with the news storyboard PPTX ready to open](./docs/assets/desktop-news-bonsai-export.jpg)
-
-*The native delivery panel after exporting the news storyboard to an editable PowerPoint file.*
+[Try the social workflow](./examples/news-ai-shopping/) with post copy, four PNG cards, and an article that exports to rich HTML.
 
 ### Export formats
 
@@ -50,11 +48,11 @@ The [desk-lighting creator kit](./examples/desk-lighting/) includes a video cove
 | MP4 | A rendered slide video | Playwright, Chromium, and FFmpeg |
 | CapCut draft | A local draft project to continue editing | Playwright and Chromium |
 
-With a deck in the current directory, these commands produce a PPTX and local handoff bundles.
+With a deck and an article in the current directory, these commands produce social cards and a local publishing bundle.
 
 ```bash
-aimake render ./my-deck.deck.md -f pptx -o ./my-deck.pptx
-aimake publish ./my-deck.deck.md --target wechat,zhihu,juejin,xiaohongshu
+aimake render ./my-deck.deck.md -f png -o ./social-cards
+aimake publish ./my-article.md --target wechat,zhihu,juejin,xiaohongshu
 ```
 
 ## Agent integrations

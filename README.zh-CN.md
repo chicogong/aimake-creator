@@ -6,9 +6,9 @@
 
 [下载 macOS 版](https://github.com/chicogong/aimake-creator/releases/latest) · [在线工坊](https://aimake.cc/playground/) · [文档](./docs/DOCS_INDEX.md) · [讨论区](https://github.com/chicogong/aimake-creator/discussions)
 
-![Aimake macOS 原生窗口中的 Bonsai 新闻数据对照页](./docs/assets/desktop-news-bonsai.jpg)
+![Aimake macOS 原生窗口中的黑五 AI 比价图文](./docs/assets/desktop-ai-shopping.jpg)
 
-*2026 年 11 月的 AI 新闻样稿在 macOS 原生 App 中的实际画面。[打开正文、图文和分镜](./examples/news-bonsai-27b/)。*
+*黑五 AI 比价图文在 macOS 原生 App 中的实际画面。[打开竖版图文和发帖文案](./examples/news-ai-shopping/)。*
 
 ## 开始使用
 
@@ -35,9 +35,7 @@ aimake studio --demo
 | 创作 | 从 36 套模板选版式，在舞台或 Markdown 中修改内容，加入指标、表格、代码和 Mermaid 图解。AI 改稿可选，接入你配置的模型服务或本机代理。 |
 | 交付 | 从桌面端导出，或用 `aimake publish` 为微信、知乎、掘金和小红书生成本地交付包。平台草稿回执和定时采集进度见[采集与分发方案](https://github.com/chicogong/aimake-creator/discussions/58)。 |
 
-![Aimake macOS 原生交付面板显示已生成的新闻分镜 PPTX](./docs/assets/desktop-news-bonsai-export.jpg)
-
-*原生交付面板中的新闻分镜 PPTX，包含可编辑的标题和数据。*
+[从科技新闻做成社交帖](./examples/news-ai-shopping/)包含四张竖版图、可复制的平台文案和可导出 HTML 的正文。
 
 ### 导出格式
 
@@ -50,11 +48,11 @@ aimake studio --demo
 | MP4 | 幻灯片视频 | Playwright、Chromium、FFmpeg |
 | 剪映 / CapCut 草稿 | 导出到本地后继续剪辑 | Playwright 和 Chromium |
 
-在作品目录里，可以生成 PPTX 与各平台的本地交付包。
+在作品目录里，可以生成社交卡片和各平台的本地待发布包。
 
 ```bash
-aimake render ./my-deck.deck.md -f pptx -o ./my-deck.pptx
-aimake publish ./my-deck.deck.md --target wechat,zhihu,juejin,xiaohongshu
+aimake render ./my-deck.deck.md -f png -o ./social-cards
+aimake publish ./my-article.md --target wechat,zhihu,juejin,xiaohongshu
 ```
 
 ## 接入 AI 工具
