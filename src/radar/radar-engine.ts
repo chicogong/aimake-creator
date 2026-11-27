@@ -180,6 +180,40 @@ export function calcAuthenticityScore(item: Partial<RadarItem>): number {
  */
 export const CURATED_TREND_FIXTURES: RadarItem[] = [
   {
+    id: 'radar:x-gemini-agy-deepmind',
+    source: 'X / Twitter',
+    sourceKind: 'x',
+    category: 'ai-tech',
+    title: 'Google DeepMind Antigravity (AGY) 与 Gemini 4：自主代理集群开启 24 小时软件工程',
+    url: 'https://x.com/GoogleDeepMind/status/1888000000000000000',
+    publishedAt: new Date(Date.now() - 600 * 1000).toISOString(),
+    summary:
+      'Google DeepMind 正式推出 Antigravity (AGY) 原生平台。依托 Gemini 4 的 10M+ 超长上下文与宿主 Linux 微虚拟机沙箱，异步多智能体集群以零轮询事件总线协同演化，SWE-bench Verified 达 84.6%，从被动 Chatbot 彻底跃迁至 24 小时自主软件研发。',
+    score: 96400,
+    hotness: '🔥 56.4k Likes · 6.2M Views · @GoogleDeepMind',
+    authenticityScore: 99,
+    suggestedTemplate: 'apple-bento-launch',
+    suggestedAspectRatio: '16:9',
+    author: '@GoogleDeepMind',
+  },
+  {
+    id: 'radar:x-black-friday-2026-deals',
+    source: 'X / Twitter',
+    sourceKind: 'x',
+    category: 'creative',
+    title: '2026 黑五 AI 生产力与算力工具终极抄底：自备 API Key + 本地买断省下 85%',
+    url: 'https://x.com/aimake_hub/status/1891000000000000000',
+    publishedAt: new Date(Date.now() - 900 * 1000).toISOString(),
+    summary:
+      '拒绝按月交租被 SaaS 绑架！2026 黑五创作者硬核省钱共识：利用 TypingMind 终身买断客户端与 ElevenLabs 年促大促，配合官方 API Key 按量计费，纯本地跑通出版飞轮，每年省下近千美元订阅开销。',
+    score: 48900,
+    hotness: '🛍️ 38.2k Likes · 3.5M Views · @aimake_hub',
+    authenticityScore: 97,
+    suggestedTemplate: 'xhs-swiss-grid',
+    suggestedAspectRatio: '3:4',
+    author: '@aimake_hub',
+  },
+  {
     id: 'radar:x-karpathy-vibe-coding',
     source: 'X / Twitter',
     sourceKind: 'x',

@@ -3,6 +3,7 @@ import childProcess from 'node:child_process';
 import http from 'node:http';
 import fsSync from 'node:fs';
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type {
@@ -227,6 +228,24 @@ export function isForbiddenSystemPath(targetPath: string): boolean {
   return forbiddenPrefixes.some(
     (prefix) => lower === prefix.toLowerCase() || lower.startsWith(prefix.toLowerCase() + path.sep)
   );
+}
+
+export function isInsideAppBundle(targetPath: string): boolean {
+  const norm = path.resolve(targetPath);
+  return norm.includes('.app/Contents/Resources') || norm.includes('.app/Contents/');
+}
+
+export function resolveSafeExportBase(targetWs: string, explicitExport?: string): string {
+  if (explicitExport) {
+    const resolved = path.resolve(explicitExport);
+    if (!isInsideAppBundle(resolved)) {
+      return resolved;
+    }
+  }
+  if (isInsideAppBundle(targetWs)) {
+    return path.join(os.homedir(), 'Downloads', 'Aimake_Exports');
+  }
+  return path.join(targetWs, 'exports');
 }
 
 export function getCurrentWeekString(d = new Date()): string {
@@ -625,11 +644,10 @@ export async function startStudioServer(
   let workspaceDir = options.workspaceDir
     ? path.resolve(options.workspaceDir)
     : path.dirname(absDeckPath);
-  let exportBase = options.exportBaseDir
-    ? path.resolve(options.exportBaseDir)
-    : fsSync.existsSync(path.join(workspaceDir, 'exports'))
-      ? path.join(workspaceDir, 'exports')
-      : path.join(path.dirname(absDeckPath), 'dist-exports');
+  let exportBase = resolveSafeExportBase(workspaceDir, options.exportBaseDir);
+  try {
+    fsSync.mkdirSync(exportBase, { recursive: true });
+  } catch (_) {}
   let vaultDir = options.vaultDir
     ? path.resolve(options.vaultDir)
     : fsSync.existsSync(path.join(workspaceDir, 'wiki'))
@@ -803,8 +821,11 @@ export async function startStudioServer(
       await removeRuntimeDiscoveryFile(prevDir);
     }
     workspaceDir = resolvedWs;
-    if (!explicitExportBase) {
-      exportBase = path.join(workspaceDir, 'exports');
+    if (!explicitExportBase || isInsideAppBundle(exportBase)) {
+      exportBase = resolveSafeExportBase(workspaceDir);
+      try {
+        fsSync.mkdirSync(exportBase, { recursive: true });
+      } catch (_) {}
     }
     if (!explicitVaultDir) {
       vaultDir = fsSync.existsSync(path.join(workspaceDir, 'wiki'))
@@ -1565,6 +1586,12 @@ export async function startStudioServer(
           locale: body.locale ? (String(body.locale) as SupportedLocale) : undefined,
         });
         absDeckPath = created.deckPath;
+        if (!explicitExportBase || isInsideAppBundle(exportBase)) {
+          exportBase = resolveSafeExportBase(workspaceDir);
+          try {
+            fsSync.mkdirSync(exportBase, { recursive: true });
+          } catch (_) {}
+        }
         setupWatchers();
         await writeRuntimeDiscoveryFile();
         sendJson(res, 200, {
@@ -1719,6 +1746,7 @@ export async function startStudioServer(
 
       if (req.method === 'GET' && url.pathname === '/api/state') {
         const rawMarkdown = await fs.readFile(absDeckPath, 'utf8');
+        const rawMarkdownHash = crypto.createHash('sha256').update(rawMarkdown).digest('hex');
         const deck = parseDeckMarkdown(rawMarkdown, absDeckPath);
         const templates = await listTemplates();
         const { manifest } = await compileDeckToHtml(deck, { editable: true });
@@ -1727,6 +1755,7 @@ export async function startStudioServer(
         );
         sendJson(res, 200, {
           rawMarkdown,
+          rawMarkdownHash,
           deck,
           templates,
           activeManifest: manifest,
@@ -1950,6 +1979,11 @@ export async function startStudioServer(
             ? body.secondsPerSlide
             : undefined;
 
+        if (isInsideAppBundle(exportBase)) {
+          exportBase = resolveSafeExportBase(workspaceDir);
+        }
+        await fs.mkdir(exportBase, { recursive: true });
+
         if (format === 'capcut') {
           const capcutOutDir = path.join(exportBase, 'capcut-draft');
           const pngOutDir = path.join(exportBase, 'capcut-slides');
@@ -2020,7 +2054,13 @@ export async function startStudioServer(
           fps,
           secondsPerSlide,
         });
-        sendJson(res, 200, { ok: true, artifacts });
+        sendJson(res, 200, {
+          ok: true,
+          artifacts,
+          exportBaseDir: exportBase,
+          target,
+          publishedUrl: `/api/media/file?rel=${encodeURIComponent(toRelPosix(exportBase, target))}`,
+        });
         return;
       }
 

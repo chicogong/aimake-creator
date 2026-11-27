@@ -1009,7 +1009,7 @@ export async function buildWebPlaygroundHtml(
     [data-theme="light"] .pg-btn-primary {
       background: #18181b !important; color: #ffffff !important; border: 1px solid #18181b !important;
     }
-    .pg-select {
+    .pg-select-compat {
       position: absolute !important;
       width: 1px !important;
       height: 1px !important;
@@ -1020,6 +1020,55 @@ export async function buildWebPlaygroundHtml(
       border: 0 !important;
       opacity: 0 !important;
       pointer-events: none !important;
+    }
+    .status-select-wrap {
+      display: inline-flex; align-items: center; position: relative;
+    }
+    .status-tactile-select {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 550;
+      padding: 2px 8px;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.14s ease;
+      font-family: inherit;
+    }
+    .status-tactile-select:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.32);
+    }
+    [data-theme="light"] .status-tactile-select {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(20, 20, 19, 0.16);
+      color: #18181b;
+    }
+    [data-theme="light"] .status-tactile-select:hover {
+      background: rgba(20, 20, 19, 0.08);
+      border-color: rgba(20, 20, 19, 0.3);
+    }
+    @media (max-width: 1240px) {
+      .test-compat-cluster .pg-btn .btn-text {
+        display: none !important;
+      }
+      .test-compat-cluster .pg-btn {
+        padding: 0 6px !important;
+        min-width: 30px !important;
+      }
+    }
+    @media (max-width: 1120px) {
+      .topbar-right .btn-radar-trigger span:not(.live-pulse-dot) {
+        display: none !important;
+      }
+      .topbar-right .btn span {
+        display: none !important;
+      }
+      .topbar-right .btn {
+        padding: 0 8px !important;
+      }
     }
     .pg-btn-icon { width: 30px; padding: 0; }
     .pg-theme-btn {
@@ -1554,14 +1603,14 @@ export async function buildWebPlaygroundHtml(
 
       <!-- Clean Test Compatibility Toolbar Cluster (Single-row, height <= 36px) -->
       <div class="test-compat-cluster" id="test-compat-cluster">
-        <button class="pg-btn" id="btn-humanize" title="四语种去 AI 套话清洗器">${lucideIcon('wand')} 去AI味</button>
-        <button class="pg-btn" id="btn-copy-wechat" title="一键复制微信公众号富文本 (支持直粘微信后台)">${lucideIcon('copy')} 公众号</button>
-        <button class="pg-btn pg-btn-primary" id="btn-export-png" title="将当前页导出为高清 PNG 图片">${lucideIcon('image')} 导图</button>
-        <button class="pg-btn" id="btn-print-pdf" title="打印 / 另存为 PDF 演示文稿">${lucideIcon('printer')} PDF</button>
-        <button class="pg-btn" id="btn-download-md" title="下载 .deck.md 原稿">${lucideIcon('download')} 下载</button>
+        <button class="pg-btn" id="btn-humanize" title="四语种去 AI 套话清洗器">${lucideIcon('wand')} <span class="btn-text">去AI味</span></button>
+        <button class="pg-btn" id="btn-copy-wechat" title="一键复制微信公众号富文本 (支持直粘微信后台)">${lucideIcon('copy')} <span class="btn-text">公众号</span></button>
+        <button class="pg-btn pg-btn-primary" id="btn-export-png" title="将当前页导出为高清 PNG 图片">${lucideIcon('image')} <span class="btn-text">导图</span></button>
+        <button class="pg-btn" id="btn-print-pdf" title="打印 / 另存为 PDF 演示文稿">${lucideIcon('printer')} <span class="btn-text">PDF</span></button>
+        <button class="pg-btn" id="btn-download-md" title="下载 .deck.md 原稿">${lucideIcon('download')} <span class="btn-text">下载</span></button>
         <button class="pg-btn pg-btn-icon" id="btn-fullscreen" title="全屏演示 (F)">${lucideIcon('maximize')}</button>
 
-        <select class="pg-select" id="sample-select" title="载入示范原稿" >
+        <select class="pg-select-compat" id="sample-select" title="载入示范原稿">
           <option value="agent" selected>Karpathy Vibe Coding 个人软件 (16:9)</option>
           <option value="gemini">Google Antigravity & Gemini 4 (16:9)</option>
           <option value="blackfriday">2026 黑五 AI 算力与订阅指南 (3:4)</option>
@@ -1572,29 +1621,13 @@ export async function buildWebPlaygroundHtml(
           <option value="deepseek">DeepSeek-R1 本地蒸馏 (16:9)</option>
         </select>
 
-        <select class="pg-select" id="template-select" title="切换 36 套设计模板" >
+        <select class="pg-select-compat" id="template-select" title="切换 36 套设计模板">
           ${templates
             .map(
               (t) =>
                 `<option value="${t.id}">${t.name.zh || t.id} · ${t.aspect}</option>`
             )
             .join('')}
-        </select>
-
-        <select class="pg-select" id="aspect-select" title="画幅比例" >
-          <option value="auto">画幅: 自动</option>
-          <option value="16:9">16:9 宽屏</option>
-          <option value="3:4">3:4 小红书</option>
-          <option value="9:16">9:16 竖屏</option>
-          <option value="1:1">1:1 方图</option>
-          <option value="4:5">4:5 长图</option>
-        </select>
-
-        <select class="pg-select" id="locale-select" title="语种" >
-          <option value="zh-CN">🇨🇳 中文</option>
-          <option value="en-US">🇺🇸 EN</option>
-          <option value="ja-JP">🇯🇵 日本語</option>
-          <option value="ko-KR">🇰🇷 한국어</option>
         </select>
       </div>
 
@@ -1800,13 +1833,31 @@ export async function buildWebPlaygroundHtml(
         <span class="status-indicator-dot pulse"></span>
         <span class="status-label" id="status-deck-name">作品加载中</span>
         <span class="status-sep">·</span>
-        <span id="status-aspect-val">16:9</span>
+        <div class="status-select-wrap">
+          <select class="status-tactile-select" id="aspect-select" title="画幅比例">
+            <option value="auto">画幅: 自动</option>
+            <option value="16:9" selected>16:9 宽屏</option>
+            <option value="3:4">3:4 小红书</option>
+            <option value="9:16">9:16 竖屏</option>
+            <option value="1:1">1:1 方图</option>
+            <option value="4:5">4:5 长图</option>
+          </select>
+        </div>
+        <span class="status-sep">·</span>
+        <div class="status-select-wrap">
+          <select class="status-tactile-select" id="locale-select" title="语种">
+            <option value="zh-CN" selected>🇨🇳 中文</option>
+            <option value="en-US">🇺🇸 EN</option>
+            <option value="ja-JP">🇯🇵 日本語</option>
+            <option value="ko-KR">🇰🇷 한국어</option>
+          </select>
+        </div>
         <span class="status-sep">·</span>
         <span id="status-slide-text">第 01 / 03 页</span>
         <span class="status-sep">·</span>
         <button class="context-moat-pill" id="btn-toggle-context-drawer" title="查看当前作品引用的知识库萃取、素材溯源与上下文壁垒 (⌘I)">
           ${lucideIcon('shield', 'ic ic-sm')}
-          <span>资料与上下文壁垒</span>
+          <span id="context-moat-text">资料与上下文壁垒</span>
         </button>
       </div>
 
@@ -2166,6 +2217,31 @@ export async function buildWebPlaygroundHtml(
     const stepStage = document.getElementById('step-stage');
     const stepDeliver = document.getElementById('step-deliver');
 
+    function triggerStageResize() {
+      requestAnimationFrame(() => {
+        try {
+          if (elFrame && elFrame.contentWindow && elFrame.contentWindow.fitPgStage) {
+            elFrame.contentWindow.fitPgStage();
+          }
+        } catch (_) {}
+      });
+      setTimeout(() => {
+        try {
+          if (elFrame && elFrame.contentWindow && elFrame.contentWindow.fitPgStage) {
+            elFrame.contentWindow.fitPgStage();
+          }
+        } catch (_) {}
+      }, 50);
+      setTimeout(() => {
+        try {
+          if (elFrame && elFrame.contentWindow && elFrame.contentWindow.fitPgStage) {
+            elFrame.contentWindow.fitPgStage();
+          }
+        } catch (_) {}
+      }, 200);
+    }
+    window.addEventListener('resize', triggerStageResize);
+
     function setLoopStep(step) {
       [stepIntake, stepAuthor, stepStage, stepDeliver].forEach(s => s && s.classList.remove('active'));
       if (step === 'intake') {
@@ -2175,9 +2251,11 @@ export async function buildWebPlaygroundHtml(
         stepAuthor && stepAuthor.classList.add('active');
         if (elEditorPane) elEditorPane.classList.remove('hidden-editor');
         switchEditorTab('card');
+        triggerStageResize();
       } else if (step === 'stage') {
         stepStage && stepStage.classList.add('active');
         if (elEditorPane) elEditorPane.classList.add('hidden-editor');
+        triggerStageResize();
       } else if (step === 'deliver') {
         stepDeliver && stepDeliver.classList.add('active');
         openExportDrawer();
@@ -2706,8 +2784,16 @@ export async function buildWebPlaygroundHtml(
 
       const curTitle = parsed.fm.title || parsed.slides[0]?.title || '未命名作品';
       if (elStageStatusName) elStageStatusName.textContent = curTitle;
-      if (elStageStatusAspect) elStageStatusAspect.textContent = aspect;
+      if (elAspect && elAspect.value !== aspect && elAspect.value !== 'auto') {
+        elAspect.value = aspect;
+      }
       if (elStageStatusSlide) elStageStatusSlide.textContent = '第 ' + String(currentSlideIdx + 1).padStart(2, '0') + ' / ' + String(totalSlides).padStart(2, '0') + ' 页';
+
+      const citedSlides = parsed.slides.filter(s => s.cite && s.cite.trim().length > 0);
+      const elMoatText = document.getElementById('context-moat-text');
+      if (elMoatText) {
+        elMoatText.textContent = citedSlides.length > 0 ? (citedSlides.length + ' 条引用 · 上下文壁垒') : '资料与上下文壁垒';
+      }
 
       const isWide = aspect === '16:9';
       const nativeDims = {
@@ -2994,7 +3080,15 @@ export async function buildWebPlaygroundHtml(
     }
 
     if (elAspect) {
-      elAspect.addEventListener('change', () => scheduleCompile());
+      elAspect.addEventListener('change', () => {
+        scheduleCompile();
+        showToast('已切换画幅为 ' + elAspect.value);
+      });
+    }
+    if (elLocale) {
+      elLocale.addEventListener('change', () => {
+        showToast('已切换语种为 ' + elLocale.options[elLocale.selectedIndex].text);
+      });
     }
 
     // Robust Copy WeChat Rich Text
@@ -3182,8 +3276,49 @@ export async function buildWebPlaygroundHtml(
       if (exportDrawer) exportDrawer.classList.add('show');
       if (backdrop) backdrop.classList.add('show');
     }
+    function renderContextDrawer() {
+      const drawerBody = contextDrawer?.querySelector('.drawer-body');
+      if (!drawerBody) return;
+      const raw = elInput.value;
+      const parsed = parseClientMarkdown(raw);
+      const citedSlides = parsed.slides
+        .map((s, idx) => ({ ...s, slideIndex: idx }))
+        .filter(s => s.cite && s.cite.trim().length > 0);
+
+      let html = '';
+      if (citedSlides.length === 0) {
+        html = '<div class="radar-item-card" style="text-align:center;padding:20px 14px;">' +
+          '<div style="font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px;">0 条引用 · 暂无出处锚点</div>' +
+          '<div style="font-size:11.5px;color:var(--ink-muted);line-height:1.6;">当前作品各页暂未标注 <code>cite:</code> 出处。<br/>在 Markdown 页面底部添加 <code>cite: wiki/...</code> 或引入灵感雷达素材，即可建立商业级事实溯源。</div>' +
+          '</div>';
+      } else {
+        html = citedSlides.map(s => {
+          return '<div class="radar-item-card">' +
+            '<div class="radar-item-head">' +
+              '<span class="radar-item-source">第 ' + (s.slideIndex + 1) + ' 页 · ' + esc(s.title || '未命名分镜') + '</span>' +
+              '<span class="nav-item-badge" style="color:#10b981;background:rgba(16,185,129,0.12);">已引用出处</span>' +
+            '</div>' +
+            '<div class="radar-item-title" style="font-family:var(--font-mono);font-size:11.5px;color:var(--ink);">' + esc(s.cite) + '</div>' +
+            '<div class="radar-item-summary">此页核心断言与事实溯源已锚定，本地与离线导出可信核验。</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      html += '<div class="radar-item-card" style="margin-top:16px;">' +
+        '<div class="radar-item-head">' +
+          '<span class="radar-item-source">私有知识库沉淀 · Vault</span>' +
+          '<span class="nav-item-badge">Local-First</span>' +
+        '</div>' +
+        '<div class="radar-item-title">防幻觉实体地图与个人软件共识</div>' +
+        '<div class="radar-item-summary">本地 Markdown 知识库与创作成果双向互引，0 KB 敏感数据离线留存，避免大模型幻觉污染。</div>' +
+      '</div>';
+
+      drawerBody.innerHTML = html;
+    }
+
     function openContextDrawer() {
       closeAllDrawers();
+      renderContextDrawer();
       if (contextDrawer) contextDrawer.classList.add('show');
       if (backdrop) backdrop.classList.add('show');
     }

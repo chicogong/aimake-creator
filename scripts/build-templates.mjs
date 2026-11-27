@@ -715,7 +715,7 @@ const TEMPLATES = [
       supportedFormats: ['pptx', 'pdf', 'png', 'html'],
       supportsMotion: true,
       contributor: { name: 'Aimake Core', handle: '@chicogong', url: 'https://aimake.cc' },
-      tags: ['consulting', 'mckinsey', 'strategy', 'kpi', 'pptx', '16x9'],
+      tags: ['consulting', 'mckinsey', 'strategy', 'kpi', 'pptx', '16x9', 'recap', 'operations-recap'],
     },
     theme: {
       bg: '#FFFFFF',
@@ -2284,13 +2284,13 @@ function getVariantCss(variant, manifest, theme) {
         .aimake-slide {
           background: #FFFFFF;
           border: 1px solid #C7D6E6;
-          padding: 0 88px 48px 88px !important;
+          padding: 0 clamp(48px, 4.5vw, 88px) 48px clamp(48px, 4.5vw, 88px) !important;
         }
         .top-bar {
           background: #0A2540;
           color: #FFFFFF;
-          margin: 0 -88px 26px -88px;
-          padding: 18px 88px;
+          margin: 0 calc(-1 * clamp(48px, 4.5vw, 88px)) 26px calc(-1 * clamp(48px, 4.5vw, 88px));
+          padding: 18px clamp(48px, 4.5vw, 88px);
           border-bottom: 2px solid #0066B3;
         }
         .eyebrow {
@@ -2307,6 +2307,8 @@ function getVariantCss(variant, manifest, theme) {
           color: #0A2540;
           font-weight: 800;
           border-radius: 0 8px 8px 0;
+          word-break: break-word;
+          line-height: 1.35;
         }
         .bullet-list.grid-2col {
           display: grid;
@@ -4153,14 +4155,63 @@ function generateLightPalette(theme) {
   };
 }
 
+function getSampleEyebrow(manifest) {
+  if (manifest.id === 'en-substack-digest') return 'SUBSTACK';
+  if (manifest.id === 'en-founder-whiteboard') return 'WHITEBOARD BLUEPRINT';
+  if (manifest.id === 'poster-risograph') return 'RISOGRAPH ART';
+  if (manifest.id === 'ppt-linear-dark') return 'LINEAR DARK';
+  if (manifest.id === 'ppt-bauhaus-bold') return 'BAUHAUS BOLD';
+  if (manifest.id === 'ppt-tech-architecture') return 'TECH ARCHITECTURE';
+  if (manifest.id === 'linkedin-exec-carousel') return 'LINKEDIN';
+  if (Array.isArray(manifest.tags) && manifest.tags[0]) {
+    return manifest.tags[0].toUpperCase();
+  }
+  return (manifest.category || 'AIMAKE').toUpperCase();
+}
+
+function getSampleTags(manifest) {
+  const baseTags = ['2026-Trending'];
+  if (manifest.id === 'en-substack-digest') {
+    return [...baseTags, 'substack', 'newsletter', 'editorial'];
+  }
+  if (manifest.id === 'en-founder-whiteboard') {
+    return [...baseTags, 'whiteboard', 'blueprint', 'engineering'];
+  }
+  if (manifest.id === 'poster-risograph') {
+    return [...baseTags, 'risograph', 'poster', 'print-art'];
+  }
+  if (manifest.id === 'ppt-linear-dark') {
+    return [...baseTags, 'linear', 'dark', 'product-launch'];
+  }
+  if (manifest.id === 'ppt-bauhaus-bold') {
+    return [...baseTags, 'bauhaus', 'geometric', 'swiss'];
+  }
+  if (manifest.id === 'ppt-tech-architecture') {
+    return [...baseTags, 'architecture', 'tech-talk', 'pptx'];
+  }
+  if (manifest.id === 'linkedin-exec-carousel') {
+    return [...baseTags, 'linkedin', 'carousel', 'b2b'];
+  }
+  if (Array.isArray(manifest.tags) && manifest.tags.length > 0) {
+    return [...baseTags, ...manifest.tags.slice(0, 3)];
+  }
+  return [...baseTags, manifest.category];
+}
+
 function generateSampleDeck(manifest, theme) {
   const tplId = manifest.id;
   const zhName = manifest.name.zh || manifest.id;
   const enName = manifest.name.en || manifest.id;
-  const desc = manifest.description.zh || manifest.description.en || '';
   const isJa = manifest.defaultLocale === 'ja';
   const isKo = manifest.defaultLocale === 'ko';
   const isEn = manifest.defaultLocale === 'en';
+  const desc = isEn
+    ? (manifest.description.en || manifest.description.zh || '')
+    : isJa
+    ? (manifest.description.ja || manifest.description.zh || '')
+    : isKo
+    ? (manifest.description.ko || manifest.description.zh || '')
+    : (manifest.description.zh || manifest.description.en || '');
 
   if (tplId === 'apple-bento-launch') {
     return `---
@@ -4438,6 +4489,8 @@ tags:
   }
 
   if (isEn) {
+    const eyebrow = getSampleEyebrow(manifest);
+    const tagsYaml = getSampleTags(manifest).map((t) => `  - ${t}`).join('\n');
     return `---
 title: ${enName} · Design Specimen 2026
 template: ${tplId}
@@ -4449,11 +4502,10 @@ watermark: true
 fps: 30
 secondsPerSlide: 3
 tags:
-  - 2026-Trending
-  - ${manifest.category}
+${tagsYaml}
 ---
 
-<!-- scene: cover | layout: metrics | eyebrow: ${manifest.category.toUpperCase()} | cite: aimake.cc -->
+<!-- scene: cover | layout: metrics | eyebrow: ${eyebrow} | cite: aimake.cc -->
 
 # ${enName}
 
@@ -4474,6 +4526,79 @@ tags:
 # Turning Raw Thought into High-Leverage Assets
 
 > “Simplicity is about subtracting the obvious and adding the meaningful.” — Aimake Design Manifesto
+`;
+  }
+
+  if (tplId === 'ppt-consulting-matrix') {
+    return `---
+title: 2026 Q1 线下创作者沙龙暨多模态生产力试点项目深度复盘与下一步行动规划
+template: ppt-consulting-matrix
+locale: zh-CN
+aspect: 16:9
+author: Aimake Studio
+handle: "@aimake.cc"
+watermark: true
+fps: 30
+secondsPerSlide: 4
+tags:
+  - 2026-Trending
+  - presentation
+  - operations-recap
+---
+
+<!-- scene: cover | layout: metrics | eyebrow: OPERATIONS RECAP | cite: 来源：活动签到系统与问卷统计 (2026-01-10 至 2026-03-25) -->
+
+# 2026 Q1 线下创作者沙龙暨多模态生产力试点项目深度复盘与下一步行动规划
+
+## 基于 3 场线下工作坊的签到记录与问卷回溯 · 数据口径：覆盖上海与杭州两地实到创作者
+
+\`\`\`metric
+- 报名人数: 48 人 (超额报名 160%)
+- 实际到场: 36 人 (现场全勤率 75%)
+- 方案采纳: 27 组 (试点满意度 92%)
+\`\`\`
+
+- **数据口径说明**：统计区间 2026-01-10 至 2026-03-25，排除测试账号与重复报名
+- **核心结论先行**：多模态排版工具链实测降低 72% 重复复制时间，但在跨画幅切换与大文件导出时仍有摩擦
+
+---
+
+<!-- scene: feedback-actions | layout: comparison | eyebrow: 观察反馈与下月动作 -->
+
+# 现场关键反馈到下月迭代动作的逐项映射
+
+\`\`\`compare
+现场观察到的痛点反馈 :: 模板切换画幅时部分长标题折行跳动 | 导出 4K 高清 PDF 时偶现 1.2s 界面挂起 | 创作者希望直接复制现成经过验证的提示词
+下月明确推进的改善动作 :: 引入 AST 级不可变状态与画幅自适应安全区 | 优化无头渲染后台任务队列并接入持久化缓存 | 内置项目复盘与创作者增长等新手任务配方
+\`\`\`
+
+- **即时响应闭环**：所有现场提出的痛点均已建立 GitHub Issue 跟踪，每周同步交付进展
+- **数据与行动溯源**：每一项改进均映射到唯一的业务指标与负责人
+
+---
+
+<!-- scene: roadmap | layout: bullets | eyebrow: 行动计划与责任矩阵 | cite: 详见：RFC-42 与研发跟踪看板 -->
+
+# 核心改进事项、交付负责人与里程碑排期
+
+| 优先级 | 核心改进事项 | 交付目标 | 负责人 | 截止时间 | 验证来源 |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| P0 | 渲染流水线提速 | 端到端构建耗时 < 400ms | @chico | 2026-04-15 | [测试基准报告](https://aimake.cc/wiki/benchmarks) |
+| P0 | 双画幅自适应重排 | 16:9 与 3:4 切换零数据丢失 | @devon | 2026-04-20 | [规范 RFC-42](https://aimake.cc/wiki/rfc-42) |
+| P1 | 移动端预览优化 | 390px 视口无横向溢出 | @alex | 2026-04-28 | [E2E 验收表](https://aimake.cc/wiki/mobile-e2e) |
+
+- **里程碑核验机制**：每周五下午 16:00 进行集成测试与构建基准跑分核验
+- **对外发布同步**：关键交付随当周版本发布 Notes 同步发布至讨论区与用户群
+
+---
+
+<!-- scene: summary | layout: outro | eyebrow: 复盘备忘总结 -->
+
+# 沉淀复利资产，持续加速多模态创作飞轮
+
+- **单一事实源**：原始素材与复盘纪要统一归档于本地工作区，拒绝资产分散
+- **全格式原生交付**：同一套复盘源稿，一键导出 16:9 原生 PPTX 汇报与 3:4 高清长图
+- **持续行动追踪**：以数据为证据，以行动为抓手，下阶段复盘按排期逐项验收
 `;
   }
 
@@ -5105,6 +5230,159 @@ ${coverLayout}
 </html>`;
 }
 
+async function generateIndexTs() {
+  const indexTsPath = path.resolve(__dirname, '../src/templates/index.ts');
+  const definitions = TEMPLATES.map((entry) => ({
+    manifest: entry.manifest,
+    theme: {
+      ...entry.theme,
+      dark: generateDarkPalette(entry.theme),
+      light: generateLightPalette(entry.theme),
+    },
+    sampleDeckMd: generateSampleDeck(entry.manifest, entry.theme),
+  }));
+
+  const content = `// Autogenerated template catalog and registry for Aimake Studio
+import type {
+  AspectRatio,
+  TemplateCategory,
+  TemplateManifest,
+} from '../schema/types.js';
+
+export interface TemplateThemePalette {
+  bg: string;
+  surface: string;
+  ink: string;
+  muted: string;
+  accent: string;
+  accentSoft: string;
+  border: string;
+  cardShadow?: string;
+  codeBg?: string;
+  codeBorder?: string;
+  codeInk?: string;
+  gridLine?: string;
+}
+
+export interface TemplateThemeDefinition {
+  bg: string;
+  surface: string;
+  ink: string;
+  muted: string;
+  accent: string;
+  accentSoft?: string;
+  border: string;
+  borderWidth: string;
+  radius: string;
+  fontStack: string;
+  styleVariant: string;
+  cardShadow?: string;
+  codeBg?: string;
+  codeBorder?: string;
+  codeInk?: string;
+  gridLine?: string;
+  dark: TemplateThemePalette;
+  light: TemplateThemePalette;
+}
+
+export interface TemplateDefinition {
+  manifest: TemplateManifest;
+  theme: TemplateThemeDefinition;
+  sampleDeckMd: string;
+}
+
+export const BUILTIN_TEMPLATES: readonly TemplateDefinition[] = ${JSON.stringify(definitions, null, 2)} as const;
+
+export function getAllTemplates(): TemplateDefinition[] {
+  return [...BUILTIN_TEMPLATES];
+}
+
+export function getTemplateById(id: string): TemplateDefinition | undefined {
+  return BUILTIN_TEMPLATES.find((t) => t.manifest.id === id);
+}
+
+export function getTemplatesByCategory(category: TemplateCategory): TemplateDefinition[] {
+  return BUILTIN_TEMPLATES.filter((t) => t.manifest.category === category);
+}
+
+export function getTemplatesByAspect(aspect: AspectRatio): TemplateDefinition[] {
+  return BUILTIN_TEMPLATES.filter((t) => t.manifest.aspect === aspect);
+}
+
+export function getTrendingTemplates(): TemplateDefinition[] {
+  const trendingIds = new Set([
+    'apple-bento-launch',
+    'xhs-swiss-grid',
+    'xhs-neon-tech',
+    'poster-risograph',
+    'apple-dark-keynote',
+    'ppt-linear-dark',
+  ]);
+  return BUILTIN_TEMPLATES.filter((t) => trendingIds.has(t.manifest.id));
+}
+
+export function getTemplateSampleDeck(id: string): string | undefined {
+  const t = getTemplateById(id);
+  return t?.sampleDeckMd;
+}
+
+export function validateTemplateManifest(manifest: any): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+  if (!manifest || typeof manifest !== 'object') {
+    return { valid: false, errors: ['Manifest must be a non-null object'] };
+  }
+  if (!manifest.id || typeof manifest.id !== 'string') {
+    errors.push('Manifest missing valid string id');
+  }
+  if (!manifest.name || typeof manifest.name !== 'object' || !manifest.name.zh || !manifest.name.en) {
+    errors.push('Manifest missing localized name with at least zh and en');
+  }
+  if (!manifest.description || typeof manifest.description !== 'object') {
+    errors.push('Manifest missing localized description');
+  }
+  if (!manifest.category) {
+    errors.push('Manifest missing category');
+  }
+  if (!manifest.aspect) {
+    errors.push('Manifest missing aspect ratio');
+  }
+  if (!manifest.width || !manifest.height) {
+    errors.push('Manifest missing width or height');
+  }
+  if (!Array.isArray(manifest.supportedFormats) || manifest.supportedFormats.length === 0) {
+    errors.push('Manifest missing supportedFormats array');
+  }
+  return { valid: errors.length === 0, errors };
+}
+
+export function validateTemplateHtml(html: string): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+  if (typeof html !== 'string' || html.length === 0) {
+    return { valid: false, errors: ['HTML content cannot be empty'] };
+  }
+  if (!html.includes('window.renderDeck')) {
+    errors.push('Missing required window.renderDeck contract');
+  }
+  if (!html.includes('data-editable')) {
+    errors.push('Missing required data-editable annotations');
+  }
+  if (!html.includes('fitStage')) {
+    errors.push('Missing required fitStage function');
+  }
+  if (!html.includes('--bg') || !html.includes('--ink') || !html.includes('--accent')) {
+    errors.push('Missing fundamental CSS variables (--bg, --ink, --accent)');
+  }
+  if (!html.includes('data-theme="dark"') || !html.includes('data-theme="light"')) {
+    errors.push('Missing explicit data-theme dark and light selector support');
+  }
+  return { valid: errors.length === 0, errors };
+}
+`;
+
+  await fs.writeFile(indexTsPath, content, 'utf8');
+  console.log(`Generated template registry in ${indexTsPath}`);
+}
+
 async function main() {
   await fs.mkdir(TEMPLATES_ROOT, { recursive: true });
   for (const entry of TEMPLATES) {
@@ -5127,6 +5405,7 @@ async function main() {
     );
   }
   console.log(`Generated ${TEMPLATES.length} standalone templates in ${TEMPLATES_ROOT}`);
+  await generateIndexTs();
 }
 
 main().catch((err) => {

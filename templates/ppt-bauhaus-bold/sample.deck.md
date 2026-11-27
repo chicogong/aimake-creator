@@ -10,14 +10,16 @@ fps: 30
 secondsPerSlide: 3
 tags:
   - 2026-Trending
-  - presentation
+  - bauhaus
+  - geometric
+  - swiss
 ---
 
-<!-- scene: cover | layout: metrics | eyebrow: PRESENTATION | cite: aimake.cc -->
+<!-- scene: cover | layout: metrics | eyebrow: BAUHAUS BOLD | cite: aimake.cc -->
 
 # Bauhaus Bold · Primary Geometric Presentation (16:9)
 
-## 纯美术馆白底配克制的包豪斯三原色几何色块（深红、群青、芥末黄）、极粗无衬线字体与严格模数网格对齐。
+## Pure gallery-white canvas anchored by Bauhaus crimson, ultramarine, and mustard geometric blocks with heavy grotesque typography.
 
 ```metric
 - Context Overhead: -95% (Deterministic AST)

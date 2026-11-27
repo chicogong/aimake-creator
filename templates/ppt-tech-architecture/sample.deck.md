@@ -10,14 +10,16 @@ fps: 30
 secondsPerSlide: 3
 tags:
   - 2026-Trending
-  - presentation
+  - architecture
+  - tech-talk
+  - pptx
 ---
 
-<!-- scene: cover | layout: metrics | eyebrow: PRESENTATION | cite: aimake.cc -->
+<!-- scene: cover | layout: metrics | eyebrow: TECH ARCHITECTURE | cite: aimake.cc -->
 
 # Tech Review · 16:9 System Architecture Deck
 
-## 面向晋升答辩、技术大会与架构复盘的 16:9 暗色宽屏幻灯片，原生支持代码对比、指标卡与可编辑 .pptx。
+## Dark widescreen engineering deck built for architecture reviews, tech talks, and editable .pptx export.
 
 ```metric
 - Context Overhead: -95% (Deterministic AST)

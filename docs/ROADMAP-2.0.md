@@ -9,7 +9,7 @@
 1. **100% Local-First Sovereignty (Zero-Cloud)**: All user content strictly resides under `~/Documents/Aimake/` (containing `.aimake/` configuration, `.agents/` inter-agent contracts, `wiki/` knowledge vault, `sources/` intake materials, `projects/` creative collections, and `deliverables/` multi-format outputs).
 2. **Protocol-First Interoperability (.agents Standard)**: Every capability is exposed through clean, structured contracts across CLI (`--json`), MCP (`stdio` + SEP-1865 `ui://`), and ACP (Agent Client Protocol) so Claude Code, Cursor, Codex, OpenCode, and Google Antigravity (AGY) act as frictionless co-pilots.
 3. **Deterministic Layout & Multi-Channel Delivery**: Visual IR layout calculations, editable OOXML `.pptx`, safe inline WeChat HTML (with rasterized/SVG Mermaid diagrams), hardware-accelerated H.264 MP4, and CapCut multi-track timelines run 100% predictably offline.
-4. **Draft-Only Platform Syndication**: Adheres to the principle of "Draft Box Delivery + Editable Receipt Link", never publishing directly without author review.
+4. **Author-controlled distribution.** Verified platform drafts and an editable receipt are the initial delivery target. Scheduled public posting is a later proposal for individually validated channels, with the author approving the account, version and time.
 5. **Anti-Hallucination Citation Compounding**: Every generated insight maintains a cryptographic citation anchor back to `wiki/` or `sources/`, compounding the creator's irreplaceable local context moat.
 
 ---
@@ -39,6 +39,10 @@ The linked issues record current status and evidence. The [international creator
 2. **Create distinct channel editions.** Deliver a WeChat article and a Xiaohongshu carousel from one work. Preserve citations and channel-specific edits when a fact changes in the shared draft.
 3. **Verify delivery per platform.** Start native draft checks with WeChat, then validate Zhihu and Juejin independently. Xiaohongshu starts with an ordered image and caption package. The author reopens saved drafts in the target account and confirms final publication.
 4. **Make creative assets reusable.** Track time to two usable channel editions, verified draft reopens by channel and whether creators return to reuse a source, idea or layout in their next work.
+
+Creators can delegate a selected task to Antigravity (AGY), WorkBuddy, Claude desktop, Codex, Claude Code or OpenCode. The desktop launcher already maps these hosts. Validate which materials each host receives and how a proposed change returns to the work for author review. Starter templates and licensed assets shorten setup. An author-approved recap stores cited facts, editorial choices and delivery receipts in the local knowledge base for future work.
+
+Automate source collection and verified draft delivery independently. A later opt-in pilot can schedule public posting of an approved version on channels with tested publishing APIs. Count a post only after verifying the platform record, and let creators cancel a scheduled item.
 
 The [implementation plan](https://github.com/chicogong/aimake-creator/discussions/58) covers scheduling, draft adapters and recovery. The [engineering backlog](./BACKLOG_AND_AGENT_TASKS.md) tracks desktop updates, local knowledge tools and media work.
 
