@@ -896,6 +896,8 @@ export const CALM_STUDIO_SCRIPT = `
     const data = await apiJson('/api/state');
     state.deck = data.deck;
     state.rawMarkdown = data.rawMarkdown;
+    state.rawMarkdownHash = data.rawMarkdownHash;
+    state.editorBaseHash = data.rawMarkdownHash;
     state.templates = data.templates || [];
     state.activeManifest = data.activeManifest;
     state.workspaceDir = data.workspaceDir || '';
@@ -2931,9 +2933,9 @@ export const CALM_STUDIO_SCRIPT = `
           showToast('已复制图片，可在作品同目录 assets/ 中找到');
           return;
         }
-        const alt = file.name.replace(/\.[^.]+$/, '').replace(/[\[\]\r\n]/g, ' ');
+        const alt = file.name.replace(/\\.[^.]+$/, '').replace(/[\\[\\]\\r\\n]/g, ' ');
         editor.focus();
-        editor.setRangeText('\n![' + alt + '](' + saved.relativePath + ')\n', start, end, 'end');
+        editor.setRangeText('\\n![' + alt + '](' + saved.relativePath + ')\\n', start, end, 'end');
         showToast('图片已加入源码，保存后查看封面');
       } catch (err) {
         showToast('插入封面图失败：' + err.message);
@@ -2993,6 +2995,7 @@ export const CALM_STUDIO_SCRIPT = `
           rawMarkdown: $('markdown-editor').value,
           deckRel: state.editorDeckRel || state.activeDeckRel || state.deckRel,
           workspaceDir: state.editorWorkspaceDir || state.workspaceDir,
+          baseHash: state.editorBaseHash || state.rawMarkdownHash,
         }),
       });
       state.editorInitialContent = $('markdown-editor').value;

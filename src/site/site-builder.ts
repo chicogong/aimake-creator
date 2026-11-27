@@ -143,7 +143,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitleMain: '超级个体的全域创作外脑',
     heroTitleAccent: '从灵感火花，到全模态高定交付',
     heroSub:
-      '素材吸纳、知识蒸馏、私有风格对齐、确定性美学排版。全流程在一个工作区里端到端闭环，一套在本地飞速运转的超级个体个人出版流水线。内置 36 套商业级参数化设计模板与反 AI 废话风格库，零云端依赖，80 毫秒极速直出小红书 3x 超清图卡、微信内联富文本、微软原生可编辑 PPTX 与 60fps 动效短视频。',
+      '从零碎灵感、推文与长文萃取，到私有知识沉淀与确定性排版。纯本地端侧闭环运转，内置 36 套商业级设计系统，零云端依赖，80 毫秒极速直出小红书 3x 超清图卡、微信公众号内联富文本、微软原生可编辑 PPTX 与 60fps 动效短视频。',
     primaryCta: '网页版在线工坊 (开箱即用)',
     secondaryCta: '浏览 36 套设计模板',
     quickInstall: 'npm i -g aimake-studio',
@@ -1041,24 +1041,24 @@ function sharedSiteCss(): string {
   return `
     :root {
       /* ==========================================================================
-         1. Brand & Core Accent Tokens (Creator Violet Hierarchy)
+         1. Brand & Core Accent Tokens (Calm Studio Apple / Linear Hierarchy)
          ========================================================================== */
-      --am-violet: #6951ff;
-      --am-violet-hover: #553af5;
-      --am-violet-active: #472be6;
-      --am-violet-glow: rgba(105, 81, 255, 0.28);
-      --am-violet-soft: rgba(105, 81, 255, 0.10);
-      --am-violet-hairline: rgba(105, 81, 255, 0.35);
+      --am-blue: #0071e3;
+      --am-blue-hover: #0077ed;
+      --am-blue-active: #0062c4;
+      --am-blue-glow: rgba(0, 113, 227, 0.25);
+      --am-blue-soft: rgba(0, 113, 227, 0.08);
+      --am-blue-hairline: rgba(0, 113, 227, 0.35);
 
       --am-emerald: #10b981;
       --am-emerald-soft: rgba(16, 185, 129, 0.12);
       --am-amber: #f59e0b;
       --am-amber-soft: rgba(245, 158, 11, 0.12);
-      --am-coral: #ff6b74;
-      --am-yellow: #ffcb49;
-      --am-lavender: #b7aaff;
-      --indigo: #6366f1;
-      --violet: #8b5cf6;
+      --am-coral: #f43f5e;
+      --am-yellow: #f59e0b;
+      --am-sky: #38bdf8;
+      --indigo: #2563eb;
+      --violet: #0284c7;
       --amber: #f59e0b;
       --emerald: #10b981;
       --rose: #f43f5e;
@@ -1089,7 +1089,7 @@ function sharedSiteCss(): string {
       --hairline-dark: 1px solid rgba(255, 255, 255, 0.08);
       --hairline-dark-strong: 1px solid rgba(255, 255, 255, 0.14);
       --hairline-dark-hover: 1px solid rgba(255, 255, 255, 0.22);
-      --hairline-violet: 1px solid rgba(105, 81, 255, 0.45);
+      --hairline-accent: 1px solid rgba(0, 113, 227, 0.40);
 
       --inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
       --inset-highlight-strong: inset 0 1px 0 rgba(255, 255, 255, 0.12);
@@ -1121,19 +1121,19 @@ function sharedSiteCss(): string {
       --border: rgba(255, 255, 255, 0.08);
       --border-strong: rgba(255, 255, 255, 0.14);
       --border-hover: rgba(255, 255, 255, 0.22);
-      --cobalt: var(--am-violet);
-      --cobalt-glow: var(--am-violet-glow);
+      --cobalt: var(--am-blue);
+      --cobalt-glow: var(--am-blue-glow);
 
       --ink: #f4f5f8;
       --muted: #9da1b2;
       --dim: #65697b;
 
-      --pill-bg: rgba(105, 81, 255, 0.12);
-      --pill-ink: #c4b5fd;
-      --pill-border: rgba(105, 81, 255, 0.32);
+      --pill-bg: rgba(0, 113, 227, 0.10);
+      --pill-ink: #38bdf8;
+      --pill-border: rgba(0, 113, 227, 0.28);
 
       --shadow-obsidian-card: 0 16px 36px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-      --shadow-obsidian-hover: 0 24px 48px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(105, 81, 255, 0.25) inset;
+      --shadow-obsidian-hover: 0 24px 48px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(0, 113, 227, 0.25) inset;
       --shadow-obsidian-dock: 0 16px 40px -6px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
       --shadow-stage: 0 24px 64px -12px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
@@ -1158,22 +1158,22 @@ function sharedSiteCss(): string {
 
       --border: rgba(20, 20, 19, 0.08);
       --border-strong: rgba(20, 20, 19, 0.15);
-      --border-hover: rgba(85, 58, 245, 0.45);
+      --border-hover: rgba(0, 113, 227, 0.45);
 
       --ink: #141413;
       --muted: #57554f;
       --dim: #8c887f;
 
-      --cobalt: #553af5;
-      --cobalt-glow: rgba(85, 58, 245, 0.2);
-      --code-ink: #1d4ed8;
+      --cobalt: #0071e3;
+      --cobalt-glow: rgba(0, 113, 227, 0.2);
+      --code-ink: #0284c7;
 
-      --pill-bg: #eef2ff;
-      --pill-ink: #4338ca;
-      --pill-border: #c7d2fe;
+      --pill-bg: #eff6ff;
+      --pill-ink: #0284c7;
+      --pill-border: #bfdbfe;
 
       --shadow-obsidian-card: 0 8px 24px -4px rgba(20, 20, 19, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      --shadow-obsidian-hover: 0 16px 36px -6px rgba(20, 20, 19, 0.12), 0 0 0 1px rgba(85, 58, 245, 0.2) inset;
+      --shadow-obsidian-hover: 0 16px 36px -6px rgba(20, 20, 19, 0.12), 0 0 0 1px rgba(0, 113, 227, 0.2) inset;
       --shadow-stage: 0 20px 48px rgba(20, 20, 19, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
 
@@ -1181,23 +1181,23 @@ function sharedSiteCss(): string {
     [data-theme="light"] body {
       background-color: var(--bg);
       background-image:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(105, 81, 255, 0.05), transparent 70%),
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 113, 227, 0.03), transparent 70%),
         radial-gradient(circle 600px at 90% 20%, rgba(20, 20, 19, 0.03), transparent 60%);
       color: var(--ink);
     }
     [data-theme="light"] nav.topbar {
-      background: rgba(245, 244, 239, 0.9);
+      background: rgba(247, 245, 240, 0.88);
       border-bottom-color: var(--border);
     }
     [data-theme="light"] .hero h1 {
-      background: linear-gradient(180deg, #141413 30%, #3f3d37 100%);
+      background: linear-gradient(180deg, #18181b 30%, #27272a 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     [data-theme="light"] .hero {
       background-image:
-        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(105, 81, 255, 0.06), transparent 70%),
-        radial-gradient(circle 500px at 85% 15%, rgba(255, 203, 73, 0.04), transparent 60%);
+        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(0, 113, 227, 0.04), transparent 70%),
+        radial-gradient(circle 500px at 85% 15%, rgba(20, 20, 19, 0.03), transparent 60%);
     }
     [data-theme="light"] .hero-badge-pill {
       background: #ecfdf5;
@@ -1270,19 +1270,19 @@ function sharedSiteCss(): string {
       border-color: rgba(255, 255, 255, 0.2);
     }
     [data-theme="light"] .nav-pill-highlight {
-      color: #4338ca !important;
-      background: #eef2ff;
-      border-color: #c7d2fe;
+      color: #0071e3 !important;
+      background: #eff6ff;
+      border-color: #bfdbfe;
     }
     [data-theme="light"] .nav-pill-highlight:hover {
-      background: #4f46e5;
-      border-color: #4f46e5;
+      background: #0071e3;
+      border-color: #0071e3;
       color: #ffffff !important;
     }
     [data-theme="light"] .mobile-nav-pill-highlight {
-      color: #4338ca !important;
-      background: #eef2ff;
-      border-color: #c7d2fe;
+      color: #0071e3 !important;
+      background: #eff6ff;
+      border-color: #bfdbfe;
     }
     [data-theme="light"] .work-card,
     [data-theme="light"] .tpl-card,
@@ -1314,11 +1314,11 @@ function sharedSiteCss(): string {
     [data-theme="light"] .aspect-16-9 { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
     [data-theme="light"] .aspect-3-4 { background: #fffbeb; color: #b45309; border-color: #fde68a; }
     [data-theme="light"] .aspect-4-5 { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
-    [data-theme="light"] .aspect-9-16 { background: #f5f3ff; color: #6d28d9; border-color: #ddd6fe; }
+    [data-theme="light"] .aspect-9-16 { background: #eff6ff; color: #0284c7; border-color: #bae6fd; }
     [data-theme="light"] .aspect-1-1 { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
     [data-theme="light"] .aspect-flow { background: #fdf2f8; color: #be185d; border-color: #fbcfe8; }
     [data-theme="light"] .work-preview-bento {
-      background: radial-gradient(circle at 80% 10%, rgba(105, 81, 255, 0.12), transparent 60%), #f8f7f4;
+      background: radial-gradient(circle at 80% 10%, rgba(0, 113, 227, 0.08), transparent 60%), #f8f7f4;
       color: #0f172a;
       border-color: rgba(20, 20, 19, 0.12);
     }
@@ -1331,7 +1331,7 @@ function sharedSiteCss(): string {
       color: #0f172a !important;
     }
     [data-theme="light"] .work-preview-linear {
-      background: radial-gradient(circle at 80% 0%, rgba(105,81,255,0.14), transparent 60%), #f8fafc;
+      background: radial-gradient(circle at 80% 0%, rgba(0, 113, 227, 0.08), transparent 60%), #f8fafc;
       color: #0f172a;
       border-color: rgba(20, 20, 19, 0.12);
     }
@@ -1357,9 +1357,9 @@ function sharedSiteCss(): string {
       color: #334155;
     }
     [data-theme="light"] .work-preview-video {
-      background: linear-gradient(160deg, #f5f3ff 0%, #ede9fe 100%);
+      background: linear-gradient(160deg, #f0f7ff 0%, #e0f2fe 100%);
       color: #0f172a;
-      border-color: rgba(105, 81, 255, 0.2);
+      border-color: rgba(0, 113, 227, 0.2);
     }
     [data-theme="light"] .work-preview-video .wp-headline {
       color: #0f172a;
@@ -1368,7 +1368,7 @@ function sharedSiteCss(): string {
       color: #64748b;
     }
     [data-theme="light"] .work-preview-video .wp-track-bar {
-      background: rgba(105, 81, 255, 0.1);
+      background: rgba(0, 113, 227, 0.1);
     }
     [data-theme="light"] .work-btn,
     [data-theme="light"] .work-btn-sub {
@@ -1381,9 +1381,9 @@ function sharedSiteCss(): string {
       color: #000;
     }
     [data-theme="light"] .work-btn-main {
-      background: var(--cobalt);
+      background: #18181b;
       color: #ffffff;
-      border-color: var(--cobalt);
+      border-color: #18181b;
     }
     [data-theme="light"] .deliverables-badge {
       background: #ffffff;
@@ -1391,9 +1391,9 @@ function sharedSiteCss(): string {
       color: #334155;
     }
     [data-theme="light"] .bento-badge {
-      background: #eef2ff;
-      color: #4338ca;
-      border-color: #c7d2fe;
+      background: #eff6ff;
+      color: #0284c7;
+      border-color: #bae6fd;
     }
     [data-theme="light"] .radar-hotness {
       color: #b45309;
@@ -1474,7 +1474,7 @@ function sharedSiteCss(): string {
     }
     .btn-expand-more:hover {
       border-color: var(--hairline-dark-hover);
-      color: var(--am-violet);
+      color: var(--am-blue);
       transform: translateY(-1px);
     }
     * { box-sizing: border-box; }
@@ -1510,43 +1510,73 @@ function sharedSiteCss(): string {
     a:focus-visible, button:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
     .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
 
-    /* Topbar */
+    /* Topbar - Obsidian & Vellum Glassmorphism */
     nav.topbar {
-      border-bottom: var(--hairline-dark);
-      padding: 12px 0;
-      background: rgba(7, 8, 12, 0.84);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 10px 0;
+      background: rgba(14, 16, 23, 0.82);
       position: sticky;
       top: 0;
-      z-index: 40;
-      backdrop-filter: blur(24px) saturate(1.8);
-      -webkit-backdrop-filter: blur(24px) saturate(1.8);
+      z-index: 50;
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: background var(--duration-fast), border-color var(--duration-fast);
     }
-    .nav-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-    .nav-brand-group { display: flex; align-items: center; gap: 12px; }
-    .logo { font-weight: 800; font-size: 17.5px; display: inline-flex; align-items: center; gap: 10px; letter-spacing: var(--tracking-tight); }
-    .logo-badge {
-      background: linear-gradient(135deg, var(--am-violet), #553af5);
-      color: #fff;
-      width: 28px;
-      height: 28px;
-      border-radius: 7px;
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: nowrap;
+      min-width: 0;
+    }
+    .nav-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 16.5px;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 13.5px;
-      font-weight: 700;
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset, 0 4px 12px var(--cobalt-glow);
+      gap: 10px;
+      letter-spacing: var(--tracking-tight);
+      color: var(--ink);
+      white-space: nowrap;
     }
-    .logo-sub { font-size: 12px; font-weight: 500; color: var(--muted); padding-left: 10px; border-left: var(--hairline-dark); }
-    .nav-links { display: flex; align-items: center; gap: 22px; font-size: 13.5px; color: var(--muted); font-weight: 500; }
+    .logo-badge {
+      display: none;
+    }
+    .logo-sub {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--muted);
+      padding-left: 10px;
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      white-space: nowrap;
+    }
+    [data-theme="light"] .logo-sub {
+      border-left-color: rgba(20, 20, 19, 0.12);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13.5px;
+      color: var(--muted);
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 1;
+    }
     .nav-links a { transition: color var(--duration-fast); }
     .nav-links a:hover { color: var(--ink); }
     .nav-pill-highlight {
-      color: #c4b5fd !important;
-      background: rgba(105, 81, 255, 0.12);
-      border: 1px solid rgba(105, 81, 255, 0.35);
+      color: #38bdf8 !important;
+      background: rgba(0, 113, 227, 0.12);
+      border: 1px solid rgba(0, 113, 227, 0.35);
       padding: 4px 12px;
       border-radius: 999px;
       font-weight: 600;
@@ -1556,11 +1586,17 @@ function sharedSiteCss(): string {
       box-shadow: var(--inset-highlight);
       transition: all var(--duration-fast) var(--ease-spring) !important;
     }
-    .nav-pill-highlight:hover { background: rgba(105, 81, 255, 0.24); border-color: var(--am-violet); color: #fff !important; transform: translateY(-0.5px); }
+    .nav-pill-highlight:hover {
+      background: rgba(0, 113, 227, 0.24);
+      border-color: var(--am-blue);
+      color: #fff !important;
+      transform: translateY(-0.5px);
+    }
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-shrink: 0;
     }
     .nav-cta-btn {
       display: inline-flex;
@@ -1719,11 +1755,11 @@ function sharedSiteCss(): string {
     .lang-menu-item.active {
       color: #fff;
       font-weight: 600;
-      background: var(--am-violet-soft);
+      background: var(--am-blue-soft);
     }
     [data-theme="light"] .lang-menu-item.active {
       color: var(--cobalt);
-      background: rgba(85, 58, 245, 0.08);
+      background: rgba(0, 113, 227, 0.08);
     }
 
     /* Hero */
@@ -1733,11 +1769,12 @@ function sharedSiteCss(): string {
       position: relative;
       background-color: var(--bg-obsidian-deep);
       background-image:
-        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(105, 81, 255, 0.09), transparent 70%),
-        radial-gradient(circle 600px at 85% 15%, rgba(59, 130, 246, 0.035), transparent 60%);
+        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(0, 113, 227, 0.08), transparent 70%),
+        radial-gradient(circle 600px at 85% 15%, rgba(16, 185, 129, 0.035), transparent 60%);
     }
     .hero-split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 44px; align-items: center; }
-    @media (max-width: 980px) { .hero-split { grid-template-columns: 1fr; } .logo-sub { display: none; } }
+    @media (max-width: 1080px) { .logo-sub { display: none; } }
+    @media (max-width: 980px) { .hero-split { grid-template-columns: 1fr; } }
     .hero-badge-pill {
       display: inline-flex;
       align-items: center;
@@ -1779,7 +1816,8 @@ function sharedSiteCss(): string {
       line-height: 1.15;
       letter-spacing: var(--tracking-tighter);
       font-weight: 800;
-      background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.78) 100%);
+      color: #ffffff;
+      background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.82) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: block;
@@ -1791,18 +1829,19 @@ function sharedSiteCss(): string {
       line-height: 1.18;
       letter-spacing: -0.03em;
       font-weight: 800;
-      background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 35%, #f472b6 70%, #38bdf8 100%);
+      background: linear-gradient(135deg, #0071e3 0%, #38bdf8 55%, #10b981 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: block;
     }
     [data-theme="light"] .hero-headline-main {
-      background: linear-gradient(180deg, #0f172a 40%, #1e293b 100%);
+      color: #18181b;
+      background: linear-gradient(180deg, #18181b 40%, #27272a 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     [data-theme="light"] .hero-headline-accent {
-      background: linear-gradient(135deg, #6951ff 0%, #db2777 60%, #0284c7 100%);
+      background: linear-gradient(135deg, #0071e3 0%, #0284c7 60%, #059669 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -1910,11 +1949,11 @@ function sharedSiteCss(): string {
       white-space: nowrap;
     }
     .quick-cli-pill:hover {
-      border-color: var(--am-violet-hairline);
+      border-color: var(--am-blue-hairline);
       color: #fff;
       background: rgba(21, 24, 33, 0.95);
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px -2px rgba(105, 81, 255, 0.25);
+      box-shadow: 0 4px 14px -2px rgba(0, 113, 227, 0.25);
     }
     .cli-prompt-symbol { color: var(--am-emerald); font-weight: 700; }
     .cli-copy-hint {
@@ -2078,26 +2117,30 @@ function sharedSiteCss(): string {
       gap: 5px;
       padding: 5px 12px;
       border-radius: 6px;
-      background: var(--am-violet);
-      color: #fff !important;
+      background: #18181b;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff !important;
       font-size: 11.5px;
       font-weight: 600;
       text-decoration: none;
-      box-shadow: 0 2px 10px rgba(105, 81, 255, 0.35);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), var(--inset-highlight);
       transition: all var(--duration-fast) var(--ease-spring);
       white-space: nowrap;
     }
     .stage-remix-btn:hover {
-      background: var(--am-violet-hover);
+      background: #27272a;
+      border-color: rgba(255, 255, 255, 0.32);
       transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
     .stage-remix-btn-dark {
-      background: #0f172a;
-      border: 1px solid rgba(15, 23, 42, 0.2);
-      color: #fff !important;
+      background: #18181b;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff !important;
     }
     .stage-remix-btn-dark:hover {
-      background: #1e293b;
+      background: #27272a;
+      border-color: rgba(255, 255, 255, 0.32);
     }
     .hss-foot-action {
       display: flex;
@@ -2111,8 +2154,8 @@ function sharedSiteCss(): string {
 
     /* Masterpiece 1: Apple Keynote Bento */
     .hss-bento {
-      background: radial-gradient(circle at 85% 15%, rgba(105, 81, 255, 0.22), transparent 60%),
-                  radial-gradient(circle at 15% 90%, rgba(56, 189, 248, 0.15), transparent 50%),
+      background: radial-gradient(circle at 85% 15%, rgba(0, 113, 227, 0.18), transparent 60%),
+                  radial-gradient(circle at 15% 90%, rgba(16, 185, 129, 0.12), transparent 50%),
                   #080a12;
       color: #f8fafc;
       justify-content: space-between;
@@ -2151,9 +2194,9 @@ function sharedSiteCss(): string {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(105, 81, 255, 0.18);
-      border: 1px solid rgba(105, 81, 255, 0.4);
-      color: #c4b5fd;
+      background: rgba(0, 113, 227, 0.15);
+      border: 1px solid rgba(0, 113, 227, 0.35);
+      color: #60a5fa;
       padding: 5px 10px;
       border-radius: 6px;
       white-space: nowrap;
@@ -2172,24 +2215,29 @@ function sharedSiteCss(): string {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .hss-bento-tile {
       background: rgba(255, 255, 255, 0.035);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 10px;
-      padding: 14px;
+      padding: 16px 18px;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .hss-bento-val {
-      font-size: 28px;
+      font-size: clamp(36px, 4.2vw, 58px);
       font-weight: 800;
       font-family: var(--mono);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 4px;
+      font-feature-settings: var(--font-features-numbers);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 6px;
       display: flex;
       align-items: baseline;
       justify-content: space-between;
@@ -2438,7 +2486,7 @@ function sharedSiteCss(): string {
     .hss-eq-bar {
       width: 3px;
       border-radius: 1.5px;
-      background: #a78bfa;
+      background: #38bdf8;
       animation: hss-eq-bounce 1s ease-in-out infinite alternate;
     }
     .hss-eq-bar:nth-child(1) { height: 8px; animation-delay: 0.1s; }
@@ -2683,10 +2731,10 @@ function sharedSiteCss(): string {
     }
     .terminal-tab-btn:hover { color: #ffffff; border-color: var(--hairline-dark-hover); background: rgba(255, 255, 255, 0.06); }
     .terminal-tab-btn.active {
-      background: var(--am-violet-soft);
+      background: var(--am-blue-soft);
       color: #ffffff;
-      border-color: var(--am-violet-hairline);
-      box-shadow: 0 0 10px var(--am-violet-glow), var(--inset-highlight);
+      border-color: var(--am-blue-hairline);
+      box-shadow: 0 0 10px var(--am-blue-glow), var(--inset-highlight);
     }
     .terminal-prompt-bar {
       display: flex;
@@ -2724,7 +2772,7 @@ function sharedSiteCss(): string {
       cursor: pointer;
       transition: all var(--duration-fast) var(--ease-spring);
     }
-    .btn-copy-cmd:hover { border-color: var(--am-violet-hairline); color: #ffffff; background: var(--am-violet-soft); }
+    .btn-copy-cmd:hover { border-color: var(--am-blue-hairline); color: #ffffff; background: var(--am-blue-soft); }
     .terminal-output {
       padding: 20px 24px;
       font-family: var(--mono);
@@ -2784,7 +2832,7 @@ function sharedSiteCss(): string {
     .aspect-16-9 { background: rgba(59, 130, 246, 0.12); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
     .aspect-3-4 { background: rgba(245, 158, 11, 0.12); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
     .aspect-4-5 { background: rgba(16, 185, 129, 0.12); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .aspect-9-16 { background: rgba(139, 92, 246, 0.12); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3); }
+    .aspect-9-16 { background: rgba(0, 113, 227, 0.12); color: #38bdf8; border: 1px solid rgba(0, 113, 227, 0.3); }
     .aspect-1-1 { background: rgba(14, 165, 233, 0.12); color: #7dd3fc; border: 1px solid rgba(14, 165, 233, 0.3); }
     .aspect-flow { background: rgba(236, 72, 153, 0.12); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
     .tpl-card h3 { margin: 0 0 8px; font-size: 16.5px; font-weight: 700; letter-spacing: var(--tracking-tight); line-height: 1.35; }
@@ -2890,7 +2938,7 @@ function sharedSiteCss(): string {
       gap: 8px;
       transition: border-color var(--duration-fast) ease;
     }
-    .pack-cmd-box:hover { border-color: var(--am-violet-hairline); }
+    .pack-cmd-box:hover { border-color: var(--am-blue-hairline); }
 
     /* Family */
     .family-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px; }
@@ -3014,14 +3062,14 @@ function sharedSiteCss(): string {
       border-radius: 5px;
     }
     .wp-linear-node {
-      background: rgba(105, 81, 255, 0.25);
-      border: 1px solid rgba(105, 81, 255, 0.4);
-      color: #c4b5fd;
+      background: rgba(0, 113, 227, 0.22);
+      border: 1px solid rgba(0, 113, 227, 0.4);
+      color: #60a5fa;
       padding: 2px 6px;
       border-radius: 4px;
     }
     .work-preview-bento {
-      background: radial-gradient(circle at 80% 10%, rgba(105, 81, 255, 0.22), transparent 60%), #0c0e16;
+      background: radial-gradient(circle at 80% 10%, rgba(0, 113, 227, 0.16), transparent 60%), #0c0e16;
       color: #f8fafc;
     }
     .wp-bento-mini-grid {
@@ -3530,9 +3578,9 @@ function sharedSiteCss(): string {
       color: var(--ink);
     }
     .mobile-nav-pill-highlight {
-      color: #c4b5fd !important;
-      background: rgba(105, 81, 255, 0.14);
-      border: 1px solid rgba(105, 81, 255, 0.35);
+      color: #38bdf8 !important;
+      background: rgba(0, 113, 227, 0.14);
+      border: 1px solid rgba(0, 113, 227, 0.35);
       font-weight: 600;
     }
 
@@ -3631,6 +3679,17 @@ function toggleAimakeTheme() {
 </script>`;
 }
 
+export function renderBrandTokenSvg(size: number = 28): string {
+  const radius = Math.round(size * 0.23);
+  return `<svg class="brand-token" width="${size}" height="${size}" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Aimake Studio Logo" style="vertical-align:middle;display:inline-block;flex-shrink:0;">
+    <rect width="28" height="28" rx="${radius}" fill="#18181b" stroke="rgba(255,255,255,0.16)" stroke-width="1"/>
+    <path d="M7 7.5L14.5 5.5C16.3 5 16 6.8 15.6 8.5L12.8 21.5C12.5 22.8 11.5 22.8 10.3 22.8H7C5.8 22.8 5.8 21.5 5.8 20.3V8.8C5.8 7.8 6.1 7.5 7 7.5Z" fill="#0071e3"/>
+    <rect x="16.5" y="6.5" width="8" height="8" rx="2" fill="#10b981"/>
+    <path d="M15.8 16H18.7C19.7 16 19.5 17.2 19.2 18.4L18.4 22.5C18.2 23.3 17.1 23.3 16 23.3H14.7C13.8 23.3 14 22.4 14.3 21.4L15.2 17.2C15.4 16 15.8 16 15.8 16Z" fill="#38bdf8"/>
+    <path d="M24.8 16.5V21.5C24.8 23 23.2 23 20.5 23H19.5C19.3 22.4 19.4 21.8 19.8 18C20.3 17 22 16.5 24.8 16.5Z" fill="#eceae4"/>
+  </svg>`;
+}
+
 function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
   const copy = UI_COPY[lang];
   const langNames: Record<SiteLang, string> = {
@@ -3651,7 +3710,7 @@ function renderTopNav(lang: SiteLang, activeSuffix = ''): string {
     <div class="container nav-inner">
       <div class="nav-brand-group">
         <a class="logo" href="/${lang}/">
-          <img src="/brand/logos/symbol-color.svg" width="28" height="28" style="vertical-align:middle;display:inline-block;border-radius:6px;" alt="Aimake Studio Logo" />
+          ${renderBrandTokenSvg(28)}
           <span>Aimake Studio</span>
         </a>
         <span class="logo-sub">爱创工坊 · Local-First Multimodal Studio</span>
@@ -4017,7 +4076,7 @@ function renderLandingHtml(
             </div>
             <div class="wp-bento-tile">
               <span style="color:#94a3b8;font-size:9px;">受众规模</span>
-              <strong style="font-size:12px;color:#c4b5fd;">仅限 1 人</strong>
+              <strong style="font-size:12px;color:#f59e0b;">仅限 1 人</strong>
             </div>
           </div>
           <div class="wp-chips">
@@ -4055,31 +4114,31 @@ function renderLandingHtml(
         </div>`,
     },
     {
-      id: 'work-deepseek-r1',
-      sampleKey: 'agent',
+      id: 'work-gemini-agy',
+      sampleKey: 'gemini',
       aspect: '16:9',
       format: '原生 OOXML .pptx',
       platform: '商业演示',
       template: 'ppt-linear-dark',
-      title: '《DeepSeek-R1: 纯强化学习与开源权重瓦解硅谷算力霸权》',
+      title: '《Google DeepMind Antigravity (AGY) 与 Gemini 4 自主代理革命》',
       summary:
-        '极客黑几何科技排版。无冷启动 SFT 纯 RL 推理激发的 Aha Moment，671B MoE 开源权重在本地 Apple Silicon / Ollama 极速狂飙，双击原生可编辑。',
-      badge: '12M 轰动 · @deepseek_ai',
+        '极客黑几何科技排版。深度解构 10M+ Token 上下文缓存与微虚拟机宿主沙箱：异步多智能体群智架构，直出原生双击可编辑微软 OOXML 矢量形状与文本框。',
+      badge: '6.2M 浏览 · @GoogleDeepMind',
       tplId: 'ppt-linear-dark',
       previewHtml: `
         <div class="work-preview work-preview-linear">
-          <div class="wp-eyebrow"><span style="color:#a5b4fc;">LINEAR DARK · 16:9</span><span style="color:#6ee7b7;">12M X VIEWS</span></div>
-          <div class="wp-headline">DeepSeek-R1 纯 RL 与开源权重</div>
+          <div class="wp-eyebrow"><span style="color:#38bdf8;">LINEAR DARK · 16:9</span><span style="color:#6ee7b7;">6.2M X VIEWS</span></div>
+          <div class="wp-headline">DeepMind AGY · 24h 自主智能体集群</div>
           <div class="wp-linear-flow">
-            <span class="wp-linear-node">Pure RL (No SFT)</span>
+            <span class="wp-linear-node">10M+ Context</span>
             <span style="color:#64748b;">➔</span>
-            <span class="wp-linear-node" style="background:rgba(56,189,248,0.25);border-color:rgba(56,189,248,0.4);color:#7dd3fc;">671B MoE (37B Act)</span>
+            <span class="wp-linear-node" style="background:rgba(0,113,227,0.25);border-color:rgba(0,113,227,0.4);color:#60a5fa;">0 Polling Swarm</span>
             <span style="color:#64748b;">➔</span>
-            <span class="wp-linear-node" style="background:rgba(16,185,129,0.25);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">112 tok/s Local</span>
+            <span class="wp-linear-node" style="background:rgba(16,185,129,0.25);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">84.6% SWE-bench</span>
           </div>
           <div class="wp-chips">
-            <span class="wp-chip" style="border-color:rgba(105,81,255,0.5);color:#c4b5fd;">双击可编辑文本框</span>
-            <span class="wp-chip" style="color:#6ee7b7;">Apple Silicon 端侧</span>
+            <span class="wp-chip" style="border-color:rgba(0,113,227,0.4);color:#38bdf8;">双击可编辑文本框</span>
+            <span class="wp-chip" style="color:#6ee7b7;">微软 OOXML 原生</span>
           </div>
         </div>`,
     },
@@ -4124,10 +4183,10 @@ function renderLandingHtml(
       tplId: 'video-cinema-talk',
       previewHtml: `
         <div class="work-preview work-preview-video">
-          <div class="wp-eyebrow"><span style="color:#c4b5fd;">CINEMA 9:16 · 60FPS</span><span style="color:#34d399;">@inkandswitch on X</span></div>
+          <div class="wp-eyebrow"><span style="color:#38bdf8;">CINEMA 9:16 · 60FPS</span><span style="color:#34d399;">@inkandswitch on X</span></div>
           <div class="wp-headline">Local-First 软件复兴 · 逃离订阅陷阱</div>
           <div class="wp-timeline">
-            <div class="wp-track"><span style="width:16px;">V1</span><div class="wp-track-bar"><span style="width:45%;background:#6951ff;"></span><span style="width:52%;background:#8b5cf6;"></span></div></div>
+            <div class="wp-track"><span style="width:16px;">V1</span><div class="wp-track-bar"><span style="width:45%;background:#0071e3;"></span><span style="width:52%;background:#38bdf8;"></span></div></div>
             <div class="wp-track"><span style="width:16px;">T1</span><div class="wp-track-bar"><span style="width:30%;background:#f59e0b;"></span><span style="width:35%;background:#fbbf24;"></span><span style="width:30%;background:#f59e0b;"></span></div></div>
             <div class="wp-track"><span style="width:16px;">A1</span><div class="wp-track-bar"><span style="width:94%;background:#10b981;"></span></div></div>
           </div>
@@ -4326,7 +4385,7 @@ function renderLandingHtml(
         </div>
         <div class="deliverables-strip">
           <span class="deliverables-label">支持原生直出：</span>
-          <span class="deliverables-badge"><span class="badge-dot" style="background:#a78bfa;"></span>3x Retina PNG</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#0071e3;"></span>3x Retina PNG</span>
           <span class="deliverables-badge"><span class="badge-dot" style="background:#10b981;"></span>微信公众号内联富文本</span>
           <span class="deliverables-badge"><span class="badge-dot" style="background:#38bdf8;"></span>微软原生 PPTX</span>
           <span class="deliverables-badge"><span class="badge-dot" style="background:#f59e0b;"></span>矢量 PDF</span>
@@ -4356,7 +4415,7 @@ function renderLandingHtml(
             <div>
               <div class="hss-bento-head">
                 <span style="display:inline-flex;align-items:center;gap:6px;"><span class="pulse-dot"></span>PRESENTATION · KEYNOTE BENTO</span>
-                <span style="color:#a78bfa;">@karpathy on X · 4.8M VIEWS · SLIDE 01 / 04</span>
+                <span style="color:#38bdf8;">@karpathy on X · 4.8M VIEWS · SLIDE 01 / 04</span>
               </div>
               <div class="hss-bento-title">Andrej Karpathy: 'Vibe Coding' 与个人软件的全面觉醒</div>
               <div class="hss-bento-flow">
@@ -4365,37 +4424,37 @@ function renderLandingHtml(
                   敲击语法归零
                 </span>
                 <span class="hss-bento-arrow">→</span>
-                <span class="hss-bento-node" style="background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.4);color:#7dd3fc;">
+                <span class="hss-bento-node" style="background:rgba(0,113,227,0.18);border-color:rgba(0,113,227,0.4);color:#60a5fa;">
                   <span class="hss-bento-node-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
                   跟随直觉机感对话
                 </span>
                 <span class="hss-bento-arrow">→</span>
-                <span class="hss-bento-node" style="background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">
+                <span class="hss-bento-node" style="background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.4);color:#34d399;">
                   <span class="hss-bento-node-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
                   20 分钟专属微软件交付
                 </span>
               </div>
               <div class="hss-bento-metrics">
                 <div class="hss-bento-tile">
-                  <div class="hss-bento-val" style="color:#34d399;">
+                  <div class="hss-bento-val" style="color:#10b981;">
                     <span>0%</span>
-                    <svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M1 14L8 10L16 12L27 2" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M1 14L8 10L16 12L27 2" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </div>
                   <div class="hss-bento-label">手写语法负担</div>
                   <div class="hss-bento-sub">完全由 LLM 即时编译生成</div>
                 </div>
                 <div class="hss-bento-tile">
-                  <div class="hss-bento-val" style="color:#c4b5fd;">
+                  <div class="hss-bento-val" style="color:#38bdf8;">
                     <span>20 min</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                   </div>
                   <div class="hss-bento-label">个人软件交付</div>
                   <div class="hss-bento-sub">从灵感到浏览器即刻可用</div>
                 </div>
                 <div class="hss-bento-tile">
-                  <div class="hss-bento-val" style="color:#38bdf8;">
+                  <div class="hss-bento-val" style="color:#f59e0b;">
                     <span>1 人</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   </div>
                   <div class="hss-bento-label">受众规模</div>
                   <div class="hss-bento-sub">Audience of One · 专属定制</div>
@@ -4427,7 +4486,7 @@ function renderLandingHtml(
                   <div class="hss-swiss-title">为什么纯本地「LLM Wiki」<br/>是超级个体的永续第二大脑</div>
                   <div class="hss-swiss-table">
                     <div class="hss-swiss-cell"><strong>恒定预算 &lt;= 3000t</strong>index.md 物理级上下文约束</div>
-                    <div class="hss-swiss-cell"><strong>版本化 Markdown</strong>替代黑盒向量数据库与盲目 RAG</div>
+                    <div class="hss-swiss-cell"><strong>自备 API Key (BYOK)</strong>终身买断客户端省下 85% SaaS 租金</div>
                     <div class="hss-swiss-cell"><strong>100% 纯离线端侧</strong>0 KB 数据外泄 · 零云端依赖</div>
                     <div class="hss-swiss-cell"><strong>反 AI 假大空 Style DNA</strong>注入个人高频句式与批判性思维</div>
                   </div>
@@ -4448,50 +4507,50 @@ function renderLandingHtml(
             <div style="display:flex;flex-direction:column;flex:1;min-height:0;">
               <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#94a3b8;margin-bottom:10px;">
                 <span>MARKDOWN AST ➔ NATIVE OOXML PPTX</span>
-                <span style="color:#818cf8;">@deepseek_ai on X · 12M VIEWS · 16:9 LINEAR</span>
+                <span style="color:#38bdf8;">@GoogleDeepMind on X · 6.2M VIEWS · 16:9 LINEAR</span>
               </div>
               <div class="hss-linear-split">
                 <div class="hss-code-win">
                   <div class="hss-code-win-bar">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <span>decks/deepseek-r1.deck.md</span>
+                    <span>decks/gemini-agy-deepmind.deck.md</span>
                   </div>
                   <div><span class="kw">---</span></div>
-                  <div><span class="prop">title</span>: <span class="str">"DeepSeek-R1 纯强化学习革命"</span></div>
+                  <div><span class="prop">title</span>: <span class="str">"DeepMind AGY 与 Gemini 4 代理革命"</span></div>
                   <div><span class="prop">template</span>: <span class="str">"ppt-linear-dark"</span></div>
                   <div><span class="prop">aspect</span>: <span class="str">"16:9"</span></div>
                   <div><span class="kw">---</span></div>
-                  <div style="margin-top:4px;"><span class="heading"># 纯 RL 推理与开源蒸馏瓦解算力霸权</span></div>
-                  <div>- 纯强化学习无需冷启动 SFT</div>
-                  <div>- 671B MoE / 37B 激活开源权重</div>
-                  <div>- Apple Silicon 112 tok/s 满血推理</div>
+                  <div style="margin-top:4px;"><span class="heading"># 宿主原生沙箱与 24 小时自主工程集群</span></div>
+                  <div>- 10M+ Token 上下文缓存与代码库毫秒复用</div>
+                  <div>- 异步 Swarm 事件总线 0 轮询浪费精准唤醒</div>
+                  <div>- SWE-bench Complete 84.6% 刷新工程基准</div>
                 </div>
                 <div class="hss-preview-win">
                   <div>
-                    <div style="font-size:10.5px;font-family:var(--mono);color:#a78bfa;margin-bottom:4px;">OUTPUT DELIVERABLE</div>
-                    <div style="font-size:14px;font-weight:700;color:#f8fafc;letter-spacing:-0.02em;">DeepSeek-R1 纯 RL 与开源权重</div>
+                    <div style="font-size:10.5px;font-family:var(--mono);color:#38bdf8;margin-bottom:4px;">OUTPUT DELIVERABLE</div>
+                    <div style="font-size:14px;font-weight:700;color:#f8fafc;letter-spacing:-0.02em;">DeepMind AGY &amp; Gemini 4 自主代理</div>
                   </div>
                   <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
-                    <div class="hss-preview-card-item" style="color:#c4b5fd;background:rgba(105,81,255,0.18);border-color:rgba(105,81,255,0.35);">
-                      <span>✓</span><span>纯强化学习无需冷启动 SFT</span>
+                    <div class="hss-preview-card-item" style="color:#60a5fa;background:rgba(0,113,227,0.18);border-color:rgba(0,113,227,0.35);">
+                      <span>✓</span><span>10M+ Token 上下文缓存代码库复用</span>
                     </div>
                     <div class="hss-preview-card-item" style="color:#6ee7b7;background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.35);">
-                      <span>✓</span><span>本地 Ollama / vLLM 离线推理</span>
+                      <span>✓</span><span>异步 Swarm 0 轮询开销事件唤醒</span>
                     </div>
                     <div class="hss-preview-card-item" style="color:#7dd3fc;background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.35);">
-                      <span>✓</span><span>微软 OOXML .pptx 原生文本框</span>
+                      <span>✓</span><span>微软 OOXML .pptx 原生双击编辑</span>
                     </div>
                   </div>
                   <div style="font-size:10.5px;font-family:var(--mono);color:#94a3b8;display:flex;align-items:center;gap:6px;">
-                    <span class="pulse-dot" style="background:#818cf8;"></span>
-                    <span>100% 离线隐私留存 · 零云端依赖</span>
+                    <span class="pulse-dot" style="background:#10b981;"></span>
+                    <span>100% 宿主沙箱安全隔离 · 离线全权委托</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="hss-foot-action">
               <span>Linear 极客黑 · 几何网格与原生矢量 · 微软 OOXML .pptx</span>
-              <a href="/playground/?sample=agent&template=ppt-linear-dark&title=DeepSeek-R1%3A%20%E7%BA%AF%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B8%8E%E5%BC%80%E6%BA%90%E6%9D%83%E9%87%8D%E7%93%A6%E8%A7%A3%E7%AE%97%E5%8A%9B%E9%9C%B8%E6%9D%83" class="stage-remix-btn">做同款幻灯片 ↗</a>
+              <a href="/playground/?sample=agent&template=ppt-linear-dark&title=Google%20DeepMind%20Antigravity%20(AGY)%20%E4%B8%8E%20Gemini%204%20%E7%9A%84%E8%87%AA%E4%B8%BB%E4%BB%A3%E7%90%86%E9%9D%A9%E5%91%BD" class="stage-remix-btn">做同款幻灯片 ↗</a>
             </div>
           </div>
 
@@ -4542,10 +4601,10 @@ function renderLandingHtml(
               </div>
               <div class="hss-video-top">
                 <div class="hss-video-canvas">
-                  <div style="font-size:9.5px;font-family:var(--mono);color:#c4b5fd;">9:16 CINEMA</div>
+                  <div style="font-size:9.5px;font-family:var(--mono);color:#38bdf8;">9:16 CINEMA</div>
                   <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-                    <div style="width:34px;height:34px;border-radius:50%;background:rgba(105,81,255,0.3);border:1px solid rgba(167,139,250,0.6);display:flex;align-items:center;justify-content:center;">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="#a78bfa"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    <div style="width:34px;height:34px;border-radius:50%;background:rgba(0,113,227,0.25);border:1px solid rgba(56,189,248,0.5);display:flex;align-items:center;justify-content:center;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="#38bdf8"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     </div>
                     <div class="hss-video-eq-wrap">
                       <span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span>
@@ -4559,13 +4618,13 @@ function renderLandingHtml(
                   <div>
                     <div style="font-size:11px;font-family:var(--mono);color:#94a3b8;margin-bottom:6px;display:flex;justify-content:space-between;">
                       <span>CapCut 4-Track Timeline</span>
-                      <span style="color:#818cf8;">00:01:24.08 / 60.00 fps</span>
+                      <span style="color:#38bdf8;">00:01:24.08 / 60.00 fps</span>
                     </div>
                     <div style="display:flex;flex-direction:column;gap:5px;">
                       <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
-                        <span style="width:20px;color:#a78bfa;">V1</span>
-                        <div style="flex:1;height:14px;background:#1e1b4b;border-radius:3px;display:flex;overflow:hidden;gap:2px;">
-                          <span style="width:25%;background:#6951ff;"></span><span style="width:25%;background:#8b5cf6;"></span><span style="width:25%;background:#6951ff;"></span><span style="width:25%;background:#8b5cf6;"></span>
+                        <span style="width:20px;color:#38bdf8;">V1</span>
+                        <div style="flex:1;height:14px;background:#0c2a4d;border-radius:3px;display:flex;overflow:hidden;gap:2px;">
+                          <span style="width:25%;background:#0071e3;"></span><span style="width:25%;background:#38bdf8;"></span><span style="width:25%;background:#0071e3;"></span><span style="width:25%;background:#38bdf8;"></span>
                         </div>
                       </div>
                       <div style="display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);">
@@ -4821,8 +4880,8 @@ function renderLandingHtml(
     <div class="container">
       <div class="footer-cols">
         <div class="footer-col">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-            <img src="/brand/logos/symbol-color.svg" width="22" height="22" style="vertical-align:middle;display:inline-block;border-radius:5px;" alt="Aimake Studio Logo" />
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            ${renderBrandTokenSvg(24)}
             <strong style="font-size:15px;color:var(--ink);">Aimake Studio</strong>
           </div>
           <p style="font-size:13px;line-height:1.6;color:var(--muted);margin:0 0 16px;">
