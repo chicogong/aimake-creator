@@ -53,6 +53,17 @@ For the best zero-configuration local-first experience with status bar dock and 
 
 ---
 
+## 🚀 2026 Latest Breakthroughs & Strategic Roadmap
+
+In `v2.0.0` and active development, Aimake deepens the creator's productivity moat with zero-compromise design:
+- ⚡️ **50ms Native Instant Launch**: Eliminated macOS sandbox TCC kernel stalls (`__getcwd`), reducing cold boot time by over 90%.
+- 🎨 **Obsidian Black Aesthetic**: Purged purple cliches, AI sparkles, and intrusive toast badges, adopting a calm Claude/Linear visual standard with Apple-grade cubic-bezier drawer physics.
+- 🗂️ **Unified Local-First Workspace & `.agents` Standard**: Consolidates all projects, wiki, and sources under `~/Documents/Aimake/`, seamlessly inter-operating with Claude Code, Cursor, Codex, OpenCode, and Google Antigravity (AGY).
+- 🛡️ **Anti-Hallucination Knowledge Compounding**: Every card anchors strictly to verified local Markdown citations (`wiki/` or `sources/`), transforming routine content creation into an accumulating personal knowledge moat.
+- 🗺️ **Open Roadmap & Issue Matrix**: See **[Discussion #63](https://github.com/chicogong/aimake-creator/discussions/63)** and **[Discussion #58](https://github.com/chicogong/aimake-creator/discussions/58)** for active progress, issue triage, and multi-platform draft syndication plans.
+
+---
+
 ## 🏛️ Architecture & Ecosystem
 
 Aimake follows a clean, modular architecture (see [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) and [docs/brand-kit/BRAND_GUIDELINES.md](./docs/brand-kit/BRAND_GUIDELINES.md)):

@@ -283,9 +283,9 @@ export const CALM_STUDIO_MARKUP = `
                 <span class="context-card-meta"><span>4.8M views</span><span>·</span><span>已沉淀到素材库</span></span>
               </div>
               <div class="context-card">
-                <span class="context-card-title">DeepSeek-R1: 开源物理学突破</span>
-                <span class="context-card-desc">1200 万曝光技术风暴，端侧蒸馏与算力护城河解构</span>
-                <span class="context-card-meta"><span>开源权重</span><span>·</span><span>已关联当前作品</span></span>
+                <span class="context-card-title">Google Antigravity & Gemini 4: 全新 Agent 协同范式</span>
+                <span class="context-card-desc">深度解构端侧智能与自主协同架构，AI Native 时代研发标准</span>
+                <span class="context-card-meta"><span>2026 前沿</span><span>·</span><span>已关联当前作品</span></span>
               </div>
             </div>
           </div>

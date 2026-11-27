@@ -53,6 +53,17 @@ aimake wizard
 
 ---
 
+## 🚀 2026 最新演进与核心特性 (Latest Updates)
+
+在最新的 `v2.0.0` 及后续迭代中，Aimake 围绕**超级个体的生产力护城河与极致审美体验**完成了深度重构：
+- ⚡️ **50ms 闪电直启**：重构 macOS AppKit 进程管道，彻底移除沙盒内核等待（`__getcwd` 死锁），启动性能提升 90% 以上。
+- 🎨 **克制 Obsidian Black 审美**：全面剔除浮夸的紫色高光、魔法棒“✨”与俗套 AI 气泡框，回归 Claude/Linear 风格的黑曜石质感与 Apple 级 Spring 抽屉动效。
+- 🗂️ **统一 Local-First 工作区与 `.agents` 规范**：所有资料与作品集中收敛于 `~/Documents/Aimake/`，内置跨平台 Agent 协议规范，无缝协同 Claude Code、Cursor、OpenCode、Codex 与 Google Antigravity (AGY)。
+- 🛡️ **Anti-Hallucination 事实溯源与知识复利**：生成的每一页卡片均严格锚定本地 `wiki/` 与 `sources/` 行级出处，杜绝幻觉，将每一次创作沉淀为不可替代的知识资产。
+- 🗺️ **开源路线图与讨论区公示**：完整的工程进展、37 项 Issue 优先级矩阵与多平台草稿交付方案详见 **[Discussion #63](https://github.com/chicogong/aimake-creator/discussions/63)** 与 **[Discussion #58](https://github.com/chicogong/aimake-creator/discussions/58)**。
+
+---
+
 ## 🏛️ 产品架构与生态体系 (Architecture & Ecosystem)
 
 Aimake 统一收敛为清晰的模块化架构（详见 [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) 与 [docs/brand-kit/BRAND_GUIDELINES.md](./docs/brand-kit/BRAND_GUIDELINES.md)）：

@@ -1,26 +1,54 @@
 # Aimake 2.x — Open-Source Product & Architecture Roadmap
 
-**Aimake Studio (`aimake.cc`)** is an **MIT-licensed, local-first multimodal Creative OS** for solopreneurs, developers, and AI agents. Starting from `v2.0.0` (36 parametric templates across 4 locales, Karpathy LLM Wiki core, 1-to-5 native deliverables, Calm Studio local server, CLI + MCP server, and macOS `Aimake.app` wrapper), the 2.x roadmap aligns strictly with our four active GitHub Milestones on [`chicogong/aimake-creator`](https://github.com/chicogong/aimake-creator/milestones) and **Project #3**.
+**Aimake Studio (`aimake.cc`)** is an **MIT-licensed, local-first multimodal Creative OS** for solopreneurs, developers, and AI agents. Starting from `v2.0.0` (36 parametric templates across 4 locales, Karpathy LLM Wiki core, 1-to-5 native deliverables, Calm Studio local server, CLI + MCP server, and macOS `Aimake.app` wrapper), the 2.x roadmap aligns strictly with our active GitHub Milestones on [`chicogong/aimake-creator`](https://github.com/chicogong/aimake-creator/milestones), **Project #3**, and the architectural consensus documented in **[Discussion #63](https://github.com/chicogong/aimake-creator/discussions/63)** and **[Discussion #58](https://github.com/chicogong/aimake-creator/discussions/58)**.
 
 ---
 
 ## Strategic Architectural Principles
 
-1. **100% Local-First Sovereignty**: All `.deck.md` decks, Knowledge Vault files (`sources/`, `wiki/`, `briefs/`, `exports/`), and rendered assets live strictly on the creator's device with zero cloud lock-in and zero telemetry.
-2. **Protocol-First Interoperability**: Every core capability exposes clean contracts across CLI (`--json`), MCP (`stdio` + SEP-1865 `ui://`), and ACP (Agent Client Protocol) so Zed, JetBrains, Cursor, Claude Code, Codex, and OpenCode act as native authoring brains.
-3. **Deterministic Layout & Media Compilation**: Deterministic CSS grid layout, editable OOXML `.pptx`, pure inline WeChat HTML, hardware-accelerated H.264 MP4, and CapCut / JianYing `draft_content.json` multi-track timelines run predictably offline.
-4. **Typed, Modular & Automated Quality**: Strictly typed modular UI/engine layers replace giant template strings, backed by Playwright E2E, Vitest conformance suites, secret/privacy audits, and automated GitHub Kanban tracking.
+1. **100% Local-First Sovereignty (Zero-Cloud)**: All user content strictly resides under `~/Documents/Aimake/` (containing `.aimake/` configuration, `.agents/` inter-agent contracts, `wiki/` knowledge vault, `sources/` intake materials, `projects/` creative collections, and `deliverables/` multi-format outputs).
+2. **Protocol-First Interoperability (.agents Standard)**: Every capability is exposed through clean, structured contracts across CLI (`--json`), MCP (`stdio` + SEP-1865 `ui://`), and ACP (Agent Client Protocol) so Claude Code, Cursor, Codex, OpenCode, and Google Antigravity (AGY) act as frictionless co-pilots.
+3. **Deterministic Layout & Multi-Channel Delivery**: Visual IR layout calculations, editable OOXML `.pptx`, safe inline WeChat HTML (with rasterized/SVG Mermaid diagrams), hardware-accelerated H.264 MP4, and CapCut multi-track timelines run 100% predictably offline.
+4. **Draft-Only Platform Syndication**: Adheres to the principle of "Draft Box Delivery + Editable Receipt Link", never publishing directly without author review.
+5. **Anti-Hallucination Citation Compounding**: Every generated insight maintains a cryptographic citation anchor back to `wiki/` or `sources/`, compounding the creator's irreplaceable local context moat.
 
 ---
 
-## Milestone Sequence (Synchronized with GitHub Milestones)
+## Active Issue Priority Matrix (P0 / P1 / P2)
 
-| Milestone | Due Date | Core Focus | Key Tracked Issues & Exit Criteria |
-| :--- | :--- | :--- | :--- |
-| **`v2.0.1`** | `2026-12-08` | **Urgent Fixes & Security Hardening** | Repair Swift ↔ WebView `aimakeNative` bridge & `⌘K` shortcut collision; add `Origin` / `Sec-Fetch-Site` CSRF guards to loopback server; expand `audit-secrets.mjs`; fix dynamic radar label (`W47` hardcoded removal); normalize audio loudness toward `-14 LUFS`. |
-| **`v2.1.0`** | `2026-12-31` | **Core Stabilization, CapCut Complete, ACP & CLI-Hub** | Complete CapCut exporter with rendered slide PNGs & local path rewriting (#10); fix audio-paced timeline drift (#13); ship ACP adapter (#9); add ACP/SSE/CapCut conformance tests (#12); standardize CLI `--json` for `CLI-Hub` (#16). |
-| **`v2.2.0`** | `2027-01-31` | **On-Device Voice, AutoClip Intake, Engagement Radar & Persona Hub** | Integrate Apple Silicon `mlx-audio` / `Qwen3-TTS` voice cloning (#3); bridge `autoclip-mcp` for long-video repurposing intake (#14); upgrade Trend Radar with multi-source engagement weights inspired by `last30days-skill` (#15); ship Local Vault & Persona DNA Hub (#11). |
-| **`v2.3.0`** | `2027-03-15` | **Modular Studio UI, Tauri 2 Desktop & CDP Publisher** | Replace 2k+ LOC raw JS string UI with typed modular Vite/TS Calm Studio build (4-locale Studio i18n, undo/redo, slide reorder, async job progress); bundle portable runtime and migrate toward cross-platform signed/notarized Tauri 2 desktop (#5); ship headless Chrome CDP multi-platform draft publisher (#4) & community template hub (#2). |
+| Level | Issue / Topic | Impact Domain | Delivery Target & Acceptance Criteria |
+| :---: | :--- | :--- | :--- |
+| **P0** | **[#54](https://github.com/chicogong/aimake-creator/issues/54) Cross-Workspace Draft Isolation** | Data Integrity | `POST /api/markdown` carries explicit `workspaceId`/path confirmation. Prevents cross-workspace file overwriting; prompts 3-way diff on mtime conflict. |
+| **P0** | **[#55](https://github.com/chicogong/aimake-creator/issues/55) WeChat HTML Mermaid Loss Fix** | Delivery Fidelity | Pre-render Mermaid diagrams into inline SVGs or crisp Base64 PNGs in `wechat-inliner.ts` with structured fallback cards. No silent drops. |
+| **P1** | **[#52](https://github.com/chicogong/aimake-creator/issues/52) Citation Verification Grounding** | Truth & Verifiability | Bind context drawer badges directly to `/api/wiki/overview`, distinguishing `已核验`, `待核验`, and `失效出处`. |
+| **P1** | **[#56](https://github.com/chicogong/aimake-creator/issues/56) Co-Pilot Timeout Retry & Draft Save** | Studio UX & Resilience | Task state machine with timeout (45s) detection, in-flight cancel, in-place retry, and real-time prompt draft persistence. |
+| **P1** | **[#53](https://github.com/chicogong/aimake-creator/issues/53) Headless Dependency Self-Healing** | Zero-Config Setup | Implement `aimake doctor` diagnostic and drawer status badge. Provide on-demand binary download to `~/.aimake/bin/` for Playwright Chromium & FFmpeg. |
+| **P1** | **[#59](https://github.com/chicogong/aimake-creator/issues/59) Real-Source Intake & Auto-Catchup** | Intelligence Feed | Background scheduler for Hacker News & RSS with URL normalization, deduplication, offline tolerance, and restart catch-up. |
+| **P2** | **[#44](https://github.com/chicogong/aimake-creator/issues/44) One-Click Slide Generation from Source** | Productivity | Select any raw intake entry and auto-generate a structured 3:4 or 16:9 draft with verified citation anchors. |
+| **P2** | **[#60](https://github.com/chicogong/aimake-creator/issues/60) GitHub Project Sync Error Handling** | CI/CD Quality | Fail loudly with actionable diagnostics when Project automation fails to add issue cards. |
+
+---
+
+## Phased Execution Roadmap
+
+```
+Phase 1: Stability & Anti-Loss (Current · 1-2 Days)
+  ├── #54 Workspace isolation & conflict prevention
+  ├── #55 WeChat Mermaid SVG/PNG inline rasterization
+  ├── #52 Context drawer live citation audit
+  └── #56 Studio AI co-pilot timeout retry & draft retention
+
+Phase 2: Live Intelligence Radar & Self-Healing Setup (Next · 3-5 Days)
+  ├── #59 Cron-based RSS / Hacker News intake scheduler
+  ├── #53 Headless Playwright / FFmpeg runtime self-healing
+  ├── #44 One-click creation from live source entries
+  └── #43 / #39 Export concurrency lock and queue hardening
+
+Phase 3: Multi-Platform Draft Syndication & Knowledge Flywheel (1-2 Weeks)
+  ├── Discussion #58 Draft Box Syndication (WeChat, Zhihu, Juejin, Xiaohongshu, Feishu Bot)
+  ├── Sparkle 2.x automated delta updates for macOS desktop app
+  └── Local LLM Wiki auto-distillation flywheel
+```
 
 ---
 

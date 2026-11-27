@@ -900,6 +900,9 @@ export const CALM_STUDIO_SCRIPT = `
     state.activeManifest = data.activeManifest;
     state.workspaceDir = data.workspaceDir || '';
     state.activeDeckRel = data.activeDeckRel || '';
+    state.editorWorkspaceDir = data.workspaceDir || '';
+    state.editorDeckRel = data.activeDeckRel || '';
+    state.editorInitialContent = data.rawMarkdown || '';
     if (data.workspace) state.workspace = data.workspace;
     renderDockMeta();
     renderSidebar();
@@ -1447,14 +1450,79 @@ export const CALM_STUDIO_SCRIPT = `
     });
   }
 
-  function refreshContextDrawer() {
+  async function refreshContextDrawer() {
     const wikiCount = $('drawer-wiki-count');
+    const wikiList = $('drawer-wiki-list');
     const sourcesList = $('drawer-sources-list');
-    if (wikiCount) {
-      const deckCites = (state.deck && state.deck.slides || [])
-        .map(s => s.cite)
-        .filter(Boolean);
-      wikiCount.textContent = (deckCites.length ? deckCites.length : 2) + ' 条已核验';
+
+    try {
+      const data = await apiJson('/api/wiki/overview');
+      const citations = data.citations;
+      if (wikiCount) {
+        if (!citations || (!citations.counts.verified && !citations.counts.unresolved && !citations.counts.stale)) {
+          wikiCount.textContent = '0 条引用 · 暂无出处锚点';
+          wikiCount.className = 'context-badge';
+        } else {
+          const parts = [];
+          if (citations.counts.verified > 0) parts.push(citations.counts.verified + ' 条已核验');
+          if (citations.counts.unresolved > 0) parts.push(citations.counts.unresolved + ' 条待核验');
+          if (citations.counts.stale > 0) parts.push(citations.counts.stale + ' 条已失效');
+          wikiCount.textContent = parts.join(' · ') || '0 条引用';
+          wikiCount.className = 'context-badge' + (citations.counts.unresolved > 0 ? ' warn' : citations.counts.verified > 0 ? ' success' : '');
+        }
+      }
+
+      if (wikiList) {
+        if (!citations || !citations.slides || citations.slides.length === 0 || citations.slides.every(s => s.status === 'uncited')) {
+          wikiList.innerHTML =
+            '<div class="context-card empty" style="padding:14px;color:var(--ink-muted);font-size:12px;line-height:1.6;text-align:center;">' +
+            '当前作品各页暂未标注 <code>cite:</code> 出处锚点。<br/>推入素材或在 Markdown 底部添加 <code>cite: wiki/...</code> 可建立商业级事实溯源。' +
+            '</div>';
+        } else {
+          wikiList.innerHTML = citations.slides
+            .filter(s => s.status !== 'uncited')
+            .map(s => {
+              const statusTag =
+                s.status === 'verified'
+                  ? '<span class="status-pill-tiny success" style="color:#16a34a;background:rgba(22,163,74,0.1);padding:1px 6px;border-radius:4px;font-size:10px;">已核验 · 知识库对齐</span>'
+                  : s.status === 'stale'
+                  ? '<span class="status-pill-tiny error" style="color:#dc2626;background:rgba(220,38,38,0.1);padding:1px 6px;border-radius:4px;font-size:10px;">已失效</span>'
+                  : '<span class="status-pill-tiny warn" style="color:#d97706;background:rgba(217,119,6,0.1);padding:1px 6px;border-radius:4px;font-size:10px;">待核验 · 未收录</span>';
+
+              const sourceDetail = s.matchedNodeTitle
+                ? '<div style="font-size:11px;color:var(--ink-muted);margin-top:2px;">对齐知识：' + esc(s.matchedNodeTitle) + '</div>'
+                : s.reason
+                ? '<div style="font-size:11px;color:#d97706;margin-top:2px;">' + esc(s.reason) + '</div>'
+                : '';
+
+              return (
+                '<div class="context-card" style="margin-bottom:8px;">' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
+                '<span class="context-card-title" style="font-size:12px;font-weight:700;">第 ' + (s.slideIndex + 1) + ' 页 · ' + esc(s.slideTitle || '未命名') + '</span>' +
+                statusTag +
+                '</div>' +
+                '<span class="context-card-desc" style="font-family:Menlo,monospace;font-size:11px;color:var(--ink);">' + esc(s.cite || '') + '</span>' +
+                sourceDetail +
+                '</div>'
+              );
+            })
+            .join('');
+        }
+      }
+
+      if (sourcesList && state.radar && state.radar.length > 0) {
+        sourcesList.innerHTML = state.radar.slice(0, 4).map(r => {
+          return (
+            '<div class="context-card" style="margin-bottom:8px;">' +
+            '<span class="context-card-title" style="font-size:12px;font-weight:700;">' + esc(r.title) + '</span>' +
+            '<span class="context-card-desc" style="font-size:11.5px;color:var(--ink-muted);">' + esc(r.summary || r.desc || '') + '</span>' +
+            '<span class="context-card-meta"><span>' + esc(r.source || '前沿情报') + '</span><span>·</span><span>' + esc(r.time || '最新') + '</span></span>' +
+            '</div>'
+          );
+        }).join('');
+      }
+    } catch (_) {
+      if (wikiCount) wikiCount.textContent = '核验未就绪';
     }
   }
 
@@ -1818,6 +1886,7 @@ export const CALM_STUDIO_SCRIPT = `
     if (!list) return;
 
     toggleChatPanel(true);
+    const taskStartTime = Date.now();
 
     const userDiv = document.createElement('div');
     userDiv.className = 'chat-msg user';
@@ -1997,7 +2066,19 @@ export const CALM_STUDIO_SCRIPT = `
     } catch (err) {
       clearTimeout(phaseTimer);
       clearTimeout(phaseTimer2);
-      aiDiv.innerHTML = '<span style="color:var(--hot);">❌ 执行失败：' + esc(err.message) + '</span>';
+      const elapsedSec = ((Date.now() - taskStartTime) / 1000).toFixed(1);
+      aiDiv.innerHTML =
+        '<div class="chat-fail-card" style="padding:10px 12px;background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);border-radius:8px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+        '<strong style="color:var(--hot);font-size:12px;">❌ 执行失败：' + esc(err.message) + '</strong>' +
+        '<span style="font-size:11px;color:var(--ink-muted);font-family:Menlo,monospace;">耗时 ' + elapsedSec + 's</span>' +
+        '</div>' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">' +
+        '<button type="button" class="btn-chat-retry status-pill-tiny" style="cursor:pointer;padding:3px 8px;border:1px solid var(--border);border-radius:4px;background:var(--surface);font-size:11px;font-weight:600;" data-retry-msg="' + esc(message) + '" data-retry-intent="' + esc(explicitIntent || '') + '">↺ 原地重试</button>' +
+        '<button type="button" class="btn-chat-restore status-pill-tiny" style="cursor:pointer;padding:3px 8px;border:1px solid var(--border);border-radius:4px;background:var(--surface);font-size:11px;font-weight:600;" data-restore-msg="' + esc(message) + '">✎ 编辑指令</button>' +
+        '<button type="button" class="btn-chat-settings-trigger status-pill-tiny" style="cursor:pointer;padding:3px 8px;border:1px solid var(--border);border-radius:4px;background:var(--surface);font-size:11px;font-weight:600;">⚙️ 换引擎</button>' +
+        '</div>' +
+        '</div>';
       list.scrollTop = list.scrollHeight;
     } finally {
       state.isSendingChat = false;
@@ -2011,6 +2092,30 @@ export const CALM_STUDIO_SCRIPT = `
 
   // Rollback, Apply, Diff Toggle, Setup Trigger & Suggested Actions Listeners
   document.addEventListener('click', async (e) => {
+    const retryBtn = e.target.closest('.btn-chat-retry');
+    if (retryBtn) {
+      const msg = retryBtn.getAttribute('data-retry-msg');
+      const intent = retryBtn.getAttribute('data-retry-intent') || undefined;
+      if (msg) sendChatMessage(msg, intent);
+      return;
+    }
+
+    const restoreBtn = e.target.closest('.btn-chat-restore');
+    if (restoreBtn) {
+      const msg = restoreBtn.getAttribute('data-restore-msg');
+      if (msg && chatInput) {
+        chatInput.value = msg;
+        chatInput.focus();
+      }
+      return;
+    }
+
+    const triggerSettingsBtn = e.target.closest('.btn-chat-settings-trigger');
+    if (triggerSettingsBtn) {
+      openChatSettings(true);
+      return;
+    }
+
     const diffTab = e.target.closest('[data-diff-tab]');
     if (diffTab) {
       const card = diffTab.closest('[data-diff-box]');
@@ -2774,12 +2879,31 @@ export const CALM_STUDIO_SCRIPT = `
         method: 'POST',
         body: JSON.stringify({
           rawMarkdown: $('markdown-editor').value,
-          deckRel: state.deckRel,
+          deckRel: state.editorDeckRel || state.activeDeckRel || state.deckRel,
+          workspaceDir: state.editorWorkspaceDir || state.workspaceDir,
         }),
       });
+      state.editorInitialContent = $('markdown-editor').value;
       await refreshState(true);
       showToast('已保存 .deck.md 源码');
     } catch (err) {
+      if (err.message && err.message.includes('外部被修改')) {
+        if (confirm('目标文件已被外部修改，是否强制保存覆盖？')) {
+          await apiJson('/api/markdown', {
+            method: 'POST',
+            body: JSON.stringify({
+              rawMarkdown: $('markdown-editor').value,
+              deckRel: state.editorDeckRel || state.activeDeckRel || state.deckRel,
+              workspaceDir: state.editorWorkspaceDir || state.workspaceDir,
+              force: true,
+            }),
+          });
+          state.editorInitialContent = $('markdown-editor').value;
+          await refreshState(true);
+          showToast('已强制覆盖保存');
+          return;
+        }
+      }
       showToast('保存源码失败：' + err.message);
     }
   });

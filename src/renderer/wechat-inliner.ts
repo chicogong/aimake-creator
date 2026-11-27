@@ -1,4 +1,5 @@
 import type { DeckDocument, DeckSlide } from '../schema/types.js';
+import { renderMermaidSvg } from './mermaid-svg.js';
 
 function esc(str: string): string {
   return str
@@ -93,6 +94,26 @@ function renderSlideSection(slide: DeckSlide, accent: string, index: number, tot
       <section style="margin:16px 0;background:#0f172a;border-radius:10px;padding:14px 16px;overflow-x:auto;">
         <p style="margin:0 0 8px 0;font-size:11px;color:#94a3b8;font-family:Menlo,Consolas,monospace;text-transform:uppercase;">${esc(slide.code.lang)}</p>
         <pre style="margin:0;font-family:Menlo,Consolas,monospace;font-size:13px;line-height:1.6;color:#e2e8f0;white-space:pre-wrap;word-break:break-word;"><code>${esc(slide.code.code)}</code></pre>
+      </section>
+    `);
+  }
+
+  if (slide.diagram && slide.diagram.engine === 'mermaid') {
+    const rawSvg = renderMermaidSvg(slide.diagram.code);
+    const themedSvg = rawSvg
+      .replace(/var\(--bg,\s*[^)]+\)/g, '#ffffff')
+      .replace(/var\(--surface,\s*[^)]+\)/g, '#ffffff')
+      .replace(/var\(--border,\s*[^)]+\)/g, '#cbd5e1')
+      .replace(/var\(--ink,\s*[^)]+\)/g, '#0f172a')
+      .replace(/var\(--accent,\s*[^)]+\)/g, accent)
+      .replace(/var\(--muted,\s*[^)]+\)/g, '#64748b');
+
+    parts.push(`
+      <section style="margin:20px 0;padding:16px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid ${accent};border-radius:10px;text-align:center;">
+        <p style="margin:0 0 10px 0;font-size:11px;font-weight:700;color:${accent};letter-spacing:1.2px;text-transform:uppercase;">架构与逻辑流程 (Mermaid)</p>
+        <div style="overflow-x:auto;max-width:100%;margin:0 auto;">
+          ${themedSvg}
+        </div>
       </section>
     `);
   }

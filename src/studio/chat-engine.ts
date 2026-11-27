@@ -926,10 +926,11 @@ async function callOpenAiCompatibleApi(
     headers.Authorization = `Bearer ${api.apiKey.trim()}`;
   }
 
+  const apiTimeout = Number(process.env.AIMAKE_API_TIMEOUT_MS) || 90_000;
   const res = await fetchImpl(endpoint, {
     method: 'POST',
     headers,
-    signal: AbortSignal.timeout(45_000),
+    signal: AbortSignal.timeout(apiTimeout),
     body: JSON.stringify({
       model: api.model,
       temperature: 0.4,
@@ -961,7 +962,7 @@ function execCliWithClosedStdin(
   binary: string,
   args: string[],
   cwd?: string,
-  timeoutMs = 45_000
+  timeoutMs = Number(process.env.AIMAKE_CLI_TIMEOUT_MS) || 90_000
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const child = spawn(binary, args, {
