@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -148,5 +149,149 @@ describe('T-21 / Issue #59: Persistent Feed Scheduler & Catch-Up Poller', () => 
     expect(after.items[0].title).toBe('Preserved Historical Intelligence Item');
     expect(after.subscriptions[0].lastError).toBeDefined();
     expect(after.subscriptions[0].lastSuccessAt).toBe('2026-11-26T12:00:00.000Z');
+  });
+
+  it('Issue #81: equal subscription IDs in different workspaces poll independently', async () => {
+    const ws1 = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-feed-ws1-'));
+    const ws2 = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-feed-ws2-'));
+
+    try {
+      await loadSchedulerState(ws1);
+      await loadSchedulerState(ws2);
+
+      const [res1, res2] = await Promise.all([
+        pollSubscription(ws1, 'hn-top', 5000),
+        pollSubscription(ws2, 'hn-top', 5000),
+      ]);
+
+      expect(res1.subscriptionId).toBe('hn-top');
+      expect(res2.subscriptionId).toBe('hn-top');
+
+      const state1 = await loadSchedulerState(ws1);
+      const state2 = await loadSchedulerState(ws2);
+
+      expect(state1.subscriptions.find((s) => s.id === 'hn-top')?.lastAttemptAt).toBeDefined();
+      expect(state2.subscriptions.find((s) => s.id === 'hn-top')?.lastAttemptAt).toBeDefined();
+    } finally {
+      await fs.rm(ws1, { recursive: true, force: true });
+      await fs.rm(ws2, { recursive: true, force: true });
+    }
+  });
+
+  it('Issue #81: concurrent refreshes for two different feeds in one workspace retain both items and timestamps', async () => {
+    let delayA = 0;
+    let delayB = 0;
+
+    const server = http.createServer((req, res) => {
+      const isA = req.url === '/feed-a.xml';
+      const delay = isA ? delayA : delayB;
+
+      setTimeout(() => {
+        res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+        if (isA) {
+          res.end(`<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Feed A</title>
+    <item>
+      <title>Article A: Autonomous Multi-Agent Swarms</title>
+      <link>https://example.com/article-a</link>
+      <description>Summary of Article A</description>
+    </item>
+  </channel>
+</rss>`);
+        } else if (req.url === '/feed-b.xml') {
+          res.end(`<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Feed B</title>
+    <item>
+      <title>Article B: Local-First Publishing Flywheel</title>
+      <link>https://example.com/article-b</link>
+      <description>Summary of Article B</description>
+    </item>
+  </channel>
+</rss>`);
+        } else {
+          res.statusCode = 404;
+          res.end();
+        }
+      }, delay);
+    });
+
+    await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', () => resolve()));
+    const port = (server.address() as any).port;
+
+    try {
+      const state: FeedSchedulerState = {
+        version: '2.0.0',
+        subscriptions: [
+          {
+            id: 'feed-a',
+            type: 'rss',
+            name: 'Feed A',
+            url: `http://127.0.0.1:${port}/feed-a.xml`,
+            intervalMinutes: 15,
+            itemCount: 0,
+          },
+          {
+            id: 'feed-b',
+            type: 'rss',
+            name: 'Feed B',
+            url: `http://127.0.0.1:${port}/feed-b.xml`,
+            intervalMinutes: 15,
+            itemCount: 0,
+          },
+        ],
+        items: [],
+      };
+      await saveSchedulerState(tmpDir, state);
+
+      // Phase 1: Feed A finishes first, Feed B delayed
+      delayA = 0;
+      delayB = 40;
+      const [resA1, resB1] = await Promise.all([
+        pollSubscription(tmpDir, 'feed-a', 5000),
+        pollSubscription(tmpDir, 'feed-b', 5000),
+      ]);
+
+      expect(resA1.success).toBe(true);
+      expect(resB1.success).toBe(true);
+
+      let reloaded = await loadSchedulerState(tmpDir);
+      let subA = reloaded.subscriptions.find((s) => s.id === 'feed-a');
+      let subB = reloaded.subscriptions.find((s) => s.id === 'feed-b');
+
+      expect(subA?.lastSuccessAt).toBeDefined();
+      expect(subB?.lastSuccessAt).toBeDefined();
+      expect(subA?.itemCount).toBe(1);
+      expect(subB?.itemCount).toBe(1);
+      expect(reloaded.items.some((i: any) => i.subscriptionId === 'feed-a')).toBe(true);
+      expect(reloaded.items.some((i: any) => i.subscriptionId === 'feed-b')).toBe(true);
+
+      // Phase 2: Repeat with reversed completion order (Feed B finishes first, Feed A delayed)
+      delayA = 40;
+      delayB = 0;
+      const [resA2, resB2] = await Promise.all([
+        pollSubscription(tmpDir, 'feed-a', 5000),
+        pollSubscription(tmpDir, 'feed-b', 5000),
+      ]);
+
+      expect(resA2.success).toBe(true);
+      expect(resB2.success).toBe(true);
+
+      reloaded = await loadSchedulerState(tmpDir);
+      subA = reloaded.subscriptions.find((s) => s.id === 'feed-a');
+      subB = reloaded.subscriptions.find((s) => s.id === 'feed-b');
+
+      expect(subA?.lastSuccessAt).toBeDefined();
+      expect(subB?.lastSuccessAt).toBeDefined();
+      expect(subA?.itemCount).toBe(1);
+      expect(subB?.itemCount).toBe(1);
+      expect(reloaded.items.some((i: any) => i.subscriptionId === 'feed-a')).toBe(true);
+      expect(reloaded.items.some((i: any) => i.subscriptionId === 'feed-b')).toBe(true);
+    } finally {
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+    }
   });
 });
