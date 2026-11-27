@@ -11,13 +11,15 @@ secondsPerSlide: 3
 tags:
   - 2026-Trending
   - linkedin
+  - carousel
+  - b2b
 ---
 
 <!-- scene: cover | layout: metrics | eyebrow: LINKEDIN | cite: aimake.cc -->
 
 # LinkedIn · Founder Authority Carousel (4:5)
 
-## 欧美职场与独立开发者涨粉第一利器：4:5 黄金比例多页矢量 PDF，内置英文长词自适应防爆框。
+## High-converting 4:5 PDF document carousel engineered for founders, B2B creators, and indie hackers.
 
 ```metric
 - Context Overhead: -95% (Deterministic AST)

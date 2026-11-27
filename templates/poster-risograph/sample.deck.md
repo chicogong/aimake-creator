@@ -10,14 +10,16 @@ fps: 30
 secondsPerSlide: 3
 tags:
   - 2026-Trending
-  - linkedin
+  - risograph
+  - poster
+  - print-art
 ---
 
-<!-- scene: cover | layout: metrics | eyebrow: LINKEDIN | cite: aimake.cc -->
+<!-- scene: cover | layout: metrics | eyebrow: RISOGRAPH ART | cite: aimake.cc -->
 
 # Risograph · Fluorescent Coral & Cobalt Print Poster (4:5)
 
-## 暖米印刷纸基配荧光珊瑚红与钴蓝双色孔版叠印、微妙半调网点纹理与极具张力的独立艺术海报排版。
+## Warm cream print stock layered with fluorescent coral & cobalt duotone ink, subtle CSS halftone dot grain, and bold poster typography.
 
 ```metric
 - Context Overhead: -95% (Deterministic AST)

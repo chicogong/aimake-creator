@@ -86,4 +86,48 @@ describe('Multi-Platform Omni-Channel Publisher', () => {
       '<a href="https://example.com/release?a=1&amp;b=2" style="color:#2B6BE6;text-decoration:underline;">Official source</a>'
     );
   });
+
+  it('Issue #82: throws INVALID_ARGUMENTS on unsupported targets without writing bundle or journal', async () => {
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-pub-unsupported-'));
+    const testFile = path.join(tempDir, 'test.md');
+    await fs.writeFile(testFile, '# Test\nHello world.', 'utf-8');
+    const outDir = path.join(tempDir, 'out-bundle');
+
+    await expect(
+      publishContent(testFile, {
+        outDir,
+        targets: ['linkedin', 'medium'] as any,
+        workspaceDir: tempDir,
+      })
+    ).rejects.toThrow(/Unsupported publish target\(s\): "linkedin", "medium"/);
+
+    await expect(fs.access(outDir)).rejects.toThrow();
+    await expect(fs.access(path.join(tempDir, 'wiki', 'published.md'))).rejects.toThrow();
+    await fs.rm(tempDir, { recursive: true, force: true });
+  });
+
+  it('Issue #82: creates only requested subset and generates accurate README.md', async () => {
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-pub-subset-'));
+    const testFile = path.join(tempDir, 'test.md');
+    await fs.writeFile(testFile, '# Test Article\nHello subset.', 'utf-8');
+    const outDir = path.join(tempDir, 'out-bundle');
+
+    const summary = await publishContent(testFile, {
+      outDir,
+      targets: ['wechat', 'zhihu'],
+      workspaceDir: tempDir,
+    });
+
+    expect(summary.results.length).toBe(2);
+    expect(summary.results.map((r) => r.platform)).toEqual(['wechat', 'zhihu']);
+
+    const readme = await fs.readFile(path.join(outDir, 'README.md'), 'utf-8');
+    expect(readme).toContain('wechat.html');
+    expect(readme).toContain('zhihu.md');
+    expect(readme).not.toContain('juejin.md');
+    expect(readme).not.toContain('xiaohongshu.txt');
+    expect(readme).not.toContain('manifest.json');
+
+    await fs.rm(tempDir, { recursive: true, force: true });
+  });
 });
