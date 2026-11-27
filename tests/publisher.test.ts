@@ -77,4 +77,13 @@ describe('Multi-Platform Omni-Channel Publisher', () => {
 
     await fs.rm(tempDir, { recursive: true, force: true });
   });
+
+  it('keeps article sources clickable in the WeChat rich text export', () => {
+    const article = '# Article\n\n- [Official source](https://example.com/release?a=1&b=2)';
+    const { wechat } = adaptContentForPlatforms(article, 'article.md');
+
+    expect(wechat.content).toContain(
+      '<a href="https://example.com/release?a=1&amp;b=2" style="color:#2B6BE6;text-decoration:underline;">Official source</a>'
+    );
+  });
 });

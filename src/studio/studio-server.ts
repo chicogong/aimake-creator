@@ -237,13 +237,16 @@ export function getCurrentWeekString(d = new Date()): string {
   return `W${weekNo}`;
 }
 
-async function readJsonBody(req: http.IncomingMessage): Promise<Record<string, unknown>> {
-  const contentLengthHeader = req.headers['content-length'];
-  if (contentLengthHeader !== undefined) {
-    const declared = Number(contentLengthHeader);
-    if (Number.isFinite(declared) && declared > MAX_JSON_BODY_BYTES) {
-      throw new HttpError(413, `JSON body exceeds maximum size of ${MAX_JSON_BODY_BYTES} bytes`);
-    }
+const MAX_COVER_IMAGE_BYTES = 10 * 1024 * 1024;
+
+async function readBody(
+  req: http.IncomingMessage,
+  maxBytes: number,
+  label: string
+): Promise<Buffer> {
+  const declared = Number(req.headers['content-length']);
+  if (Number.isFinite(declared) && declared > maxBytes) {
+    throw new HttpError(413, `${label} exceeds maximum size of ${maxBytes} bytes`);
   }
 
   const chunks: Buffer[] = [];
@@ -251,13 +254,16 @@ async function readJsonBody(req: http.IncomingMessage): Promise<Record<string, u
   for await (const chunk of req) {
     const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
     totalBytes += buf.length;
-    if (totalBytes > MAX_JSON_BODY_BYTES) {
-      throw new HttpError(413, `JSON body exceeds maximum size of ${MAX_JSON_BODY_BYTES} bytes`);
+    if (totalBytes > maxBytes) {
+      throw new HttpError(413, `${label} exceeds maximum size of ${maxBytes} bytes`);
     }
     chunks.push(buf);
   }
+  return Buffer.concat(chunks);
+}
 
-  const str = Buffer.concat(chunks).toString('utf8');
+async function readJsonBody(req: http.IncomingMessage): Promise<Record<string, unknown>> {
+  const str = (await readBody(req, MAX_JSON_BODY_BYTES, 'JSON body')).toString('utf8');
   if (!str.trim()) return {};
   try {
     const parsed = JSON.parse(str) as unknown;
@@ -1777,6 +1783,37 @@ export async function startStudioServer(
         if (body.locale) deck.frontmatter.locale = String(body.locale) as SupportedLocale;
         await writeDeckFileInternally(serializeDeckMarkdown(deck));
         sendJson(res, 200, { ok: true });
+        return;
+      }
+
+      if (req.method === 'POST' && url.pathname === '/api/deck/cover-image') {
+        const activeWorkspace = workspaceDir;
+        const activeDeck = absDeckPath;
+        const requestedDeck = url.searchParams.get('deck');
+        const requestedWorkspace = url.searchParams.get('workspace');
+        if (requestedWorkspace !== activeWorkspace || requestedDeck !== toRelPosix(activeWorkspace, activeDeck)) {
+          throw new HttpError(409, '作品已切换，请重新选择图片');
+        }
+        const realDeck = await resolveContainedExistingFile(activeWorkspace, requestedDeck);
+        const image = await readBody(req, MAX_COVER_IMAGE_BYTES, 'Image');
+        const png = image.subarray(0, 8).equals(Buffer.from('89504e470d0a1a0a', 'hex'));
+        const jpeg = image.subarray(0, 3).equals(Buffer.from('ffd8ff', 'hex'));
+        if (!png && !jpeg) throw new HttpError(415, '请选择 JPEG 或 PNG 图片');
+        if (activeWorkspace !== workspaceDir || activeDeck !== absDeckPath) {
+          throw new HttpError(409, '作品已切换，请重新选择图片');
+        }
+
+        const hash = crypto.createHash('sha256').update(image).digest('hex').slice(0, 24);
+        const relativePath = `assets/cover-${hash}.${png ? 'png' : 'jpg'}`;
+        const target = await resolveContainedWriteTarget(path.dirname(realDeck), relativePath);
+        const temp = `${target}.${crypto.randomUUID()}.tmp`;
+        try {
+          await fs.writeFile(temp, image, { flag: 'wx' });
+          await fs.rename(temp, target);
+        } finally {
+          await fs.rm(temp, { force: true });
+        }
+        sendJson(res, 200, { relativePath: './' + relativePath });
         return;
       }
 

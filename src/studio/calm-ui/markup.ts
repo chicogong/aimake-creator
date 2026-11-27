@@ -750,9 +750,13 @@ export const CALM_STUDIO_MARKUP = `
       <div id="polish-panel-source" style="display:none;">
         <textarea class="code-editor" id="markdown-editor" spellcheck="false"></textarea>
         <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:11.5px;color:var(--ink-muted);">修改后直接写回工作区 .deck.md</span>
+          <div>
+            <button class="btn" id="btn-import-cover">插入封面图</button>
+            <input type="file" id="cover-image-file" accept=".jpg,.jpeg,.png" hidden />
+          </div>
           <button class="btn btn-primary" id="btn-save-source">保存源码</button>
         </div>
+        <p style="font-size:11.5px;color:var(--ink-muted);">把光标放在封面页的空行，或选中旧图片引用来替换。支持 Bento、暖阳杂志和 LinkedIn 轮播模板的 JPEG 或 PNG。</p>
       </div>
 
       <div id="polish-panel-wiki" style="display:none;">

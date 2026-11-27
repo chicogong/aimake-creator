@@ -13,9 +13,14 @@ function esc(str: string): string {
 }
 
 function inlineFormatHtml(text: string, accent = '#2B6BE6'): string {
-  return esc(text)
-    .replace(/\*\*([^*]+)\*\*/g, `<strong style="color:${accent};font-weight:700;">$1</strong>`)
-    .replace(/`([^`]+)`/g, `<code style="background:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;font-family:Menlo,Consolas,monospace;font-size:0.9em;">$1</code>`);
+  return esc(text).replace(
+    /\[([^\]\n]+)\]\((https?:\/\/[^\s()<>]+)\)|\*\*([^*]+)\*\*|`([^`]+)`/g,
+    (_, label: string, url: string, bold: string, code: string) => {
+      if (url) return `<a href="${url}" style="color:${accent};text-decoration:underline;">${label}</a>`;
+      if (bold) return `<strong style="color:${accent};font-weight:700;">${bold}</strong>`;
+      return `<code style="background:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;font-family:Menlo,Consolas,monospace;font-size:0.9em;">${code}</code>`;
+    }
+  );
 }
 
 export function normalizeToCdn(text: string): string {

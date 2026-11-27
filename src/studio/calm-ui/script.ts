@@ -85,7 +85,7 @@ export const CALM_STUDIO_SCRIPT = `
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
-      throw new Error(data.error || '请求失败 (' + res.status + ')');
+      throw new Error(data.error || data.message || '请求失败 (' + res.status + ')');
     }
     return data;
   }
@@ -2899,6 +2899,49 @@ export const CALM_STUDIO_SCRIPT = `
       showToast('采集素材失败：' + err.message);
     }
   });
+
+  const coverInput = $('cover-image-file');
+  const coverButton = $('btn-import-cover');
+  if (coverButton && coverInput) {
+    coverButton.addEventListener('click', () => coverInput.click());
+    coverInput.addEventListener('change', async () => {
+      const file = coverInput.files[0];
+      coverInput.value = '';
+      if (!file) return;
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('请选择 10 MB 以内的 JPEG 或 PNG');
+        return;
+      }
+
+      const editor = $('markdown-editor');
+      const deck = state.editorDeckRel;
+      const workspace = state.editorWorkspaceDir;
+      const source = editor.value;
+      const start = editor.selectionStart;
+      const end = editor.selectionEnd;
+      const query = new URLSearchParams({ deck, workspace });
+      coverButton.disabled = true;
+      try {
+        const saved = await apiJson('/api/deck/cover-image?' + query, {
+          method: 'POST',
+          headers: { 'Content-Type': file.type || 'application/octet-stream' },
+          body: file,
+        });
+        if (editor.value !== source || state.editorDeckRel !== deck || state.editorWorkspaceDir !== workspace) {
+          showToast('已复制图片，可在作品同目录 assets/ 中找到');
+          return;
+        }
+        const alt = file.name.replace(/\.[^.]+$/, '').replace(/[\[\]\r\n]/g, ' ');
+        editor.focus();
+        editor.setRangeText('\n![' + alt + '](' + saved.relativePath + ')\n', start, end, 'end');
+        showToast('图片已加入源码，保存后查看封面');
+      } catch (err) {
+        showToast('插入封面图失败：' + err.message);
+      } finally {
+        coverButton.disabled = false;
+      }
+    });
+  }
 
   const btnIntakeToDeck = $('btn-intake-to-deck');
   if (btnIntakeToDeck) {

@@ -75,6 +75,48 @@ test('Aimake 2.0 Calm Studio E2E: renders calm stage, switches template via Visu
   }
 });
 
+test('imports a local cover photo into an editable portrait deck', async ({ page }) => {
+  const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-cover-e2e-'));
+  const deckPath = path.join(workspaceDir, 'cover.deck.md');
+  await fs.writeFile(deckPath, [
+    '---',
+    'title: Local cover',
+    'template: xhs-warm-magazine',
+    'aspect: "3:4"',
+    '---',
+    '',
+    '<!-- scene: cover | layout: cover -->',
+    '',
+    '# Local cover',
+    '',
+  ].join('\n'));
+  const studio = await startStudioServer({
+    deckPath,
+    workspaceDir,
+    registryPath: path.join(workspaceDir, 'recent-workspaces.json'),
+  });
+  try {
+    await page.goto(studio.url);
+    const frame = page.frameLocator('#preview-frame');
+    await expect(frame.locator('h1')).toHaveText('Local cover');
+    await page.keyboard.press(process.platform === 'darwin' ? 'Meta+e' : 'Control+e');
+    const editor = page.locator('#markdown-editor');
+    await editor.focus();
+    await editor.press(process.platform === 'darwin' ? 'Meta+ArrowDown' : 'Control+End');
+    const photo = path.resolve('examples/desk-lighting/assets/lit-page.jpg');
+    await page.locator('#cover-image-file').setInputFiles(photo);
+    await expect(editor).toHaveValue(/!\[lit-page\]\(\.\/assets\/cover-[\da-f]+\.jpg\)/);
+    await page.locator('#btn-save-source').click();
+    await expect(frame.locator('img.cover-photo')).toBeVisible();
+    const savedAssets = await fs.readdir(path.join(workspaceDir, 'assets'));
+    expect(savedAssets).toHaveLength(1);
+    expect(await fs.readFile(path.join(workspaceDir, 'assets', savedAssets[0]!))).toEqual(await fs.readFile(photo));
+  } finally {
+    await studio.close();
+    await fs.rm(workspaceDir, { recursive: true, force: true });
+  }
+});
+
 test('One-Deck -> Five Native Deliverables E2E Verification (PNG, WeChat HTML, PDF, Editable PPTX, 60fps MP4)', async () => {
   const tmpOut = await fs.mkdtemp(path.join(os.tmpdir(), 'aimake-exports-e2e-'));
   try {
