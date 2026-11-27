@@ -143,15 +143,15 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitleMain: '超级个体的全域创作外脑',
     heroTitleAccent: '从灵感火花，到全模态高定交付',
     heroSub:
-      '从零碎灵感、推文与长文萃取，到私有知识沉淀与确定性排版。纯本地端侧闭环运转，内置 36 套商业级设计系统，零云端依赖，80 毫秒极速直出小红书 3x 超清图卡、微信公众号内联富文本、微软原生可编辑 PPTX 与 60fps 动效短视频。',
-    primaryCta: '网页版在线工坊 (开箱即用)',
+      '输入想法灵感或文字大纲，80 毫秒直出小红书图文卡片、微信公众号排版、苹果 Keynote 与原生 PPTX。100% 纯本地运行，内置 36 套高定设计系统，让思考自然成型。',
+    primaryCta: '在线体验工坊 (免安装)',
     secondaryCta: '浏览 36 套设计模板',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: '已复制终端命令至剪贴板',
-    stageCaption: '确定性排版舞台 · 切换标签实时预览多端画布',
-    flywheelHeading: '端到端创作飞轮 · 四步完成知识沉淀与全域分发',
+    stageCaption: '高保真实时画板 · 切换标签预览多端交付物',
+    flywheelHeading: '极简创作飞轮 · 四步完成知识沉淀与全域直出',
     flywheelSub:
-      '从零碎素材摄入，到 Karpathy LLM Wiki 深度萃取，再到参数化排版与全渠道一键直发，每一步都 100% 运行在本机。',
+      '告别在复杂排版软件与参数间的反复折腾。纯本地闭环，让创作重回思考本身。',
     bentoItems: [
       {
         stage: 'STAGE 01 · 零损耗全域摄入',
@@ -342,15 +342,15 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitleMain: 'The Omni-Channel Creative OS',
     heroTitleAccent: 'From Raw Sparks to High-End Deliverables',
     heroSub:
-      'Lossless intake, Karpathy LLM Wiki distillation, private style alignment, and deterministic typography. An end-to-end publishing pipeline running 100% locally for solopreneurs. Build your flagship personal IP with 36 parametric design systems—compiling Retina 3x PNG cards, inline newsletter HTML, native editable PPTX, and 60fps narrated video in 80ms.',
+      'Transform raw ideas into publication-grade deliverables in 80ms. Compile Retina 3x social cards, WeChat newsletters, Apple Keynotes, and native PPTX—100% locally with 36 parametric design systems.',
     primaryCta: 'Try Web Studio (Zero Install)',
     secondaryCta: 'Explore 36 Design Systems',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: 'Command copied to clipboard',
-    stageCaption: 'Deterministic layout compiler stage · Switch tabs to inspect real parametric HTML outputs',
-    flywheelHeading: 'The 4-Stage Creative Flywheel: From Raw Notes to Omni-Channel Assets',
+    stageCaption: 'Live Deterministic Canvas · Real-time multi-channel preview',
+    flywheelHeading: 'End-to-End Creative Flywheel · 4 Steps to Omnichannel Publishing',
     flywheelSub:
-      'Intake research, distill structured Karpathy LLM Wikis, author parametric storyboards, and publish across channels with 100% local privacy.',
+      'Eliminate manual formatting and messy layout tools. 100% offline, private, and focused on pure thought.',
     bentoItems: [
       {
         stage: 'STAGE 01 · LOSSLESS INTAKE',
@@ -4050,91 +4050,198 @@ function renderLandingHtml(
 
   const multimodalWorks = [
     {
-      id: 'work-vibe-coding',
-      sampleKey: 'agent',
+      id: 'work-next-craft',
+      sampleKey: 'next_craft',
       aspect: '16:9',
       format: '原生 OOXML .pptx',
       platform: '苹果发布会',
       template: 'apple-bento-launch',
-      title: '《Andrej Karpathy: \'Vibe Coding\' 与个人软件的全面觉醒》',
+      title: '《Next Craft: 2026 工业美学与极简触觉交互》',
       summary:
-        '前特斯拉 AI 总监引爆全网：代码语法敲击归零，跟随直觉机感对话。从灵感闪现到 20 分钟交付专属微应用，软件受众第一次变成「仅限自己一人」。',
-      badge: '4.8M 浏览 · @karpathy',
+        'Apple Keynote 级黑曜石 Bento 布局。从材质触感到系统级减法，58px 经典 Tabular 数字排布，直出微软原生可编辑 .pptx 演示稿。',
+      badge: '1920×1080 · 发布会 Bento',
       tplId: 'apple-bento-launch',
       previewHtml: `
         <div class="work-preview work-preview-bento">
-          <div class="wp-eyebrow"><span style="color:#a5b4fc;">BENTO LAUNCH · 16:9</span><span style="color:#38bdf8;">@karpathy on X</span></div>
-          <div class="wp-headline">Karpathy: Vibe Coding 与个人软件觉醒</div>
+          <div class="wp-eyebrow"><span style="color:#a5b4fc;">NEXT CRAFT · 16:9</span><span style="color:#38bdf8;">KEYNOTE BENTO</span></div>
+          <div class="wp-headline">Next Craft: 2026 工业美学与触觉交互</div>
           <div class="wp-bento-mini-grid">
             <div class="wp-bento-tile">
-              <span style="color:#94a3b8;font-size:9px;">手写语法</span>
-              <strong style="font-size:13px;color:#34d399;">0% 归零</strong>
+              <span style="color:#94a3b8;font-size:9px;">极窄机身</span>
+              <strong style="font-size:13px;color:#34d399;">0.8 mm</strong>
             </div>
             <div class="wp-bento-tile">
-              <span style="color:#94a3b8;font-size:9px;">交付周期</span>
-              <strong style="font-size:13px;color:#38bdf8;">20 分钟</strong>
+              <span style="color:#94a3b8;font-size:9px;">触觉回馈</span>
+              <strong style="font-size:13px;color:#38bdf8;">120 Hz</strong>
             </div>
             <div class="wp-bento-tile">
-              <span style="color:#94a3b8;font-size:9px;">受众规模</span>
-              <strong style="font-size:12px;color:#f59e0b;">仅限 1 人</strong>
+              <span style="color:#94a3b8;font-size:9px;">留白比例</span>
+              <strong style="font-size:12px;color:#f59e0b;">1:1.618</strong>
             </div>
           </div>
           <div class="wp-chips">
-            <span class="wp-chip">Audience of One</span>
-            <span class="wp-chip" style="color:#38bdf8;">4.8M Views · 42K 点赞</span>
+            <span class="wp-chip">航空铝一体成型</span>
+            <span class="wp-chip" style="color:#38bdf8;">原生 .pptx 双击直编</span>
           </div>
         </div>`,
     },
     {
-      id: 'work-llm-wiki',
-      sampleKey: 'deepseek',
+      id: 'work-bauhaus-swiss',
+      sampleKey: 'bauhaus',
       aspect: '3:4',
       format: '3x Retina PNG',
       platform: '小红书图文',
       template: 'xhs-swiss-grid',
-      title: '《Andrej Karpathy: 为什么纯本地「LLM Wiki」构建永续第二大脑》',
+      title: '《无印之物：包豪斯百年回响与触感设计哲学》',
       summary:
-        '瑞士国际网格排版系统。抛弃黑盒向量数据库与盲目 RAG：以版本化双向链接 Markdown 为基底，恒定上下文预算约束（<= 3,000t），实现 100% 隐私零幻觉。',
-      badge: '2.4M 收藏 · @karpathy',
+        '瑞士国际主义网格排版系统。1958 经典版式结构、温润纸质肌理与严谨数学留白，3x Retina 超清小红书图文卡片。',
+      badge: '3:4 · 瑞士国际网格',
       tplId: 'xhs-swiss-grid',
       previewHtml: `
         <div class="work-preview work-preview-swiss">
           <div class="wp-eyebrow"><span>SWISS GRID · 3:4</span><span style="color:#e11d48;font-weight:700;">01 / 04</span></div>
-          <div class="wp-headline">Karpathy: 纯本地 LLM Wiki 知识架构</div>
+          <div class="wp-headline">无印之物：包豪斯触感设计哲学</div>
           <div class="wp-swiss-specs">
-            <div><strong>恒定预算</strong>index.md &lt;= 3,000t</div>
-            <div><strong>双向链接</strong>版本化 Markdown</div>
-            <div><strong>100% 纯离线</strong>0 KB 数据外泄</div>
-            <div><strong>Style DNA</strong>反 AI 假大空</div>
+            <div><strong>经典网格</strong>1958 严谨版面数学</div>
+            <div><strong>纯质纸张</strong>120g 书写触觉肌理</div>
+            <div><strong>裸脊锁线</strong>180° 完全平摊阅读</div>
+            <div><strong>少，但更好</strong>剔除多余浮夸修饰</div>
           </div>
           <div class="wp-chips">
             <span class="wp-chip-light" style="color:#0f172a;font-weight:700;">CH-8001</span>
-            <span class="wp-chip-light" style="color:#e11d48;border-color:rgba(225,29,72,0.3);">2.4M 收藏 · 3x PNG</span>
+            <span class="wp-chip-light" style="color:#e11d48;border-color:rgba(225,29,72,0.3);">3x Retina PNG 直出</span>
           </div>
         </div>`,
     },
     {
-      id: 'work-gemini-agy',
-      sampleKey: 'gemini',
+      id: 'work-digital-declutter',
+      sampleKey: 'digital_declutter',
+      aspect: '流式长文',
+      format: '100% 内联 HTML',
+      platform: '微信公众号',
+      template: 'wechat-editorial-article',
+      title: '《数字断联指南：在过度互联的时代重获深度专注》',
+      summary:
+        '微信公众号内联富文本排版。关闭无休止的信息轰炸，100% 纯内联样式直出，直接粘贴微信公众号后台零错位。',
+      badge: '流式长文 · 优雅专栏',
+      tplId: 'wechat-editorial-article',
+      previewHtml: `
+        <div class="work-preview work-preview-wechat">
+          <div class="wp-eyebrow"><span style="color:#fbbf24;">ESSAY &amp; CULTURE</span><span>阅读 6 分钟</span></div>
+          <div class="wp-headline">数字断联指南：重获深度专注</div>
+          <div class="wp-wechat-quote-bar">
+            “你拥有你的注意力，正如你拥有真实的生命。在纸页与晨光间重新安放内心的秩序。”
+          </div>
+          <div class="wp-chips">
+            <span class="wp-chip" style="color:#fbbf24;">❤️ 深度共鸣</span>
+            <span class="wp-chip">100% 纯内联样式</span>
+          </div>
+        </div>`,
+    },
+    {
+      id: 'work-solopreneur',
+      sampleKey: 'solopreneur',
+      aspect: '4:5',
+      format: 'Retina PNG / PDF',
+      platform: '领英专栏',
+      template: 'linkedin-exec-carousel',
+      title: '《单人独角兽：极简主义者的商业增长飞轮》',
+      summary:
+        '领英 4:5 高管横滑卡片。从产品打磨到现金流闭环，沉淀清晰的里程碑骨架，适合专业创作者与独立创业者。',
+      badge: '4:5 · 商业画布',
+      tplId: 'linkedin-exec-carousel',
+      previewHtml: `
+        <div class="work-preview work-preview-linkedin">
+          <div class="wp-eyebrow" style="color:#1d4ed8;"><span>EXECUTIVE CAROUSEL · 4:5</span><span>GROWTH FLYWHEEL</span></div>
+          <div class="wp-headline" style="color:#0f172a;">单人独角兽：极简商业增长飞轮</div>
+          <div class="wp-linkedin-steps">
+            <div class="wp-linkedin-step-item"><span style="color:#1d4ed8;font-weight:700;">01</span> <span>专注极简产品力与第一性原理</span></div>
+            <div class="wp-linkedin-step-item"><span style="color:#1d4ed8;font-weight:700;">02</span> <span>私域高质量知识资产复利累加</span></div>
+            <div class="wp-linkedin-step-item"><span style="color:#1d4ed8;font-weight:700;">03</span> <span>自动化端到端交付与持续现金流</span></div>
+          </div>
+          <div class="wp-chips">
+            <span class="wp-chip-light" style="color:#1d4ed8;">精益商业架构</span>
+            <span class="wp-chip-light">Vector PDF Ready</span>
+          </div>
+        </div>`,
+    },
+    {
+      id: 'work-mental-models',
+      sampleKey: 'mental_models',
+      aspect: '1:1',
+      format: '矢量 SVG / 3x PNG',
+      platform: '日本図解',
+      template: 'x-zukai-quad',
+      title: '《高维思考：5 个终身受用的物理学决策模型》',
+      summary:
+        '日系 1:1 结构化図解模型。第一性原理、熵增与负熵、复利效应，以清晰几何网格呈现深度思维框架。',
+      badge: '1:1 · 日本図解',
+      tplId: 'x-zukai-quad',
+      previewHtml: `
+        <div class="work-preview work-preview-zukai">
+          <div class="wp-eyebrow" style="color:#0284c7;"><span>ZUKAI QUAD · 1:1</span><span>MENTAL MODELS</span></div>
+          <div class="wp-headline" style="color:#0369a1;">高维思考 · 物理学决策模型</div>
+          <div class="wp-zukai-grid">
+            <div class="wp-zukai-cell"><span style="color:#0369a1;font-weight:700;">原点</span><br/><span style="font-size:9px;color:#475569;">第一性原理</span></div>
+            <div class="wp-zukai-cell"><span style="color:#0369a1;font-weight:700;">演化</span><br/><span style="font-size:9px;color:#475569;">负熵与秩序</span></div>
+            <div class="wp-zukai-cell"><span style="color:#0369a1;font-weight:700;">复利</span><br/><span style="font-size:9px;color:#475569;">时间指数律</span></div>
+            <div class="wp-zukai-cell" style="background:#e0f2fe;"><span style="color:#0284c7;font-weight:700;">韧性</span><br/><span style="font-size:9px;color:#0369a1;">反脆弱架构</span></div>
+          </div>
+          <div class="wp-chips">
+            <span class="wp-chip-light" style="color:#0284c7;">结构化思维图解</span>
+            <span class="wp-chip-light">1:1 矢量 SVG</span>
+          </div>
+        </div>`,
+    },
+    {
+      id: 'work-light-shadow',
+      sampleKey: 'podcast',
+      aspect: '9:16',
+      format: '60fps MP4 / 剪映',
+      platform: '短视频纪录',
+      template: 'video-cinema-talk',
+      title: '《光影之间：一部关于城市空间与生活美学的微纪录》',
+      summary:
+        '9:16 电影级短视频排版。微秒级音画同步、多轨剪映草稿工程，让口播与视觉故事拥有纪录片级呼吸感。',
+      badge: '9:16 · 电影级视频',
+      tplId: 'video-cinema-talk',
+      previewHtml: `
+        <div class="work-preview work-preview-video">
+          <div class="wp-eyebrow"><span style="color:#38bdf8;">CINEMA 9:16 · 60FPS</span><span style="color:#34d399;">TIMELINE V2</span></div>
+          <div class="wp-headline">光影之间：城市空间美学微纪录</div>
+          <div class="wp-timeline">
+            <div class="wp-track"><span style="width:16px;">V1</span><div class="wp-track-bar"><span style="width:45%;background:#0071e3;"></span><span style="width:52%;background:#38bdf8;"></span></div></div>
+            <div class="wp-track"><span style="width:16px;">T1</span><div class="wp-track-bar"><span style="width:30%;background:#f59e0b;"></span><span style="width:35%;background:#fbbf24;"></span><span style="width:30%;background:#f59e0b;"></span></div></div>
+            <div class="wp-track"><span style="width:16px;">A1</span><div class="wp-track-bar"><span style="width:94%;background:#10b981;"></span></div></div>
+          </div>
+          <div class="wp-chips">
+            <span class="wp-chip" style="color:#34d399;">剪映原生草稿工程</span>
+            <span class="wp-chip">毫秒级音画对齐</span>
+          </div>
+        </div>`,
+    },
+    {
+      id: 'work-minimal-systems',
+      sampleKey: 'agent',
       aspect: '16:9',
       format: '原生 OOXML .pptx',
       platform: '商业演示',
       template: 'ppt-linear-dark',
-      title: '《Google DeepMind Antigravity (AGY) 与 Gemini 4 自主代理革命》',
+      title: '《计算的未来：从复杂框架到极简本地架构的回归》',
       summary:
-        '极客黑几何科技排版。深度解构 10M+ Token 上下文缓存与微虚拟机宿主沙箱：异步多智能体群智架构，直出原生双击可编辑微软 OOXML 矢量形状与文本框。',
-      badge: '6.2M 浏览 · @GoogleDeepMind',
+        'Linear 风格极客黑排版。几何结构化代码块与流程图，亚毫秒端侧直出可编辑矢量图表。',
+      badge: '16:9 · 极客暗黑',
       tplId: 'ppt-linear-dark',
       previewHtml: `
         <div class="work-preview work-preview-linear">
-          <div class="wp-eyebrow"><span style="color:#38bdf8;">LINEAR DARK · 16:9</span><span style="color:#6ee7b7;">6.2M X VIEWS</span></div>
-          <div class="wp-headline">DeepMind AGY · 24h 自主智能体集群</div>
+          <div class="wp-eyebrow"><span style="color:#38bdf8;">LINEAR DARK · 16:9</span><span style="color:#6ee7b7;">SYSTEMS ARCH</span></div>
+          <div class="wp-headline">极简系统架构 · 本地回归</div>
           <div class="wp-linear-flow">
-            <span class="wp-linear-node">10M+ Context</span>
+            <span class="wp-linear-node">状态解耦</span>
             <span style="color:#64748b;">➔</span>
-            <span class="wp-linear-node" style="background:rgba(0,113,227,0.25);border-color:rgba(0,113,227,0.4);color:#60a5fa;">0 Polling Swarm</span>
+            <span class="wp-linear-node" style="background:rgba(0,113,227,0.25);border-color:rgba(0,113,227,0.4);color:#60a5fa;">轻量状态机</span>
             <span style="color:#64748b;">➔</span>
-            <span class="wp-linear-node" style="background:rgba(16,185,129,0.25);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">84.6% SWE-bench</span>
+            <span class="wp-linear-node" style="background:rgba(16,185,129,0.25);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">确定性编译</span>
           </div>
           <div class="wp-chips">
             <span class="wp-chip" style="border-color:rgba(0,113,227,0.4);color:#38bdf8;">双击可编辑文本框</span>
@@ -4143,134 +4250,27 @@ function renderLandingHtml(
         </div>`,
     },
     {
-      id: 'work-claude-code',
-      sampleKey: 'mcp',
-      aspect: '4:5',
-      format: 'Retina PNG / PDF',
-      platform: '领英专栏',
-      template: 'linkedin-exec-carousel',
-      title: '《Claude Code: 终端原生 Agent 与软件工程全权委托新范式》',
-      summary:
-        '高管级横滑卡片与方法论骨架。Anthropic 官方终端 Agent 实战全景：深潜代码树、终端沙盒执行与 Git Diff 零损安全回滚，重新定义资深工程师的控制台。',
-      badge: '3.2M 讨论 · @AnthropicAI',
-      tplId: 'linkedin-exec-carousel',
-      previewHtml: `
-        <div class="work-preview work-preview-linkedin">
-          <div class="wp-eyebrow" style="color:#1d4ed8;"><span>EXECUTIVE CAROUSEL · 4:5</span><span>@AnthropicAI on X</span></div>
-          <div class="wp-headline" style="color:#0f172a;">Claude Code 终端原生 Agent 新范式</div>
-          <div class="wp-linkedin-steps">
-            <div class="wp-linkedin-step-item"><span style="color:#1d4ed8;font-weight:700;">01</span> <span>Git 树上下文深度理解</span></div>
-            <div class="wp-linkedin-step-item"><span style="color:#1d4ed8;font-weight:700;">02</span> <span>终端沙盒执行与测试验证</span></div>
-            <div class="wp-linkedin-step-item"><span style="color:#1d4ed8;font-weight:700;">03</span> <span>Git Diff 审查与零损安全回滚</span></div>
-          </div>
-          <div class="wp-chips">
-            <span class="wp-chip-light" style="color:#1d4ed8;">3.2M 讨论 · @AnthropicAI</span>
-            <span class="wp-chip-light">Vector PDF Ready</span>
-          </div>
-        </div>`,
-    },
-    {
-      id: 'work-local-first',
-      sampleKey: 'podcast',
-      aspect: '9:16',
-      format: '60fps MP4 / 剪映',
-      platform: '短视频口播',
-      template: 'video-cinema-talk',
-      title: '《Local-First 软件复兴: 严肃创作者逃离云端 SaaS 订阅陷阱》',
-      summary:
-        '电影级对谈播客排版。Ink & Switch 与独立黑客的尊严反叛：你拥有你的数据，哪怕云端灰飞烟灭；0ms 极致交互响应，告别月付租金勒索。',
-      badge: '1.8M 关注 · @inkandswitch',
-      tplId: 'video-cinema-talk',
-      previewHtml: `
-        <div class="work-preview work-preview-video">
-          <div class="wp-eyebrow"><span style="color:#38bdf8;">CINEMA 9:16 · 60FPS</span><span style="color:#34d399;">@inkandswitch on X</span></div>
-          <div class="wp-headline">Local-First 软件复兴 · 逃离订阅陷阱</div>
-          <div class="wp-timeline">
-            <div class="wp-track"><span style="width:16px;">V1</span><div class="wp-track-bar"><span style="width:45%;background:#0071e3;"></span><span style="width:52%;background:#38bdf8;"></span></div></div>
-            <div class="wp-track"><span style="width:16px;">T1</span><div class="wp-track-bar"><span style="width:30%;background:#f59e0b;"></span><span style="width:35%;background:#fbbf24;"></span><span style="width:30%;background:#f59e0b;"></span></div></div>
-            <div class="wp-track"><span style="width:16px;">A1</span><div class="wp-track-bar"><span style="width:94%;background:#10b981;"></span></div></div>
-          </div>
-          <div class="wp-chips">
-            <span class="wp-chip" style="color:#34d399;">1.8M 关注 · Ink &amp; Switch</span>
-            <span class="wp-chip">0ms 交互延迟</span>
-          </div>
-        </div>`,
-    },
-    {
-      id: 'work-mcp-protocol',
-      sampleKey: 'strategy',
-      aspect: '1:1',
-      format: '矢量 SVG / 3x PNG',
-      platform: '日本図解',
-      template: 'x-zukai-quad',
-      title: '《Anthropic MCP 协议: 本地数据与工具调用的通用 USB-C 架构》',
-      summary:
-        '日系结构化图解模型。彻底终结每个 Agent 自写 API 适配器的混乱，以开放 JSON-RPC 协议标准联通本地文件系统、数据库与私有工作流。',
-      badge: '2.9M 采纳 · @modelcontextprotocol',
-      tplId: 'x-zukai-quad',
-      previewHtml: `
-        <div class="work-preview work-preview-zukai">
-          <div class="wp-eyebrow" style="color:#0284c7;"><span>ZUKAI QUAD · 1:1</span><span>OPEN STANDARD</span></div>
-          <div class="wp-headline" style="color:#0369a1;">Anthropic MCP · 本地外脑 USB-C</div>
-          <div class="wp-zukai-grid">
-            <div class="wp-zukai-cell"><span style="color:#0369a1;font-weight:700;">协议</span><br/><span style="font-size:9px;color:#475569;">JSON-RPC</span></div>
-            <div class="wp-zukai-cell"><span style="color:#0369a1;font-weight:700;">本地</span><br/><span style="font-size:9px;color:#475569;">文件系统</span></div>
-            <div class="wp-zukai-cell"><span style="color:#0369a1;font-weight:700;">数据</span><br/><span style="font-size:9px;color:#475569;">SQLite/DB</span></div>
-            <div class="wp-zukai-cell" style="background:#e0f2fe;"><span style="color:#0284c7;font-weight:700;">生态</span><br/><span style="font-size:9px;color:#0369a1;">通用互通</span></div>
-          </div>
-          <div class="wp-chips">
-            <span class="wp-chip-light" style="color:#0284c7;">2.9M 开发者采纳</span>
-            <span class="wp-chip-light">1:1 矢量 SVG</span>
-          </div>
-        </div>`,
-    },
-    {
-      id: 'work-wechat-ft',
-      sampleKey: 'token',
-      aspect: '流式长文',
-      format: '100% 内联 HTML',
-      platform: '微信公众号',
-      template: 'apple-dark-keynote',
-      title: '《金融时报 FT 深度调查: 为什么企业正在从通用公有云大模型全面撤退》',
-      summary:
-        '极简暗黑杂志美学。零外部样式表与脚本依赖，在微信公众号后台直接 Cmd+V 粘贴即可无损呈现，数据安全与合规审计三重重压下的反思。',
-      badge: '10w+ 深度调查 · 零错位',
-      tplId: 'apple-dark-keynote',
-      previewHtml: `
-        <div class="work-preview work-preview-wechat">
-          <div class="wp-eyebrow"><span style="color:#fbbf24;">EDITORIAL · INLINE CSS</span><span>阅读 8 分钟</span></div>
-          <div class="wp-headline">FT 调查: 企业从公有云大模型全面撤退</div>
-          <div class="wp-wechat-quote-bar">
-            “私有化蒸馏与本地优先架构，正在重新夺回企业数据的尊严。”
-          </div>
-          <div class="wp-chips">
-            <span class="wp-chip" style="color:#fbbf24;">❤️ 10w+ 深度</span>
-            <span class="wp-chip">100% 纯内联样式</span>
-          </div>
-        </div>`,
-    },
-    {
-      id: 'work-memo-reflection',
+      id: 'work-in-praise-of-paper',
       sampleKey: 'embodied',
       aspect: '3:4',
       format: '3x Retina PNG',
       platform: '苹果备忘录手记',
       template: 'xhs-apple-notes',
-      title: '《硅谷超级个体的 10 条反共识创作铁律：拒绝在 AI 泡沫中迷失》',
+      title: '《重返纸书：为什么物理世界依然值得被装帧》',
       summary:
-        'Apple Notes 真诚手记质感。品味优于算力、本地资产胜过云端订阅、真实问题压倒技术虚荣。写给严肃创作者的安静指南。',
-      badge: '真诚反共识手记 · 零废话',
+        '苹果备忘录与随笔手记质感。真诚生活态度、物理书写触感，给浮躁数字时代的一封安静情书。',
+      badge: '3:4 · 备忘录手记',
       tplId: 'xhs-apple-notes',
       previewHtml: `
         <div class="work-preview work-preview-riso" style="background:#fffbeb;border-color:rgba(217,119,6,0.2);">
-          <div class="wp-eyebrow" style="color:#d97706;"><span>APPLE NOTES · 3:4</span><span>CREATOR MANIFESTO</span></div>
-          <div class="wp-headline" style="color:#78350f;font-size:14.5px;letter-spacing:-0.03em;">硅谷超级个体 10 条反共识创作铁律<br/><span style="color:#b45309;font-size:11px;font-weight:500;">拒绝在技术虚荣与 AI 泡沫中迷失</span></div>
+          <div class="wp-eyebrow" style="color:#d97706;"><span>APPLE NOTES · 3:4</span><span>READING ESSAY</span></div>
+          <div class="wp-headline" style="color:#78350f;font-size:14.5px;letter-spacing:-0.03em;">重返纸书：物理世界的装帧之美<br/><span style="color:#b45309;font-size:11px;font-weight:500;">给浮躁数字时代的一封安静情书</span></div>
           <div style="font-family:var(--font);font-size:11px;color:#92400e;display:flex;flex-direction:column;gap:3px;padding:4px 0;border-top:1px dashed rgba(217,119,6,0.3);border-bottom:1px dashed rgba(217,119,6,0.3);">
-            <span>• 品味与审美是唯一的不可替代编译器</span>
-            <span>• 本地私有资产永远胜过第三方云端订阅</span>
+            <span>• 墨香与纸纤维的温润，是算法无法替代的触觉</span>
+            <span>• 一本装订精良的书，是时间流速的物理锚点</span>
           </div>
           <div class="wp-chips">
-            <span class="wp-chip-light" style="border-color:rgba(217,119,6,0.3);color:#b45309;">真诚手记质感</span>
+            <span class="wp-chip-light" style="border-color:rgba(217,119,6,0.3);color:#b45309;">温润手记质感</span>
             <span class="wp-chip-light" style="color:#78350f;">3x Retina PNG</span>
           </div>
         </div>`,
@@ -4384,12 +4384,12 @@ function renderLandingHtml(
           </div>
         </div>
         <div class="deliverables-strip">
-          <span class="deliverables-label">支持原生直出：</span>
-          <span class="deliverables-badge"><span class="badge-dot" style="background:#0071e3;"></span>3x Retina PNG</span>
-          <span class="deliverables-badge"><span class="badge-dot" style="background:#10b981;"></span>微信公众号内联富文本</span>
-          <span class="deliverables-badge"><span class="badge-dot" style="background:#38bdf8;"></span>微软原生 PPTX</span>
-          <span class="deliverables-badge"><span class="badge-dot" style="background:#f59e0b;"></span>矢量 PDF</span>
-          <span class="deliverables-badge"><span class="badge-dot" style="background:#f43f5e;"></span>60fps H.264 视频</span>
+          <span class="deliverables-label">原生直出交付物：</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#0071e3;"></span>3x Retina 卡片</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#10b981;"></span>微信公众号排版</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#38bdf8;"></span>原生 PPTX 幻灯片</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#f59e0b;"></span>矢量印刷 PDF</span>
+          <span class="deliverables-badge"><span class="badge-dot" style="background:#f43f5e;"></span>60fps 动效短视频</span>
         </div>
       </div>
 
@@ -4414,50 +4414,50 @@ function renderLandingHtml(
           <div class="hero-stage-slide hss-bento active" data-slide="bento">
             <div>
               <div class="hss-bento-head">
-                <span style="display:inline-flex;align-items:center;gap:6px;"><span class="pulse-dot"></span>PRESENTATION · KEYNOTE BENTO</span>
-                <span style="color:#38bdf8;">@karpathy on X · 4.8M VIEWS · SLIDE 01 / 04</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;"><span class="pulse-dot"></span>NEXT CRAFT · 16:9 KEYNOTE BENTO</span>
+                <span style="color:#38bdf8;">INDUSTRIAL DESIGN · 1920×1080 · SLIDE 01 / 03</span>
               </div>
-              <div class="hss-bento-title">Andrej Karpathy: 'Vibe Coding' 与个人软件的全面觉醒</div>
+              <div class="hss-bento-title">Next Craft: 2026 工业美学与极简触觉交互</div>
               <div class="hss-bento-flow">
                 <span class="hss-bento-node">
                   <span class="hss-bento-node-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/></svg></span>
-                  敲击语法归零
+                  自然触感材质
                 </span>
                 <span class="hss-bento-arrow">→</span>
                 <span class="hss-bento-node" style="background:rgba(0,113,227,0.18);border-color:rgba(0,113,227,0.4);color:#60a5fa;">
                   <span class="hss-bento-node-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-                  跟随直觉机感对话
+                  系统级减法设计
                 </span>
                 <span class="hss-bento-arrow">→</span>
                 <span class="hss-bento-node" style="background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.4);color:#34d399;">
-                  <span class="hss-bento-node-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-                  20 分钟专属微软件交付
+                  <span class="hss-bento-node-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  确定性美学直出
                 </span>
               </div>
               <div class="hss-bento-metrics">
                 <div class="hss-bento-tile">
                   <div class="hss-bento-val" style="color:#10b981;">
-                    <span>0%</span>
+                    <span>0.8 <span style="font-size:14px;color:#94a3b8;margin-left:4px;">mm</span></span>
                     <svg width="28" height="16" viewBox="0 0 28 16" fill="none"><path d="M1 14L8 10L16 12L27 2" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </div>
-                  <div class="hss-bento-label">手写语法负担</div>
-                  <div class="hss-bento-sub">完全由 LLM 即时编译生成</div>
+                  <div class="hss-bento-label">极窄机身轮廓</div>
+                  <div class="hss-bento-sub">航空铝整块精密 CNC 切削</div>
                 </div>
                 <div class="hss-bento-tile">
                   <div class="hss-bento-val" style="color:#38bdf8;">
-                    <span>20 min</span>
+                    <span>120 <span style="font-size:14px;color:#94a3b8;margin-left:4px;">Hz</span></span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                   </div>
-                  <div class="hss-bento-label">个人软件交付</div>
-                  <div class="hss-bento-sub">从灵感到浏览器即刻可用</div>
+                  <div class="hss-bento-label">微米触觉回馈</div>
+                  <div class="hss-bento-sub">超低延迟线性触感引擎</div>
                 </div>
                 <div class="hss-bento-tile">
                   <div class="hss-bento-val" style="color:#f59e0b;">
-                    <span>1 人</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span>1:1.618</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
                   </div>
-                  <div class="hss-bento-label">受众规模</div>
-                  <div class="hss-bento-sub">Audience of One · 专属定制</div>
+                  <div class="hss-bento-label">黄金比例留白</div>
+                  <div class="hss-bento-sub">永恒和谐的视觉呼吸感</div>
                 </div>
               </div>
             </div>
@@ -4466,7 +4466,7 @@ function renderLandingHtml(
                 <kbd style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:4px;padding:1px 5px;font-family:var(--mono);font-size:10px;color:#cbd5e1;">Apple Keynote / OOXML .pptx</kbd>
                 确定性排版内核 · 双击原生可编辑文本框与矢量形状
               </span>
-              <a href="/playground/?sample=agent&template=apple-bento-launch&title=Andrej%20Karpathy%3A%20%27Vibe%20Coding%27%20%E4%B8%8E%E4%B8%AA%E4%BA%BA%E8%BD%AF%E4%BB%B6%E7%9A%84%E5%85%A8%E9%9D%A2%E8%A7%89%E9%86%92" class="stage-remix-btn">做同款作品 ↗</a>
+              <a href="/playground/?sample=next_craft&template=apple-bento-launch&title=Next%20Craft%3A%202026%20%E5%B7%A5%E4%B8%9A%E7%BE%8E%E5%AD%A6%E4%B8%8E%E6%9E%81%E7%AE%80%E8%A7%A6%E8%A7%89%E4%BA%A4%E4%BA%92" class="stage-remix-btn">做同款演示 ↗</a>
             </div>
           </div>
 
@@ -4475,7 +4475,7 @@ function renderLandingHtml(
             <div>
               <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#64748b;margin-bottom:8px;">
                 <span style="font-weight:700;">NEUE GRAFIK · ZÜRICH ISSUE 26</span>
-                <span style="color:#e11d48;font-weight:700;">@karpathy on X · 2.4M 收藏 · 3:4 SWISS GRID</span>
+                <span style="color:#e11d48;font-weight:700;">SWISS GRID · 3:4 · EDITION 01 / 04</span>
               </div>
               <div class="hss-swiss-grid-wrap">
                 <div class="hss-swiss-num-col">
@@ -4483,12 +4483,12 @@ function renderLandingHtml(
                   <div class="hss-swiss-vert-tag">EST. 1958 · DIE NEUE GRAPHIK</div>
                 </div>
                 <div class="hss-swiss-main">
-                  <div class="hss-swiss-title">为什么纯本地「LLM Wiki」<br/>是超级个体的永续第二大脑</div>
+                  <div class="hss-swiss-title">无印之物：包豪斯百年回响<br/>与触感设计哲学</div>
                   <div class="hss-swiss-table">
-                    <div class="hss-swiss-cell"><strong>恒定预算 &lt;= 3000t</strong>index.md 物理级上下文约束</div>
-                    <div class="hss-swiss-cell"><strong>自备 API Key (BYOK)</strong>终身买断客户端省下 85% SaaS 租金</div>
-                    <div class="hss-swiss-cell"><strong>100% 纯离线端侧</strong>0 KB 数据外泄 · 零云端依赖</div>
-                    <div class="hss-swiss-cell"><strong>反 AI 假大空 Style DNA</strong>注入个人高频句式与批判性思维</div>
+                    <div class="hss-swiss-cell"><strong>经典 1958 瑞士网格</strong>严密无孤字断行数学比例</div>
+                    <div class="hss-swiss-cell"><strong>120g 纯质书写纸</strong>物理世界特有的温润触觉肌理</div>
+                    <div class="hss-swiss-cell"><strong>永续锁线裸脊</strong>180° 完全平摊的优雅阅读体验</div>
+                    <div class="hss-swiss-cell"><strong>少，但更好</strong>剔除一切多余装饰与浮夸修辞</div>
                   </div>
                 </div>
               </div>
@@ -4498,7 +4498,7 @@ function renderLandingHtml(
                 <span style="font-family:var(--mono);background:#0f172a;color:#fff;padding:1px 6px;border-radius:3px;font-size:10px;">CH-8001</span>
                 瑞士国际主义网格 · 严谨排版无孤字断行 · 3x Retina PNG
               </span>
-              <a href="/playground/?sample=karpathy_wiki&template=xhs-swiss-grid&aspect=3:4&title=Andrej%20Karpathy%3A%20%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%AF%E6%9C%AC%E5%9C%B0%E3%80%8CLM%20Wiki%E3%80%8D%E6%9E%84%E5%BB%BA%E7%AC%AC%E4%BA%8C%E5%A4%A7%E8%84%91" class="stage-remix-btn stage-remix-btn-dark">做同款图文 ↗</a>
+              <a href="/playground/?sample=bauhaus&template=xhs-swiss-grid&aspect=3:4&title=%E6%97%A0%E5%8D%B0%E4%B9%8B%E7%89%A9%EF%BC%9A%E5%8C%85%E8%B1%AA%E6%96%AF%E7%99%BE%E5%B9%B4%E5%9B%9E%E5%93%8D%E4%B8%8E%E8%A7%A6%E6%84%9F%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6" class="stage-remix-btn stage-remix-btn-dark">做同款图文 ↗</a>
             </div>
           </div>
 
@@ -4506,36 +4506,36 @@ function renderLandingHtml(
           <div class="hero-stage-slide hss-linear" data-slide="linear">
             <div style="display:flex;flex-direction:column;flex:1;min-height:0;">
               <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#94a3b8;margin-bottom:10px;">
-                <span>MARKDOWN AST ➔ NATIVE OOXML PPTX</span>
-                <span style="color:#38bdf8;">@GoogleDeepMind on X · 6.2M VIEWS · 16:9 LINEAR</span>
+                <span>SYSTEMS ARCHITECTURE · 16:9 GEOMETRIC DARK</span>
+                <span style="color:#38bdf8;">60FPS · 0 DEPENDENCY</span>
               </div>
               <div class="hss-linear-split">
                 <div class="hss-code-win">
                   <div class="hss-code-win-bar">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <span>decks/gemini-agy-deepmind.deck.md</span>
+                    <span>decks/minimal-systems.deck.md</span>
                   </div>
                   <div><span class="kw">---</span></div>
-                  <div><span class="prop">title</span>: <span class="str">"DeepMind AGY 与 Gemini 4 代理革命"</span></div>
+                  <div><span class="prop">title</span>: <span class="str">"极简系统架构演进"</span></div>
                   <div><span class="prop">template</span>: <span class="str">"ppt-linear-dark"</span></div>
                   <div><span class="prop">aspect</span>: <span class="str">"16:9"</span></div>
                   <div><span class="kw">---</span></div>
-                  <div style="margin-top:4px;"><span class="heading"># 宿主原生沙箱与 24 小时自主工程集群</span></div>
-                  <div>- 10M+ Token 上下文缓存与代码库毫秒复用</div>
-                  <div>- 异步 Swarm 事件总线 0 轮询浪费精准唤醒</div>
-                  <div>- SWE-bench Complete 84.6% 刷新工程基准</div>
+                  <div style="margin-top:4px;"><span class="heading"># 极简系统架构演进</span></div>
+                  <div>- 局部状态解耦与确定性状态机</div>
+                  <div>- 零外部依赖轻量端侧编译</div>
+                  <div>- 微软原生 OOXML .pptx 双击直改</div>
                 </div>
                 <div class="hss-preview-win">
                   <div>
                     <div style="font-size:10.5px;font-family:var(--mono);color:#38bdf8;margin-bottom:4px;">OUTPUT DELIVERABLE</div>
-                    <div style="font-size:14px;font-weight:700;color:#f8fafc;letter-spacing:-0.02em;">DeepMind AGY &amp; Gemini 4 自主代理</div>
+                    <div style="font-size:14px;font-weight:700;color:#f8fafc;letter-spacing:-0.02em;">极简系统架构设计</div>
                   </div>
                   <div style="display:flex;flex-direction:column;gap:6px;margin:8px 0;">
                     <div class="hss-preview-card-item" style="color:#60a5fa;background:rgba(0,113,227,0.18);border-color:rgba(0,113,227,0.35);">
-                      <span>✓</span><span>10M+ Token 上下文缓存代码库复用</span>
+                      <span>✓</span><span>局部状态解耦与确定性状态机</span>
                     </div>
                     <div class="hss-preview-card-item" style="color:#6ee7b7;background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.35);">
-                      <span>✓</span><span>异步 Swarm 0 轮询开销事件唤醒</span>
+                      <span>✓</span><span>零外部依赖轻量端侧编译</span>
                     </div>
                     <div class="hss-preview-card-item" style="color:#7dd3fc;background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.35);">
                       <span>✓</span><span>微软 OOXML .pptx 原生双击编辑</span>
@@ -4543,14 +4543,14 @@ function renderLandingHtml(
                   </div>
                   <div style="font-size:10.5px;font-family:var(--mono);color:#94a3b8;display:flex;align-items:center;gap:6px;">
                     <span class="pulse-dot" style="background:#10b981;"></span>
-                    <span>100% 宿主沙箱安全隔离 · 离线全权委托</span>
+                    <span>100% 纯本地运行 · 确定性矢量直出</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="hss-foot-action">
               <span>Linear 极客黑 · 几何网格与原生矢量 · 微软 OOXML .pptx</span>
-              <a href="/playground/?sample=agent&template=ppt-linear-dark&title=Google%20DeepMind%20Antigravity%20(AGY)%20%E4%B8%8E%20Gemini%204%20%E7%9A%84%E8%87%AA%E4%B8%BB%E4%BB%A3%E7%90%86%E9%9D%A9%E5%91%BD" class="stage-remix-btn">做同款幻灯片 ↗</a>
+              <a href="/playground/?sample=agent&template=ppt-linear-dark&title=%E8%AE%A1%E7%AE%97%E7%9A%84%E6%9C%AA%E6%9D%A5%EF%BC%9A%E4%BB%8E%E5%A4%8D%E6%9D%82%E6%A1%86%E6%9E%B6%E5%88%B0%E6%9E%81%E7%AE%80%E6%9C%AC%E5%9C%B0%E6%9E%B6%E6%9E%84%E7%9A%84%E5%9B%9E%E5%BD%92" class="stage-remix-btn">做同款幻灯片 ↗</a>
             </div>
           </div>
 
@@ -4562,23 +4562,23 @@ function renderLandingHtml(
                   <div class="hss-phone-island-cam"></div>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#94a3b8;font-family:var(--mono);margin-bottom:6px;">
-                  <span>@AnthropicAI on X</span>
-                  <span style="color:#34d399;">3.2M 浏览 · 阅读 6 分钟</span>
+                  <span>CULTURE &amp; ESSAY</span>
+                  <span style="color:#34d399;">深度长文 · 阅读 6 分钟</span>
                 </div>
-                <div style="font-size:15px;font-weight:700;color:#f8fafc;margin:6px 0 8px;line-height:1.35;">Claude Code: 终端原生 Agent 与软件工程全权委托新范式</div>
+                <div style="font-size:15px;font-weight:700;color:#f8fafc;margin:6px 0 8px;line-height:1.35;">数字断联指南：在过度互联时代重获深度专注</div>
                 <div class="hss-quote-callout">
-                  “终端是 AI Agent 唯一真正的操作系统：理解 Git 树、执行本地命令、直接验证测试用例。”
+                  “你拥有你的注意力，正如你拥有真实的生命。关闭无休止的信息轰炸，在纸页与晨光间重新安放内心的秩序。”
                 </div>
                 <div style="font-size:11px;color:#94a3b8;line-height:1.5;margin-bottom:8px;">
-                  深度拆解 Anthropic 官方终端 Agent：深潜代码树、终端沙盒执行与 Git Diff 零损安全回滚。
+                  优雅衬线字体排版，段落间距经毫米级呼吸感微调，彻底告别第三方繁琐排版工具。
                 </div>
               </div>
               <div>
                 <div class="hss-wechat-stats">
-                  <span>❤️ 18.4k 赞</span>
-                  <span>🌟 8,420 收藏</span>
-                  <span>💬 2,140 讨论</span>
-                  <span>在看 3,890</span>
+                  <span>❤️ 12.8k 赞</span>
+                  <span>🌟 9,420 收藏</span>
+                  <span>💬 1,640 讨论</span>
+                  <span>在看 2,890</span>
                 </div>
                 <div style="display:flex;gap:6px;font-family:var(--mono);font-size:10px;color:#cbd5e1;margin-top:8px;">
                   <span style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;">100% 纯内联样式</span>
@@ -4588,7 +4588,7 @@ function renderLandingHtml(
             </div>
             <div class="hss-foot-action">
               <span>微信公众号纯内联富文本 · 样式零丢失 · 告别第三方排版工具</span>
-              <a href="/playground/?sample=token&template=wechat-clean-editorial&title=Claude%20Code%3A%20%E7%BB%88%E7%AB%AF%E5%8E%9F%E7%94%9F%20Agent%20%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E6%96%B0%E8%8C%83%E5%BC%8F" class="stage-remix-btn">做同款长文 ↗</a>
+              <a href="/playground/?sample=digital_declutter&template=wechat-editorial-article&title=%E6%95%B0%E5%AD%97%E6%96%AD%E8%81%94%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9C%A8%E8%BF%87%E5%BA%A6%E4%BA%92%E8%81%94%E7%9A%84%E6%97%B6%E4%BB%A3%E9%87%8D%E8%8E%B7%E6%B7%B1%E5%BA%A6%E4%B8%93%E6%B3%A8" class="stage-remix-btn">做同款长文 ↗</a>
             </div>
           </div>
 
@@ -4596,8 +4596,8 @@ function renderLandingHtml(
           <div class="hero-stage-slide hss-video" data-slide="video">
             <div style="display:flex;flex-direction:column;flex:1;min-height:0;">
               <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#94a3b8;margin-bottom:8px;">
-                <span>@inkandswitch on X · 1.8M VIEWS</span>
-                <span style="color:#34d399;">60FPS CINEMA · -14 LUFS</span>
+                <span>CINEMA 9:16 · 60FPS</span>
+                <span style="color:#34d399;">TIMELINE · -14 LUFS</span>
               </div>
               <div class="hss-video-top">
                 <div class="hss-video-canvas">
@@ -4610,7 +4610,7 @@ function renderLandingHtml(
                       <span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span>
                       <span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span><span class="hss-eq-bar"></span>
                     </div>
-                    <div style="font-size:9.5px;text-align:center;font-weight:600;color:#fff;">Local-First 软件复兴</div>
+                    <div style="font-size:9.5px;text-align:center;font-weight:600;color:#fff;">光影之间：城市空间美学</div>
                   </div>
                   <div style="font-size:8.5px;background:rgba(0,0,0,0.6);padding:2px 4px;border-radius:3px;color:#34d399;text-align:center;">微秒级音画同步</div>
                 </div>
@@ -4648,14 +4648,14 @@ function renderLandingHtml(
                     </div>
                   </div>
                   <div style="font-size:10.5px;color:#94a3b8;font-family:var(--mono);margin-top:6px;">
-                    零时间轴累积漂移 · 原生剪映 draft_content.json
+                    <span>剪映原生草稿 · 4轨无损导出</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="hss-foot-action">
-              <span>直接导出 60fps MP4 或一键导入剪映草稿</span>
-              <a href="/playground/?sample=podcast&template=video-cinema-talk&title=Local-First%20%E8%BD%AF%E4%BB%B6%E5%A4%8D%E5%85%B4%3A%20%E9%80%83%E7%A6%BB%E4%BA%91%E7%AB%AF%20SaaS%20%E8%AE%A2%E9%98%85%E9%99%B7%E9%98%B1" class="stage-remix-btn">做同款短视频 ↗</a>
+              <span>电影级 9:16 短视频 · 剪映原生草稿工程 · 毫秒级音画对齐</span>
+              <a href="/playground/?sample=podcast&template=video-cinema-talk&title=%E5%85%89%E5%BD%B1%E4%B9%8B%E9%97%B4%EF%BC%9A%E4%B8%80%E9%83%A8%E5%85%B3%E4%BA%8E%E5%9F%8E%E5%B8%82%E7%A9%BA%E9%97%B4%E4%B8%8E%E7%94%9F%E6%B4%BB%E7%BE%8E%E5%AD%A6%E7%9A%84%E5%BE%AE%E7%BA%AA%E5%BD%95" class="stage-remix-btn">做同款视频 ↗</a>
             </div>
           </div>
 

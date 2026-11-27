@@ -40,46 +40,211 @@ export function extractTemplatePaletteFromCss(css: string): {
 
 const STARTER_SAMPLES: Record<string, string> = {
   agent: `---
-title: "Andrej Karpathy: 'Vibe Coding' 与个人软件的全面觉醒"
+title: "Next Craft: 2026 工业美学与极简触觉交互"
 template: apple-bento-launch
 locale: zh-CN
 aspect: 16:9
-author: Andrej Karpathy (@karpathy)
-handle: "@karpathy"
+author: Aimake Studio
+handle: "@aimake"
 ---
 
-<!-- scene: intro | layout: metrics | eyebrow: 编程范式大迁徙 | cite: @karpathy on X (Feb 2025) -->
-# Andrej Karpathy: 'Vibe Coding' 与个人软件的全面觉醒
-## 敲击代码行数归零，跟随机感对话：每个人都成为专属软件造物主
+<!-- scene: intro | layout: metrics | eyebrow: INDUSTRIAL DESIGN 2026 | cite: Next Craft Keynote -->
+# Next Craft: 2026 工业美学与极简触觉交互
+## 少，但更好：重构数字硬件与物理世界的触感连接
 
 \`\`\`metric
-- 手工编写语法: 0% (完全依赖 LLM 即时生成)
-- 个人软件交付速度: 20 分钟 (从灵感闪现到浏览器可用)
-- 软件受众规模: 仅限 1 人 (Personal Software 爆发)
-- X 社区共鸣度: 4.8M+ 浏览 · 4.2万点赞
+- 极窄机身轮廓: 0.8 mm (航空铝精密 CNC 切削)
+- 微米触觉回馈: 120 Hz (超低延迟微震引擎)
+- 黄金分割比例: 1:1.618 (永恒留白视觉呼吸)
+- 沉浸阅读续航: 36 小时 (超低功耗端侧常驻)
 \`\`\`
 
 ---
 
-<!-- scene: compare | layout: comparison | eyebrow: PARADIGM SHIFT -->
-# 传统重型协作 vs Vibe Coding 个人软件
+<!-- scene: compare | layout: comparison | eyebrow: DESIGN PHILOSOPHY -->
+# 繁杂冗余的塑料外壳 vs 纯粹克制的金属一体成型
 
 \`\`\`compare
-传统重型开发 :: 论证商业 ROI 与规模化需求 | 数周搭建 CI/CD 与脚手架 | 70% 精力消耗在语法与环境
-个人软件觉醒 :: 仅为满足当下 1 个微小需求 | 单份 Markdown 即刻拉起应用 | 100% 精力聚焦在审美与直觉
+繁杂冗余的过去 :: 无意义的炫技式参数拼凑 | 繁重杂乱的视觉装饰 | 违背直觉的学习门槛
+纯粹克制的未来 :: 专注核心功能的本质提炼 | 沉稳内敛的触觉微交互 | 零门槛的自然使用体验
 \`\`\`
 
 ---
 
-<!-- scene: code | layout: code | eyebrow: ONE COMMAND -->
-# 一行命令驱动全生态 AI 助手
+<!-- scene: code | layout: code | eyebrow: ONE-CLICK EXPORT -->
+# 原生交付物一键直出
 
-- 原生兼容 OpenCode、WorkBuddy、Codex、AGY 与 Claude Code
-- 预设 7 大闭环 Skill，实体化沉淀在工作区，零全局污染
+- 微软原生可编辑 OOXML .pptx
+- 微信公众号纯内联富文本，样式零丢失
+- 3x 超清无损视网膜图卡与 60fps 动效短视频
 
 \`\`\`bash
-aimake render decks/karpathy-vibe-coding.deck.md -f pptx -o launch.pptx
-aimake render decks/karpathy-vibe-coding.deck.md -f png -o dist/
+aimake render decks/next-craft.deck.md -f pptx -o NextCraft.pptx
+aimake render decks/next-craft.deck.md -f png -o dist/
+\`\`\`
+`,
+
+  next_craft: `---
+title: "Next Craft: 2026 工业美学与极简触觉交互"
+template: apple-bento-launch
+locale: zh-CN
+aspect: 16:9
+author: Aimake Studio
+handle: "@aimake"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: INDUSTRIAL DESIGN 2026 | cite: Next Craft Keynote -->
+# Next Craft: 2026 工业美学与极简触觉交互
+## 少，但更好：重构数字硬件与物理世界的触感连接
+
+\`\`\`metric
+- 极窄机身轮廓: 0.8 mm (航空铝精密 CNC 切削)
+- 微米触觉回馈: 120 Hz (超低延迟微震引擎)
+- 黄金分割比例: 1:1.618 (永恒留白视觉呼吸)
+- 沉浸阅读续航: 36 小时 (超低功耗端侧常驻)
+\`\`\`
+
+---
+
+<!-- scene: compare | layout: comparison | eyebrow: DESIGN PHILOSOPHY -->
+# 繁杂冗余的塑料外壳 vs 纯粹克制的金属一体成型
+
+\`\`\`compare
+繁杂冗余的过去 :: 无意义的炫技式参数拼凑 | 繁重杂乱的视觉装饰 | 违背直觉的学习门槛
+纯粹克制的未来 :: 专注核心功能的本质提炼 | 沉稳内敛的触觉微交互 | 零门槛的自然使用体验
+\`\`\`
+`,
+
+  bauhaus: `---
+title: "无印之物：包豪斯百年回响与触感设计哲学"
+template: xhs-swiss-grid
+locale: zh-CN
+aspect: 3:4
+author: Aimake Design Lab
+handle: "@aimake"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: SWISS GRID · 3:4 | cite: Bauhaus Centenary -->
+# 无印之物：包豪斯百年回响与触感设计哲学
+## 形式追随功能，触觉重返物理世界：写给严肃创作者的静心读本
+
+\`\`\`metric
+- 经典网格比例: 1958 (严谨版面数学)
+- 纯质纸张肌理: 120g (天然书写触感)
+- 裸脊锁线装订: 180° (完全平摊阅读)
+- 视觉减法法则: 100% (剔除浮夸多余修饰)
+\`\`\`
+
+- **形式追随功能**：一件作品的优美，取决于它是否诚实地服务于其核心功能，而非繁复空洞的修辞。
+- **物理世界的触觉重塑**：在像素闪烁的时代，墨香与纸纤维的温润触感，依然是人类深层专注的锚点。
+
+---
+
+<!-- scene: quote | layout: quote | eyebrow: DIETER RAMS -->
+# 少，但更好 (Weniger, aber besser)
+
+> “好的设计是创新的，好的设计是实用的，好的设计是美学的，好的设计是使产品易于理解的，好的设计是克制的。”
+> —— 迪特·拉姆斯 (Dieter Rams)
+`,
+
+  digital_declutter: `---
+title: "数字断联指南：在过度互联的时代重获深度专注"
+template: wechat-editorial-article
+locale: zh-CN
+aspect: 16:9
+author: Aimake Studio
+handle: "@aimake"
+---
+
+<!-- scene: hook | layout: metrics | eyebrow: CULTURE & ESSAY | cite: Deep Focus -->
+# 数字断联指南：在过度互联的时代重获深度专注
+## 关闭无休止的信息轰炸，在纸页与晨光间重新安放内心的秩序
+
+\`\`\`metric
+- 每日弹窗轰炸: 120+ 次 (深度注意力粉碎)
+- 晨间无屏幕实践: 2 小时 (重获掌控感)
+- 深度专注提升: 3.5 倍 (心流状态回归)
+\`\`\`
+
+- **信息肥胖症的反思**：我们被海量的推送、群聊和碎片热点包围，大脑习惯了即时刺激，却失去了深入思考的能力。
+- **建立物理边界**：将手机置于视线之外，准备一本实体纸质笔记本，给自己的晨间与入睡前留出完整的静默时光。
+
+---
+
+<!-- scene: guide | layout: comparison | eyebrow: THREE RULES -->
+# 深度断联的三个实用法则
+
+\`\`\`compare
+规则一：物理隔离 :: 工作台只保留单一任务书与笔 | 手机与社交软件常态静音
+规则二：批量处理 :: 每日仅固定两次查阅邮件与通讯 | 告别随叫随到的焦虑反射
+规则三：纸质输出 :: 在开始敲击键盘前，先用纸笔手绘思维骨架与逻辑流
+\`\`\`
+`,
+
+  mental_models: `---
+title: "高维思考：5 个终身受用的物理学决策模型"
+template: x-zukai-quad
+locale: zh-CN
+aspect: 1:1
+author: Aimake Thinking Lab
+handle: "@aimake"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: MENTAL MODELS 2026 | cite: Physics of Thinking -->
+# 高维思考：5 个终身受用的物理学决策模型
+## 从第一性原理到负熵架构，用客观世界的本质规律指导关键抉择
+
+\`\`\`metric
+- 底层公理化: 0 假设 (从物理原点推导)
+- 负熵注入率: +85% (持续建立系统秩序)
+- 反脆弱增益: 3.2x (在不确定性中获益)
+\`\`\`
+
+- **第一性原理**：打破类比与从众心理，把问题剥离到最基础的物理事实，再从底层往上推演解法。
+- **系统的负熵流**：任何封闭系统都会自发走向混乱（熵增），只有持续引入外部高质量输入，才能维持秩序与生命力。
+
+---
+
+<!-- scene: matrix | layout: comparison | eyebrow: DECISION FRAMEWORK -->
+# 传统盲从思维 vs 物理学决策模型
+
+\`\`\`compare
+传统经验主义 :: 别人怎么做我就怎么做 | 停留在表面现象的修修补补 | 害怕波动与变化
+底层本质思维 :: 追问底层物理规律与因果链 | 建立抗脆弱与自我进化的负熵闭环 | 在波动中持续受益
+\`\`\`
+`,
+
+  solopreneur: `---
+title: "单人独角兽：极简主义者的商业增长飞轮"
+template: linkedin-exec-carousel
+locale: zh-CN
+aspect: 4:5
+author: Aimake Growth
+handle: "@aimake"
+---
+
+<!-- scene: intro | layout: metrics | eyebrow: SOLOPRENEUR FLYWHEEL | cite: Modern Business -->
+# 单人独角兽：极简主义者的商业增长飞轮
+## 现金流第一、深度知识资产沉淀、确定性交付：单人业务的长期主义法则
+
+\`\`\`metric
+- 团队规模约束: 仅限 1 人 (零管理内耗)
+- 净利润率维持: 85%+ (极轻资产架构)
+- 资产复利周期: 10 年+ (本地私有知识沉淀)
+\`\`\`
+
+- **极简即力量**：不追求盲目的团队扩张与融资烧钱，保持轻资产与高自由度，将精力倾注在不可替代的个人作品中。
+- **作品驱动增长**：每一个高质量交付物都是自动化运转的品牌大使，带来持续且自发的口碑裂变。
+
+---
+
+<!-- scene: steps | layout: comparison | eyebrow: 3 MILESTONES -->
+# 单人独角兽的三个跃升阶段
+
+\`\`\`compare
+阶段 01：打磨锐利单品 :: 解决 1 个真实痛点 | 验证用户付费意愿与极高满意度
+阶段 02：搭建知识资产库 :: 沉淀标准化工作流与设计系统 | 实现端到端自动化直出
+阶段 03：被动现金流闭环 :: 持续复利生长 | 拥有完整的个人时间掌控权
 \`\`\`
 `,
 
@@ -627,92 +792,92 @@ const RADAR_ITEMS = [
 
 const WORKS_DATA = [
   {
-    id: "deck-gemini",
-    title: "Google DeepMind Antigravity & Gemini 4",
-    subtitle: "100M+ Token 持续进化与自主 Agent",
-    badge: "DEEPMIND",
+    id: "deck-next-craft",
+    title: "Next Craft: 2026 工业美学与触觉交互",
+    subtitle: "少，但更好：数字与物理的触感连接",
+    badge: "发布会 Bento",
     category: "tech",
     template: "apple-bento-launch",
     aspect: "16:9",
     pages: 3,
-    sampleKey: "gemini"
+    sampleKey: "next_craft"
   },
   {
-    id: "deck-blackfriday",
-    title: "2026 黑五 AI 算力与订阅指南",
-    subtitle: "算力通缩下的超级个体采购清单",
-    badge: "黑五精选",
+    id: "deck-bauhaus",
+    title: "无印之物：包豪斯百年回响与触感设计",
+    subtitle: "1958 经典版式数学与天然纸张肌理",
+    badge: "瑞士网格",
     category: "social",
     template: "xhs-swiss-grid",
     aspect: "3:4",
     pages: 3,
-    sampleKey: "blackfriday"
+    sampleKey: "bauhaus"
   },
   {
-    id: "deck-vibe-coding",
-    title: "Andrej Karpathy: 'Vibe Coding'",
-    subtitle: "敲击代码行数归零，跟随机感对话",
-    badge: "KARPATHY",
-    category: "social",
-    template: "apple-bento-launch",
+    id: "deck-digital-declutter",
+    title: "数字断联指南：重获深度专注",
+    subtitle: "关闭无休止信息轰炸，重拾阅读心流",
+    badge: "优雅专栏",
+    category: "life",
+    template: "wechat-editorial-article",
     aspect: "16:9",
     pages: 3,
-    sampleKey: "agent"
+    sampleKey: "digital_declutter"
   },
   {
-    id: "deck-mcp",
-    title: "Anthropic MCP 协议普及",
-    subtitle: "本地数据与工具调用的开放新标准",
-    badge: "ANTHROPIC",
-    category: "tech",
+    id: "deck-mental-models",
+    title: "高维思考：5 个物理学决策模型",
+    subtitle: "从第一性原理到负熵架构客观规律",
+    badge: "日本図解",
+    category: "work",
     template: "x-zukai-quad",
     aspect: "1:1",
-    pages: 5,
-    sampleKey: "mcp"
+    pages: 3,
+    sampleKey: "mental_models"
   },
   {
-    id: "deck-claudecode",
-    title: "Claude Code 终端原生 Agent",
-    subtitle: "CLI 极速自主调试与本地沙盒治理",
-    badge: "CLAUDE",
+    id: "deck-solopreneur",
+    title: "单人独角兽：极简商业增长飞轮",
+    subtitle: "现金流第一、深度资产、长期主义",
+    badge: "商业画布",
     category: "work",
     template: "linkedin-exec-carousel",
     aspect: "4:5",
-    pages: 4,
-    sampleKey: "claudecode"
-  },
-  {
-    id: "deck-localfirst",
-    title: "Local-First 软件复兴",
-    subtitle: "零云端依赖与纯本地私有数据留存",
-    badge: "LOCAL-FIRST",
-    category: "life",
-    template: "xhs-paper-editorial",
-    aspect: "3:4",
     pages: 3,
-    sampleKey: "localfirst"
+    sampleKey: "solopreneur"
   },
   {
-    id: "deck-deepseek",
-    title: "DeepSeek-R1 本地蒸馏冲击波",
-    subtitle: "小参数高推理时代的端侧落地指南",
-    badge: "OPEN SOURCE",
+    id: "deck-light-shadow",
+    title: "光影之间：城市空间美学微纪录",
+    subtitle: "电影画幅 9:16 与剪映原生多轨工程",
+    badge: "电影短视频",
+    category: "life",
+    template: "video-cinema-talk",
+    aspect: "9:16",
+    pages: 3,
+    sampleKey: "podcast"
+  },
+  {
+    id: "deck-in-praise-of-paper",
+    title: "重返纸书：物理世界的装帧之美",
+    subtitle: "墨香与纸纤维的温润，安静书写手记",
+    badge: "备忘录手记",
+    category: "social",
+    template: "xhs-apple-notes",
+    aspect: "3:4",
+    pages: 2,
+    sampleKey: "embodied"
+  },
+  {
+    id: "deck-minimal-systems",
+    title: "极简系统架构：从复杂到轻量的回归",
+    subtitle: "局部状态解耦与亚毫秒端侧直出",
+    badge: "极客暗黑",
     category: "tech",
     template: "ppt-linear-dark",
     aspect: "16:9",
-    pages: 4,
-    sampleKey: "deepseek"
-  },
-  {
-    id: "deck-token",
-    title: "超级个体千亿飞轮",
-    subtitle: "从单次对话到私有知识复利沉淀",
-    badge: "SUPER INDIVIDUAL",
-    category: "work",
-    template: "wechat-editorial-article",
-    aspect: "3:4",
-    pages: 4,
-    sampleKey: "token"
+    pages: 3,
+    sampleKey: "agent"
   }
 ];
 
@@ -1242,6 +1407,72 @@ export async function buildWebPlaygroundHtml(
       display: flex; align-items: center; gap: 4px; overflow-x: auto; scrollbar-width: none;
     }
     .card-slide-pills::-webkit-scrollbar { display: none; }
+    /* Quick Inspiration Chips Bar */
+    .pg-inspiration-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      background: var(--surface-subtle);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pg-inspire-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      flex-shrink: 0;
+    }
+    .pg-inspire-chips {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .inspire-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 11.5px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.14s ease;
+    }
+    .inspire-chip:hover {
+      background: var(--surface-elev);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+    .inspire-chip.active {
+      background: #18181b;
+      color: #fff !important;
+      border-color: #18181b;
+    }
+    [data-theme="light"] .inspire-chip.active {
+      background: #18181b;
+      color: #fff !important;
+      border-color: #18181b;
+    }
+    .card-editor-tip {
+      font-size: 11.5px;
+      color: var(--ink-secondary);
+      background: rgba(0, 113, 227, 0.06);
+      border: 1px solid rgba(0, 113, 227, 0.18);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .card-slide-pill {
       height: 24px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border);
       background: var(--surface); color: var(--ink-muted); font-size: 11px; font-weight: 500;
@@ -1767,15 +1998,34 @@ export async function buildWebPlaygroundHtml(
         <span style="font-size:11px;color:var(--ink-muted);white-space:nowrap;">纯前端沙盒运行</span>
       </div>
 
+      <!-- Quick Magic Inspiration Bar (One-click start!) -->
+      <div class="pg-inspiration-bar" role="toolbar" aria-label="创作灵感速选">
+        <span class="pg-inspire-label">💡 灵感速选：</span>
+        <div class="pg-inspire-chips">
+          <button type="button" class="inspire-chip active" data-sample="next_craft">🚀 苹果发布会</button>
+          <button type="button" class="inspire-chip" data-sample="bauhaus">🏛️ 包豪斯触感</button>
+          <button type="button" class="inspire-chip" data-sample="digital_declutter">🌿 深度数字断联</button>
+          <button type="button" class="inspire-chip" data-sample="mental_models">🧠 5个思维模型</button>
+          <button type="button" class="inspire-chip" data-sample="solopreneur">💼 极简商业复盘</button>
+        </div>
+      </div>
+
       <!-- 1. Card Mode Form Editor (Active by Default, Zero Intimidation!) -->
       <div id="card-editor-pane" aria-label="卡片可视化编辑">
+        <div class="card-editor-tip">
+          <span>💡 <strong>零门槛创作</strong>：在下方直接修改文字，右侧画布即时同步渲染。无需懂代码，小白秒上手。</span>
+        </div>
         <div class="card-pills-row">
           <div class="card-slide-pills" id="card-slide-pills"></div>
-          <button class="chip-btn" id="btn-card-add-slide" type="button">+ 新增页</button>
+          <div style="display:inline-flex;gap:4px;flex-shrink:0;">
+            <button class="chip-btn" id="btn-card-add-slide" type="button" title="新增一页卡片">+ 新增页</button>
+            <button class="chip-btn" id="btn-card-dup-slide" type="button" title="复制当前卡片">📋 复制页</button>
+            <button class="chip-btn" id="btn-card-del-slide" type="button" title="删除当前卡片">🗑️ 删页</button>
+          </div>
         </div>
         <div class="card-field">
           <label for="card-eyebrow">🏷️ 眉题 / 章节标签 (Eyebrow)</label>
-          <input class="card-input" id="card-eyebrow" type="text" placeholder="例如：DEEPMIND 2026 INFLECTION" />
+          <input class="card-input" id="card-eyebrow" type="text" placeholder="例如：NEXT CRAFT · 01" />
         </div>
         <div class="card-field">
           <label for="card-title">✍️ 核心标题 (Heading 1)</label>
@@ -2952,13 +3202,66 @@ export async function buildWebPlaygroundHtml(
     const btnCardAdd = document.getElementById('btn-card-add-slide');
     if (btnCardAdd) {
       btnCardAdd.addEventListener('click', () => {
-        const newSlide = '\\n\\n---\\n\\n<!-- scene: card-new | eyebrow: NEW SCENE -->\\n# 新增卡片标题\\n## 简短阐述核心论点\\n\\n- 要点一：事实与数据支撑\\n- 要点二：落地执行建议\\n';
+        const newSlide = '\\n\\n---\\n\\n<!-- scene: card-new | eyebrow: NEW SCENE -->\\n# 新增卡片标题\\n## 简短阐述核心论点\\n\\n- 要点一：核心事实与数据支撑\\n- 要点二：具体落地执行建议\\n';
         elInput.value = elInput.value.trimEnd() + newSlide;
         currentSlideIdx = totalSlides;
         compileNow();
         showToast('已新增卡片，可直接填写表单');
       });
     }
+
+    const btnCardDup = document.getElementById('btn-card-dup-slide');
+    if (btnCardDup) {
+      btnCardDup.addEventListener('click', () => {
+        const parsed = parseClientMarkdown(elInput.value);
+        if (!parsed.rawSlides.length) return;
+        const curRaw = parsed.rawSlides[currentSlideIdx] || parsed.rawSlides[0];
+        const fmMatch = elInput.value.match(/^(---\\n[\\s\\S]*?\\n---\\n?)([\\s\\S]*)$/);
+        const fmHeader = fmMatch ? fmMatch[1] : '';
+        const slides = parsed.rawSlides.slice();
+        slides.splice(currentSlideIdx + 1, 0, curRaw);
+        elInput.value = (fmHeader ? fmHeader.trimEnd() + '\\n\\n' : '') + slides.join('\\n\\n---\\n\\n') + '\\n';
+        currentSlideIdx = currentSlideIdx + 1;
+        compileNow();
+        showToast('已复制当前卡片页');
+      });
+    }
+
+    const btnCardDel = document.getElementById('btn-card-del-slide');
+    if (btnCardDel) {
+      btnCardDel.addEventListener('click', () => {
+        const parsed = parseClientMarkdown(elInput.value);
+        if (parsed.rawSlides.length <= 1) {
+          showToast('至少保留一页卡片');
+          return;
+        }
+        const fmMatch = elInput.value.match(/^(---\\n[\\s\\S]*?\\n---\\n?)([\\s\\S]*)$/);
+        const fmHeader = fmMatch ? fmMatch[1] : '';
+        const slides = parsed.rawSlides.slice();
+        slides.splice(currentSlideIdx, 1);
+        if (currentSlideIdx >= slides.length) {
+          currentSlideIdx = Math.max(0, slides.length - 1);
+        }
+        elInput.value = (fmHeader ? fmHeader.trimEnd() + '\\n\\n' : '') + slides.join('\\n\\n---\\n\\n') + '\\n';
+        compileNow();
+        showToast('已删除当前卡片页');
+      });
+    }
+
+    // Inspiration Chips Handler
+    document.querySelectorAll('.inspire-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.inspire-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const key = btn.getAttribute('data-sample');
+        if (key && SAMPLES[key]) {
+          elInput.value = SAMPLES[key];
+          currentSlideIdx = 0;
+          compileNow();
+          showToast('✨ 已载入灵感预设：' + btn.textContent.trim());
+        }
+      });
+    });
 
     function renderCardSlidePills() {
       const container = document.getElementById('card-slide-pills');
