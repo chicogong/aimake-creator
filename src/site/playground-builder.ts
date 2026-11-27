@@ -103,9 +103,6 @@ handle: "@deepmind"
 - 软件交付范式: 纯声明式意图直达交付物
 \`\`\`
 
-- **终生上下文无损保留**：突破传统 128k 窗口遗忘诅咒，将本地代码库与知识脉络融为单体推理图。
-- **物理级零信任沙盒**：所有工具调用与代码生成均限制在本地隔离环境，彻底杜绝数据越权外发。
-
 ---
 
 <!-- scene: compare | layout: comparison | eyebrow: PARADIGM SHIFT -->
@@ -689,17 +686,7 @@ export async function buildWebPlaygroundHtml(
       font-size: 13.5px; font-weight: 650; letter-spacing: -0.02em; white-space: nowrap;
     }
     
-    .pg-crumb-sep {
-      color: var(--ink-faint); font-size: 11px; opacity: 0.6; user-select: none;
-    }
-    .pg-crumb-badge {
-      font-size: 11px; font-weight: 500; color: var(--ink-muted);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;
-    }
-
-    @media (max-width: 1200px) {
-      .pg-crumb-sep, .pg-crumb-badge { display: none; }
-    }
+    .pg-crumb-sep, .pg-crumb-badge { display: none !important; }
 
     /* Top Controls Area */
     .pg-controls {
@@ -716,22 +703,29 @@ export async function buildWebPlaygroundHtml(
     }
 
     .pg-select {
-      background: var(--surface); color: var(--ink);
+      background-color: var(--surface); color: var(--ink);
       border: 1px solid var(--border); border-radius: var(--radius-md);
-      height: 31px; padding: 0 8px; font-size: 12px; font-weight: 500; outline: none;
+      height: 31px; padding: 0 24px 0 10px; font-size: 12px; font-weight: 500; outline: none;
       white-space: nowrap; text-overflow: ellipsis;
       transition: all 0.15s ease;
       cursor: pointer; box-sizing: border-box;
       flex-shrink: 0;
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
     }
-    #sample-select { min-width: 140px; max-width: 180px; }
-    #template-select { min-width: 130px; max-width: 165px; }
-    #aspect-select { min-width: 82px; max-width: 95px; }
-    #locale-select { min-width: 78px; max-width: 88px; }
+    #sample-select { min-width: 130px; max-width: 155px; }
+    #template-select { min-width: 110px; max-width: 130px; }
+    #aspect-select { min-width: 74px; max-width: 82px; }
+    #locale-select { min-width: 58px; max-width: 66px; }
     [data-theme="light"] .pg-select,
     [data-theme="light"] .pg-btn {
-      background: #ffffff; color: #0f172a;
+      background-color: #ffffff; color: #0f172a;
       border-color: rgba(15, 23, 42, 0.12);
+    }
+    [data-theme="light"] .pg-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     }
     .pg-select:hover, .pg-select:focus {
       border-color: var(--border-strong);
@@ -1267,7 +1261,7 @@ export async function buildWebPlaygroundHtml(
     .drawer-header h3 { margin: 0; font-size: 14px; font-weight: 650; color: var(--ink); }
     .drawer-header-count {
       font-size: 10.5px; padding: 2px 7px; border-radius: 999px;
-      background: rgba(99, 102, 241, 0.15); color: #a5b4fc; font-weight: 600;
+      background: var(--surface-elev); color: var(--ink-muted); border: 1px solid var(--border); font-weight: 600;
     }
     .drawer-close {
       background: transparent; border: none; color: var(--ink-muted); font-size: 16px;
@@ -1474,7 +1468,7 @@ export async function buildWebPlaygroundHtml(
           .join('')}
       </select>
 
-      <button class="pg-btn" id="btn-open-templates" title="打开 36 套设计系统视觉抽屉">${lucideIcon('layoutGrid')} 36 套模板</button>
+      <button class="pg-btn pg-btn-icon" id="btn-open-templates" title="打开 36 套设计系统视觉抽屉" aria-label="36 套模板">${lucideIcon('layoutGrid')}</button>
 
       <!-- Forced Aspect Ratio -->
       <select class="pg-select" id="aspect-select" title="强制指定画幅比例">
@@ -1488,9 +1482,7 @@ export async function buildWebPlaygroundHtml(
 
       <span class="pg-control-sep"></span>
 
-      <!-- AI Humanizer & Locale Switcher -->
-      <button class="pg-btn" id="btn-humanize" title="四语种去 AI 套话清洗器">${lucideIcon('wand')} 去AI味</button>
-
+      <!-- Locale Switcher -->
       <select class="pg-select" id="locale-select" title="切换幻灯片排版语种">
         <option value="zh-CN">🇨🇳 中文</option>
         <option value="en-US">🇺🇸 EN</option>
@@ -1548,6 +1540,7 @@ export async function buildWebPlaygroundHtml(
             <button class="chip-btn" data-insert="code">+代码</button>
             <button class="chip-btn" data-insert="quote">+金句</button>
             <button class="chip-btn" data-insert="slide">+加页</button>
+            <button class="chip-btn" id="btn-humanize" title="四语种去 AI 套话清洗器">${lucideIcon('wand')} 去AI味</button>
           </div>
         </div>
         <div class="editor-code-container">
@@ -1833,14 +1826,14 @@ export async function buildWebPlaygroundHtml(
     const paramTitle = urlParams.get('title');
 
     let initialMarkdown = '';
-    let initialSampleKey = 'agent';
+    let initialSampleKey = 'gemini';
     if (paramSample && SAMPLES[paramSample]) {
       initialMarkdown = SAMPLES[paramSample];
       initialSampleKey = paramSample === 'creator' ? 'token' : paramSample === 'poster' ? 'embodied' : paramSample;
     } else {
       let saved = null;
       try { saved = localStorage.getItem('aimake_playground_md'); } catch (_) {}
-      initialMarkdown = (saved && saved.trim()) || SAMPLES.agent || SAMPLES.gemini;
+      initialMarkdown = (saved && saved.trim()) || SAMPLES.gemini || SAMPLES.agent;
       for (const [k, sText] of Object.entries(SAMPLES)) {
         if (k === 'creator' || k === 'poster') continue;
         const firstLine = (sText.match(/^title:\\s*(.+)$/m) || [])[1];
@@ -2442,12 +2435,22 @@ export async function buildWebPlaygroundHtml(
         '.aimake-slide { width:' + dim.w + 'px !important; height:' + dim.h + 'px !important; flex-shrink:0; }\\n' +
         '.hljs-keyword { color:#93c5fd; font-weight:600; } .hljs-string { color:#86efac; } .hljs-comment { color:#64748b; font-style:italic; } .hljs-number { color:#fda4af; }\\n' +
         '/* Metric KPI cards nowrap, fluid clamp, and balance formatting */\\n' +
-        '.metrics-grid, .aimake-metrics-grid { gap:16px !important; }\\n' +
-        '.metric-card { min-width:0 !important; overflow:hidden !important; display:flex !important; flex-direction:column !important; justify-content:center !important; gap:8px !important; }\\n' +
-        '.metric-label { white-space:nowrap !important; text-wrap:balance !important; word-break:keep-all !important; overflow:hidden !important; text-overflow:ellipsis !important; margin:0 !important; }\\n' +
-        '.metric-val { white-space:nowrap !important; flex-wrap:nowrap !important; display:flex !important; align-items:baseline !important; gap:8px !important; font-size:clamp(22px, 3.2vw, 44px) !important; font-variant-numeric:tabular-nums !important; }\\n' +
-        '.metric-val > span { white-space:nowrap !important; }\\n' +
-        '.metric-delta { white-space:nowrap !important; font-size:clamp(12px, 1.2vw, 18px) !important; flex-shrink:0 !important; }\\n' +
+        '.content-zone { flex: 1 !important; display: flex !important; flex-direction: column !important; justify-content: flex-start !important; gap: 24px !important; min-height: 0 !important; overflow: hidden !important; margin-top: 16px !important; }\\n' +
+        '.aimake-metrics-grid { display: grid !important; gap: 20px !important; margin-top: 10px !important; }\\n' +
+        '.aimake-metrics-grid:has(.metric-card:nth-child(4)) { grid-template-columns: 1fr 1fr !important; }\\n' +
+        '.aimake-metrics-grid:has(.metric-card:nth-child(3)):not(:has(.metric-card:nth-child(4))) { grid-template-columns: repeat(3, 1fr) !important; }\\n' +
+        '.aimake-metrics-grid:not(:has(.metric-card:nth-child(3))) { grid-template-columns: 1fr 1fr !important; }\\n' +
+        '.metric-card { min-width: 0 !important; overflow: hidden !important; display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 12px !important; padding: 26px 32px !important; border-radius: var(--radius, 24px) !important; background: var(--surface) !important; border: var(--bw, 1px) solid var(--border) !important; box-shadow: var(--card-shadow, 0 6px 20px rgba(0,0,0,0.06)) !important; }\\n' +
+        '.metric-label { font-size: 16px !important; font-weight: 500 !important; color: var(--muted) !important; white-space: nowrap !important; text-wrap: balance !important; word-break: keep-all !important; overflow: hidden !important; text-overflow: ellipsis !important; margin: 0 !important; }\\n' +
+        '.metric-val { font-family: var(--mono) !important; white-space: nowrap !important; flex-wrap: nowrap !important; display: flex !important; align-items: baseline !important; gap: 8px !important; font-size: clamp(28px, 3.4vw, 46px) !important; font-weight: 800 !important; color: var(--accent) !important; font-variant-numeric: tabular-nums !important; margin: 0 !important; }\\n' +
+        '.metric-val > span { white-space: nowrap !important; }\\n' +
+        '.metric-delta { font-family: var(--mono) !important; white-space: nowrap !important; font-size: clamp(12px, 1.2vw, 15px) !important; font-weight: 600 !important; padding: 2px 8px !important; border-radius: 999px !important; background: var(--accent-soft, rgba(0, 113, 227, 0.12)) !important; color: var(--accent) !important; flex-shrink: 0 !important; }\\n' +
+        '.compare-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 20px !important; margin-top: 12px !important; }\\n' +
+        '.compare-col { padding: 24px 28px !important; border-radius: var(--radius, 20px) !important; border: var(--bw, 1px) solid var(--border) !important; background: var(--surface) !important; display: flex !important; flex-direction: column !important; gap: 12px !important; }\\n' +
+        '.compare-col h3 { margin: 0 !important; font-size: 20px !important; font-weight: 700 !important; }\\n' +
+        '.compare-col p { margin: 0 !important; font-size: 16px !important; line-height: 1.5 !important; color: var(--muted) !important; }\\n' +
+        '.compare-col.highlight { border-color: var(--accent) !important; background: var(--accent-soft, rgba(0, 113, 227, 0.06)) !important; }\\n' +
+        '.compare-col.highlight p { color: var(--ink) !important; }\\n' +
         '@media print { @page { size: landscape; margin: 10mm; } body { background:#fff !important; padding:0 !important; height:auto !important; overflow:visible !important; } #aimake-deck-root { zoom: 0.5 !important; } .aimake-slide { display:flex !important; break-after:page; page-break-after:always; box-shadow:none !important; } }\\n' +
         '</style></head><body><div id="aimake-deck-root">' + slidesHtml + '</div>' + stageScript + '</body></html>';
 

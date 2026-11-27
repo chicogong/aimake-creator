@@ -1035,7 +1035,7 @@ export const CALM_STUDIO_SCRIPT = `
       { label: '新建创作作品', kbd: '⌘N', run: () => { openModal('modal-new-deck'); setTimeout(() => $('new-deck-title').focus(), 20); } },
       { label: '多模态导出（公众号 / 高清图 / PDF / PPTX / 口播 MP4）', kbd: 'E', run: () => openDrawer('drawer-export', 'deliver') },
       { label: '一键去 AI 味精修（四语种 Humanizer）', kbd: 'H', run: () => { openPolishTab('humanize'); openDrawer('drawer-polish', 'stage'); } },
-      { label: '收入新素材到工作区知识库（① 素材入库）', kbd: 'I', run: () => { openPolishTab('intake'); openDrawer('drawer-polish', 'intake'); } },
+      { label: '采集素材到工作区知识库（① 素材入库）', kbd: 'I', run: () => { openPolishTab('intake'); openDrawer('drawer-polish', 'intake'); } },
       { label: '编辑 Markdown 源码 (.deck.md)', kbd: '⌘E', run: () => { openPolishTab('source'); openDrawer('drawer-polish', 'stage'); } },
       { label: '管理工作区实体预设 Skill（零全局污染）', kbd: 'S', run: () => { renderSkillsModal(); openModal('modal-skills'); } },
       { label: '新建端到端创作工作区', kbd: 'W', run: () => openModal('modal-new-workspace') },
@@ -1310,6 +1310,33 @@ export const CALM_STUDIO_SCRIPT = `
 
   async function checkCapCutStatus() {
     const badge = $('capcut-install-badge');
+    const doctorBadge = $('export-doctor-badge');
+    try {
+      const res = await apiJson('/api/export/doctor');
+      if (res && res.ok) {
+        if (badge) {
+          if (res.capcut && res.capcut.ready) {
+            badge.textContent = '已就绪 · ' + res.capcut.appName;
+            badge.className = 'status-pill-tiny capcut-card-badge-installed';
+          } else {
+            badge.textContent = '支持导出工程目录';
+            badge.className = 'status-pill-tiny capcut-card-badge-uninstalled';
+          }
+        }
+        if (doctorBadge) {
+          const allReady = res.browser.ready && res.ffmpeg.ready;
+          if (allReady) {
+            doctorBadge.textContent = '环境就绪 ✓';
+            doctorBadge.className = 'status-pill-tiny capcut-card-badge-installed';
+          } else {
+            doctorBadge.textContent = res.browser.ready ? '图文/PPT就绪' : '部分格式需配置组件';
+            doctorBadge.className = 'status-pill-tiny';
+          }
+        }
+        return;
+      }
+    } catch (_) {}
+
     if (!badge) return;
     try {
       const res = await apiJson('/api/export/capcut-status');
@@ -2867,11 +2894,53 @@ export const CALM_STUDIO_SCRIPT = `
       $('intake-source-url').value = '';
       $('intake-content').value = '';
       await refreshWorkspaceAndEcosystem();
-      showToast('素材已收入 sources/ 并沉淀至工作区知识库');
+      showToast('素材已存入 sources/ 并建立知识库索引');
     } catch (err) {
-      showToast('收入素材失败：' + err.message);
+      showToast('采集素材失败：' + err.message);
     }
   });
+
+  const btnIntakeToDeck = $('btn-intake-to-deck');
+  if (btnIntakeToDeck) {
+    btnIntakeToDeck.addEventListener('click', async () => {
+      const title = ($('intake-title').value || '').trim();
+      const sourceUrl = ($('intake-source-url').value || '').trim();
+      const content = ($('intake-content').value || '').trim();
+      if (!title && !content && !sourceUrl) {
+        showToast('请先输入素材标题或正文内容');
+        return;
+      }
+      try {
+        btnIntakeToDeck.disabled = true;
+        btnIntakeToDeck.textContent = '正在生成草稿...';
+        const res = await apiJson('/api/radar/make', {
+          method: 'POST',
+          body: JSON.stringify({
+            title: title || '基于素材的分镜草稿',
+            item: {
+              title: title || '未命名素材',
+              url: sourceUrl || undefined,
+              summary: content || undefined,
+              content: content || undefined,
+              category: 'ai-tech',
+              source: '本地采集素材',
+            },
+            template: state.templateId || 'apple-bento-launch',
+          }),
+        });
+        if (res && res.deckPath) {
+          showToast('已根据素材生成幻灯片草稿：' + (res.title || title));
+          await refreshWorkspaceAndEcosystem();
+          closeAllDrawers();
+        }
+      } catch (err) {
+        showToast('生成草稿失败：' + err.message);
+      } finally {
+        btnIntakeToDeck.disabled = false;
+        btnIntakeToDeck.textContent = '🪄 转化为分镜草稿';
+      }
+    });
+  }
 
   $('btn-save-source').addEventListener('click', async () => {
     try {
@@ -2954,7 +3023,7 @@ export const CALM_STUDIO_SCRIPT = `
     }
     if (ingested > 0) {
       await refreshWorkspaceAndEcosystem();
-      showToast('已拖入并收入 ' + ingested + ' 份素材至工作区知识库');
+      showToast('已导入并存入 ' + ingested + ' 份素材至工作区知识库');
     } else {
       showToast('请拖入文本或 Markdown 素材文件（单文件 <= 400KB）');
     }

@@ -130,7 +130,7 @@ export const CALM_STUDIO_MARKUP = `
             <span>素材与知识 <span id="sources-count">(4)</span></span>
             <button class="nav-add-btn" id="btn-add-source">
               <svg class="ic ic-sm" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 3.2v9.6M3.2 8h9.6"></path></svg>
-              <span>收入</span>
+              <span>采集</span>
             </button>
           </div>
           <div class="nav-list" id="source-list">
@@ -624,7 +624,7 @@ export const CALM_STUDIO_MARKUP = `
     <div class="drawer-head">
       <div>
         <h3 class="drawer-title">多模态成品交付</h3>
-        <p class="drawer-sub">一份作品，一键输出五种原生平台格式并自动归档</p>
+        <p class="drawer-sub">一份作品，一键输出全渠道原生平台格式并自动归档（PNG · PDF · PPTX · 微信 · 剪映 · HTML）</p>
       </div>
       <button class="icon-btn" data-close-drawer aria-label="关闭">
         <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"></path></svg>
@@ -632,7 +632,10 @@ export const CALM_STUDIO_MARKUP = `
     </div>
     <div class="drawer-body">
       <div class="section-block">
-        <h4>图文与文档交付</h4>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <h4 style="margin:0;">图文与文档交付</h4>
+          <span class="status-pill-tiny" id="export-doctor-badge" style="font-size:11px;">0 依赖就绪</span>
+        </div>
         <div class="export-grid">
           <button class="btn btn-primary btn-wide" id="btn-export-wechat">复制公众号富文本 HTML</button>
           <button class="btn" id="btn-export-png">导出 3x 高清图组</button>
@@ -710,7 +713,7 @@ export const CALM_STUDIO_MARKUP = `
     <div class="drawer-body">
       <div class="chip-row" style="margin-bottom:14px;">
         <button class="filter-chip active" data-polish-tab="humanize">去 AI 味精修</button>
-        <button class="filter-chip" data-polish-tab="intake">收入新素材</button>
+        <button class="filter-chip" data-polish-tab="intake">采集素材</button>
         <button class="filter-chip" data-polish-tab="source">源码编辑器 (⌘E)</button>
         <button class="filter-chip" data-polish-tab="wiki">知识库溯源</button>
       </div>
@@ -729,7 +732,7 @@ export const CALM_STUDIO_MARKUP = `
 
       <div id="polish-panel-intake" style="display:none;">
         <div class="section-block">
-          <h4>收入工作区素材（支持直接拖入文件）</h4>
+          <h4>采集工作区素材（支持直接拖入文件）</h4>
           <p>粘贴文章、笔记、采访实录或把本地 <code>.md / .txt</code> 文件直接拖入窗口，自动保存到 <code>sources/</code> 并沉淀为工作区知识卡片。</p>
           <label class="field-label" for="intake-title">素材标题</label>
           <input class="search-input" id="intake-title" placeholder="例如：2026 Q3 用户访谈纪要" />
@@ -737,8 +740,9 @@ export const CALM_STUDIO_MARKUP = `
           <input class="search-input" id="intake-source-url" placeholder="https://…" />
           <label class="field-label" for="intake-content">素材正文</label>
           <textarea class="textarea-clean" id="intake-content" placeholder="粘贴原始正文、关键数据或想法碎片…"></textarea>
-          <div style="margin-top:10px;display:flex;justify-content:flex-end;">
-            <button class="btn btn-primary" id="btn-submit-intake">收入工作区并建立索引</button>
+          <div style="margin-top:10px;display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn" id="btn-intake-to-deck" title="以当前素材为事实依据一键生成幻灯片草稿">🪄 转化为分镜草稿</button>
+            <button class="btn btn-primary" id="btn-submit-intake">存入素材库并建立索引</button>
           </div>
         </div>
       </div>
@@ -925,7 +929,7 @@ export const CALM_STUDIO_MARKUP = `
   <!-- Drag & Drop File Intake Glass Overlay -->
   <div class="drop-overlay" id="drop-overlay">
     <div class="drop-card">
-      <strong>松开即可收入当前工作区素材箱</strong>
+      <strong>松开即可存入当前工作区素材箱</strong>
       <span>支持 Markdown / TXT / 文本笔记，自动保存到 sources/ 并沉淀为知识卡片</span>
     </div>
   </div>

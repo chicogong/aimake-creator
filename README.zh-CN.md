@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>一份 Markdown 原稿，100% 纯本地直出 5 种原生交付格式。内置 36 套商业级参数化设计模板、Mermaid 离线矢量流程图、Highlight.js 代码高亮、7 大工作区闭环 AI Skill 与内置 AI Co-Pilot 副驾驶。</strong>
+  <strong>一份 Markdown 原稿，100% 纯本地直出 7 大全渠道原生交付格式。内置 36 套商业级参数化设计模板、Mermaid 离线矢量流程图、Highlight.js 代码高亮、7 大工作区闭环 AI Skill 与内置 AI Co-Pilot 副驾驶。</strong>
 </p>
 
 <p align="center">
@@ -70,8 +70,8 @@ Aimake 统一收敛为清晰的模块化架构（详见 [docs/ARCHITECTURE.md](.
 
 | 模块 | 官方命名 | 定位与核心功能 | 交付与使用方式 |
 | :--- | :--- | :--- | :--- |
-| **主创工坊** | **Aimake Studio**（爱创工坊） | **多模态创作主站**：Web 画布、交互式 CLI、桌面端、36 套设计模板、5+1 全渠道直出 | npm `aimake-studio`，命令 `aimake`，官网 [aimake.cc](https://aimake.cc) |
-| **核心引擎** | **Aimake Engine**（爱创核心引擎） | **底层无头媒体内核**：Plan/Run 确定性收据、Whisper 词级对齐、剪映草稿工程导出 | npm `@aimake/engine`，命令 `aimake-engine` |
+| **主创工坊** | **Aimake Studio**（爱创工坊） | **多模态创作主站**：Web 画布、交互式 CLI、桌面端、36 套设计模板、7 大全渠道直出 | npm `aimake-studio`，命令 `aimake`，官网 [aimake.cc](https://aimake.cc) |
+| **核心引擎** | **Aimake Engine**（爱创核心引擎） | **一体化媒体内核**：Plan/Run 确定性收据、Whisper 词级对齐、剪映草稿工程导出 | 内置于 `aimake-studio`，命令 `aimake render` |
 | **智能协议** | **Agent 协议栈 (ACP / MCP)** | **IDE 与 AI 助手协同**：支持 Zed、JetBrains、Cursor、Claude Code、Codex 等原生集成 | `aimake acp` 与 `aimake mcp` 协议入口 |
 
 ---

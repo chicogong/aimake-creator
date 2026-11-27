@@ -310,7 +310,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         href: '/playground/',
       },
       {
-        badge: 'CORE ENGINE · @aimake/engine',
+        badge: 'CORE ENGINE · aimake-studio',
         title: 'Aimake Engine · 确定性排版内核',
         desc: '底层无头多模态渲染内核与 CLI 编译器。支持纯本地端到端编译、多介质直出、Karpathy LLM Wiki 知识复利与全渠道自动化分发。',
         cta: '浏览 Engine 源码 ↗',
@@ -509,7 +509,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         href: '/playground/',
       },
       {
-        badge: 'CORE ENGINE · @aimake/engine',
+        badge: 'CORE ENGINE · aimake-studio',
         title: 'Aimake Engine — Deterministic Layout Kernel',
         desc: 'Headless multimodal rendering core and CLI compiler. Supports local compilation, multi-format export, Karpathy LLM Wiki compounding, and automated publishing.',
         cta: 'View Engine Source ↗',
@@ -700,7 +700,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         href: '/playground/',
       },
       {
-        badge: 'CORE ENGINE · @aimake/engine',
+        badge: 'CORE ENGINE · aimake-studio',
         title: 'Aimake Engine · 決定的レイアウトエンジン',
         desc: 'ヘッドレス・マルチモーダルレンダリングコアとCLIコンパイラ。完全ローカルコンパイル、マルチメディア出力、全自動パブリッシングに対応。',
         cta: 'Engine ソースコードを見る ↗',
@@ -891,7 +891,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
         href: '/playground/',
       },
       {
-        badge: 'CORE ENGINE · @aimake/engine',
+        badge: 'CORE ENGINE · aimake-studio',
         title: 'Aimake Engine · 결정론적 조판 엔진',
         desc: '헤드리스 멀티모달 렌더링 코어 및 CLI 컴파일러. 로컬 완결형 컴파일, 다중 포맷 출력, 전 채널 자동 배포 지원.',
         cta: 'Engine 소스코드 보기 ↗',

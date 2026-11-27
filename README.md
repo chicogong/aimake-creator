@@ -70,8 +70,8 @@ Aimake follows a clean, modular architecture (see [docs/ARCHITECTURE.md](./docs/
 
 | Component | Canonical Name | Role & Responsibility | Access & Deliverables |
 | :--- | :--- | :--- | :--- |
-| **Flagship Suite** | **Aimake Studio** | **Primary Workspace**: Web Canvas, Interactive CLI, Desktop App, 36 Design Templates, 5+1 Deliverables | npm `aimake-studio`, CLI `aimake`, [aimake.cc](https://aimake.cc) |
-| **Media Kernel** | **Aimake Engine** | **Headless Runtime**: Video synthesis, Whisper word-level alignment, CapCut draft exporter, Plan/Run receipts | npm `@aimake/engine`, CLI `aimake-engine` |
+| **Flagship Suite** | **Aimake Studio** | **Primary Workspace**: Web Canvas, Interactive CLI, Desktop App, 36 Design Templates, 7 Omnichannel Deliverables | npm `aimake-studio`, CLI `aimake`, [aimake.cc](https://aimake.cc) |
+| **Media Kernel** | **Aimake Engine** | **Integrated Headless Kernel**: Video synthesis, Whisper word-level alignment, CapCut draft exporter, Plan/Run receipts | Subsystem in `aimake-studio`, CLI `aimake render` |
 | **Agent Protocols** | **ACP & MCP Stacks** | **AI Host Integrations**: Native Agent Client Protocol (Zed, Cursor, JetBrains) & Model Context Protocol server | `aimake acp`, `aimake mcp` |
 
 ---
