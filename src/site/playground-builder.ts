@@ -524,6 +524,8 @@ STARTER_SAMPLES['black-friday'] = STARTER_SAMPLES.blackfriday;
 
 
 
+
+
 const RADAR_ITEMS = [
   {
     id: "radar:agy-gemini4-inflection",
@@ -983,9 +985,9 @@ export async function buildWebPlaygroundHtml(
       50% { opacity: 0.45; transform: scale(0.85); }
     }
 
-    /* Test Compatibility Toolbar Cluster (Hidden from distracting users, but accessible & <= 36px) */
+    /* Test Compatibility Toolbar Cluster (Single-row, height <= 36px) */
     .test-compat-cluster {
-      display: inline-flex; align-items: center; gap: 4px;
+      display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;
     }
     .pg-btn {
       height: 30px; padding: 0 8px; border-radius: var(--radius-sm);
@@ -998,16 +1000,44 @@ export async function buildWebPlaygroundHtml(
     .pg-btn:hover {
       background: var(--surface-elev); border-color: var(--border-strong);
     }
+    [data-theme="light"] .pg-btn {
+      background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.1); color: #18181b;
+    }
+    [data-theme="light"] .pg-btn:hover {
+      background: #f4f3ed; border-color: rgba(0, 0, 0, 0.18);
+    }
+    [data-theme="light"] .pg-btn-primary {
+      background: #18181b !important; color: #ffffff !important; border: 1px solid #18181b !important;
+    }
     .pg-select {
-      background-color: var(--surface); color: var(--ink);
-      border: 1px solid var(--border); border-radius: var(--radius-sm);
-      height: 30px; padding: 0 20px 0 8px; font-size: 11.5px; font-weight: 500; outline: none;
-      white-space: nowrap; text-overflow: ellipsis; cursor: pointer; flex-shrink: 0;
-      -webkit-appearance: none; -moz-appearance: none; appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 6px center;
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
     .pg-btn-icon { width: 30px; padding: 0; }
+    .pg-theme-btn {
+      width: 32px; height: 32px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--ink); cursor: pointer; flex-shrink: 0;
+      transition: all 0.16s ease;
+    }
+    .pg-theme-btn:hover {
+      background: var(--surface-elev); border-color: var(--border-strong);
+    }
+    [data-theme="light"] .pg-theme-btn {
+      background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.1); color: #18181b;
+    }
+    [data-theme="light"] .pg-theme-btn:hover {
+      background: #f4f3ed; border-color: rgba(0, 0, 0, 0.18);
+    }
     .pg-theme-btn .icon-moon { display: none; }
     .pg-theme-btn .icon-sun { display: block; }
     [data-theme="light"] .pg-theme-btn .icon-sun { display: none; }
@@ -2026,7 +2056,15 @@ export async function buildWebPlaygroundHtml(
       document.documentElement.setAttribute('data-theme', next);
       document.documentElement.style.colorScheme = next;
       try { localStorage.setItem('aimake-theme', next); } catch (_) {}
+
+      try {
+        if (elFrame && elFrame.contentWindow) {
+          elFrame.contentWindow.postMessage({ type: 'aimake:theme', theme: next }, '*');
+        }
+      } catch (_) {}
+
       compileNow();
+      showToast(next === 'light' ? '已切换至工作室明亮模式' : '已切换至暗黑剧场模式');
     }
     window.togglePlaygroundTheme = togglePlaygroundTheme;
 
@@ -2686,7 +2724,8 @@ export async function buildWebPlaygroundHtml(
         .join('');
 
       const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-      const frameBg = curTheme === 'light' ? '#eceae4' : '#0c0c0e';
+      const slideTheme = parsed.fm.theme || curTheme;
+      const frameBg = slideTheme === 'light' ? '#eceae4' : '#0c0c0e';
 
       const stageScript = '<script>' +
         'var NATIVE_W = ' + dim.w + '; var NATIVE_H = ' + dim.h + '; var VIEW_MODE = "' + viewMode + '"; var USER_ZOOM = ' + (typeof userZoomScale === 'number' ? userZoomScale : '"auto"') + ';' +
@@ -2707,10 +2746,16 @@ export async function buildWebPlaygroundHtml(
         'window.fitPgStage = fitPgStage;' +
         'window.addEventListener("resize", fitPgStage);' +
         'window.addEventListener("DOMContentLoaded", fitPgStage);' +
+        'window.addEventListener("message", function(ev) {' +
+        '  if (ev.data && ev.data.type === "aimake:theme") {' +
+        '    document.documentElement.setAttribute("data-theme", ev.data.theme);' +
+        '    document.body.style.background = ev.data.theme === "light" ? "#eceae4" : "#0c0c0e";' +
+        '  }' +
+        '});' +
         'fitPgStage(); setTimeout(fitPgStage, 40);' +
         '<' + '/script>';
 
-      const fullHtml = '<!DOCTYPE html><html' + (parsed.fm.theme ? ' data-theme="' + parsed.fm.theme + '"' : '') + '><head><meta charset="utf-8"/><style>' +
+      const fullHtml = '<!DOCTYPE html><html data-theme="' + slideTheme + '"><head><meta charset="utf-8"/><style>' +
         tpl.css +
         '\\nhtml { width:100%; height:100%; margin:0; padding:0; }\\n' +
         'body { width:100%; margin:0; padding:' + (viewMode === 'single' ? '0' : '24px 0 48px') + '; min-height:100vh; height:' + (viewMode === 'single' ? '100vh' : 'auto') + '; background:' + frameBg + ' !important; display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:' + (viewMode === 'single' ? 'center' : 'flex-start') + ' !important; box-sizing:border-box; overflow:' + (viewMode === 'single' ? 'hidden' : 'auto') + '; }\\n' +
@@ -3261,6 +3306,14 @@ export async function buildWebPlaygroundHtml(
     try {
       const local = localStorage.getItem('aimake_playground_md');
       // Only use if valid
+    } catch (_) {}
+
+    try {
+      const savedTheme = localStorage.getItem('aimake-theme');
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.documentElement.style.colorScheme = savedTheme;
+      }
     } catch (_) {}
 
     elInput.value = SAMPLES['agent'];
