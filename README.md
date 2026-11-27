@@ -37,6 +37,8 @@ The [desk-lighting creator kit](./examples/desk-lighting/) includes a video cove
 
 [Try the social workflow](./examples/news-ai-shopping/) with post copy, four PNG cards, and an article that exports to rich HTML.
 
+For the proposed LinkedIn, Instagram, X, newsletter and video workflows, see the [international creator strategy and channel guide](./docs/CREATOR_STRATEGY.md).
+
 ### Export formats
 
 | Format | Use | Runtime |

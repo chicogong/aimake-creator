@@ -16,7 +16,7 @@
 
 ## Engineering Priorities and Acceptance References
 
-The linked issues record current status and evidence. The [creator strategy and visual roadmap (中文)](./CREATOR_STRATEGY.zh-CN.md) connects this engineering work to a complete creator session.
+The linked issues record current status and evidence. The [international creator strategy](./CREATOR_STRATEGY.md) and the [Chinese-platform strategy](./CREATOR_STRATEGY.zh-CN.md) describe the creator workflow and the acceptance criteria for each market.
 
 | Level | Issue / Topic | Impact Domain | Delivery Target & Acceptance Criteria |
 | :---: | :--- | :--- | :--- |

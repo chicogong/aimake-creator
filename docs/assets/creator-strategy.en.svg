@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="888" viewBox="0 0 1220 888" role="img" aria-labelledby="title desc" lang="en">
+  <title id="title">Sources and ideas → Aimake Studio → international channels</title>
+  <desc id="desc">Source material and original ideas enter Studio. Authors can use AI tools, draw on templates and save editorial decisions locally. The proposed handoffs span LinkedIn, Instagram, X, Substack, WordPress, YouTube and TikTok.</desc>
+  <defs>
+    <linearGradient id="studio" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#293aab"/><stop offset="1" stop-color="#4945d7"/></linearGradient>
+    <marker id="blueTip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="m2 1 6 4-6 4" fill="none" stroke="#4755c0" stroke-width="1.7" stroke-linejoin="round"/></marker>
+    <marker id="redTip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="m2 1 6 4-6 4" fill="none" stroke="#af483e" stroke-width="1.7" stroke-linejoin="round"/></marker>
+    <style>
+      text { font-family: "Helvetica Neue",Arial,sans-serif; fill: #191e36; }
+      .brand { font: 650 21px "Helvetica Neue",Arial,sans-serif; letter-spacing: -.45px; }
+      .title { font-size: 43px; font-weight: 680; letter-spacing: -1.4px; }
+      .section { font-size: 17px; font-weight: 630; fill: #4c526c; }
+      .h { font-size: 24px; font-weight: 650; }
+      .body { font-size: 18px; fill: #444a64; }
+      .small { font-size: 16px; fill: #50566d; }
+      .blue { stroke: #4755c0; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .red { stroke: #af483e; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .icon { fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+      .white { fill: #fff; }
+    </style>
+    <g id="files" class="icon"><path d="M3 8h7l2 3h10v10H3z"/><path d="M5 5h8l2 3h5"/></g>
+    <g id="spark" class="icon"><path d="m12 2 2.6 7.4L22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z"/></g>
+    <g id="stack" class="icon"><path d="m2 8 10-5 10 5-10 5zM3 12l9 4.5 9-4.5M3 16l9 4.5 9-4.5"/></g>
+    <g id="pic" class="icon"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="m4 17 5-4 3 2 4-5 5 6"/></g>
+    <g id="book" class="icon"><path d="M2 5c4-1 8 0 10 3 2-3 6-4 10-3v14c-4-1-8 0-10 2-2-2-6-3-10-2zM12 8v13"/></g>
+  </defs>
+  <rect width="1220" height="888" fill="#fbfaff"/>
+  <g aria-label="Title">
+    <g transform="translate(40 27) scale(.085)" aria-label="Aimake">
+        <path fill="#6951FF" d="M117 121 L258 79 Q293 69 286 103 L231 370 Q226 394 205 394 H117 Q93 394 93 370 V148 Q93 130 117 121 Z"/>
+        <rect fill="#FFCB49" x="304" y="98" width="156" height="156" rx="28"/>
+        <path fill="#B7AAFF" d="M292 273 H346 Q364 273 360 296 L345 379 Q342 395 321 395 H276 Q258 395 263 377 L281 295 Q285 273 292 273 Z"/>
+        <path fill="#FF6B74" d="M460 282 V368 Q460 395 432 395 H361 Q358 395 359 384 C367 316 399 286 448 282 Z"/>
+    </g>
+    <text class="brand" x="91" y="54">Aimake Studio</text>
+    <text class="section" x="1172" y="53" text-anchor="end">Creator strategy / International channels</text>
+    <line x1="48" x2="1172" y1="77" y2="77" stroke="#d8d9e6"/>
+    <text class="title" x="46" y="137">One story, an edition for each audience</text>
+  </g>
+
+  <g aria-label="Creative inputs">
+    <text class="section" x="48" y="239">What starts a story</text>
+    <rect x="48" y="262" width="263" height="118" rx="13" fill="#eeedfc"/>
+    <use href="#files" x="66" y="283" color="#4948aa"/>
+    <text class="h" x="102" y="304">Source material</text>
+    <text class="body" x="68" y="340">Feeds, files, images and data</text>
+    <text class="small" x="68" y="364">Import files or poll a feed.</text>
+    <rect x="48" y="401" width="263" height="118" rx="13" fill="#fff0ec"/>
+    <use href="#spark" x="66" y="422" color="#ad483e"/>
+    <text class="h" x="102" y="443">Original ideas</text>
+    <text class="body" x="68" y="479">A question or an observation</text>
+    <text class="small" x="68" y="503">Start here. Add evidence later.</text>
+    <path class="blue" d="M317 321h20q10 0 10 10v119q0 10-10 10h-20 M347 402h38" marker-end="url(#blueTip)"/>
+  </g>
+
+  <g aria-label="Optional AI collaborators">
+    <rect x="396" y="173" width="430" height="105" rx="14" fill="#f0efff" stroke="#c4c4f0"/>
+    <text x="418" y="205" style="font-size:21px;font-weight:650;fill:#39389a">Bring your own AI tools</text>
+    <text class="body" x="418" y="236">Antigravity (AGY) · Codex · WorkBuddy</text>
+    <text class="body" x="418" y="262">Claude · Claude Code · OpenCode</text>
+    <path class="blue" d="M568 312v-27" marker-end="url(#blueTip)"/>
+    <path class="blue" d="M650 285v27" marker-end="url(#blueTip)"/>
+    <text class="small" x="550" y="305" text-anchor="end">Select sources</text>
+    <text class="small" x="666" y="305">Review the edit</text>
+  </g>
+
+  <g aria-label="The author's workspace">
+    <rect x="402" y="326" width="430" height="190" rx="16" fill="#deddfb"/>
+    <rect x="396" y="320" width="430" height="190" rx="16" fill="url(#studio)"/>
+    <text class="white" x="423" y="376" style="font-size:39px;font-weight:680;letter-spacing:-1.2px">Aimake Studio</text>
+    <path d="M424 397h374" stroke="#797ccc"/>
+    <text class="white" x="424" y="433" style="font-size:21px">Check the facts. Write and design.</text>
+    <text x="424" y="470" style="font-size:18px;fill:#eeedff">Keep each edition’s voice and edits.</text>
+    <path class="blue" d="M836 402h57" marker-end="url(#blueTip)"/>
+  </g>
+
+  <g aria-label="Proposed international platform handoffs">
+    <text class="section" x="903" y="239">Proposed channel editions</text>
+    <rect x="903" y="262" width="269" height="257" rx="13" fill="#fff" stroke="#d2d2e4"/>
+    <text x="920" y="290" style="font-size:20px;font-weight:640">LinkedIn · Instagram</text>
+    <text class="small" x="920" y="313">Document or image carousel</text>
+    <path d="M920 325h232" stroke="#e3e3ed"/>
+    <text x="920" y="350" style="font-size:20px;font-weight:640">X</text>
+    <text class="small" x="920" y="373">Standalone post or thread</text>
+    <path d="M920 386h232" stroke="#e3e3ed"/>
+    <text x="920" y="411" style="font-size:20px;font-weight:640">Substack · WordPress</text>
+    <text class="small" x="920" y="434">Newsletter or article draft</text>
+    <path d="M920 448h232" stroke="#e3e3ed"/>
+    <text x="920" y="475" style="font-size:20px;font-weight:640">YouTube · TikTok</text>
+    <text class="small" x="920" y="498">Video kit, captions and cover</text>
+  </g>
+
+  <g aria-label="Reusable resources and editorial memory">
+    <path class="blue" d="M505 599v-78" marker-end="url(#blueTip)"/>
+    <text class="small" x="493" y="551" text-anchor="end">Reuse in a story</text>
+    <path class="red" d="M728 521v38q0 10 10 10h188q10 0 10 10v20" marker-end="url(#redTip)"/>
+    <text x="742" y="551" style="font-size:16px;fill:#984037">Save editorial decisions</text>
+    <text class="section" x="48" y="583">Your local workspace</text>
+    <rect x="48" y="603" width="1124" height="145" rx="14" fill="#fff" stroke="#c9cada"/>
+    <path d="M420 624v103 M777 624v103" stroke="#dbdbe8"/>
+    <use href="#stack" x="70" y="625" color="#4c4eaf"/>
+    <text class="h" x="108" y="645">Starter templates</text>
+    <text class="body" x="70" y="682">Newsletter, carousel, storyboard</text>
+    <text class="small" x="70" y="711">Save a layout for a recurring series.</text>
+    <use href="#pic" x="446" y="625" color="#4c4eaf"/>
+    <text class="h" x="483" y="645">Asset library</text>
+    <text class="body" x="446" y="682">Covers, images, charts and data</text>
+    <text class="small" x="446" y="711">Carry the license and credit forward.</text>
+    <use href="#book" x="802" y="625" color="#a64c41"/>
+    <text class="h" x="839" y="645">Knowledge base</text>
+    <text class="body" x="802" y="682">Sources, changes and takeaways</text>
+    <text class="small" x="802" y="711">Revisit the evidence for the next piece.</text>
+  </g>
+  <g aria-label="Proposed automation">
+    <rect x="48" y="778" width="1124" height="77" rx="13" fill="#201f39"/>
+    <text class="white" x="70" y="823" style="font-size:20px;font-weight:650">Automation</text>
+    <path d="M207 795v42" stroke="#5a5872"/>
+    <text class="white" x="234" y="811" style="font-size:19px">Poll sources → hand off approved editions → verify each channel’s result</text>
+    <text x="234" y="837" style="font-size:16px;fill:#d7d4ea">Scheduled public posting is a later pilot. The author approves the account, version and time.</text>
+  </g>
+</svg>

@@ -1,5 +1,7 @@
 # Aimake 产品战略 · 多来源与灵感，在 Studio 创作，向多平台分发
 
+[English · International channels](./CREATOR_STRATEGY.md)
+
 **多来源 + 灵感 → Aimake Studio → 多平台分发。** 创作者可以先收资料，再形成自己的观点；也可以先记下一个问题，过几天再补上支持或反驳它的材料。Studio 把两条路径汇在同一件作品上。作者在本地选择素材、核对事实、组织叙事并编辑图文，再针对每个平台的读者调整标题、结构和配图。
 
 ![战略图。公开来源和个人素材、创作者的灵感分别进入 Aimake Studio，形成可编辑作品，再面向公众号、小红书、知乎、掘金和视频渠道分发。](./assets/creator-strategy.svg)

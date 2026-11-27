@@ -1,5 +1,10 @@
 # Aimake Studio 文档索引
 
+## 产品战略 / Creator strategy
+
+- [English · International channels](./CREATOR_STRATEGY.md) — channel formats, delivery options and pilot criteria.
+- [简体中文 · 国内平台](./CREATOR_STRATEGY.zh-CN.md) — 多来源与灵感、Studio 创作、多平台分发。
+
 ## 桌面端与样稿
 
 - [桌面端快速上手](../README.zh-CN.md#开始使用)说明安装方式、工作区和导出依赖。
