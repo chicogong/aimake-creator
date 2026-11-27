@@ -1,6 +1,7 @@
 import matter from 'gray-matter';
 import { parseDeckMarkdown } from '../renderer/deck-parser.js';
 import { renderWeChatInlineHtml } from '../renderer/wechat-inliner.js';
+import { renderMermaidSvg } from '../renderer/mermaid-svg.js';
 import type { DeckDocument } from '../schema/types.js';
 import type { PlatformFormattedContent, PublishPlatform, PublishOptions } from './types.js';
 
@@ -116,12 +117,41 @@ export function convertStandardMarkdownToWechatHtml(rawMd: string, title: string
         codeBuffer = [];
       } else {
         inCodeBlock = false;
-        htmlParts.push(`
-          <section style="margin:18px 0;background:#0f172a;border-radius:8px;padding:14px 16px;overflow-x:auto;">
-            ${codeLang ? `<p style="margin:0 0 6px 0;font-size:11px;color:#94a3b8;font-family:Menlo,Consolas,monospace;text-transform:uppercase;">${esc(codeLang)}</p>` : ''}
-            <pre style="margin:0;font-family:Menlo,Consolas,monospace;font-size:13px;line-height:1.6;color:#e2e8f0;white-space:pre-wrap;word-break:break-word;"><code>${esc(codeBuffer.join('\n'))}</code></pre>
-          </section>
-        `);
+        if (codeLang === 'mermaid') {
+          try {
+            const rawSvg = renderMermaidSvg(codeBuffer.join('\n'));
+            const themedSvg = rawSvg
+              .replace(/var\(--bg,\s*[^)]+\)/g, '#ffffff')
+              .replace(/var\(--surface,\s*[^)]+\)/g, '#ffffff')
+              .replace(/var\(--border,\s*[^)]+\)/g, '#cbd5e1')
+              .replace(/var\(--ink,\s*[^)]+\)/g, '#0f172a')
+              .replace(/var\(--accent,\s*[^)]+\)/g, accent)
+              .replace(/var\(--muted,\s*[^)]+\)/g, '#64748b');
+
+            htmlParts.push(`
+              <section style="margin:20px 0;padding:16px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid ${accent};border-radius:10px;text-align:center;">
+                <p style="margin:0 0 10px 0;font-size:11px;font-weight:700;color:${accent};letter-spacing:1.2px;text-transform:uppercase;">架构与逻辑流程 (Mermaid)</p>
+                <div style="overflow-x:auto;max-width:100%;margin:0 auto;">
+                  ${themedSvg}
+                </div>
+              </section>
+            `);
+          } catch (_) {
+            htmlParts.push(`
+              <section style="margin:18px 0;background:#0f172a;border-radius:8px;padding:14px 16px;overflow-x:auto;">
+                <p style="margin:0 0 6px 0;font-size:11px;color:#94a3b8;font-family:Menlo,Consolas,monospace;text-transform:uppercase;">mermaid</p>
+                <pre style="margin:0;font-family:Menlo,Consolas,monospace;font-size:13px;line-height:1.6;color:#e2e8f0;white-space:pre-wrap;word-break:break-word;"><code>${esc(codeBuffer.join('\n'))}</code></pre>
+              </section>
+            `);
+          }
+        } else {
+          htmlParts.push(`
+            <section style="margin:18px 0;background:#0f172a;border-radius:8px;padding:14px 16px;overflow-x:auto;">
+              ${codeLang ? `<p style="margin:0 0 6px 0;font-size:11px;color:#94a3b8;font-family:Menlo,Consolas,monospace;text-transform:uppercase;">${esc(codeLang)}</p>` : ''}
+              <pre style="margin:0;font-family:Menlo,Consolas,monospace;font-size:13px;line-height:1.6;color:#e2e8f0;white-space:pre-wrap;word-break:break-word;"><code>${esc(codeBuffer.join('\n'))}</code></pre>
+            </section>
+          `);
+        }
       }
       continue;
     }
@@ -313,6 +343,7 @@ export function adaptContentForPlatforms(
         for (const p of s.bodyParagraphs) slideParts.push(`${p}\n`);
         for (const b of s.bullets) slideParts.push(`- ${b}`);
         if (s.code) slideParts.push(`\n\`\`\`${s.code.lang}\n${s.code.code}\n\`\`\`\n`);
+        if (s.diagram && s.diagram.engine === 'mermaid') slideParts.push(`\n\`\`\`mermaid\n${s.diagram.code}\n\`\`\`\n`);
       }
       cleanMarkdown = slideParts.join('\n');
     } catch {

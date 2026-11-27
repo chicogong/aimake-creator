@@ -144,7 +144,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitleAccent: '从灵感火花，到全模态高定交付',
     heroSub:
       '从零碎灵感、推文与长文萃取，到私有知识沉淀与确定性排版。纯本地端侧闭环运转，内置 36 套商业级设计系统，零云端依赖，80 毫秒极速直出小红书 3x 超清图卡、微信公众号内联富文本、微软原生可编辑 PPTX 与 60fps 动效短视频。',
-    primaryCta: '网页版在线工坊 (开箱即用) →',
+    primaryCta: '网页版在线工坊 (开箱即用)',
     secondaryCta: '浏览 36 套设计模板',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: '已复制终端命令至剪贴板',
@@ -343,7 +343,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitleAccent: 'From Raw Sparks to High-End Deliverables',
     heroSub:
       'Lossless intake, Karpathy LLM Wiki distillation, private style alignment, and deterministic typography. An end-to-end publishing pipeline running 100% locally for solopreneurs. Build your flagship personal IP with 36 parametric design systems—compiling Retina 3x PNG cards, inline newsletter HTML, native editable PPTX, and 60fps narrated video in 80ms.',
-    primaryCta: 'Try Web Studio (Zero Install) →',
+    primaryCta: 'Try Web Studio (Zero Install)',
     secondaryCta: 'Explore 36 Design Systems',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: 'Command copied to clipboard',
@@ -542,7 +542,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitleAccent: '着想の火花から、高品質マルチモーダル出版へ',
     heroSub:
       '素材の高速摂取、Karpathy 式 LLM Wiki による知識蒸留、独自トーンの同期、そして確定性美学レイアウト。単一ワークスペースで完结するローカル出版パイプライン。36 種のプロ品質デザインシステムを内蔵し、高解像度SNSカード、Webリッチテキスト、編集可能PPTX、60fps動画を80msで一括生成。',
-    primaryCta: 'Web版スタジオを体験（インストール不要） →',
+    primaryCta: 'Web版スタジオを体験（インストール不要）',
     secondaryCta: '36種のデザインシステムを見る',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: 'コマンドをクリップボードにコピーしました',
@@ -733,7 +733,7 @@ const UI_COPY: Record<SiteLang, LangCopy> = {
     heroTitleAccent: '영감의 불꽃에서 고품격 멀티모달 출판까지',
     heroSub:
       '무손실 소재 수집, Karpathy LLM 위키 지식 증류, 고유 스타일 동기화, 결정론적 미학 레이아웃. 로컬에서 즉시 구동되는 올인원 1인 출판 파이프라인. 36종의 파라메트릭 디자인 시스템을 탑재하여 80ms 만에 초고해상도 카드뉴스, 웹 리치 텍스트, 편집형 PPTX, 60fps 모션 비디오를 완벽 컴파일.',
-    primaryCta: '웹 스튜디오 체험하기 (설치 불필요) →',
+    primaryCta: '웹 스튜디오 체험하기 (설치 불필요)',
     secondaryCta: '36가지 디자인 시스템 보기',
     quickInstall: 'npm i -g aimake-studio',
     cliCopyNotice: '명령어가 클립보드에 복사되었습니다',
