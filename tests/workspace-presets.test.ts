@@ -376,12 +376,13 @@ describe('Aimake 2.0 Workspace Presets & Agent Engine', () => {
       expect(mockTerminals.find((t) => t.id === 'kitty')?.installed).toBe(false);
     }
 
-    // 3. Verify 4 beginner task recipes
+    // 3. Verify 5 beginner task recipes
     expect(BEGINNER_TASK_RECIPES.map((r) => r.id)).toEqual([
       'xhs-viral',
       'apple-bento-ppt',
       'short-video-polish',
       'trending-wechat',
+      'operations-recap',
     ]);
     for (const recipe of BEGINNER_TASK_RECIPES) {
       expect(recipe.titleZh.length).toBeGreaterThan(6);

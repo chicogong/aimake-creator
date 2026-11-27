@@ -2,7 +2,7 @@ import PptxGenJS from 'pptxgenjs';
 import path from 'node:path';
 import fsSync from 'node:fs';
 import type { Browser } from 'playwright';
-import type { DeckDocument, DeckSlide, AspectRatio } from '../schema/types.js';
+import type { DeckDocument, DeckSlide, AspectRatio, ParsedGfmTable } from '../schema/types.js';
 import { getTemplateById } from '../templates/index.js';
 import { readCoverImage } from './cover-image.js';
 import { renderMermaidSvg } from './mermaid-svg.js';
@@ -38,11 +38,7 @@ export interface SlideDimensions {
   contentHeight: number;
 }
 
-export interface ParsedGfmTable {
-  headers: string[];
-  alignments: ('left' | 'center' | 'right')[];
-  rows: string[][];
-}
+export type { ParsedGfmTable };
 
 export interface TableLayoutCalc {
   colWidths: number[];
@@ -308,7 +304,7 @@ export function extractGfmTableFromSlide(slide: DeckSlide): {
   filteredBullets: string[];
 } {
   // Support explicit slide.table if provided in AST
-  const explicitTable = (slide as unknown as { table?: ParsedGfmTable }).table;
+  const explicitTable = slide.table;
   if (explicitTable && Array.isArray(explicitTable.headers) && explicitTable.headers.length > 0) {
     return {
       table: explicitTable,
@@ -611,7 +607,7 @@ export async function addSlideContent(
           fill: { color: palette.tableHeaderBg || (palette.isDark ? '1E293B' : palette.surface) },
           color: palette.accent,
           bold: true,
-          align: parsedTable.alignments[colIdx] || 'left',
+          align: parsedTable.alignments?.[colIdx] || 'left',
           valign: 'middle',
           fontFace,
           fontSize: tableLayout.headerFontSize,
@@ -640,7 +636,7 @@ export async function addSlideContent(
             fill: { color: rowBg },
             color: palette.body,
             bold: false,
-            align: parsedTable.alignments[colIdx] || 'left',
+            align: parsedTable.alignments?.[colIdx] || 'left',
             valign: 'middle',
             fontFace,
             fontSize: tableLayout.fontSize,

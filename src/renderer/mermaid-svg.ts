@@ -39,7 +39,12 @@ function parseNodeToken(raw: string): { id: string; label?: string; shape: 'rect
   return { id: bare ? bare[1] : token, shape: 'rect' };
 }
 
-function parseMermaidFlowchart(code: string): {
+export interface MermaidRenderOptions {
+  aspect?: string;
+  forceDirection?: 'LR' | 'TD';
+}
+
+function parseMermaidFlowchart(code: string, options?: MermaidRenderOptions): {
   direction: 'LR' | 'TD';
   nodes: MermaidNode[];
   edges: MermaidEdge[];
@@ -56,7 +61,15 @@ function parseMermaidFlowchart(code: string): {
   if (!headerMatch) return null;
 
   const dirRaw = headerMatch[1].toUpperCase();
-  const direction: 'LR' | 'TD' = dirRaw === 'LR' || dirRaw === 'RL' ? 'LR' : 'TD';
+  let direction: 'LR' | 'TD' = dirRaw === 'LR' || dirRaw === 'RL' ? 'LR' : 'TD';
+
+  // Responsive multi-aspect auto-reflow: portrait aspect ratios reflow horizontal diagrams to vertical stack
+  const isNarrow = options?.aspect === '3:4' || options?.aspect === '9:16' || options?.aspect === '4:5';
+  if (options?.forceDirection) {
+    direction = options.forceDirection;
+  } else if (isNarrow && direction === 'LR') {
+    direction = 'TD';
+  }
 
   const nodeMap = new Map<string, MermaidNode>();
   const edges: MermaidEdge[] = [];
@@ -145,8 +158,8 @@ function parseMermaidFlowchart(code: string): {
 /**
  * Renders Mermaid flowchart definitions into crisp standalone vector SVG cards with zero external network calls.
  */
-export function renderMermaidSvg(code: string): string {
-  const flow = parseMermaidFlowchart(code);
+export function renderMermaidSvg(code: string, options?: MermaidRenderOptions): string {
+  const flow = parseMermaidFlowchart(code, options);
   if (!flow) {
     const firstLine = (code.trim().split('\n')[0] || 'mermaid').trim();
     return [

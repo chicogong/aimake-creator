@@ -106,7 +106,7 @@ test('Aimake 2.0 Calm Workspace E2E: Materialized Preset Skills (0 Symlinks), Vi
     // 5. Beginner-Friendly AI Studio & Terminal Picker Popover
     await page.locator('#btn-open-ai').click();
     await expect(page.locator('#popover-ai')).toHaveClass(/open/);
-    await expect(page.locator('#ai-recipe-grid .recipe-chip')).toHaveCount(4);
+    await expect(page.locator('#ai-recipe-grid .recipe-chip')).toHaveCount(5);
     await expect(page.locator('#terminal-picker-strip .term-pill')).toHaveCount(7);
     await expect(page.locator('#agent-gui-list .agent-row')).toHaveCount(4);
     await expect(page.locator('#agent-cli-list .agent-row')).toHaveCount(3);
