@@ -718,16 +718,16 @@ export async function buildWebPlaygroundHtml(
     .pg-select {
       background: var(--surface); color: var(--ink);
       border: 1px solid var(--border); border-radius: var(--radius-md);
-      height: 31px; padding: 0 10px; font-size: 12px; font-weight: 500; outline: none;
+      height: 31px; padding: 0 8px; font-size: 12px; font-weight: 500; outline: none;
       white-space: nowrap; text-overflow: ellipsis;
       transition: all 0.15s ease;
       cursor: pointer; box-sizing: border-box;
       flex-shrink: 0;
     }
-    #sample-select { min-width: 210px; max-width: 250px; }
-    #template-select { min-width: 175px; max-width: 220px; }
-    #aspect-select { min-width: 105px; max-width: 120px; }
-    #locale-select { min-width: 100px; max-width: 115px; }
+    #sample-select { min-width: 140px; max-width: 180px; }
+    #template-select { min-width: 130px; max-width: 165px; }
+    #aspect-select { min-width: 82px; max-width: 95px; }
+    #locale-select { min-width: 78px; max-width: 88px; }
     [data-theme="light"] .pg-select,
     [data-theme="light"] .pg-btn {
       background: #ffffff; color: #0f172a;
@@ -826,40 +826,116 @@ export async function buildWebPlaygroundHtml(
       background: #0f172a; color: #ffffff; border-color: #0f172a;
     }
 
+    /* Universal View Modes: Split / Edit / Preview */
     .pg-body {
-      display: grid; grid-template-columns: 430px 1fr;
+      display: grid;
+      grid-template-columns: minmax(380px, 42%) 1fr;
       height: calc(100% - var(--topbar-height));
+      transition: grid-template-columns 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pg-body[data-view="split"] {
+      grid-template-columns: minmax(380px, 42%) 1fr;
+    }
+    .pg-body[data-view="split"] .editor-pane { display: flex !important; flex-direction: column !important; min-width: 0 !important; height: 100% !important; overflow: hidden !important; }
+    .pg-body[data-view="split"] .stage-pane { display: flex !important; flex-direction: column !important; min-width: 0 !important; height: 100% !important; overflow: hidden !important; }
+
+    .pg-body[data-view="edit"] {
+      grid-template-columns: 1fr 0px;
+    }
+    .pg-body[data-view="edit"] .editor-pane { display: flex !important; flex-direction: column !important; width: 100% !important; min-width: 0 !important; height: 100% !important; }
+    .pg-body[data-view="edit"] .stage-pane { display: none !important; }
+
+    .pg-body[data-view="preview"] {
+      grid-template-columns: 0px 1fr;
+    }
+    .pg-body[data-view="preview"] .editor-pane { display: none !important; }
+    .pg-body[data-view="preview"] .stage-pane { display: flex !important; flex-direction: column !important; width: 100% !important; min-width: 0 !important; height: 100% !important; }
+
+    /* View Mode Segmented Control in Topbar */
+    .pg-view-segmented {
+      display: inline-flex; align-items: center; gap: 2px;
+      padding: 2px; border-radius: var(--radius-md);
+      background: rgba(0, 0, 0, 0.24);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    [data-theme="light"] .pg-view-segmented {
+      background: rgba(15, 23, 42, 0.05);
+      border-color: rgba(15, 23, 42, 0.12);
+    }
+    .pg-view-segment-btn {
+      height: 25px; padding: 0 9px;
+      border: none; border-radius: var(--radius-sm);
+      background: transparent; color: var(--ink-muted);
+      font-size: 11.5px; font-weight: 500; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 4px;
+      white-space: nowrap; transition: all 0.14s ease;
+    }
+    .pg-view-segment-btn:hover { color: var(--ink); }
+    .pg-view-segment-btn.active {
+      background: var(--surface-elev); color: var(--ink); font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    }
+    [data-theme="light"] .pg-view-segment-btn.active {
+      background: #ffffff; color: #0f172a;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Outlines & Focus Guard (Zero Purple Artifacts) */
+    *:focus, *:focus-visible {
+      outline: none !important;
+      outline-color: transparent !important;
+      box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.35) !important;
+    }
+    [data-theme="dark"] *:focus, [data-theme="dark"] *:focus-visible {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35) !important;
+    }
+    .pg-btn, .pg-select, button, select {
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pg-btn {
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      flex-shrink: 0 !important;
+      line-height: normal;
+    }
+    #btn-copy-wechat {
+      color: var(--ink) !important;
+      background: var(--surface) !important;
+      border: 1px solid var(--border) !important;
+      font-weight: 500;
+    }
+    [data-theme="light"] #btn-copy-wechat {
+      color: #0f172a !important;
+      background: #ffffff !important;
+      border-color: rgba(15, 23, 42, 0.12) !important;
+    }
+    #btn-copy-wechat:hover {
+      background: var(--surface-elev) !important;
+      border-color: var(--border-strong) !important;
+    }
+    [data-theme="light"] #btn-copy-wechat:hover {
+      background: #f8fafc !important;
+      border-color: rgba(15, 23, 42, 0.22) !important;
     }
 
     @media (max-width: 860px) {
-      header.pg-topbar {
-        height: auto;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 6px;
-        padding: 8px 10px;
+      .pg-brand strong { display: none; }
+      .pg-crumb-sep, .pg-crumb-badge { display: none; }
+      #sample-select { min-width: 130px !important; max-width: 160px !important; }
+      #template-select { min-width: 110px !important; max-width: 135px !important; }
+      .pg-body[data-view="split"] {
+        grid-template-columns: 1fr;
       }
-      .pg-brand-wrap {
-        justify-content: space-between;
-      }
-      .pg-controls {
-        width: 100%;
-        padding-bottom: 2px;
-      }
-      .pg-mobile-nav { display: flex; }
-      .pg-body {
-        display: block;
-        height: calc(100% - 118px);
-        position: relative;
-      }
-      .editor-pane, .stage-pane {
-        width: 100% !important; height: 100% !important;
+      .pg-view-segment-btn[data-view="split"] {
+        display: none;
       }
       .pg-body[data-mobile-view="edit"] .stage-pane { display: none !important; }
-      .pg-body[data-mobile-view="edit"] .editor-pane { display: flex !important; }
+      .pg-body[data-mobile-view="edit"] .editor-pane { display: flex !important; width: 100% !important; }
       .pg-body[data-mobile-view="preview"] .editor-pane { display: none !important; }
-      .pg-body[data-mobile-view="preview"] .stage-pane { display: flex !important; }
-      .stage-pane { padding: 10px 10px 58px !important; }
+      .pg-body[data-mobile-view="preview"] .stage-pane { display: flex !important; width: 100% !important; }
+      .stage-pane { padding: 12px 12px 76px !important; }
       .pg-stage-dock {
         max-width: calc(100% - 16px) !important;
         padding: 0 6px !important;
@@ -1033,7 +1109,7 @@ export async function buildWebPlaygroundHtml(
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       position: relative; overflow: hidden;
-      padding: 16px 20px 68px;
+      padding: 20px 24px 84px !important;
     }
     [data-theme="light"] .stage-pane {
       background-color: #e6ebf2;
@@ -1101,16 +1177,11 @@ export async function buildWebPlaygroundHtml(
     }
     .pg-slide-indicator {
       font-family: var(--font-mono); font-size: 11.5px; font-variant-numeric: tabular-nums;
-      color: var(--ink-muted); padding: 0 4px; white-space: nowrap; user-select: none;
-      display: none;
-    }
-    @media (max-width: 640px) {
-      .pg-slide-pills { display: none !important; }
-      .pg-slide-indicator { display: inline-block !important; }
+      color: var(--ink-muted); padding: 0 8px; white-space: nowrap; user-select: none;
+      display: inline-block; font-weight: 550;
     }
     .pg-slide-pills {
-      display: inline-flex; align-items: center; gap: 3px;
-      max-width: 190px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth;
+      display: none !important;
     }
     .pg-slide-pills::-webkit-scrollbar { display: none; }
     .pg-slide-pill {
@@ -1150,11 +1221,11 @@ export async function buildWebPlaygroundHtml(
       background: rgba(239, 68, 68, 0.22) !important; color: #f87171 !important;
     }
     .pg-dock-pill-btn {
-      height: 22px; padding: 0 10px; border-radius: 999px; border: none;
+      height: 24px; padding: 0 10px; border-radius: 999px; border: none;
       background: transparent; color: var(--ink-muted); font-size: 11px;
       cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
       font-family: var(--font-mono);
-      white-space: nowrap; word-break: keep-all; flex-shrink: 0; min-width: 48px;
+      white-space: nowrap !important; word-break: keep-all !important; flex-shrink: 0 !important; min-width: 52px !important;
     }
     .pg-dock-pill-btn:hover { background: rgba(255, 255, 255, 0.12); color: var(--ink); }
 
@@ -1382,6 +1453,17 @@ export async function buildWebPlaygroundHtml(
 
       <button class="pg-btn pg-btn-icon" id="btn-reset-sample" title="重置当前示范原稿" aria-label="重置当前示范原稿">${lucideIcon('rotateCcw')}</button>
 
+      <span class="pg-control-sep"></span>
+
+      <!-- Universal View Mode Switcher -->
+      <div class="pg-view-segmented" role="tablist" aria-label="视图模式">
+        <button type="button" class="pg-view-segment-btn active" id="btn-view-split" data-view="split" onclick="setViewMode('split')" title="并排分屏">${lucideIcon('panelLeft')} 分屏</button>
+        <button type="button" class="pg-view-segment-btn" id="btn-view-edit" data-view="edit" onclick="setViewMode('edit')" title="仅查看代码">${lucideIcon('code')} 源码</button>
+        <button type="button" class="pg-view-segment-btn" id="btn-view-preview" data-view="preview" onclick="setViewMode('preview')" title="仅查看舞台">${lucideIcon('image')} 舞台</button>
+      </div>
+
+      <span class="pg-control-sep"></span>
+
       <!-- 36-Template Switcher & Drawer Trigger -->
       <select class="pg-select" id="template-select" title="切换 36 套设计模板">
         ${templates
@@ -1441,7 +1523,7 @@ export async function buildWebPlaygroundHtml(
     <button class="pg-mobile-tab-btn active" id="btn-mob-preview" onclick="setMobileView('preview')">视觉舞台 (实时渲染)</button>
   </div>
 
-  <main class="pg-body" id="pg-body" data-mobile-view="preview">
+  <main class="pg-body" id="pg-body" data-view="split">
     <!-- Left Dual-Mode Editor Pane -->
     <section class="editor-pane">
       <div class="editor-tabs-bar">
@@ -1701,22 +1783,48 @@ export async function buildWebPlaygroundHtml(
     elInput.addEventListener('keyup', updateActiveLine);
     elInput.addEventListener('click', updateActiveLine);
 
-    // Mobile View Switcher
-    function setMobileView(view) {
-      elBody.setAttribute('data-mobile-view', view);
-      document.getElementById('btn-mob-edit').classList.toggle('active', view === 'edit');
-      document.getElementById('btn-mob-preview').classList.toggle('active', view === 'preview');
-      if (view === 'preview') {
+    // Universal View Mode Switcher
+    function setViewMode(mode) {
+      elBody.setAttribute('data-view', mode);
+      if (mode === 'edit') {
+        elBody.setAttribute('data-mobile-view', 'edit');
+      } else if (mode === 'preview') {
+        elBody.setAttribute('data-mobile-view', 'preview');
+      } else {
+        if (window.innerWidth <= 860) {
+          elBody.setAttribute('data-mobile-view', 'preview');
+        } else {
+          elBody.removeAttribute('data-mobile-view');
+        }
+      }
+      document.querySelectorAll('.pg-view-segment-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.getAttribute('data-view') === mode);
+      });
+      const mobEdit = document.getElementById('btn-mob-edit');
+      const mobPrev = document.getElementById('btn-mob-preview');
+      if (mobEdit) mobEdit.classList.toggle('active', mode === 'edit');
+      if (mobPrev) mobPrev.classList.toggle('active', mode !== 'edit');
+      try {
+        localStorage.setItem('aimake_pg_view_mode', mode);
+      } catch(_) {}
+      if (mode === 'preview' || mode === 'split') {
         setTimeout(() => {
           try {
             if (elFrame.contentWindow && elFrame.contentWindow.fitPgStage) {
               elFrame.contentWindow.fitPgStage();
             }
           } catch(_) {}
-        }, 60);
+        }, 80);
       }
     }
-    window.setMobileView = setMobileView;
+    window.setViewMode = setViewMode;
+    window.setMobileView = function(view) { setViewMode(view === 'edit' ? 'edit' : 'preview'); };
+
+    let savedViewMode = 'split';
+    try {
+      savedViewMode = localStorage.getItem('aimake_pg_view_mode') || (window.innerWidth <= 860 ? 'preview' : 'split');
+    } catch(_) {}
+    setViewMode(savedViewMode);
 
     // URL Query Parameter Handling (?sample=...&template=...&title=...)
     const urlParams = new URLSearchParams(window.location.search);
