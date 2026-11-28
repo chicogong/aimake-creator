@@ -1,0 +1,55 @@
+@font-face {
+  font-family: Inter;
+  src: local("Inter Variable"), local("Inter"), url("fonts/Inter-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Noto Sans CJK SC";
+  src: local("Noto Sans CJK SC"), local("Noto Sans SC"), url("fonts/NotoSansCJK-Regular.ttc") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Noto Sans CJK SC";
+  src: local("Noto Sans CJK SC Bold"), local("Noto Sans SC Bold"), url("fonts/NotoSansCJK-Bold.ttc") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+:root {
+  --am-ink: #17152D;
+  --am-muted: #6A6483;
+  --am-violet: #6951FF;
+  --am-violet-hover: #5236F3;
+  --am-lavender: #B7AAFF;
+  --am-yellow: #FFCB49;
+  --am-coral: #FF6B74;
+  --am-canvas: #F1EEFF;
+  --am-page: #FCFAFF;
+  --am-blob-lavender: #E9E2FF;
+  --am-blob-cream: #FFEED3;
+  --am-circle: #E2D9FF;
+  --am-cyan: #26C7E8;
+  --am-border: rgba(80, 66, 125, 0.13);
+  --am-shadow: 0 16px 60px rgba(50, 34, 125, 0.10);
+  --font: Inter, "Noto Sans CJK SC", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font);
+  color: var(--am-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  font-kerning: normal;
+}
+img { display: block; }

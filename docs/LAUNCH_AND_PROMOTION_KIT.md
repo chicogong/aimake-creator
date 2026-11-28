@@ -4,6 +4,7 @@
 > **开源协议**：Apache-2.0 · 100% Local-First & Zero-Cloud Telemetry  
 > **官方主页**：[https://aimake.cc](https://aimake.cc)  
 > **代码仓库**：[https://github.com/chicogong/aimake-creator](https://github.com/chicogong/aimake-creator)  
+> **产品介绍视觉标准**：[promotions/aimake-studio-intro](./promotions/aimake-studio-intro/)（2026-11-28 定稿）  
 
 ---
 
