@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Aimake Studio flow</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .stage {
+      width: 1920px;
+      height: 1080px;
+      background: var(--am-canvas);
+      position: relative;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      width: 560px;
+      height: 560px;
+      right: 80px;
+      top: -80px;
+      border-radius: 50%;
+      background: var(--am-circle);
+    }
+    .group {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 64px;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      gap: 0;
+    }
+    .source {
+      flex: 0 0 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .doc {
+      width: 340px;
+      height: 430px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F6F3FF 100%);
+      box-shadow: var(--am-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .doc-bar {
+      height: 62px;
+      background: var(--am-violet);
+      border-radius: 30px 30px 0 0;
+      position: relative;
+    }
+    .doc-bar::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -20px;
+      height: 24px;
+      background: var(--am-violet);
+    }
+    .dots {
+      position: absolute;
+      left: 26px;
+      top: 24px;
+      display: flex;
+      gap: 18px;
+      z-index: 1;
+    }
+    .dots i {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #D3C8FF;
+      display: block;
+    }
+    .lines {
+      position: absolute;
+      left: 37px;
+      top: 108px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .lines span {
+      display: block;
+      height: 12px;
+      border-radius: 6px;
+    }
+    .lines .l1 { width: 114px; background: #5140B5; }
+    .lines .l2 { width: 229px; background: #C3BAEE; }
+    .lines .l3 { width: 188px; background: #C3BAEE; }
+    .lines .l4 { width: 223px; background: #C3BAEE; }
+    .lines .gap { height: 27px; background: transparent; }
+    .lines .l5 { width: 162px; background: #FFB8BD; }
+    .lines .l6 { width: 220px; background: #C3BAEE; }
+    .lines .l7 { width: 130px; background: #C3BAEE; }
+    .label {
+      margin-top: 28px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--am-ink);
+      line-height: 1.2;
+      text-align: center;
+    }
+    .arrow {
+      flex: 0 0 150px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -20px;
+    }
+    .outputs {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      padding-left: 8px;
+    }
+    .out-row {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+    }
+    .out {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 188px;
+    }
+    .tile {
+      width: 188px;
+      height: 188px;
+      border-radius: 28px;
+      box-shadow: var(--am-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .out .label {
+      margin-top: 16px;
+      font-size: 26px;
+    }
+    .lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .lockup img {
+      width: 36px;
+      height: 36px;
+    }
+    .lockup span {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--am-ink);
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="blob"></div>
+    <div class="group">
+    <div class="row">
+      <div class="source">
+        <div class="doc">
+          <div class="doc-bar">
+            <div class="dots"><i></i><i></i><i></i></div>
+          </div>
+          <div class="lines">
+            <span class="l1"></span>
+            <span class="l2"></span>
+            <span class="l3"></span>
+            <span class="l4"></span>
+            <span class="gap"></span>
+            <span class="l5"></span>
+            <span class="l6"></span>
+            <span class="l7"></span>
+          </div>
+        </div>
+        <div class="label">一份 Markdown 原稿</div>
+      </div>
+      <div class="arrow" aria-hidden="true">
+        <svg width="130" height="80" viewBox="0 0 130 80" fill="none">
+          <path d="M6 40 H98" stroke="#6951FF" stroke-width="18" stroke-linecap="round"/>
+          <path d="M76 16 L116 40 L76 64" fill="none" stroke="#6951FF" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="outputs">
+        <div class="out-row">
+        <div class="out">
+          <div class="tile" style="background:#FFCB49">
+            <svg width="110" height="110" viewBox="0 0 96 96" aria-hidden="true">
+              <path d="M14 70 L38 40 L54 58 L70 36 L82 70 Z" fill="#fff" opacity=".9"/>
+            </svg>
+          </div>
+          <div class="label">图卡</div>
+        </div>
+        <div class="out">
+          <div class="tile" style="background:#B7AAFF">
+            <svg width="110" height="110" viewBox="0 0 96 96" aria-hidden="true">
+              <rect x="18" y="26" width="60" height="10" rx="5" fill="#fff" opacity=".95"/>
+              <rect x="18" y="44" width="48" height="10" rx="5" fill="#fff" opacity=".8"/>
+              <rect x="18" y="62" width="56" height="10" rx="5" fill="#fff" opacity=".95"/>
+            </svg>
+          </div>
+          <div class="label">公众号</div>
+        </div>
+        <div class="out">
+          <div class="tile" style="background:#6951FF">
+            <svg width="110" height="110" viewBox="0 0 110 110" aria-hidden="true">
+              <rect x="32" y="22" width="58" height="46" rx="8" fill="#fff" opacity=".45"/>
+              <rect x="20" y="36" width="58" height="46" rx="8" fill="#fff"/>
+              <rect x="30" y="48" width="30" height="7" rx="3.5" fill="#6951FF" opacity=".8"/>
+              <rect x="30" y="62" width="22" height="7" rx="3.5" fill="#6951FF" opacity=".4"/>
+            </svg>
+          </div>
+          <div class="label">PPTX</div>
+        </div>
+        </div>
+        <div class="out-row">
+        <div class="out">
+          <div class="tile" style="background:#FF6B74">
+            <svg width="110" height="110" viewBox="0 0 96 96" aria-hidden="true">
+              <rect x="24" y="18" width="48" height="60" rx="8" fill="#fff" opacity=".95"/>
+              <rect x="34" y="32" width="28" height="6" rx="3" fill="#FF6B74" opacity=".7"/>
+              <rect x="34" y="44" width="22" height="6" rx="3" fill="#FF6B74" opacity=".45"/>
+              <circle cx="48" cy="64" r="8" fill="#FF6B74" opacity=".35"/>
+            </svg>
+          </div>
+          <div class="label">PDF</div>
+        </div>
+        <div class="out">
+          <div class="tile" style="background:#26C7E8">
+            <svg width="110" height="110" viewBox="0 0 96 96" aria-hidden="true">
+              <path d="M36 28 V68 L72 48 Z" fill="#fff"/>
+            </svg>
+          </div>
+          <div class="label">视频</div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="lockup">
+      <img src="../../../assets/brand/logos/symbol-color.svg" alt="">
+      <span>Aimake Studio 爱创工坊</span>
+    </div>
+    </div>
+  </div>
+</body>
+</html>

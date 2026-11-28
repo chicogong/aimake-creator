@@ -1,0 +1,59 @@
+Aimake Studio（爱创工坊）产品介绍视觉标准
+定稿日期：2026-11-28（chico 批准）
+做法：HTML/CSS + 官方 SVG + 系统字体排版，再用 Chrome（puppeteer-core，deviceScaleFactor 2）导出 PNG。
+成图由真实字体排出，不使用图像模型手写汉字或自造 Logo。
+
+文件与像素（2x，比例与设计尺寸一致）
+  cover-16x9.png            3840×2160  （设计 1920×1080）
+  flow-diagram.png          3840×2160  （设计 1920×1080）
+  share-star-cocreate.png   2160×2160  （设计 1080×1080）
+
+源文件（本目录）
+  cover.html  flow.html  share.html  shared.css
+  export.mjs  github-mark.svg
+  README.md   manifest.txt
+
+字体
+  Inter Variable  100–900
+    系统字体 local("Inter Variable") / local("Inter")
+    可选：本目录 fonts/Inter-Variable.ttf（符号链接，不入库）
+  Noto Sans CJK SC Regular / Bold
+    系统字体 local("Noto Sans CJK SC") / local("Noto Sans SC")
+    可选：fonts/NotoSansCJK-Regular.ttc、fonts/NotoSansCJK-Bold.ttc（不入库）
+  拉丁用 Inter，中文用 Noto Sans CJK SC。
+  标题字重 700、大标题字距约 -0.055em，与品牌 components.css 一致。
+
+Logo 与官方资产
+  成图使用仓库官方四色几何「A」：
+    assets/brand/logos/symbol-color.svg
+      色值 #6951FF / #FFCB49 / #B7AAFF / #FF6B74
+      用于封面大标、封面与流程图锁头、分享图顶部图形标
+  锁头文案为「Aimake Studio 爱创工坊」，用官方图形标 + Inter/Noto 排字。
+  GitHub 单色标（仅分享图）：
+    github-mark.svg
+      Primer octicons v19.15.1 mark-github-24.svg
+      https://raw.githubusercontent.com/primer/octicons/v19.15.1/icons/mark-github-24.svg
+      未重绘、未变形；填色为品牌墨 #17152D。
+
+构图参考（只学结构）
+  封面：官方 og-cover-1200x630.png / github-social-1280x640.png 的左字右标、浅底、大留白，
+        浅紫圆 #E9E2FF、奶油圆 #FFEED3。
+        主标题固定为「从写稿到出片」。官方 OG 口号「一次创作，多种表达」只用于
+        assets/brand/social/。
+  流程图：官方 feature-one-source-many-formats.svg 的文稿卡、品牌紫箭头、圆角色块语言；
+        由四个出口扩成五个带标签出口（3+2）。
+
+色板（与 docs/brand-kit/BRAND_GUIDELINES.md / tokens.css 一致）
+  画布 #F1EEFF    页面 #FCFAFF    主紫 #6951FF    墨 #17152D
+  辅文 #6A6483    浅紫 #B7AAFF    黄 #FFCB49      珊瑚 #FF6B74
+  视频青 #26C7E8（仅沿用官方插画，不在 tokens.css）
+  浅紫圆 #E9E2FF / #E2D9FF    奶油圆 #FFEED3
+
+流程图出口色
+  图卡 #FFCB49    公众号 #B7AAFF    PPTX #6951FF    PDF #FF6B74    视频 #26C7E8
+  图标为抽象山形 / 文稿线 / 叠卡片 / 文档 / 播放三角，无微信、Office、Adobe 商标，无假软件界面。
+
+必留文案
+  封面：从写稿到出片；一份原稿，在本地导出图卡、PPTX、PDF 和视频；Aimake Studio 爱创工坊
+  流程图：一份 Markdown 原稿；图卡、公众号、PPTX、PDF、视频；Aimake Studio 爱创工坊
+  分享图：爱创工坊、共创、Star、aimake.cc、github.com/chicogong/aimake-creator，以及 Aimake Studio 与官方标

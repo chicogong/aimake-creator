@@ -78,4 +78,5 @@
 | [**brand-kit/BRAND_GUIDELINES.md**](./brand-kit/BRAND_GUIDELINES.md) | Aimake 视觉识别系统、Creator Violet 主色系与矢量资产说明 |
 | [**brand-kit/wordmarks/WORDMARKS.md**](./brand-kit/wordmarks/WORDMARKS.md) | Aimake 标志字与多场景组合规范 |
 | [**LAUNCH_AND_PROMOTION_KIT.md**](./LAUNCH_AND_PROMOTION_KIT.md) | 全渠道发布物料包（X / 小红书 / 即刻 / 技术社区） |
+| [**promotions/aimake-studio-intro**](./promotions/aimake-studio-intro/) | Aimake Studio 产品介绍视觉标准（封面 / 流程图 / 共创分享卡，2026-11-28 定稿） |
 | [**promotions/wechat-article-launch.md**](./promotions/wechat-article-launch.md) | 微信公众号开源发布深度长文成稿 |
